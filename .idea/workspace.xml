@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Correctifs en soutif">
-      <change afterPath="$PROJECT_DIR$/src/Modele/Joueur.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Modele/Pion.java" afterDir="false" />
+    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Engine d'affichage">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Hexagone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Taluva.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Taluva.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +51,20 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;Console&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.TEngine">
+    <configuration name="TEngine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Modele.TEngine" />
+      <module name="Taluva" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Modele.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TaluvaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TaluvaMain" />
       <module name="Taluva" />
@@ -64,6 +74,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TEngine" />
         <item itemvalue="Application.TaluvaMain" />
       </list>
     </recent_temporary>
