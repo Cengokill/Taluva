@@ -15,19 +15,19 @@ De nombreuses stratégies découlent des différentes règles de placement. Les 
 
 | Priorité | Description |
 | --- | --- |
-| 1 | <ul><li> - [x] Affichage du plateau                                                                </li></ul>
-| 1 | <ul><li> - [x] Ajout de pièces sur le niveau 0                                                     </li></ul>
-| 1 | <ul><li> - [x] Ajout de pièces sur un niveau supérieur                                             </li></ul>
-| 1 | <ul><li> - [x] Ajout de huttes                                                                     </li></ul>
-| 1 | <ul><li> - [x] Ajout de temples                                                                    </li></ul>
-| 1 | <ul><li> - [x] Ajout de tours                                                                      </li></ul>
-| 1 | <ul><li> - [x] Menus / Boutons                                                                     </li></ul>
-| 2 | <ul><li> - [x] Bouton "coup précédent" qui fonctionne (historique des coups)                       </li></ul>
-| 2 | <ul><li> - [x] Bouton quitter la partie                                                            </li></ul>
-| 2 | <ul><li> - [x] Affichage de la fin du jeu, et retour au menu principal                             </li></ul>
-| 3 | <ul><li> - [x] Sauvegarde de la partie                                                             </li></ul>
-| 3 | <ul><li> - [x] Charger la partie                                                                   </li></ul>
-| 3 | <ul><li> - [x] IA aléatoire                                                                        </li></ul>
-| 3 | <ul><li> - [x] IA intelligente utilisant un arbre ET/OU                                            </li></ul>
-| 3 | <ul><li> - [x] Score                                                                               </li></ul>
-| 4 | <ul><li> - [x] Boutons qui changent d'apparence si la souris les survole                           </li></ul>
+| 1 | <ul><li> - [ ] Affichage du plateau                                                                </li></ul>
+| 1 | <ul><li> - [ ] Ajout de pièces sur le niveau 0                                                     </li></ul>
+| 1 | <ul><li> - [ ] Ajout de pièces sur un niveau supérieur                                             </li></ul>
+| 1 | <ul><li> - [ ] Ajout de huttes                                                                     </li></ul>
+| 1 | <ul><li> - [ ] Ajout de temples                                                                    </li></ul>
+| 1 | <ul><li> - [ ] Ajout de tours                                                                      </li></ul>
+| 1 | <ul><li> - [ ] Menus / Boutons                                                                     </li></ul>
+| 2 | <ul><li> - [ ] Bouton "coup précédent" qui fonctionne (historique des coups)                       </li></ul>
+| 2 | <ul><li> - [ ] Bouton quitter la partie                                                            </li></ul>
+| 2 | <ul><li> - [ ] Affichage de la fin du jeu, et retour au menu principal                             </li></ul>
+| 3 | <ul><li> - [ ] Sauvegarde de la partie                                                             </li></ul>
+| 3 | <ul><li> - [ ] Charger la partie                                                                   </li></ul>
+| 3 | <ul><li> - [ ] IA aléatoire                                                                        </li></ul>
+| 3 | <ul><li> - [ ] IA intelligente utilisant un arbre ET/OU                                            </li></ul>
+| 3 | <ul><li> - [ ] Score                                                                               </li></ul>
+| 4 | <ul><li> - [ ] Boutons qui changent d'apparence si la souris les survole                           </li></ul>
