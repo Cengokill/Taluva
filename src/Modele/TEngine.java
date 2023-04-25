@@ -51,6 +51,8 @@ public class TEngine extends JFrame {
 
         private Plateau plateau;
 
+        int scrollValue = 1;
+
 
         public HexagonalTiles() {
             try {
@@ -119,7 +121,7 @@ public class TEngine extends JFrame {
                     int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                     int y = i * verticalOffset;
                     int tileId = map[i][j].getTypeTion();
-                    System.out.println(tileId);
+
                     BufferedImage tile = getTileImageFromId(tileId);
                     g.drawImage(tile, x , y, null);
                 }
@@ -127,11 +129,14 @@ public class TEngine extends JFrame {
         }
 
         private BufferedImage getTileImageFromId(int id) {
-            if (id == 0) {
+            if (id == Hexagone.VIDE) {
                 return voidTile;
             }
-            if (id == 1) {
+            if (id == Hexagone.GRASS) {
                 return grassTile;
+            }
+            if (id == Hexagone.WATER) {
+                return waterTile;
             }
             return null;
         }
@@ -155,10 +160,35 @@ public class TEngine extends JFrame {
                 int y = i * verticalOffset;
 
                 g.drawImage(hoverTile, x , y, null);
+
+                if (scrollValue == 1) {
+                    g.drawImage(hoverTile, x - tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(hoverTile, x + tileWidth/2, y - verticalOffset, null);
+                }
+                else if (scrollValue == 2){
+                    g.drawImage(hoverTile, x + tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(hoverTile, x + tileWidth, y, null);
+                }
+                else if (scrollValue == 3){
+                    g.drawImage(hoverTile, x + tileWidth, y, null);
+                    g.drawImage(hoverTile, x +  + tileWidth/2, y + verticalOffset, null);
+                }
+                else if (scrollValue == 4){
+                    g.drawImage(hoverTile, x + tileWidth/2, y + verticalOffset, null);
+                    g.drawImage(hoverTile, x - tileWidth/2, y + verticalOffset, null);
+                }
+                else if (scrollValue == 5){
+                    g.drawImage(hoverTile, x - tileWidth/2, y + verticalOffset, null);
+                    g.drawImage(hoverTile, x - tileWidth, y, null);
+                }
+                else if (scrollValue == 6){
+                    g.drawImage(hoverTile, x - tileWidth, y, null);
+                    g.drawImage(hoverTile, x - tileWidth/2, y - verticalOffset, null);
+                }
             }
         }
 
-        private void addToCursor(MouseEvent e, int tile_type) {
+        private void addToCursor(MouseEvent e, int tile_type1, int tile_type2, int tile_type3) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 int tileWidth = voidTile.getWidth();
                 int tileHeight = voidTile.getHeight();
@@ -177,7 +207,42 @@ public class TEngine extends JFrame {
 
                 // S'assurer que les indices i et j sont à l'intérieur des limites de la matrice 'map'
                 if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
-                    map[i][j] = new Hexagone(0, 0, 0, tile_type);
+                    map[i][j] = new Hexagone(0, 0, 0, tile_type1);
+
+                    int x;
+                    if (i % 2 == 1) {
+                        x = j - 1;
+                    } else {
+                        x = j;
+                    }
+
+                    if (scrollValue == 1) {
+                        map[i - 1][x] = new Hexagone(0, 0, 0, tile_type2);
+                        map[i - 1][x + 1] = new Hexagone(0, 0, 0, tile_type3);
+                    }
+                    else if (scrollValue == 2){
+                        map[i - 1][x + 1] = new Hexagone(0, 0, 0, tile_type2);
+                        map[i][j + 1] = new Hexagone(0, 0, 0, tile_type3);
+                    }
+                    else if (scrollValue == 3){
+                        map[i][j + 1] = new Hexagone(0, 0, 0, tile_type2);
+                        map[i + 1][x + 1] = new Hexagone(0, 0, 0, tile_type3);
+                    }
+                    else if (scrollValue == 4){
+                        map[i + 1][x + 1] = new Hexagone(0, 0, 0, tile_type2);
+                        map[i + 1][x] = new Hexagone(0, 0, 0, tile_type3);
+                    }
+                    else if (scrollValue == 5){
+                        map[i + 1][x] = new Hexagone(0, 0, 0, tile_type2);
+                        map[i][j - 1] = new Hexagone(0, 0, 0, tile_type3);
+                    }
+                    else if (scrollValue == 6){
+                        map[i][j - 1] = new Hexagone(0, 0, 0, tile_type2);
+                        map[i - 1][x] = new Hexagone(0, 0, 0, tile_type3);
+                    }
+
+
+
                     repaint();
                 }
             }
@@ -191,7 +256,7 @@ public class TEngine extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                addToCursor(e, Hexagone.GRASS);
+                addToCursor(e, Hexagone.WATER, Hexagone.WATER, Hexagone.GRASS);
             }
 
 
@@ -248,29 +313,42 @@ public class TEngine extends JFrame {
 
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                int wheelRotation = e.getWheelRotation();
-                double prevZoomFactor = zoomFactor;
-                zoomFactor -= wheelRotation * zoomIncrement;
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    // Lorsque le bouton droit est enfoncé, modifiez la valeur de scrollValue
+                    scrollValue -= e.getWheelRotation();
+                    if (scrollValue < 1) {
+                        scrollValue = 6;
+                    } else if (scrollValue > 6) {
+                        scrollValue = 1;
+                    }
+                    repaint();
+                    System.out.println("Scroll value: " + scrollValue);
+                } else {
+                    int wheelRotation = e.getWheelRotation();
+                    double prevZoomFactor = zoomFactor;
+                    zoomFactor -= wheelRotation * zoomIncrement;
 
-                // Limiter le zoom minimum et maximum
-                double minZoom = 0.6;
-                double maxZoom = 2.0;
-                zoomFactor = Math.max(Math.min(zoomFactor, maxZoom), minZoom);
+                    // Limiter le zoom minimum et maximum
+                    double minZoom = 0.6;
+                    double maxZoom = 2.0;
+                    zoomFactor = Math.max(Math.min(zoomFactor, maxZoom), minZoom);
 
-                // Ajuster l'offset de la caméra en fonction du zoom pour centrer le zoom sur la position de la souris
-                cameraOffset.x -= (e.getX() - cameraOffset.x) * (zoomFactor - prevZoomFactor);
-                cameraOffset.y -= (e.getY() - cameraOffset.y) * (zoomFactor - prevZoomFactor);
+                    // Ajuster l'offset de la caméra en fonction du zoom pour centrer le zoom sur la position de la souris
+                    cameraOffset.x -= (e.getX() - cameraOffset.x) * (zoomFactor - prevZoomFactor);
+                    cameraOffset.y -= (e.getY() - cameraOffset.y) * (zoomFactor - prevZoomFactor);
 
-                // Empêcher la caméra de voir des cases dans le négatif
-                if (cameraOffset.x > 0) {
-                    cameraOffset.x = 0;
+                    // Empêcher la caméra de voir des cases dans le négatif
+                    if (cameraOffset.x > 0) {
+                        cameraOffset.x = 0;
+                    }
+                    if (cameraOffset.y > -64) {
+                        cameraOffset.y = -64;
+                    }
+
+                    repaint();
                 }
-                if (cameraOffset.y > -64) {
-                    cameraOffset.y = -64;
-                }
-
-                repaint();
             }
+
 
         }
     }
