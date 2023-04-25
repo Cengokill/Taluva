@@ -13,6 +13,7 @@ public class TEngine extends JFrame {
     int height = 200;
     int tile_size = 148;
 
+
     public TEngine() {
         setTitle("Ma Fenêtre en Java Swing");
         setSize(1400, 1000);
@@ -48,7 +49,8 @@ public class TEngine extends JFrame {
         double zoomFactor = 1.0;
         double zoomIncrement = 0.1;
 
-        int[][] map;
+        private Plateau plateau;
+
 
         public HexagonalTiles() {
             try {
@@ -69,14 +71,7 @@ public class TEngine extends JFrame {
             cameraOffset.x = -750;
             cameraOffset.y = -750;
 
-            map = new int[40][40];
-            for (int i = 0; i < map.length; i++) {
-                for (int j = 0; j < map[0].length; j++) {
-                    map[i][j] = 0;
-                }
-            }
-
-            map[20][20] = 1;
+            plateau = new Plateau();
         }
 
         @Override
@@ -86,7 +81,7 @@ public class TEngine extends JFrame {
             g2d.translate(cameraOffset.x, cameraOffset.y);
             g2d.scale(zoomFactor, zoomFactor);
 
-            displayIntMap(map, g);
+            displayHexagonMap(g);
             displayHoverTile(g);
         }
 
@@ -106,6 +101,25 @@ public class TEngine extends JFrame {
                     int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                     int y = i * verticalOffset;
                     int tileId = map[i][j];
+                    BufferedImage tile = getTileImageFromId(tileId);
+                    g.drawImage(tile, x , y, null);
+                }
+            }
+        }
+
+        private void displayHexagonMap(Graphics g) {
+            Hexagone[][] map = plateau.plateau;
+            int tileWidth = voidTile.getWidth();
+            int tileHeight = voidTile.getHeight();
+            int horizontalOffset = tileWidth;
+            int verticalOffset = (int) (tileHeight * 0.75);
+
+            for (int i = 0; i < map.length; i++) {
+                for (int j = 0; j < map[0].length; j++) {
+                    int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
+                    int y = i * verticalOffset;
+                    int tileId = map[i][j].getTypeTion();
+                    System.out.println(tileId);
                     BufferedImage tile = getTileImageFromId(tileId);
                     g.drawImage(tile, x , y, null);
                 }
@@ -144,7 +158,7 @@ public class TEngine extends JFrame {
             }
         }
 
-        private void addGrassToCursor(MouseEvent e) {
+        private void addToCursor(MouseEvent e, int tile_type) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 int tileWidth = voidTile.getWidth();
                 int tileHeight = voidTile.getHeight();
@@ -158,9 +172,12 @@ public class TEngine extends JFrame {
                 int i = (int) (clickPositionAdjusted.y / verticalOffset);
                 int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
 
+
+                Hexagone[][] map = plateau.plateau;
+
                 // S'assurer que les indices i et j sont à l'intérieur des limites de la matrice 'map'
                 if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
-                    map[i][j] = 1;
+                    map[i][j] = new Hexagone(0, 0, 0, tile_type);
                     repaint();
                 }
             }
@@ -174,8 +191,7 @@ public class TEngine extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                addGrassToCursor(e);
-                System.out.println(map[1][1]);
+                addToCursor(e, Hexagone.GRASS);
             }
 
 

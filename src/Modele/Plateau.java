@@ -1,7 +1,7 @@
 package Modele;
 
 public class Plateau {
-    protected Hexagone [][]plateau ;
+    protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
     protected int[] nbPionsJ2;
 
@@ -11,8 +11,22 @@ public class Plateau {
         nbPionsJ2 = new int [3];
         nbPionsJ1[0]=10 ; nbPionsJ2[0]=10;
         nbPionsJ1[1]=10 ; nbPionsJ2[1]=10;
-        nbPionsJ1[3]=10 ; nbPionsJ2[3]=10;
+        nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
+        initPlateau();
     }
+
+    private void initPlateau() {
+        for (int i = 0; i < plateau.length; i++) {
+            for (int j = 0; j < plateau[0].length; j++) {
+                plateau[i][j] = new Hexagone(0, 0, 0, Hexagone.VIDE);
+            }
+        }
+
+        plateau[18][18] = new Hexagone(0, 0, 0, Hexagone.GRASS);
+        plateau[17][18] = new Hexagone(0, 0, 0, Hexagone.GRASS);
+        plateau[17][19] = new Hexagone(0, 0, 0, Hexagone.GRASS);
+    }
+
     // check si la condition de victoire du nb de pièces est bonne
     public boolean fini1(int joueur){
         int nb_pion_vite_J1 = 0;
