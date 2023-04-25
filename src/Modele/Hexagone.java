@@ -6,7 +6,7 @@ public class Hexagone {
     private int typeTion;
     int numero ;
 
-    public Hexagone(int hauteur, int terrain,int n) {
+    public Hexagone(int hauteur, int terrain, int n) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.typeTion = 0;
