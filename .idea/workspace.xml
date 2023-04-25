@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Ajout Packages et Structures">
+    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Ajout classe Tuile">
+      <change afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Tuile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Tuile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +45,8 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
@@ -56,7 +58,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682427307594</updated>
-      <workItem from="1682427309245" duration="1490000" />
+      <workItem from="1682427309245" duration="4743000" />
     </task>
     <task id="LOCAL-00001" summary="Push Pull Legs">
       <created>1682427336805</created>
@@ -72,7 +74,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682427579997</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Ajout Menu">
+      <created>1682429884758</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682429884758</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Ajout classe Tuile">
+      <created>1682437535267</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682437535267</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,6 +108,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Push Pull Legs" />
     <MESSAGE value="Ajout Packages et Structures" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout Packages et Structures" />
+    <MESSAGE value="Ajout Menu" />
+    <MESSAGE value="Ajout classe Tuile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout classe Tuile" />
   </component>
 </project>
