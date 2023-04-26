@@ -12,9 +12,12 @@ public class Hexagone {
     public static final byte FORET = 4;
 
     public static final byte MAISON = 10;
-    public static final byte TEMPLE = 10;
-    public static final byte TOUR = 10;
     private byte Hauteur;
+    public static final byte TEMPLE_FORET = 11;
+    public static final byte TEMPLE_SABLE = 12;
+    public static final byte TEMPLE_PIERRE = 13;
+    public static final byte TEMPLE_PRAIRIE = 14;
+    public static final byte TOUR = 15;
 
     private int IDvillage ;
     private byte terrain;

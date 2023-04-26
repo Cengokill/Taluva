@@ -208,18 +208,21 @@ public class Plateau {
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
 
-        } else if (coup.type == Coup.BATIMENT){
+        } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
-            byte batiment = 1;
+            byte batiment = 0;
             if (hauteur == 1) {
                 batiment = Hexagone.MAISON;
             } else if (hauteur == 2) {
-                batiment = Hexagone.MAISON;
+                System.out.println("hauteur = 2");
+                if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
+                if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
+                if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
+                if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
             } else if (hauteur == 3) {
-                batiment = Hexagone.MAISON;
+                batiment = Hexagone.TOUR;
             }
-
-            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone((byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment);
         }
     }
 
@@ -234,12 +237,19 @@ public class Plateau {
     public boolean peutPlacerMaison(int i,int j){
         return plateau[i][j].getTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE;
     }
-    public void placeMaison(int i,int j){
-        Coup coup = new Coup(i,j);
+    public void placeMaison(int i,int j, byte type){
+        Coup coup = new Coup(i,j,type);
         historique.ajoute(coup);
         joueCoup(coup);
     }
 
+    public int getHauteurTuile(int i,int j){
+        return plateau[i][j].getHauteur();
+    }
+
+    public Hexagone getTuile(int i, int j){
+        return plateau[i][j];
+    }
     public void joueHexagone(int x, int y){}
 
     public void resetHistorique(){

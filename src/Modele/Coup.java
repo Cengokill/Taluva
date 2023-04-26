@@ -29,8 +29,8 @@ public class Coup {
         this.tile2_y = tile2_y;
         this.terrain2 = terrain2;
     }
-    public Coup(int batiment_x, int batiment_y) {// placement BATIMENT
-        this.type = BATIMENT;
+    public Coup(int batiment_x, int batiment_y, byte typeBatiment) {// placement BATIMENT
+        this.type = typeBatiment;
 
         this.batiment_x = batiment_x;
         this.batiment_y = batiment_y;
