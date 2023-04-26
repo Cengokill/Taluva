@@ -16,6 +16,7 @@ public class Hexagone {
     public static final byte TOUR = 10;
     private int Hauteur;
 
+    private int IDvillage ;
     private byte terrain;
     private byte batiment;
     int numero ;
@@ -24,6 +25,7 @@ public class Hexagone {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.numero = ((int)(Math.random() * 2) + 1);
+        this.IDvillage = 0 ;
     }
     public Hexagone(int hauteur, byte terrain, byte batiment) {
         this.Hauteur = hauteur;
@@ -45,7 +47,7 @@ public class Hexagone {
         else return false;
     }
 
-    public int getBatiment() {
-        return batiment;
-    }
+    public int getBatiment() {return batiment;}
+
+    public int getIDvillage (){return IDvillage;}
 }
