@@ -62,6 +62,7 @@ public class TEngine extends JFrame {
         });
     }
 
+
     class HexagonalTiles extends JPanel {
         BufferedImage waterTile;
         BufferedImage hoverTile;
@@ -147,7 +148,7 @@ public class TEngine extends JFrame {
         private void displayHexagonMap(Graphics g) {
             Hexagone[][] map = plateau.getPlateau();
             int tileWidth = voidTile.getWidth();
-            int tileHeight = voidTile.getHeight();
+            int tileHeight = voidTile.getWidth();
             int horizontalOffset = tileWidth;
             int verticalOffset = (int) (tileHeight * 0.75);
 
@@ -157,7 +158,7 @@ public class TEngine extends JFrame {
                     int y = i * verticalOffset;
                     int tileId = map[i][j].getTypeTion();
                     int heightoffset = map[i][j].getHauteur();
-                    heightoffset *= 10;
+                    heightoffset *= 30;
 
                     //System.out.println(tileId);
                     BufferedImage tile = getTileImageFromId(tileId);
@@ -210,9 +211,9 @@ public class TEngine extends JFrame {
                 int heightoffset1 = triplet[0][1];
                 int heightoffset2 = triplet[1][1];
                 int heightoffset3 = triplet[2][1];
-                heightoffset1 *= 10;
-                heightoffset2 *= 10;
-                heightoffset3 *= 10;
+                heightoffset1 *= 30;
+                heightoffset2 *= 30;
+                heightoffset3 *= 30;
 
                 if (scrollValue == 1) {
                     g.drawImage(tile2, x - tileWidth/2, y - verticalOffset -  heightoffset2, null);

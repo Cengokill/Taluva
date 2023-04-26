@@ -58,18 +58,17 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                 int dy = e.getY() - tengine.hexTiles.lastMousePosition.y;
 
                 // Ajouter les bornes pour les déplacements de la caméra
-                int minX = -1500 - ((int)(10*tengine.hexTiles.zoomFactor) - 6)*(tengine.hexTiles.getWidth()/4);
-                int maxX = 1000;
-                int minY = -1500 - ((int)(10*tengine.hexTiles.zoomFactor) - 6)*(tengine.hexTiles.getHeight()/3);
-                int maxY = 1000;
+                int minX = -2500 - ((int)(10*tengine.hexTiles.zoomFactor) - 2)*(tengine.hexTiles.getWidth());
+                int maxX = 10000;
+                int minY = -2000 - ((int)(10*tengine.hexTiles.zoomFactor) - 2)*(tengine.hexTiles.getHeight());
+                int maxY = 10000;
 
-                    /*
-                    System.out.println(height);
-                    System.out.println(width);
+
+
                     System.out.println(minY);
-                    System.out.println(cameraOffset.y);
-                    System.out.println(zoomFactor);
-                    */
+                    System.out.println(tengine.hexTiles.cameraOffset.y);
+                    System.out.println(tengine.hexTiles.zoomFactor);
+
                 tengine.hexTiles.cameraOffset.x = Math.min(Math.max(tengine.hexTiles.cameraOffset.x + dx, minX), maxX);
                 tengine.hexTiles.cameraOffset.y = Math.min(Math.max(tengine.hexTiles.cameraOffset.y + dy, minY), maxY);
 
@@ -112,7 +111,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                 tengine.hexTiles.zoomFactor -= wheelRotation * tengine.hexTiles.zoomIncrement;
 
                 // Limiter le zoom minimum et maximum
-                double minZoom = 0.6;
+                double minZoom = 0.2;
                 double maxZoom = 2.0;
                 tengine.hexTiles.zoomFactor = Math.max(Math.min(tengine.hexTiles.zoomFactor, maxZoom), minZoom);
 
