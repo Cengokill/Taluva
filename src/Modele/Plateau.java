@@ -67,21 +67,6 @@ public class Plateau {
 
         int hauteur = plateau[volcan_x][volcan_y].getHauteur();
 
-
-        System.out.println("====================");
-        System.out.println(hauteur);
-        System.out.println("====================");
-        System.out.println(volcan_x);
-        System.out.println(volcan_y);
-        System.out.println("====================");
-        System.out.println(tile1_x);
-        System.out.println(tile1_y);
-        System.out.println("====================");
-        System.out.println(tile2_x);
-        System.out.println(tile2_y);
-        System.out.println("====================");
-        System.out.println(plateau[volcan_x][volcan_y].getTerrain());
-
         // Hauteur max
         if (hauteur == 3) {
             return false;
@@ -108,27 +93,22 @@ public class Plateau {
         return true;
     }
 
+    public void joueCoup(Coup coup) {
+        if (coup.type == Coup.TUILE) {
+            int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
+
+            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur + 1, plateau[coup.volcan_x][coup.volcan_y].getTerrain(), 0);
+            plateau[coup.tile1_x][coup.tile1_y] = new Hexagone(hauteur + 1, coup.terrain1, 0);
+            plateau[coup.tile2_x][coup.tile2_y] = new Hexagone(hauteur + 1, coup.terrain2, 0);
+        }
+    }
+
     // Nécessite un appel à peutPlacerEtage
     public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int terrain1, int tile2_x, int tile2_y, int terrain2) {
-        System.out.println("???");
-        int hauteur = plateau[volcan_x][volcan_y].getHauteur();
 
-        System.out.println("====================");
-        System.out.println(hauteur);
-        System.out.println("====================");
-        System.out.println(volcan_x);
-        System.out.println(volcan_y);
-        System.out.println("====================");
-        System.out.println(tile1_x);
-        System.out.println(tile1_y);
-        System.out.println("====================");
-        System.out.println(tile2_x);
-        System.out.println(tile2_y);
-        System.out.println("====================");
-
-        plateau[volcan_x][volcan_y] = new Hexagone(hauteur + 1, plateau[volcan_x][volcan_y].getTerrain(), 0);
-        plateau[tile1_x][tile1_y] = new Hexagone(hauteur + 1, terrain1, 0);
-        plateau[tile2_x][tile2_y] = new Hexagone(hauteur + 1, terrain2, 0);
+        Coup coup = new Coup(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+        historique.ajoute(coup);
+        joueCoup(coup);
     }
 
     public void joueHexagone(int x, int y){}
