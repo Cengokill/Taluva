@@ -33,8 +33,40 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         tengine.hexTiles.addMouseListener(tengine.hexTiles.handler);
         tengine.hexTiles.addMouseMotionListener(tengine.hexTiles.handler);
         tengine.hexTiles.addMouseWheelListener(tengine.hexTiles.handler);
+
+        tengine.hexTiles.keyboardlisten = new KeyboardListener();
+        tengine.hexTiles.setFocusable(true);
+        tengine.hexTiles.addKeyListener(tengine.hexTiles.keyboardlisten);
     }
 
+     class KeyboardListener implements KeyListener {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            // Code à exécuter lorsque la touche est enfoncée
+            int keyCode = e.getKeyCode();
+            if (keyCode == KeyEvent.VK_E) {
+                if(tengine.poseTitle)  tengine.poseTitle = false;
+                else tengine.poseTitle = true;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            // Code à exécuter lorsque la touche est relâchée
+            int keyCode = e.getKeyCode();
+
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // Code à exécuter lorsque la touche est tapée (après avoir été enfoncée et relâchée)
+            int keyCode = e.getKeyCode();
+            if (keyCode == KeyEvent.VK_E) {
+
+            }
+        }
+    }
 
     ////////////////////////////
     // Mouse, drag and things //
@@ -42,7 +74,6 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
     class MouseHandler extends MouseAdapter implements MouseWheelListener {
         @Override
         public void mouseClicked(MouseEvent e) {
-
             tengine.hexTiles.addToCursor(e);
         }
 

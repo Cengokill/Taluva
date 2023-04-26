@@ -93,6 +93,21 @@ public class Plateau {
         }
 
         if (plateau[volcan_x][volcan_y].getTerrain() == Hexagone.VIDE && plateau[tile1_x][tile1_y].getTerrain() == Hexagone.VIDE && plateau[tile2_x][tile2_y].getTerrain() == Hexagone.VIDE) {
+            if (volcan_y % 2 == 1) {
+                volcan_x = volcan_x + 1;
+            } else {
+                volcan_x = volcan_x;
+            }
+            if (tile1_y % 2 == 1) {
+                tile1_x = tile1_x + 1;
+            } else {
+                tile1_x = tile1_x;
+            }
+            if (tile2_y % 2 == 1) {
+                tile2_x = tile2_x + 1;
+            } else {
+                tile2_x = tile2_x;
+            }
             if (!(
                     // Volcan proche d'une ile
                     plateau[volcan_x + 1][volcan_y].getTerrain() != Hexagone.VIDE ||
@@ -201,7 +216,7 @@ public class Plateau {
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone(hauteur + 1, coup.terrain2);
 
         } else if (coup.type == Coup.BATIMENT){
-
+            hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
             byte batiment = 1;
             if (hauteur == 1) {
                 batiment = Hexagone.MAISON;
@@ -210,20 +225,24 @@ public class Plateau {
             } else if (hauteur == 3) {
                 batiment = Hexagone.MAISON;
             }
-            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur, plateau[coup.volcan_x][coup.volcan_y].getTerrain(), batiment);
+
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment);
         }
     }
 
-    public void ajouterBatiment(int x, int y) {
-        Coup coup = new Coup(x, y);
+
+    // Nécessite un appel à peutPlacerEtage
+    public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
+        Coup coup = new Coup(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         historique.ajoute(coup);
         joueCoup(coup);
     }
 
-    // Nécessite un appel à peutPlacerEtage
-    public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
-
-        Coup coup = new Coup(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+    public boolean peutPlacerMaison(int i,int j){
+        return plateau[i][j].getTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE;
+    }
+    public void placeMaison(int i,int j){
+        Coup coup = new Coup(i,j);
         historique.ajoute(coup);
         joueCoup(coup);
     }

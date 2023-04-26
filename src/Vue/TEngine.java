@@ -20,6 +20,8 @@ public class TEngine extends JFrame {
     TEngineListener listener;
     public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
+
+    Boolean poseTitle;
     Jeu jeu;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
@@ -50,13 +52,14 @@ public class TEngine extends JFrame {
         getContentPane().setBackground(new Color(64, 164, 223));
 
         listener = new TEngineListener(this);
+        poseTitle = true;
     }
 
 
     public class HexagonalTiles extends JPanel {
         BufferedImage maisonTile;
         BufferedImage waterTile;
-        BufferedImage hoverTile;
+        BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
@@ -79,6 +82,7 @@ public class TEngine extends JFrame {
         byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
 
         TEngineListener.MouseHandler handler;
+        TEngineListener.KeyboardListener keyboardlisten;
 
         ControleurMediateur controleur;
 
@@ -107,7 +111,16 @@ public class TEngine extends JFrame {
             montagneTile_1 = lisImageBuf("Montagne_1_Tile");
             montagneTile_2 = lisImageBuf("Montagne_2_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
+            wrongTile1 = lisImageBuf("Wrong_height_1");
+            wrongTile2 = lisImageBuf("Wrong_height_2");
+            wrongTile3 = lisImageBuf("Wrong_height_3");
+
+            wrongTile1 = getReducedOpacityImage(wrongTile1, 0.3f);
+            wrongTile2 = getReducedOpacityImage(wrongTile2, 0.3f);
+            wrongTile3 = getReducedOpacityImage(wrongTile3, 0.3f);
+
             boutonAnnuler = lisImage("annuler");
+            maisonTile = lisImageBuf("maison");
 
             setOpaque(false);
 
@@ -197,7 +210,10 @@ public class TEngine extends JFrame {
             hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
 
             displayHexagonMap(g);
-            displayHoverTile(g);
+
+            if(poseTitle) displayHoverTile(g);
+            else displayHoverMaison(g);
+
             afficherBoutonAnnuler(g);
         }
 
@@ -257,9 +273,19 @@ public class TEngine extends JFrame {
                         g.drawImage(tile, x , y - heightoffset, null);
                     }
 
-                    System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
+                    //System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
                     if (map[hoveredTile_x][hoveredTile_y].getHauteur() != map[i][j].getHauteur() && map[hoveredTile_x][hoveredTile_y].getTerrain() != Hexagone.VIDE) {
                         g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+
+                        if (map[i][j].getHauteur() == 1) {
+                            g.drawImage(wrongTile1, x , y - heightoffset + 5, null);
+                        }
+                        if (map[i][j].getHauteur() == 2) {
+                            g.drawImage(wrongTile2, x , y - heightoffset + 5, null);
+                        }
+                        if (map[i][j].getHauteur() == 3) {
+                            g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
+                        }
                     }
                 }
             }
@@ -427,6 +453,35 @@ public class TEngine extends JFrame {
             }
         }
 
+
+        private void displayHoverMaison(Graphics g) {
+            if (hoverTile != null) {
+                int tileWidth = voidTile.getWidth();
+                int tileHeight = voidTile.getWidth(); // Important !!
+                int horizontalOffset = tileWidth;
+                int verticalOffset = (int) (tileHeight * 0.75);
+
+                Point hoverTilePositionAdjusted = new Point((int) ((hoverTilePosition.x - cameraOffset.x) / zoomFactor),
+                        (int) ((hoverTilePosition.y - cameraOffset.y) / zoomFactor));
+
+                // Convertir les coordonnées du système de pixels en coordonnées du système de grille
+                int i = (int) (hoverTilePositionAdjusted.y / verticalOffset);
+                int j = (int) ((hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
+
+                // Convertir les coordonnées du système de grille en coordonnées du système de pixels
+                int x = j * horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
+                int y = i * verticalOffset;
+
+                float opacity = 0.5f; // Réduire l'opacité de moitié
+                int heightoffset1 = triplet[0][1];
+                heightoffset1 *= 30;
+
+                g.drawImage(maisonTile, x , y - heightoffset1, null);
+
+            }
+        }
+
+
         private BufferedImage getReducedOpacityImage(BufferedImage originalImage, float opacity) {
             BufferedImage reducedOpacityImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = reducedOpacityImage.createGraphics();
@@ -434,6 +489,61 @@ public class TEngine extends JFrame {
             g2d.drawImage(originalImage, 0, 0, null);
             g2d.dispose();
             return reducedOpacityImage;
+        }
+
+        public void placerTuiles(int i, int j) {
+            int x;
+            if (i % 2 == 1) {
+                x = j - 1;
+            } else {
+                x = j;
+            }
+
+            if (scrollValue == 1) {
+                if (controleur.peutPlacerTuile(i, j, i - 1, x, i - 1, x + 1)) {
+                    controleur.placeEtage(i, j, i - 1, x, triplet[1][0], i - 1, x + 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 2){
+                if (controleur.peutPlacerTuile(i, j, i - 1, x + 1, i, j + 1)) {
+                    controleur.placeEtage(i, j, i - 1, x + 1, triplet[1][0], i, j + 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 3){
+                if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x + 1)) {
+                    controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, x + 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 4){
+                if (controleur.peutPlacerTuile(i, j, i + 1, x + 1, i + 1, x)) {
+                    controleur.placeEtage(i, j, i + 1, x + 1, triplet[1][0], i + 1, x, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 5){
+                if (controleur.peutPlacerTuile(i, j, i + 1, x, i, j - 1)) {
+                    controleur.placeEtage(i, j, i + 1, x, triplet[1][0], i, j - 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 6){
+                if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x)) {
+                    controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, x, triplet[2][0]);
+                }
+            }
+
+            miseAJour();
+        }
+
+        public void placerMaison(int i, int j){
+            int x = hoveredTile_x;
+            if (i % 2 == 1) {
+                x = j - 1;
+            } else {
+                x = j;
+            }
+            j = hoveredTile_y;
+            if (controleur.peutPlacerMaison(i, j)) {
+                controleur.placeMaison(i, j);
+            }
         }
 
 
@@ -453,45 +563,8 @@ public class TEngine extends JFrame {
 
                 Hexagone[][] map = jeu.getPlateau().getPlateau();
 
-                int x = hoveredTile_x;
-                if (i % 2 == 1) {
-                    x = j - 1;
-                } else {
-                    x = j;
-                }
-                j = hoveredTile_y;
-
-
-                if (scrollValue == 1) {
-                    if (controleur.peutPlacerTuile(i, j, i - 1, x, i - 1, x + 1)) {
-                        controleur.placeEtage(i, j, i - 1, x, triplet[1][0], i - 1, x + 1, triplet[2][0]);
-                    }
-                }
-                else if (scrollValue == 2){
-                    if (controleur.peutPlacerTuile(i, j, i - 1, x + 1, i, j + 1)) {
-                        controleur.placeEtage(i, j, i - 1, x + 1, triplet[1][0], i, j + 1, triplet[2][0]);
-                    }
-                }
-                else if (scrollValue == 3){
-                    if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x + 1)) {
-                        controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, x + 1, triplet[2][0]);
-                    }
-                }
-                else if (scrollValue == 4){
-                    if (controleur.peutPlacerTuile(i, j, i + 1, x + 1, i + 1, x)) {
-                        controleur.placeEtage(i, j, i + 1, x + 1, triplet[1][0], i + 1, x, triplet[2][0]);
-                    }
-                }
-                else if (scrollValue == 5){
-                    if (controleur.peutPlacerTuile(i, j, i + 1, x, i, j - 1)) {
-                        controleur.placeEtage(i, j, i + 1, x, triplet[1][0], i, j - 1, triplet[2][0]);
-                    }
-                }
-                else if (scrollValue == 6){
-                    if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x)) {
-                        controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, x, triplet[2][0]);
-                    }
-                }
+                if(poseTitle) placerTuiles(i,j);
+                else placerMaison(i,j);
 
                 miseAJour();
             }
