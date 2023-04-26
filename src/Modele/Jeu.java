@@ -5,6 +5,8 @@ import Controleur.ControleurMediateur;
 import Patterns.Observable;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Jeu extends Observable {
     Plateau plateau;
@@ -17,7 +19,7 @@ public class Jeu extends Observable {
 
     byte[] tuile_a_poser = new byte[2];
 
-    List <Tuile> pioche;
+    LinkedList<Tuile> pioche;
     private static int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
@@ -27,10 +29,9 @@ public class Jeu extends Observable {
 
     public void lancePartie(){
         initPioche();
-
         plateau = new Plateau();
-        tuile_a_poser[0] = Hexagone.GRASS;
-        tuile_a_poser[1] = Hexagone.WATER;
+
+        pioche();
     }
 
     public void initPioche(){//24 tuiles
@@ -42,6 +43,16 @@ public class Jeu extends Observable {
 
     public byte[] getTuilesAPoser() {
         return tuile_a_poser;
+    }
+
+    public void joueCoup(Coup coup) {
+        plateau.joueCoup(coup);
+    }
+
+    public void pioche() {
+        Tuile tile_courante = pioche.removeFirst();
+        tuile_a_poser[0] = tile_courante.terrain1;
+        tuile_a_poser[1] = tile_courante.terrain2;
     }
 
     public boolean joueJoueur(Coup cp) {

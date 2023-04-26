@@ -100,6 +100,8 @@ public class Plateau {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur + 1, plateau[coup.volcan_x][coup.volcan_y].getTerrain(), 0);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone(hauteur + 1, coup.terrain1, 0);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone(hauteur + 1, coup.terrain2, 0);
+
+
         }
     }
 
