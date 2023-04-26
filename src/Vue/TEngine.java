@@ -265,7 +265,7 @@ public class TEngine extends JFrame {
                         g.drawImage(tile, x , y - heightoffset, null);
                     }
 
-                    System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
+                    //System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
                     if (map[hoveredTile_x][hoveredTile_y].getHauteur() != map[i][j].getHauteur() && map[hoveredTile_x][hoveredTile_y].getTerrain() != Hexagone.VIDE) {
                         g.drawImage(voidTile_transparent, x , y - heightoffset, null);
 

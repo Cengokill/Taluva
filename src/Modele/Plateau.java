@@ -73,25 +73,49 @@ public class Plateau {
 
         // Hauteur max
         if (hauteur == 3) {
+            System.out.println("a");
             return false;
         }
         // Vérifie si on place un volcan sur un volcan
         if (plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VOLCAN && plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VIDE) {
+            System.out.println("b");
+
             return false;
         }
 
         // Vérifie la hauteur de toutes les cases
         if (plateau[volcan_x][volcan_y].getHauteur() != hauteur) {
+            System.out.println("c");
+
             return false;
         }
         if (plateau[tile1_x][tile1_y].getHauteur() != hauteur) {
+            System.out.println("d");
+
             return false;
         }
         if (plateau[tile2_x][tile2_y].getHauteur() != hauteur) {
+            System.out.println("e");
+
             return false;
         }
 
         if (plateau[volcan_x][volcan_y].getTerrain() == Hexagone.VIDE && plateau[tile1_x][tile1_y].getTerrain() == Hexagone.VIDE && plateau[tile2_x][tile2_y].getTerrain() == Hexagone.VIDE) {
+            if (volcan_y % 2 == 1) {
+                volcan_x = volcan_x + 1;
+            } else {
+                volcan_x = volcan_x;
+            }
+            if (tile1_y % 2 == 1) {
+                tile1_x = tile1_x + 1;
+            } else {
+                tile1_x = tile1_x;
+            }
+            if (tile2_y % 2 == 1) {
+                tile2_x = tile2_x + 1;
+            } else {
+                tile2_x = tile2_x;
+            }
             if (!(
                     // Volcan proche d'une ile
                     plateau[volcan_x + 1][volcan_y].getTerrain() != Hexagone.VIDE ||
@@ -123,6 +147,7 @@ public class Plateau {
                     plateau[tile2_x - 1][tile2_y + 1].getTerrain() != Hexagone.VIDE ||
                     plateau[tile2_x - 1][tile2_y - 1].getTerrain() != Hexagone.VIDE
             )) {
+                System.out.println("f");
                 return false;
             }
         }
