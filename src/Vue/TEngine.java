@@ -56,7 +56,7 @@ public class TEngine extends JFrame {
     public class HexagonalTiles extends JPanel {
         BufferedImage maisonTile;
         BufferedImage waterTile;
-        BufferedImage hoverTile;
+        BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
@@ -107,6 +107,14 @@ public class TEngine extends JFrame {
             montagneTile_1 = lisImageBuf("Montagne_1_Tile");
             montagneTile_2 = lisImageBuf("Montagne_2_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
+            wrongTile1 = lisImageBuf("Wrong_height_1");
+            wrongTile2 = lisImageBuf("Wrong_height_2");
+            wrongTile3 = lisImageBuf("Wrong_height_3");
+
+            wrongTile1 = getReducedOpacityImage(wrongTile1, 0.2f);
+            wrongTile2 = getReducedOpacityImage(wrongTile2, 0.2f);
+            wrongTile3 = getReducedOpacityImage(wrongTile3, 0.2f);
+
             boutonAnnuler = lisImage("annuler");
 
             setOpaque(false);
@@ -260,6 +268,16 @@ public class TEngine extends JFrame {
                     System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
                     if (map[hoveredTile_x][hoveredTile_y].getHauteur() != map[i][j].getHauteur() && map[hoveredTile_x][hoveredTile_y].getTerrain() != Hexagone.VIDE) {
                         g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+
+                        if (map[i][j].getHauteur() == 1) {
+                            g.drawImage(wrongTile1, x , y - heightoffset + 10, null);
+                        }
+                        if (map[i][j].getHauteur() == 2) {
+                            g.drawImage(wrongTile2, x , y - heightoffset + 10, null);
+                        }
+                        if (map[i][j].getHauteur() == 3) {
+                            g.drawImage(wrongTile3, x , y - heightoffset + 10, null);
+                        }
                     }
                 }
             }
@@ -459,6 +477,7 @@ public class TEngine extends JFrame {
                 } else {
                     x = j;
                 }
+
                 j = hoveredTile_y;
 
 
