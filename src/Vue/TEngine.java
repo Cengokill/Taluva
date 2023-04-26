@@ -133,7 +133,13 @@ public class TEngine extends JFrame {
         public void afficherBoutonAnnuler(Graphics g){
             posY_bouton_annuler = (int) (hauteur*.15);
             posX_bouton_annuler = (int) (largeur*.80);
-            tracer((Graphics2D) g, boutonAnnuler, posX_bouton_annuler- cameraOffset.x, posY_bouton_annuler- cameraOffset.y, largeur_bouton, hauteur_bouton);
+
+            int x = (int)(posX_bouton_annuler/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
+            int y = (int)(posY_bouton_annuler/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
+            int largeur = (int)(largeur_bouton/zoomFactor);
+            int longueur = (int)(hauteur_bouton/zoomFactor);
+
+            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, longueur);
         }
 
         private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
