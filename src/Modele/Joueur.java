@@ -9,7 +9,7 @@ public class Joueur {
     private int nbTemples;
 
     public Joueur(byte type, String prenom){
-        this.type = type;
+        this.type = type;//0 pour humain, 1 pour IA
         this.prenom = prenom;
         this.nbTours = 0;
         this.nbHuttes = 0;
