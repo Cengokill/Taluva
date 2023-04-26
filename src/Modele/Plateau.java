@@ -22,9 +22,9 @@ public class Plateau {
             }
         }
 
-        plateau[18][18] = new Hexagone(0, 0, 0, Hexagone.GRASS);
-        plateau[17][18] = new Hexagone(0, 0, 0, Hexagone.GRASS);
-        plateau[17][19] = new Hexagone(0, 0, 0, Hexagone.GRASS);
+        plateau[18][18] = new Hexagone(1, 0, 0, Hexagone.GRASS);
+        plateau[17][18] = new Hexagone(2, 0, 0, Hexagone.GRASS);
+        plateau[17][19] = new Hexagone(3, 0, 0, Hexagone.GRASS);
     }
 
     public Hexagone[][] getPlateau() {

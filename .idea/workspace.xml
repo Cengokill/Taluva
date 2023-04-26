@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Ajout jeu">
-      <change afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Vue/CollecteurEvenements.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ressources/Grass_Tile.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Grass_Tile.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ressources/Water_Tile.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Water_Tile.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/TEngineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngineListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
