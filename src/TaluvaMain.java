@@ -11,6 +11,5 @@ public class TaluvaMain {
 
         TEngine fenetre = new TEngine(jeu, controler);
         fenetre.setVisible(true);
-        System.out.println("oui ?");
     }
 }

@@ -60,15 +60,15 @@ public class TEngine extends JFrame {
 
 
     public class HexagonalTiles extends JPanel {
+        BufferedImage maisonTile;
         BufferedImage waterTile;
         BufferedImage hoverTile;
         BufferedImage voidTile;
-        BufferedImage grassTile;
-        BufferedImage volcanTile;
-        BufferedImage maisonTile;
-        BufferedImage foretTile;
-        BufferedImage desertTile;
-        BufferedImage montagneTile;
+        BufferedImage grassTile_0, grassTile_1, grassTile_2;
+        BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
+        BufferedImage foretTile_0, foretTile_1, foretTile_2;
+        BufferedImage desertTile_0, desertTile_1, desertTile_2;
+        BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
         Image boutonAnnuler;
         int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
         TEngine tengine;
@@ -93,14 +93,24 @@ public class TEngine extends JFrame {
             this.controleur = controleur;
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
-            grassTile = lisImageBuf("Grass_Tile");
+            grassTile_0 = lisImageBuf("Grass_0_Tile");
+            grassTile_1 = lisImageBuf("Grass_1_Tile");
+            grassTile_2 = lisImageBuf("Grass_2_Tile");
+            volcanTile_0 = lisImageBuf("Volcan_0_Tile");
+            volcanTile_1 = lisImageBuf("Volcan_1_Tile");
+            volcanTile_2 = lisImageBuf("Volcan_2_Tile");
+            foretTile_0 = lisImageBuf("Foret_0_Tile");
+            foretTile_1 = lisImageBuf("Foret_1_Tile");
+            foretTile_2 = lisImageBuf("Foret_2_Tile");
+            desertTile_0 = lisImageBuf("Desert_0_Tile");
+            desertTile_1 = lisImageBuf("Desert_1_Tile");
+            desertTile_2 = lisImageBuf("Desert_2_Tile");
+            montagneTile_0 = lisImageBuf("Montagne_0_Tile");
+            montagneTile_1 = lisImageBuf("Montagne_1_Tile");
+            montagneTile_2 = lisImageBuf("Montagne_2_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
-            volcanTile = lisImageBuf("Volcan2_Tile");
-            montagneTile = lisImageBuf("Montagne2_Tile");
-            foretTile = lisImageBuf("Foret3_Tile");
-            desertTile = lisImageBuf("Desert_Tile");
-            maisonTile = lisImageBuf("maison");
-            boutonAnnuler = lisImage("annuler");
+            boutonAnnuler = lisImage("BoutonAnnuler");
+
             setOpaque(false);
 
             cameraOffset.x = -2100;
@@ -202,7 +212,7 @@ public class TEngine extends JFrame {
                     int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                     int y = i * verticalOffset;
                     int tileId = map[i][j];
-                    BufferedImage tile = getTileImageFromId(tileId);
+                    BufferedImage tile = getTileImageFromId(tileId, 0);
                     g.drawImage(tile, x , y, null);
                 }
             }
@@ -230,11 +240,11 @@ public class TEngine extends JFrame {
 
                     //System.out.println(tileId);
 
-                    BufferedImage tile = getTileImageFromId(tileId);
+                    BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                     g.drawImage(tile, x , y - heightoffset, null);
 
                     if (map[i][j].getBatiment() == Hexagone.MAISON) {
-                        tile = getTileImageFromId(Hexagone.MAISON);
+                        tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
                         g.drawImage(tile, x , y - heightoffset, null);
 
                     }
@@ -242,30 +252,78 @@ public class TEngine extends JFrame {
             }
         }
 
-        private BufferedImage getTileImageFromId(int id) {
+        private BufferedImage getTileImageFromId(int id, int numero_texture) {
             if (id == Hexagone.VIDE) {
                 return voidTile;
             }
             if (id == Hexagone.GRASS) {
-                return grassTile;
+                if (numero_texture == 0) {
+                    return grassTile_0;
+                }
+                if (numero_texture == 1) {
+                    return grassTile_1;
+                }
+                if (numero_texture == 2) {
+                    return grassTile_2;
+                }
             }
             if (id == Hexagone.VOLCAN) {
-                return volcanTile;
+                if (numero_texture == 0) {
+                    return volcanTile_0;
+                }
+                if (numero_texture == 1) {
+                    return volcanTile_1;
+                }
+                if (numero_texture == 2) {
+                    return volcanTile_2;
+                }
             }
             if (id == Hexagone.WATER) {
-                return waterTile;
+                if (numero_texture == 0) {
+                    return waterTile;
+                }
+                if (numero_texture == 1) {
+                    return waterTile;
+                }
+                if (numero_texture == 2) {
+                    return waterTile;
+                }
             }
             if (id == Hexagone.MAISON) {
                 return maisonTile;
             }
             if (id == Hexagone.DESERT) {
-                return desertTile;
+                if (numero_texture == 0) {
+                    return desertTile_0;
+                }
+                if (numero_texture == 1) {
+                    return desertTile_1;
+                }
+                if (numero_texture == 2) {
+                    return desertTile_2;
+                }
             }
             if (id == Hexagone.MONTAGNE) {
-                return montagneTile;
+                if (numero_texture == 0) {
+                    return montagneTile_0;
+                }
+                if (numero_texture == 1) {
+                    return montagneTile_1;
+                }
+                if (numero_texture == 2) {
+                    return montagneTile_2;
+                }
             }
             if (id == Hexagone.FORET) {
-                return foretTile;
+                if (numero_texture == 0) {
+                    return foretTile_0;
+                }
+                if (numero_texture == 1) {
+                    return foretTile_1;
+                }
+                if (numero_texture == 2) {
+                    return foretTile_2;
+                }
             }
             return null;
         }
@@ -289,9 +347,9 @@ public class TEngine extends JFrame {
                 int y = i * verticalOffset;
 
                 float opacity = 0.5f; // Réduire l'opacité de moitié
-                BufferedImage tile1 = getTileImageFromId(triplet[0][0]);
-                BufferedImage tile2 = getTileImageFromId(triplet[1][0]);
-                BufferedImage tile3 = getTileImageFromId(triplet[2][0]);
+                BufferedImage tile1 = getTileImageFromId(triplet[0][0],0);
+                BufferedImage tile2 = getTileImageFromId(triplet[1][0],0);
+                BufferedImage tile3 = getTileImageFromId(triplet[2][0],0);
                 tile1 = getReducedOpacityImage(tile1, opacity);
                 tile2 = getReducedOpacityImage(tile2, opacity);
                 tile3 = getReducedOpacityImage(tile3, opacity);

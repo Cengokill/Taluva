@@ -68,9 +68,9 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
 
 
 
-                    System.out.println(minY);
-                    System.out.println(tengine.hexTiles.cameraOffset.y);
-                    System.out.println(tengine.hexTiles.zoomFactor);
+                    //System.out.println(minY);
+                    //System.out.println(tengine.hexTiles.cameraOffset.y);
+                    //System.out.println(tengine.hexTiles.zoomFactor);
 
                 tengine.hexTiles.cameraOffset.x = Math.min(Math.max(tengine.hexTiles.cameraOffset.x + dx, minX), maxX);
                 tengine.hexTiles.cameraOffset.y = Math.min(Math.max(tengine.hexTiles.cameraOffset.y + dy, minY), maxY);
