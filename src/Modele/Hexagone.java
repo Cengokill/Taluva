@@ -7,6 +7,7 @@ public class Hexagone {
     public static final int MONTAGNE = 0;
     public static final int VOLCAN = 0;
     public static final int DESERT = 0;
+    public static final int WATER = 5;
     private int Hauteur;
 
     private int terrain;
