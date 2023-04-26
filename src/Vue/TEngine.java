@@ -492,13 +492,45 @@ public class TEngine extends JFrame {
         }
 
         public void placerTuiles(int i, int j) {
-            int x = hoveredTile_x;
+            int x;
             if (i % 2 == 1) {
                 x = j - 1;
             } else {
                 x = j;
             }
-            j = hoveredTile_y;
+
+            if (scrollValue == 1) {
+                if (controleur.peutPlacerTuile(i, j, i - 1, x, i - 1, x + 1)) {
+                    controleur.placeEtage(i, j, i - 1, x, triplet[1][0], i - 1, x + 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 2){
+                if (controleur.peutPlacerTuile(i, j, i - 1, x + 1, i, j + 1)) {
+                    controleur.placeEtage(i, j, i - 1, x + 1, triplet[1][0], i, j + 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 3){
+                if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x + 1)) {
+                    controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, x + 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 4){
+                if (controleur.peutPlacerTuile(i, j, i + 1, x + 1, i + 1, x)) {
+                    controleur.placeEtage(i, j, i + 1, x + 1, triplet[1][0], i + 1, x, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 5){
+                if (controleur.peutPlacerTuile(i, j, i + 1, x, i, j - 1)) {
+                    controleur.placeEtage(i, j, i + 1, x, triplet[1][0], i, j - 1, triplet[2][0]);
+                }
+            }
+            else if (scrollValue == 6){
+                if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x)) {
+                    controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, x, triplet[2][0]);
+                }
+            }
+
+            miseAJour();
         }
 
         public void placerMaison(int i, int j){
