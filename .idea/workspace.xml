@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="maison.png">
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Correction aléatoire + prints en moins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -342,35 +344,7 @@
       <option name="project" value="LOCAL" />
       <updated>1682529128105</updated>
     </task>
-    <task id="LOCAL-00035" summary="Extension du territoire contrôlée">
-      <created>1682530952239</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1682530952239</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Surbrillance au même étage">
-      <created>1682532807998</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1682532807998</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Surbrillance au même étage améliorer">
-      <created>1682532971928</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1682532971928</updated>
-    </task>
-    <task id="LOCAL-00038" summary="maison.png">
-      <created>1682533154442</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1682533154442</updated>
-    </task>
-    <option name="localTasksCounter" value="39" />
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,6 +362,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Vignette" />
+    <MESSAGE value="+ vignette" />
+    <MESSAGE value="void" />
+    <MESSAGE value="meilleurs vignettes" />
     <MESSAGE value="tentative merge" />
     <MESSAGE value="Annulation" />
     <MESSAGE value="Version bouton cassée" />
@@ -409,11 +387,7 @@
     <MESSAGE value="Ajout à Tuile numero = ((int)(Math.random() * 3) + 1);" />
     <MESSAGE value="Textures changées ++" />
     <MESSAGE value="Correction aléatoire + prints en moins" />
-    <MESSAGE value="Extension du territoire contrôlée" />
-    <MESSAGE value="Surbrillance au même étage" />
-    <MESSAGE value="Surbrillance au même étage améliorer" />
-    <MESSAGE value="maison.png" />
-    <option name="LAST_COMMIT_MESSAGE" value="maison.png" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correction aléatoire + prints en moins" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

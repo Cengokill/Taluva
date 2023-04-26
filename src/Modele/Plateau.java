@@ -1,5 +1,8 @@
 package Modele;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class Plateau {
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
@@ -90,9 +93,6 @@ public class Plateau {
 
         if (plateau[volcan_x][volcan_y].getTerrain() == Hexagone.VIDE && plateau[tile1_x][tile1_y].getTerrain() == Hexagone.VIDE && plateau[tile2_x][tile2_y].getTerrain() == Hexagone.VIDE) {
             if (!(
-
-
-
                     // Volcan proche d'une ile
                     plateau[volcan_x + 1][volcan_y].getTerrain() != Hexagone.VIDE ||
                     plateau[volcan_x - 1][volcan_y].getTerrain() != Hexagone.VIDE ||
@@ -128,6 +128,13 @@ public class Plateau {
         }
 
         return true;
+    }
+    public boolean peutPlacerVillage(int x ,int y){
+        if(plateau[x][y].getTerrain()!=Hexagone.VOLCAN ||plateau[x][y].getBatiment()==Hexagone.VIDE){
+            return true;
+        }
+        return false;
+
     }
 
     public void joueCoup(Coup coup) {
