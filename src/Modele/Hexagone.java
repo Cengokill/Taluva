@@ -23,13 +23,13 @@ public class Hexagone {
     public Hexagone(int hauteur, byte terrain) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
-        this.numero = ((int)(Math.random() * 3) + 1);
+        this.numero = ((int)(Math.random() * 2) + 1);
     }
     public Hexagone(int hauteur, byte terrain, byte batiment) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.batiment = batiment;
-        this.numero = ((int)(Math.random() * 3) + 1);
+        this.numero = ((int)(Math.random() * 2) + 1);
     }
 
 

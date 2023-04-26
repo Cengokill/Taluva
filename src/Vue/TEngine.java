@@ -109,7 +109,7 @@ public class TEngine extends JFrame {
             montagneTile_1 = lisImageBuf("Montagne_1_Tile");
             montagneTile_2 = lisImageBuf("Montagne_2_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
-            boutonAnnuler = lisImage("BoutonAnnuler");
+            boutonAnnuler = lisImage("annuler");
 
             setOpaque(false);
 
@@ -325,6 +325,7 @@ public class TEngine extends JFrame {
                     return foretTile_2;
                 }
             }
+            System.out.println("Nul bebou: " + id + " - " + numero_texture);
             return null;
         }
 
