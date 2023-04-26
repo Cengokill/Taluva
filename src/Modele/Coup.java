@@ -16,7 +16,7 @@ public class Coup {
     int batiment_x;
     int batiment_y;
 
-    public Coup(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
+    public Coup(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {// placement TUILE
         this.type = Coup.TUILE;
         this.volcan_x = volcan_x;
         this.volcan_y = volcan_y;
@@ -25,7 +25,7 @@ public class Coup {
         this.tile2_x = tile2_x;
         this.tile2_y = tile2_y;
     }
-    public Coup(int batiment_x, int batiment_y) {
+    public Coup(int batiment_x, int batiment_y) {// placement BATIMENT
         this.type = Coup.BATIMENT;
 
         this.batiment_x = batiment_x;
