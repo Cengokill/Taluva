@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Toggle niveaux avec ctrl">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Wrong_height_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Wrong_height_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Wrong_height_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Wrong_height_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Wrong_height_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Wrong_height_3.png" afterDir="false" />
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Mode plateau et mode numéro (A et Z)">
       <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vue/TEngineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngineListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +75,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682547557825</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Images">
+      <created>1682547642604</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1682547642604</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Mode plateau et mode numéro (A et Z)">
+      <created>1682547794104</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1682547794104</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -91,6 +100,8 @@
     <MESSAGE value="Multiples changes me souviens plus" />
     <MESSAGE value="Couleur et tout" />
     <MESSAGE value="Toggle niveaux avec ctrl" />
-    <option name="LAST_COMMIT_MESSAGE" value="Toggle niveaux avec ctrl" />
+    <MESSAGE value="Images" />
+    <MESSAGE value="Mode plateau et mode numéro (A et Z)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mode plateau et mode numéro (A et Z)" />
   </component>
 </project>

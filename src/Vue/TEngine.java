@@ -292,10 +292,14 @@ public class TEngine extends JFrame {
                     if (poseTile) {
                         if (mode_plateau) {
                             if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
-                                g.drawImage(voidTile_transparent, x , y - heightoffset + 5, null);
+                                if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
+                                    g.drawImage(voidTile_transparent, x , y - heightoffset + 5, null);
+                                }
                             }
                         } else {
-                            g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+                            if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
+                                g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+                            }
                         }
                     }
 
