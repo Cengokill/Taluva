@@ -12,10 +12,12 @@ public class Hexagone {
     public static final byte FORET = 4;
 
     public static final byte MAISON = 10;
+    public static final byte TEMPLE = 10;
+    public static final byte TOUR = 10;
     private int Hauteur;
 
     private byte terrain;
-    private int batiment;
+    private byte batiment;
     int numero ;
 
     public Hexagone(int hauteur, byte terrain, int n) {
@@ -23,7 +25,7 @@ public class Hexagone {
         this.terrain = terrain;
         this.numero = n;
     }
-    public Hexagone(int hauteur, byte terrain, int n, int batiment) {
+    public Hexagone(int hauteur, byte terrain, int n, byte batiment) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.batiment = batiment;

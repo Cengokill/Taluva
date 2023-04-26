@@ -94,15 +94,30 @@ public class Plateau {
     }
 
     public void joueCoup(Coup coup) {
+        int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
         if (coup.type == Coup.TUILE) {
-            int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
-
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur + 1, plateau[coup.volcan_x][coup.volcan_y].getTerrain(), 0);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone(hauteur + 1, coup.terrain1, 0);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone(hauteur + 1, coup.terrain2, 0);
 
+        } else if (coup.type == Coup.BATIMENT){
 
+            byte batiment = 1;
+            if (hauteur == 1) {
+                batiment = Hexagone.MAISON;
+            } else if (hauteur == 2) {
+                batiment = Hexagone.MAISON;
+            } else if (hauteur == 3) {
+                batiment = Hexagone.MAISON;
+            }
+            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur, plateau[coup.volcan_x][coup.volcan_y].getTerrain(), batiment);
         }
+    }
+
+    public void ajouterBatiment(int x, int y) {
+        Coup coup = new Coup(x, y);
+        historique.ajoute(coup);
+        joueCoup(coup);
     }
 
     // Nécessite un appel à peutPlacerEtage

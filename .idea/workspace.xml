@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Pioche fonctionnelle">
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Pioche fonctionnelle ++">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Hexagone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Tuile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Tuile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -284,7 +285,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682516809869</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Pioche fonctionnelle ++">
+      <created>1682517043627</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1682517043627</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -302,7 +310,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Push Pull Legs" />
     <MESSAGE value="Ajout Packages et Structures" />
     <MESSAGE value="Correctifs en soutif" />
     <MESSAGE value="textures" />
@@ -327,7 +334,8 @@
     <MESSAGE value="Tuiles a afficher updates" />
     <MESSAGE value="Pioche sans Tuile" />
     <MESSAGE value="Pioche fonctionnelle" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pioche fonctionnelle" />
+    <MESSAGE value="Pioche fonctionnelle ++" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pioche fonctionnelle ++" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
