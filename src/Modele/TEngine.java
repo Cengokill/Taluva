@@ -53,6 +53,8 @@ public class TEngine extends JFrame {
 
         int scrollValue = 1;
 
+        int[] triplet = new int[3];
+
 
         public HexagonalTiles() {
             try {
@@ -72,6 +74,10 @@ public class TEngine extends JFrame {
 
             cameraOffset.x = -750;
             cameraOffset.y = -750;
+
+            triplet[0] = Hexagone.GRASS;
+            triplet[1] = Hexagone.WATER;
+            triplet[2] = Hexagone.WATER;
 
             plateau = new Plateau();
         }
@@ -94,7 +100,7 @@ public class TEngine extends JFrame {
         /////////////////
         private void displayIntMap(int[][] map, Graphics g) {
             int tileWidth = voidTile.getWidth();
-            int tileHeight = voidTile.getHeight();
+            int tileHeight = voidTile.getWidth();
             int horizontalOffset = tileWidth;
             int verticalOffset = (int) (tileHeight * 0.75);
 
@@ -144,7 +150,7 @@ public class TEngine extends JFrame {
         private void displayHoverTile(Graphics g) {
             if (hoverTile != null) {
                 int tileWidth = voidTile.getWidth();
-                int tileHeight = voidTile.getHeight();
+                int tileHeight = voidTile.getWidth(); // Important !!
                 int horizontalOffset = tileWidth;
                 int verticalOffset = (int) (tileHeight * 0.75);
 
@@ -159,39 +165,63 @@ public class TEngine extends JFrame {
                 int x = j * horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
-                g.drawImage(hoverTile, x , y, null);
+                float opacity = 0.5f; // Réduire l'opacité de moitié
+                BufferedImage tile1 = getTileImageFromId(triplet[0]);
+                BufferedImage tile2 = getTileImageFromId(triplet[1]);
+                BufferedImage tile3 = getTileImageFromId(triplet[2]);
+                tile1 = getReducedOpacityImage(tile1, opacity);
+                tile2 = getReducedOpacityImage(tile2, opacity);
+                tile3 = getReducedOpacityImage(tile3, opacity);
 
                 if (scrollValue == 1) {
-                    g.drawImage(hoverTile, x - tileWidth/2, y - verticalOffset, null);
-                    g.drawImage(hoverTile, x + tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(tile2, x - tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(tile3, x + tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(tile1, x , y, null);
                 }
                 else if (scrollValue == 2){
-                    g.drawImage(hoverTile, x + tileWidth/2, y - verticalOffset, null);
-                    g.drawImage(hoverTile, x + tileWidth, y, null);
+                    g.drawImage(tile2, x + tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(tile3, x + tileWidth, y, null);
+                    g.drawImage(tile1, x , y, null);
+
                 }
                 else if (scrollValue == 3){
-                    g.drawImage(hoverTile, x + tileWidth, y, null);
-                    g.drawImage(hoverTile, x +  + tileWidth/2, y + verticalOffset, null);
+                    g.drawImage(tile1, x , y, null);
+                    g.drawImage(tile2, x + tileWidth, y, null);
+                    g.drawImage(tile3, x +  + tileWidth/2, y + verticalOffset, null);
                 }
                 else if (scrollValue == 4){
-                    g.drawImage(hoverTile, x + tileWidth/2, y + verticalOffset, null);
-                    g.drawImage(hoverTile, x - tileWidth/2, y + verticalOffset, null);
+                    g.drawImage(tile1, x , y, null);
+                    g.drawImage(tile2, x + tileWidth/2, y + verticalOffset, null);
+                    g.drawImage(tile3, x - tileWidth/2, y + verticalOffset, null);
                 }
                 else if (scrollValue == 5){
-                    g.drawImage(hoverTile, x - tileWidth/2, y + verticalOffset, null);
-                    g.drawImage(hoverTile, x - tileWidth, y, null);
+                    g.drawImage(tile1, x , y, null);
+                    g.drawImage(tile3, x - tileWidth, y, null);
+                    g.drawImage(tile2, x - tileWidth/2, y + verticalOffset, null);
                 }
                 else if (scrollValue == 6){
-                    g.drawImage(hoverTile, x - tileWidth, y, null);
-                    g.drawImage(hoverTile, x - tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(tile3, x - tileWidth/2, y - verticalOffset, null);
+                    g.drawImage(tile2, x - tileWidth, y, null);
+                    g.drawImage(tile1, x , y, null);
+
                 }
             }
         }
 
-        private void addToCursor(MouseEvent e, int tile_type1, int tile_type2, int tile_type3) {
+        private BufferedImage getReducedOpacityImage(BufferedImage originalImage, float opacity) {
+            BufferedImage reducedOpacityImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = reducedOpacityImage.createGraphics();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+            g2d.drawImage(originalImage, 0, 0, null);
+            g2d.dispose();
+            return reducedOpacityImage;
+        }
+
+
+        private void addToCursor(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 int tileWidth = voidTile.getWidth();
-                int tileHeight = voidTile.getHeight();
+                int tileHeight = voidTile.getWidth();
                 int horizontalOffset = tileWidth;
                 int verticalOffset = (int) (tileHeight * 0.75);
 
@@ -207,7 +237,7 @@ public class TEngine extends JFrame {
 
                 // S'assurer que les indices i et j sont à l'intérieur des limites de la matrice 'map'
                 if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
-                    map[i][j] = new Hexagone(0, 0, 0, tile_type1);
+                    map[i][j] = new Hexagone(0, 0, 0, triplet[0]);
 
                     int x;
                     if (i % 2 == 1) {
@@ -217,32 +247,29 @@ public class TEngine extends JFrame {
                     }
 
                     if (scrollValue == 1) {
-                        map[i - 1][x] = new Hexagone(0, 0, 0, tile_type2);
-                        map[i - 1][x + 1] = new Hexagone(0, 0, 0, tile_type3);
+                        map[i - 1][x] = new Hexagone(0, 0, 0, triplet[1]);
+                        map[i - 1][x + 1] = new Hexagone(0, 0, 0, triplet[2]);
                     }
                     else if (scrollValue == 2){
-                        map[i - 1][x + 1] = new Hexagone(0, 0, 0, tile_type2);
-                        map[i][j + 1] = new Hexagone(0, 0, 0, tile_type3);
+                        map[i - 1][x + 1] = new Hexagone(0, 0, 0, triplet[1]);
+                        map[i][j + 1] = new Hexagone(0, 0, 0, triplet[2]);
                     }
                     else if (scrollValue == 3){
-                        map[i][j + 1] = new Hexagone(0, 0, 0, tile_type2);
-                        map[i + 1][x + 1] = new Hexagone(0, 0, 0, tile_type3);
+                        map[i][j + 1] = new Hexagone(0, 0, 0, triplet[1]);
+                        map[i + 1][x + 1] = new Hexagone(0, 0, 0, triplet[2]);
                     }
                     else if (scrollValue == 4){
-                        map[i + 1][x + 1] = new Hexagone(0, 0, 0, tile_type2);
-                        map[i + 1][x] = new Hexagone(0, 0, 0, tile_type3);
+                        map[i + 1][x + 1] = new Hexagone(0, 0, 0, triplet[1]);
+                        map[i + 1][x] = new Hexagone(0, 0, 0, triplet[2]);
                     }
                     else if (scrollValue == 5){
-                        map[i + 1][x] = new Hexagone(0, 0, 0, tile_type2);
-                        map[i][j - 1] = new Hexagone(0, 0, 0, tile_type3);
+                        map[i + 1][x] = new Hexagone(0, 0, 0, triplet[1]);
+                        map[i][j - 1] = new Hexagone(0, 0, 0, triplet[2]);
                     }
                     else if (scrollValue == 6){
-                        map[i][j - 1] = new Hexagone(0, 0, 0, tile_type2);
-                        map[i - 1][x] = new Hexagone(0, 0, 0, tile_type3);
+                        map[i][j - 1] = new Hexagone(0, 0, 0, triplet[1]);
+                        map[i - 1][x] = new Hexagone(0, 0, 0, triplet[2]);
                     }
-
-
-
                     repaint();
                 }
             }
@@ -256,7 +283,7 @@ public class TEngine extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                addToCursor(e, Hexagone.WATER, Hexagone.WATER, Hexagone.GRASS);
+                addToCursor(e);
             }
 
 
