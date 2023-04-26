@@ -1,0 +1,61 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"18bd274a-2fc1-4035-9ad7-03a9dc163e99\" name=\"Changes\" comment=\"Ajout jeu\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/Controleur/ControleurMediateur.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Vue/CollecteurEvenements.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Modele/Jeu.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Modele/Jeu.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Ov3c9dhsAwk2FjqmIkr1giRWYj\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/x/IdeaProjects/Taluva/ressources&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;Console&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\x\\IdeaProjects\\Taluva\\ressources\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"Modele\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.Vue.TEngine\">\r\n    <configuration name=\"TaluvaMain\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"TaluvaMain\" />\r\n      <module name=\"Taluva\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Vue.TEngine\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Vue.TEngine\" />\r\n      <module name=\"Taluva\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"Vue.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Vue.TEngine\" />\r\n        <item itemvalue=\"Application.TaluvaMain\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"18bd274a-2fc1-4035-9ad7-03a9dc163e99\" name=\"Changes\" comment=\"\" />\r\n      <created>1682427307594</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1682427307594</updated>\r\n      <workItem from=\"1682427309245\" duration=\"1490000\" />\r\n      <workItem from=\"1682450291102\" duration=\"600000\" />\r\n      <workItem from=\"1682488946065\" duration=\"1461000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Push Pull Legs\">\r\n      <created>1682427336805</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1682427336805</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Ajout Packages et Structures\">\r\n      <created>1682427579997</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1682427579997</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Correctifs en soutif\">\r\n      <created>1682449824463</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1682449824463</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"textures\">\r\n      <created>1682451046553</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1682451046553</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes\">\r\n      <created>1682489739469</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1682489739470</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Ajout jeu\">\r\n      <created>1682490228696</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1682490228696</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"7\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Push Pull Legs\" />\r\n    <MESSAGE value=\"Ajout Packages et Structures\" />\r\n    <MESSAGE value=\"Correctifs en soutif\" />\r\n    <MESSAGE value=\"textures\" />\r\n    <MESSAGE value=\"Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes\" />\r\n    <MESSAGE value=\"Ajout jeu\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Ajout jeu\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,11 +4,11 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Ajout jeu">
+-      <change afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Vue/CollecteurEvenements.java" afterDir="false" />
++    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Implémentation squelette de jeu et CollecteurEvenements">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Modele/Coup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Coup.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -99,7 +99,7 @@
+       <updated>1682427307594</updated>
+       <workItem from="1682427309245" duration="1490000" />
+       <workItem from="1682450291102" duration="600000" />
+-      <workItem from="1682488946065" duration="1461000" />
++      <workItem from="1682488946065" duration="3476000" />
+     </task>
+     <task id="LOCAL-00001" summary="Push Pull Legs">
+       <created>1682427336805</created>
+@@ -143,7 +143,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1682490228696</updated>
+     </task>
+-    <option name="localTasksCounter" value="7" />
++    <task id="LOCAL-00007" summary="Implémentation squelette de jeu et CollecteurEvenements">
++      <created>1682490432019</created>
++      <option name="number" value="00007" />
++      <option name="presentableId" value="LOCAL-00007" />
++      <option name="project" value="LOCAL" />
++      <updated>1682490432019</updated>
++    </task>
++    <option name="localTasksCounter" value="8" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -167,6 +174,7 @@
+     <MESSAGE value="textures" />
+     <MESSAGE value="Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes" />
+     <MESSAGE value="Ajout jeu" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Ajout jeu" />
++    <MESSAGE value="Implémentation squelette de jeu et CollecteurEvenements" />
++    <option name="LAST_COMMIT_MESSAGE" value="Implémentation squelette de jeu et CollecteurEvenements" />
+   </component>
+ </project>
+\ No newline at end of file
