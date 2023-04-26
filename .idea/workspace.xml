@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Ajout Desert2" />
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Ajout Foret3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Hexagone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,6 +101,8 @@
       <workItem from="1682427309245" duration="1490000" />
       <workItem from="1682450291102" duration="600000" />
       <workItem from="1682488946065" duration="1461000" />
+      <workItem from="1682525028563" duration="215000" />
+      <workItem from="1682526368196" duration="88000" />
     </task>
     <task id="LOCAL-00001" summary="Push Pull Legs">
       <created>1682427336805</created>
@@ -288,7 +293,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682523935743</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Ajout Foret3">
+      <created>1682525105825</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1682525105825</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Ajout Foret3">
+      <created>1682525109638</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1682525109638</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -306,7 +325,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajout Packages et Structures" />
     <MESSAGE value="Correctifs en soutif" />
     <MESSAGE value="textures" />
     <MESSAGE value="Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes" />
@@ -331,7 +349,8 @@
     <MESSAGE value="Pioche sans Tuile" />
     <MESSAGE value="Pioche fonctionnelle" />
     <MESSAGE value="Ajout Desert2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout Desert2" />
+    <MESSAGE value="Ajout Foret3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout Foret3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

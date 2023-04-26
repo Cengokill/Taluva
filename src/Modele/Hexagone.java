@@ -18,16 +18,16 @@ public class Hexagone {
     private int batiment;
     int numero ;
 
-    public Hexagone(int hauteur, byte terrain, int n) {
+    public Hexagone(int hauteur, byte terrain) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
-        this.numero = n;
+        this.numero = ((int)(Math.random() * 3) + 1);
     }
-    public Hexagone(int hauteur, byte terrain, int n, int batiment) {
+    public Hexagone(int hauteur, byte terrain, int batiment) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.batiment = batiment;
-        this.numero = n;
+        this.numero = ((int)(Math.random() * 3) + 1);
     }
 
 
