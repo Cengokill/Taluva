@@ -16,8 +16,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         this.vue = vue;
     }
 
-    public boolean peutPlacerEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
-        return jeu.getPlateau().peutPlacerEtage(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y);
+    public boolean peutPlacerTuile(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
+        System.out.println(jeu.getPlateau().peutPlacerTuile(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y));
+        return jeu.getPlateau().peutPlacerTuile(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y);
     }
 
     public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {

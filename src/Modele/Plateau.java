@@ -1,7 +1,5 @@
 package Modele;
 
-import Controleur.ControleurMediateur;
-
 public class Plateau {
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
@@ -66,7 +64,7 @@ public class Plateau {
         return false;
     }
 
-    public boolean peutPlacerEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
+    public boolean peutPlacerTuile(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
 
         int hauteur = plateau[volcan_x][volcan_y].getHauteur();
 
@@ -75,7 +73,7 @@ public class Plateau {
             return false;
         }
         // Vérifie si on place un volcan sur un volcan
-        if (plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VOLCAN) {
+        if (plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VOLCAN && plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VIDE) {
             return false;
         }
 
@@ -89,13 +87,53 @@ public class Plateau {
         if (plateau[tile2_x][tile2_y].getHauteur() != hauteur) {
             return false;
         }
+
+        if (plateau[volcan_x][volcan_y].getTerrain() == Hexagone.VIDE && plateau[tile1_x][tile1_y].getTerrain() == Hexagone.VIDE && plateau[tile2_x][tile2_y].getTerrain() == Hexagone.VIDE) {
+            if (!(
+
+
+
+                    // Volcan proche d'une ile
+                    plateau[volcan_x + 1][volcan_y].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_x - 1][volcan_y].getTerrain() != Hexagone.VIDE ||
+
+                    plateau[volcan_x][volcan_y + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_x][volcan_y - 1].getTerrain() != Hexagone.VIDE ||
+
+                    plateau[volcan_x - 1][volcan_y + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_x - 1][volcan_y - 1].getTerrain() != Hexagone.VIDE ||
+
+                    // Tile 1 proche d'une ile
+                    plateau[tile1_x + 1][tile1_y].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_x - 1][tile1_y].getTerrain() != Hexagone.VIDE ||
+
+                    plateau[tile1_x][tile1_y + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_x][tile1_y - 1].getTerrain() != Hexagone.VIDE ||
+
+                    plateau[tile1_x - 1][tile1_y + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_x - 1][tile1_y - 1].getTerrain() != Hexagone.VIDE ||
+
+                    // Tile 2 proche d'une ile
+                    plateau[tile2_x + 1][tile2_y].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_x - 1][tile2_y].getTerrain() != Hexagone.VIDE ||
+
+                    plateau[tile2_x][tile2_y + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_x][tile2_y - 1].getTerrain() != Hexagone.VIDE ||
+
+                    plateau[tile2_x - 1][tile2_y + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_x - 1][tile2_y - 1].getTerrain() != Hexagone.VIDE
+            )) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     public void joueCoup(Coup coup) {
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
         if (coup.type == Coup.TUILE) {
-            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur + 1, plateau[coup.volcan_x][coup.volcan_y].getTerrain());
+            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur + 1, Hexagone.VOLCAN);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone(hauteur + 1, coup.terrain1);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone(hauteur + 1, coup.terrain2);
 
