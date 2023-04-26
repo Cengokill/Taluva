@@ -21,7 +21,7 @@ public class TEngine extends JFrame {
     public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
 
-    boolean poseTile, mode_plateau = false;
+    boolean poseTile, mode_plateau = false, mode_numero = false;
     Jeu jeu;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
@@ -299,7 +299,7 @@ public class TEngine extends JFrame {
                         }
                     }
 
-                    if (!mode_plateau) {
+                    if (mode_numero) {
                         if (map[i][j].getHauteur() == 1) {
                             g.drawImage(wrongTile1, x , y - heightoffset + 5, null);
                         }

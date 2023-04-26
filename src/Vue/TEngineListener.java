@@ -41,6 +41,14 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                 if(tengine.mode_plateau)  tengine.mode_plateau = false;
                 else tengine.mode_plateau = true;
             }
+            if (keyCode == KeyEvent.VK_A) {
+                if(tengine.mode_plateau)  tengine.mode_plateau = false;
+                else tengine.mode_plateau = true;
+            }
+            if (keyCode == KeyEvent.VK_Z) {
+                if(tengine.mode_numero)  tengine.mode_numero = false;
+                else tengine.mode_numero = true;
+            }
         }
 
         @Override
