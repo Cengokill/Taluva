@@ -64,6 +64,9 @@ public class Plateau {
     public boolean peutPlacerTuile(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
 
         int hauteur = plateau[volcan_x][volcan_y].getHauteur();
+        if (plateau[tile1_x][tile1_y].volcan_x == volcan_x && plateau[tile2_x][tile2_y].volcan_y == volcan_y) {
+            return false;
+        }
 
         // Hauteur max
         if (hauteur == 3) {

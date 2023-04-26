@@ -35,7 +35,7 @@ public class VignettePanel extends JPanel {
         // Ajouter un effet de lumière en haut à gauche (soleil)
         Point2D lightCenter = new Point2D.Float(panelWidth * 0.1f, panelHeight * 0.1f);
         float[] lightDist = {0.0f, 1.0f};
-        Color[] lightColors = {new Color(255, 255, 224, 100), new Color(255, 255, 224, 0)};
+        Color[] lightColors = {new Color(255, 255, 224, 60), new Color(255, 255, 224, 0)};
         RadialGradientPaint lightPaint = new RadialGradientPaint(lightCenter, Math.max(panelWidth, panelHeight) * 0.7f, lightDist, lightColors);
 
         g2d.setPaint(lightPaint);

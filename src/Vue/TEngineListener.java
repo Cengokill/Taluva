@@ -1,24 +1,12 @@
 package Vue;
 
-import Modele.Hexagone;
-
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import Modele.Hexagone;
-import Modele.Plateau;
-import Structures.Vector2;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class TEngineListener extends MouseAdapter implements MouseWheelListener {
     private TEngine tengine;
@@ -46,8 +34,8 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             // Code à exécuter lorsque la touche est enfoncée
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_E) {
-                if(tengine.poseTitle)  tengine.poseTitle = false;
-                else tengine.poseTitle = true;
+                if(tengine.poseTile)  tengine.poseTile = false;
+                else tengine.poseTile = true;
             }
         }
 

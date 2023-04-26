@@ -21,7 +21,7 @@ public class TEngine extends JFrame {
     public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
 
-    Boolean poseTitle;
+    Boolean poseTile;
     Jeu jeu;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
@@ -52,7 +52,7 @@ public class TEngine extends JFrame {
         getContentPane().setBackground(new Color(64, 164, 223));
 
         listener = new TEngineListener(this);
-        poseTitle = true;
+        poseTile = true;
     }
 
 
@@ -216,7 +216,7 @@ public class TEngine extends JFrame {
 
             displayHexagonMap(g);
 
-            if(poseTitle) displayHoverTile(g);
+            if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
 
             afficherBoutonAnnuler(g);
@@ -258,13 +258,13 @@ public class TEngine extends JFrame {
                     int tileId = map[i][j].getTerrain();
 
                     int heightoffset = map[i][j].getHauteur();
-                    heightoffset *= 30;
+                    heightoffset *= 50;
 
                     if (map[i][j].getTerrain() == Hexagone.VIDE) {
                         heightoffset -= 50;
                     }
 
-                    //System.out.println(tileId);
+
 
 
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
@@ -285,20 +285,20 @@ public class TEngine extends JFrame {
                         g.drawImage(tour, x , y - heightoffset, null);
                     }
 
-
-                    //System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
-                    if (map[hoveredTile_x][hoveredTile_y].getHauteur() != map[i][j].getHauteur() && map[hoveredTile_x][hoveredTile_y].getTerrain() != Hexagone.VIDE) {
+                    if (poseTile) {
                         g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+                    }
 
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(wrongTile1, x , y - heightoffset + 5, null);
-                        }
-                        if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(wrongTile2, x , y - heightoffset + 5, null);
-                        }
-                        if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
-                        }
+
+
+                    if (map[i][j].getHauteur() == 1) {
+                        g.drawImage(wrongTile1, x , y - heightoffset + 5, null);
+                    }
+                    if (map[i][j].getHauteur() == 2) {
+                        g.drawImage(wrongTile2, x , y - heightoffset + 5, null);
+                    }
+                    if (map[i][j].getHauteur() == 3) {
+                        g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
                     }
                 }
             }
@@ -416,7 +416,46 @@ public class TEngine extends JFrame {
                 int x = j * horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
-                float opacity = 0.5f; // Réduire l'opacité de moitié
+                int x2;
+                if (i % 2 == 1) {
+                    x2 = j - 1;
+                } else {
+                    x2 = j;
+                }
+
+                float opacity = 1f;
+
+                if (scrollValue == 1) {
+                    if (!controleur.peutPlacerTuile(i, j, i - 1, x2, i - 1, x2 + 1)) {
+                        opacity = 0.5f;
+                    }
+                }
+                else if (scrollValue == 2){
+                    if (!controleur.peutPlacerTuile(i, j, i - 1, x2 + 1, i, j + 1)) {
+                        opacity = 0.5f;
+                    }
+                }
+                else if (scrollValue == 3){
+                    if (!controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x2 + 1)) {
+                        opacity = 0.5f;
+                    }
+                }
+                else if (scrollValue == 4){
+                    if (!controleur.peutPlacerTuile(i, j, i + 1, x2 + 1, i + 1, x2)) {
+                        opacity = 0.5f;
+                    }
+                }
+                else if (scrollValue == 5){
+                    if (!controleur.peutPlacerTuile(i, j, i + 1, x2, i, j - 1)) {
+                        opacity = 0.5f;
+                    }
+                }
+                else if (scrollValue == 6){
+                    if (!controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x2)) {
+                        opacity = 0.5f;
+                    }
+                }
+
                 BufferedImage tile1 = getTileImageFromId(triplet[0][0],triplet[0][1]);
                 BufferedImage tile2 = getTileImageFromId(triplet[1][0],triplet[1][1]);
                 BufferedImage tile3 = getTileImageFromId(triplet[2][0],triplet[2][1]);
@@ -587,7 +626,7 @@ public class TEngine extends JFrame {
 
                 Hexagone[][] map = jeu.getPlateau().getPlateau();
 
-                if(poseTitle) placerTuiles(i,j);
+                if(poseTile) placerTuiles(i,j);
                 else placerMaison(i,j);
 
                 miseAJour();
