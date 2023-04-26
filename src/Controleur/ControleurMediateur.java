@@ -25,7 +25,13 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.getPlateau().placeEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         jeu.pioche();
     }
+    public boolean peutPlacerMaison(int i,int j){
+        return jeu.getPlateau().peutPlacerMaison(i,j);
+    }
 
+    public void placeMaison(int i, int j){
+        jeu.getPlateau().placeMaison(i,j);
+    }
     public Hexagone[][] getPlateau() {
         return jeu.getPlateau().getPlateau();
     }
