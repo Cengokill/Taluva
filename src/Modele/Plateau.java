@@ -1,5 +1,7 @@
 package Modele;
 
+import Controleur.ControleurMediateur;
+
 public class Plateau {
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
@@ -7,6 +9,7 @@ public class Plateau {
     private Historique historique;
 
     public Plateau(){
+
         plateau = new Hexagone [40][40];
         historique = new Historique();
         nbPionsJ1 = new int [3];
@@ -18,6 +21,7 @@ public class Plateau {
     }
 
     private void initPlateau() {
+
         for (int i = 0; i < plateau.length; i++) {
             for (int j = 0; j < plateau[0].length; j++) {
                 plateau[i][j] = new Hexagone(0, Hexagone.VIDE, 0);
@@ -78,18 +82,14 @@ public class Plateau {
 
         // Vérifie la hauteur de toutes les cases
         if (plateau[volcan_x][volcan_y].getHauteur() != hauteur) {
-            System.out.println("Volcan :" + plateau[volcan_x][volcan_y].getHauteur());
             return false;
         }
         if (plateau[tile1_x][tile1_y].getHauteur() != hauteur) {
-            System.out.println("1 :" + plateau[tile1_x][tile1_y].getHauteur());
             return false;
         }
         if (plateau[tile2_x][tile2_y].getHauteur() != hauteur) {
-            System.out.println("2 :" + plateau[tile2_x][tile2_y].getHauteur());
             return false;
         }
-        System.out.println("C bon");
         return true;
     }
 
@@ -104,7 +104,7 @@ public class Plateau {
     }
 
     // Nécessite un appel à peutPlacerEtage
-    public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int terrain1, int tile2_x, int tile2_y, int terrain2) {
+    public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
 
         Coup coup = new Coup(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         historique.ajoute(coup);

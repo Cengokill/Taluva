@@ -1,5 +1,7 @@
 package Modele;
 import javax.swing.*;
+
+import Controleur.ControleurMediateur;
 import Patterns.Observable;
 
 import java.util.Collections;
@@ -17,6 +19,8 @@ public class Jeu extends Observable {
     List <Tuile> pioche;
     private static int TAILLE_PIOCHE = 24;
 
+    byte[] tuile_a_poser = new byte[2];
+
     public Jeu(Parametres p){
         pioche = new LinkedList<Tuile>();
         lancePartie();
@@ -25,6 +29,12 @@ public class Jeu extends Observable {
     public void lancePartie(){
         initPioche();
         plateau = new Plateau();
+        tuile_a_poser[0] = Hexagone.GRASS;
+        tuile_a_poser[1] = Hexagone.WATER;
+    }
+
+    public byte[] getTuilesAPoser() {
+        return tuile_a_poser;
     }
 
     public void initPioche(){//24 tuiles

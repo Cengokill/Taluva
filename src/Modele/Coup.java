@@ -11,14 +11,14 @@ public class Coup {
     int volcan_y;
     int tile1_x;
     int tile1_y;
-    int terrain1;
+    byte terrain1;
     int tile2_x;
     int tile2_y;
-    int terrain2;
+    byte terrain2;
     int batiment_x;
     int batiment_y;
 
-    public Coup(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int terrain1, int tile2_x, int tile2_y, int terrain2) {// placement TUILE
+    public Coup(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {// placement TUILE
         this.type = TUILE;
         this.volcan_x = volcan_x;
         this.volcan_y = volcan_y;
