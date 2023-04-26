@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="ajout Volcans">
-      <change beforePath="$PROJECT_DIR$/src/Modele/Coup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Coup.java" afterDir="false" />
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Coup fix">
+      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +241,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682512062959</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Fix controleur">
+      <created>1682512172546</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1682512172546</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Coup fix">
+      <created>1682512536837</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1682512536837</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,7 +292,9 @@
     <MESSAGE value="Ajout de triplés (etages) fonctionnel" />
     <MESSAGE value="D&amp;Co viollages et volcan" />
     <MESSAGE value="Update Coup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Coup" />
+    <MESSAGE value="Fix controleur" />
+    <MESSAGE value="Coup fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coup fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
