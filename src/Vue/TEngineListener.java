@@ -108,7 +108,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = tengine.hexTiles.zoomFactor;
-                tengine.hexTiles.zoomFactor -= wheelRotation * tengine.hexTiles.zoomIncrement;
+                tengine.hexTiles.zoomFactor -= (wheelRotation * tengine.hexTiles.zoomIncrement)/5;
 
                 // Limiter le zoom minimum et maximum
                 double minZoom = 0.2;

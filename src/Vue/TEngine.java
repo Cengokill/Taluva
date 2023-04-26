@@ -21,9 +21,7 @@ public class TEngine extends JFrame {
     int width = 400;
     int height = 200;
     int tile_size = 148;
-
     TEngineListener listener;
-
     HexagonalTiles hexTiles;
     public TEngine() {
         setTitle("Taluva");
@@ -37,7 +35,7 @@ public class TEngine extends JFrame {
         getContentPane().add(layeredPane);
 
         // Ajouter les tuiles hexagonales
-        hexTiles = new HexagonalTiles();
+        hexTiles = new HexagonalTiles(this);
         hexTiles.setBounds(0, 0, 1400, 1000);
         layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
 
@@ -62,12 +60,14 @@ public class TEngine extends JFrame {
         });
     }
 
-
     class HexagonalTiles extends JPanel {
         BufferedImage waterTile;
         BufferedImage hoverTile;
         BufferedImage voidTile;
         BufferedImage grassTile;
+        Image boutonAnnuler;
+        int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
+        TEngine tengine;
         Point hoverTilePosition = new Point(-tile_size, -tile_size);
         Point cameraOffset = new Point(0, 0);
         Point lastMousePosition;
@@ -82,16 +82,13 @@ public class TEngine extends JFrame {
 
         TEngineListener.MouseHandler handler;
 
-        public HexagonalTiles() {
-            try {
-                waterTile = ImageIO.read(new File("ressources/Water_Tile.png"));
-                voidTile = ImageIO.read(new File("ressources/Void_Tile.png"));
-                grassTile = ImageIO.read(new File("ressources/Grass_Tile.png"));
-                hoverTile = ImageIO.read(new File("ressources/Hover_Tile.png"));
-            } catch (IOException e) {
-                System.out.println("Erreur lors de l'affichage des tiles");
-                e.printStackTrace();
-            }
+        public HexagonalTiles(TEngine t) {
+            tengine = t;
+            waterTile = lisImageBuf("Water_Tile");
+            voidTile = lisImageBuf("Void_Tile");
+            grassTile = lisImageBuf("Grass_Tile");
+            hoverTile = lisImageBuf("Hover_Tile");
+            boutonAnnuler = lisImage("annuler");
             setOpaque(false);
 
             cameraOffset.x = -750;
@@ -106,6 +103,41 @@ public class TEngine extends JFrame {
             triplet[2][1] = 0;
 
             plateau = new Plateau();
+
+            largeur = tengine.getWidth();
+            hauteur = tengine.getHeight();
+        }
+
+        private Image lisImage(String nom) {
+            String CHEMIN = "ressources/";
+            Image img = null;
+            try{
+                img = ImageIO.read(new File(CHEMIN + nom + ".png"));
+            } catch (IOException e) {
+                System.err.println("Impossible de charger l'image " + nom);
+            }
+            return img;
+        }
+
+        private BufferedImage lisImageBuf(String nom) {
+            String CHEMIN = "ressources/";
+            BufferedImage img = null;
+            try{
+                img = ImageIO.read(new File(CHEMIN + nom + ".png"));
+            } catch (IOException e) {
+                System.err.println("Impossible de charger l'image " + nom);
+            }
+            return img;
+        }
+
+        public void afficherBoutonAnnuler(Graphics g){
+            posY_bouton_annuler = (int) (hauteur*.15);
+            posX_bouton_annuler = (int) (largeur*.80);
+            tracer((Graphics2D) g, boutonAnnuler, posX_bouton_annuler- cameraOffset.x, posY_bouton_annuler- cameraOffset.y, largeur_bouton, hauteur_bouton);
+        }
+
+        private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
+            g.drawImage(i, x, y, l, h, null);
         }
 
         public void miseAJour() {
@@ -119,8 +151,14 @@ public class TEngine extends JFrame {
             g2d.translate(cameraOffset.x, cameraOffset.y);
             g2d.scale(zoomFactor, zoomFactor);
 
+            //définit la taille des boutons
+            double rapport_bouton = (double) 207/603;
+            largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
+            hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
+
             displayHexagonMap(g);
             displayHoverTile(g);
+            afficherBoutonAnnuler(g);
         }
 
 
