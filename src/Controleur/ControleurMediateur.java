@@ -25,13 +25,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
 
-    /*
+
     @Override
     public boolean clicSouris(int l, int c) {
-        Coup cp = new Coup((byte) 0);
-        return jeu.joueJoueur(cp);
+        return true;
     }
-    */
 
     @Override
     public void toucheClavier(String t) {
