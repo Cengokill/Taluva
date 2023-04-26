@@ -30,7 +30,8 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void placeMaison(int i, int j){
-        jeu.getPlateau().placeMaison(i,j);
+        int hauteur = jeu.getPlateau().getHauteurTuile(i,j);
+        jeu.getPlateau().placeMaison(i,j,(byte) hauteur);
     }
     public Hexagone[][] getPlateau() {
         return jeu.getPlateau().getPlateau();

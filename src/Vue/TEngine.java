@@ -57,7 +57,7 @@ public class TEngine extends JFrame {
 
 
     public class HexagonalTiles extends JPanel {
-        BufferedImage maisonTile;
+        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour;
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
@@ -120,7 +120,12 @@ public class TEngine extends JFrame {
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.3f);
 
             boutonAnnuler = lisImage("annuler");
-            maisonTile = lisImageBuf("maison");
+            maisonTile = lisImageBuf("Batiments/maison");
+            templeJungle = lisImageBuf("Batiments/Temple_jungle");
+            templePierre = lisImageBuf("Batiments/Temple_pierre");
+            templePrairie = lisImageBuf("Batiments/Temple_prairie");
+            templeSable = lisImageBuf("Batiments/Temple_sable");
+            tour = lisImageBuf("Batiments/tour");
 
             setOpaque(false);
 
@@ -262,16 +267,24 @@ public class TEngine extends JFrame {
                     //System.out.println(tileId);
 
 
-
-
-
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                     g.drawImage(tile, x , y - heightoffset, null);
 
                     if (map[i][j].getBatiment() == Hexagone.MAISON) {
                         tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
                         g.drawImage(tile, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
+                        g.drawImage(templeJungle, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
+                        g.drawImage(templePrairie, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
+                        g.drawImage(templePierre, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
+                        g.drawImage(templeSable, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
+                        g.drawImage(tour, x , y - heightoffset, null);
                     }
+
 
                     //System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
                     if (map[hoveredTile_x][hoveredTile_y].getHauteur() != map[i][j].getHauteur() && map[hoveredTile_x][hoveredTile_y].getTerrain() != Hexagone.VIDE) {
@@ -476,7 +489,18 @@ public class TEngine extends JFrame {
                 int heightoffset1 = triplet[0][1];
                 heightoffset1 *= 30;
 
-                g.drawImage(maisonTile, x , y - heightoffset1, null);
+                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0){
+                    if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
+                    else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
+                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
+                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.MONTAGNE) g.drawImage(templePierre, x , y - heightoffset1, null);
+                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.GRASS) g.drawImage(templePrairie, x , y - heightoffset1, null);
+                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.FORET) g.drawImage(templeJungle, x , y - heightoffset1, null);
+                    }else if(jeu.getPlateau().getHauteurTuile(i,j)==3){
+                        g.drawImage(tour, x , y - heightoffset1, null);
+                    }
+                }
+
 
             }
         }
