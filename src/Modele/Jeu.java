@@ -45,4 +45,24 @@ public class Jeu extends Observable {
 
     public void lancePartie(){
     }
+
+    public boolean joueJoueur(Coup cp) {
+        return true;
+    }
+
+    public void annuler() {
+        
+    }
+
+    public void refaire() {
+    }
+
+    public void sauvegarder() {
+    }
+
+    public void charger() {
+    }
+
+    public void reinitialise() {
+    }
 }
