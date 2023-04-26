@@ -4,9 +4,11 @@ public class Plateau {
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
     protected int[] nbPionsJ2;
+    private Historique historique;
 
     public Plateau(){
         plateau = new Hexagone [40][40];
+        historique = new Historique();
         nbPionsJ1 = new int [3];
         nbPionsJ2 = new int [3];
         nbPionsJ1[0]=10 ; nbPionsJ2[0]=10;
@@ -54,4 +56,30 @@ public class Plateau {
     }
 
     public void joueHexagone(int x, int y){}
+
+    public void resetHistorique(){
+        historique = new Historique();
+    }
+
+    public boolean peutAnnuler() {
+        return historique.peutAnnuler();
+    }
+
+    public boolean peutRefaire() {
+        return historique.peutRefaire();
+    }
+
+    public boolean annuler() {
+        if (peutAnnuler()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean refaire() {
+        if (peutRefaire()) {
+            return true;
+        }
+        return false;
+    }
 }
