@@ -95,9 +95,9 @@ public class TEngine extends JFrame {
             voidTile = lisImageBuf("Void_Tile");
             grassTile = lisImageBuf("Grass_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
-            volcanTile = lisImageBuf("Volcan_Tile");
-            montagneTile = lisImageBuf("Montagne_Tile");
-            foretTile = lisImageBuf("Foret_Tile");
+            volcanTile = lisImageBuf("Volcan2_Tile");
+            montagneTile = lisImageBuf("Montagne2_Tile");
+            foretTile = lisImageBuf("Foret3_Tile");
             desertTile = lisImageBuf("Desert_Tile");
             maisonTile = lisImageBuf("maison");
             boutonAnnuler = lisImage("annuler");
@@ -223,6 +223,10 @@ public class TEngine extends JFrame {
 
                     int heightoffset = map[i][j].getHauteur();
                     heightoffset *= 30;
+
+                    if (map[i][j].getTerrain() == Hexagone.VIDE) {
+                        heightoffset -= 50;
+                    }
 
                     //System.out.println(tileId);
 
