@@ -15,6 +15,5 @@ public class Tuile {
         terrain1 = (int)(Math.random() * 5) + 1;
         terrain2 = (int)(Math.random() * 5) + 1;
         terrain3 = VOLCAN;
-
     }
 }
