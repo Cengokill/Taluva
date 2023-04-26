@@ -111,9 +111,9 @@ public class TEngine extends JFrame {
             wrongTile2 = lisImageBuf("Wrong_height_2");
             wrongTile3 = lisImageBuf("Wrong_height_3");
 
-            wrongTile1 = getReducedOpacityImage(wrongTile1, 0.2f);
-            wrongTile2 = getReducedOpacityImage(wrongTile2, 0.2f);
-            wrongTile3 = getReducedOpacityImage(wrongTile3, 0.2f);
+            wrongTile1 = getReducedOpacityImage(wrongTile1, 0.3f);
+            wrongTile2 = getReducedOpacityImage(wrongTile2, 0.3f);
+            wrongTile3 = getReducedOpacityImage(wrongTile3, 0.3f);
 
             boutonAnnuler = lisImage("annuler");
 
@@ -270,13 +270,13 @@ public class TEngine extends JFrame {
                         g.drawImage(voidTile_transparent, x , y - heightoffset, null);
 
                         if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(wrongTile1, x , y - heightoffset + 10, null);
+                            g.drawImage(wrongTile1, x , y - heightoffset + 5, null);
                         }
                         if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(wrongTile2, x , y - heightoffset + 10, null);
+                            g.drawImage(wrongTile2, x , y - heightoffset + 5, null);
                         }
                         if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(wrongTile3, x , y - heightoffset + 10, null);
+                            g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
                         }
                     }
                 }
