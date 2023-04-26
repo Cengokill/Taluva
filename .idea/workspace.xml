@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Merged">
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Toggle niveaux avec ctrl">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ressources/Wrong_height_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Wrong_height_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ressources/Wrong_height_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Wrong_height_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ressources/Wrong_height_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Wrong_height_3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/TEngineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngineListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vue/VignettePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/VignettePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +66,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682543422171</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Multiples changes me souviens plus">
+      <created>1682545331860</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682545331860</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Toggle niveaux avec ctrl">
+      <created>1682547557825</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1682547557825</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -73,6 +88,9 @@
     <MESSAGE value="Fix taille volcan" />
     <MESSAGE value="Hexagones connaissent volcans" />
     <MESSAGE value="Merged" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merged" />
+    <MESSAGE value="Multiples changes me souviens plus" />
+    <MESSAGE value="Couleur et tout" />
+    <MESSAGE value="Toggle niveaux avec ctrl" />
+    <option name="LAST_COMMIT_MESSAGE" value="Toggle niveaux avec ctrl" />
   </component>
 </project>
