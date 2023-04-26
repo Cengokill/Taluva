@@ -2,25 +2,25 @@ package Modele;
 
 public class Hexagone {
 
-    public static final int VIDE = 0;
-    public static final int GRASS = 1;
-    public static final int MONTAGNE = 0;
-    public static final int VOLCAN = 3;
-    public static final int DESERT = 0;
-    public static final int WATER = 5;
-    public static final int MAISON = 10;
+    public static final byte VIDE = 0;
+    public static final byte GRASS = 1;
+    public static final byte MONTAGNE = 0;
+    public static final byte VOLCAN = 32;
+    public static final byte DESERT = 0;
+    public static final byte WATER = 5;
+    public static final byte MAISON = 10;
     private int Hauteur;
 
-    private int terrain;
+    private byte terrain;
     private int batiment;
     int numero ;
 
-    public Hexagone(int hauteur, int terrain, int n) {
+    public Hexagone(int hauteur, byte terrain, int n) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.numero = n;
     }
-    public Hexagone(int hauteur, int terrain, int n, int batiment) {
+    public Hexagone(int hauteur, byte terrain, int n, int batiment) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.batiment = batiment;
@@ -31,7 +31,7 @@ public class Hexagone {
     public int getHauteur() {
         return Hauteur;
     }
-    public int getTerrain() {
+    public byte getTerrain() {
         return terrain;
     }
     public int getNum(){return numero;}

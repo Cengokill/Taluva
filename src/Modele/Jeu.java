@@ -1,5 +1,7 @@
 package Modele;
 import javax.swing.*;
+
+import Controleur.ControleurMediateur;
 import Patterns.Observable;
 
 public class Jeu extends Observable {
@@ -11,12 +13,20 @@ public class Jeu extends Observable {
     Parametres p;
     int[]score =new int[2];
 
+    byte[] tuile_a_poser = new byte[2];
+
     public Jeu(Parametres p){
         lancePartie();
     }
 
     public void lancePartie(){
         plateau = new Plateau();
+        tuile_a_poser[0] = Hexagone.GRASS;
+        tuile_a_poser[1] = Hexagone.WATER;
+    }
+
+    public byte[] getTuilesAPoser() {
+        return tuile_a_poser;
     }
 
     public boolean joueJoueur(Coup cp) {

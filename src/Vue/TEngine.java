@@ -2,6 +2,7 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.Hexagone;
+import Modele.Jeu;
 import Modele.Plateau;
 
 import javax.imageio.ImageIO;
@@ -23,11 +24,14 @@ public class TEngine extends JFrame {
     int height = 200;
     int tile_size = 148;
     TEngineListener listener;
-    HexagonalTiles hexTiles;
-
+    public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
-    public TEngine(ControleurMediateur controleur) {
+    Jeu jeu;
+
+    public TEngine(Jeu jeu, ControleurMediateur controleur) {
         this.controleur = controleur;
+        this.controleur.setEngine(this);
+        this.jeu = jeu;
         setTitle("Taluva");
         setSize(1400, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,7 +59,7 @@ public class TEngine extends JFrame {
     }
 
 
-    class HexagonalTiles extends JPanel {
+    public class HexagonalTiles extends JPanel {
         BufferedImage waterTile;
         BufferedImage hoverTile;
         BufferedImage voidTile;
@@ -75,7 +79,7 @@ public class TEngine extends JFrame {
 
         int scrollValue = 1;
 
-        int[][] triplet = new int[3][2]; // [n° tile] [0: tile_type] [1: tile_height]
+        byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_height]
 
         TEngineListener.MouseHandler handler;
 
@@ -97,17 +101,22 @@ public class TEngine extends JFrame {
             cameraOffset.y = -1700;
 
             triplet[0][0] = Hexagone.VOLCAN;
-            triplet[1][0] = Hexagone.GRASS;
-            triplet[2][0] = Hexagone.GRASS;
+            triplet[1][0] = Hexagone.VIDE;
+            triplet[2][0] = Hexagone.VIDE;
 
             triplet[0][1] = 0;
             triplet[1][1] = 0;
             triplet[2][1] = 0;
 
-            plateau = new Plateau();
-
             largeur = tengine.getWidth();
             hauteur = tengine.getHeight();
+        }
+
+        public void changerTuileAPoser() {
+            byte[] tuiles;
+            tuiles = controleur.getTuileAPoser();
+            triplet[1][0] = tuiles[0];
+            triplet[2][0] = tuiles[1];
         }
 
         private Image lisImage(String nom) {
@@ -154,6 +163,8 @@ public class TEngine extends JFrame {
 
         @Override
         protected void paintComponent(Graphics g) {
+            changerTuileAPoser();
+
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.translate(cameraOffset.x, cameraOffset.y);
@@ -333,7 +344,7 @@ public class TEngine extends JFrame {
                 int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
 
 
-                Hexagone[][] map = plateau.getPlateau();
+                Hexagone[][] map = jeu.getPlateau().getPlateau();
 
                 // S'assurer que les indices i et j sont à l'intérieur des limites de la matrice 'map'
                 if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {

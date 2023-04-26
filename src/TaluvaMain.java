@@ -8,7 +8,9 @@ public class TaluvaMain {
         Jeu jeu = new Jeu(null);
         ControleurMediateur controler = new ControleurMediateur(jeu);
 
-        TEngine fenetre = new TEngine(controler);
+
+        TEngine fenetre = new TEngine(jeu, controler);
         fenetre.setVisible(true);
+        System.out.println("oui ?");
     }
 }
