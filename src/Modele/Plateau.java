@@ -214,7 +214,6 @@ public class Plateau {
             if (hauteur == 1) {
                 batiment = Hexagone.MAISON;
             } else if (hauteur == 2) {
-                System.out.println("hauteur = 2");
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
@@ -222,7 +221,7 @@ public class Plateau {
             } else if (hauteur == 3) {
                 batiment = Hexagone.TOUR;
             }
-            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment);
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone((byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)coup.volcan_x, (byte)coup.volcan_y);
         }
     }
 
