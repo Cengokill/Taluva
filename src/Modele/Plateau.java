@@ -18,7 +18,7 @@ public class Plateau {
     private void initPlateau() {
         for (int i = 0; i < plateau.length; i++) {
             for (int j = 0; j < plateau[0].length; j++) {
-                plateau[i][j] = new Hexagone(0, 0, 0, Hexagone.VIDE);
+                plateau[i][j] = new Hexagone(-1, 0, 0, Hexagone.VIDE);
             }
         }
 
