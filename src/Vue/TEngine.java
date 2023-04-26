@@ -528,7 +528,7 @@ public class TEngine extends JFrame {
                 int heightoffset1 = triplet[0][1];
                 heightoffset1 *= 30;
 
-                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0){
+                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getTerrain() != Hexagone.VOLCAN){
                     if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
                     else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
                         if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
