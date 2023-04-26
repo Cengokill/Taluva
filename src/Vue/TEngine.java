@@ -66,6 +66,9 @@ public class TEngine extends JFrame {
         BufferedImage grassTile;
         BufferedImage volcanTile;
         BufferedImage maisonTile;
+        BufferedImage foretTile;
+        BufferedImage desertTile;
+        BufferedImage montagneTile;
         Image boutonAnnuler;
         int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
         TEngine tengine;
@@ -93,6 +96,9 @@ public class TEngine extends JFrame {
             grassTile = lisImageBuf("Grass_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
             volcanTile = lisImageBuf("Volcan_Tile");
+            montagneTile = lisImageBuf("Montagne_Tile");
+            foretTile = lisImageBuf("Foret_Tile");
+            desertTile = lisImageBuf("Desert_Tile");
             maisonTile = lisImageBuf("maison");
             boutonAnnuler = lisImage("annuler");
             setOpaque(false);
@@ -247,6 +253,15 @@ public class TEngine extends JFrame {
             }
             if (id == Hexagone.MAISON) {
                 return maisonTile;
+            }
+            if (id == Hexagone.DESERT) {
+                return desertTile;
+            }
+            if (id == Hexagone.MONTAGNE) {
+                return montagneTile;
+            }
+            if (id == Hexagone.FORET) {
+                return foretTile;
             }
             return null;
         }

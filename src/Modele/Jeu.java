@@ -16,10 +16,11 @@ public class Jeu extends Observable {
     Object[] joueurs = new Object[2];
     Parametres p;
     int[]score =new int[2];
-    List <Tuile> pioche;
-    private static int TAILLE_PIOCHE = 24;
 
     byte[] tuile_a_poser = new byte[2];
+
+    LinkedList<Tuile> pioche;
+    private static int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
         pioche = new LinkedList<Tuile>();
@@ -29,12 +30,8 @@ public class Jeu extends Observable {
     public void lancePartie(){
         initPioche();
         plateau = new Plateau();
-        tuile_a_poser[0] = Hexagone.GRASS;
-        tuile_a_poser[1] = Hexagone.WATER;
-    }
 
-    public byte[] getTuilesAPoser() {
-        return tuile_a_poser;
+        pioche();
     }
 
     public void initPioche(){//24 tuiles
@@ -42,6 +39,20 @@ public class Jeu extends Observable {
             pioche.add(new Tuile());
         }
         Collections.shuffle(pioche);
+    }
+
+    public byte[] getTuilesAPoser() {
+        return tuile_a_poser;
+    }
+
+    public void joueCoup(Coup coup) {
+        plateau.joueCoup(coup);
+    }
+
+    public void pioche() {
+        Tuile tile_courante = pioche.removeFirst();
+        tuile_a_poser[0] = tile_courante.terrain1;
+        tuile_a_poser[1] = tile_courante.terrain2;
     }
 
     public boolean joueJoueur(Coup cp) {
