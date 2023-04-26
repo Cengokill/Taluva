@@ -10,6 +10,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import Modele.Hexagone;
 import Modele.Plateau;
+import Structures.Vector2;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,17 +27,19 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         super();
         tengine = t;
 
+
+
         tengine.hexTiles.handler = new MouseHandler();
         tengine.hexTiles.addMouseListener(tengine.hexTiles.handler);
         tengine.hexTiles.addMouseMotionListener(tengine.hexTiles.handler);
         tengine.hexTiles.addMouseWheelListener(tengine.hexTiles.handler);
     }
 
+
     ////////////////////////////
     // Mouse, drag and things //
     ////////////////////////////
     class MouseHandler extends MouseAdapter implements MouseWheelListener {
-
         @Override
         public void mouseClicked(MouseEvent e) {
 
@@ -92,6 +95,12 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             tengine.hexTiles.hoverTilePosition = e.getPoint();
             tengine.hexTiles.miseAJour();
         }
+
+
+
+
+
+
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {

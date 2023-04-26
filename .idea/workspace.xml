@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Version bouton qui marche">
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Ajout de triplés (etages) fonctionnel">
+      <change afterPath="$PROJECT_DIR$/src/Structures/Vector2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Void_Tile.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Void_Tile.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Hexagone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TaluvaMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaluvaMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/TEngineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngineListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +215,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682501659029</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Ajout de triplés (etages) fonctionnel">
+      <created>1682505328249</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1682505328249</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,7 +256,8 @@
     <MESSAGE value="Annulation" />
     <MESSAGE value="Version bouton cassée" />
     <MESSAGE value="Version bouton qui marche" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version bouton qui marche" />
+    <MESSAGE value="Ajout de triplés (etages) fonctionnel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout de triplés (etages) fonctionnel" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -61,6 +61,7 @@ public class TEngine extends JFrame {
         BufferedImage voidTile;
         BufferedImage grassTile;
         BufferedImage volcanTile;
+        BufferedImage maisonTile;
         Image boutonAnnuler;
         int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
         TEngine tengine;
@@ -87,7 +88,8 @@ public class TEngine extends JFrame {
             voidTile = lisImageBuf("Void_Tile");
             grassTile = lisImageBuf("Grass_Tile");
             hoverTile = lisImageBuf("Hover_Tile");
-            volcanTile = lisImageBuf("Water_Tile");
+            volcanTile = lisImageBuf("Volcan_Tile");
+            maisonTile = lisImageBuf("maison");
             boutonAnnuler = lisImage("annuler");
             setOpaque(false);
 
@@ -206,10 +208,15 @@ public class TEngine extends JFrame {
                     heightoffset *= 30;
 
                     //System.out.println(tileId);
+
                     BufferedImage tile = getTileImageFromId(tileId);
-
-
                     g.drawImage(tile, x , y - heightoffset, null);
+
+                    if (map[i][j].getBatiment() == Hexagone.MAISON) {
+                        tile = getTileImageFromId(Hexagone.MAISON);
+                        g.drawImage(tile, x , y - heightoffset, null);
+
+                    }
                 }
             }
         }
@@ -226,6 +233,9 @@ public class TEngine extends JFrame {
             }
             if (id == Hexagone.WATER) {
                 return waterTile;
+            }
+            if (id == Hexagone.MAISON) {
+                return maisonTile;
             }
             return null;
         }

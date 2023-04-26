@@ -33,6 +33,7 @@ public class Plateau {
         plateau[20][18] = new Hexagone(1, Hexagone.VOLCAN, 0);
         plateau[19][19] = new Hexagone(1, Hexagone.VOLCAN, 0);
         plateau[17][18] = new Hexagone(1, Hexagone.GRASS, 0);
+        plateau[17][18] = new Hexagone(1, Hexagone.GRASS, 0, Hexagone.MAISON);
         plateau[17][19] = new Hexagone(3, Hexagone.GRASS, 0);
     }
 

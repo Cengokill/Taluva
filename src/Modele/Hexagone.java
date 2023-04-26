@@ -8,9 +8,11 @@ public class Hexagone {
     public static final int VOLCAN = 3;
     public static final int DESERT = 0;
     public static final int WATER = 5;
+    public static final int MAISON = 10;
     private int Hauteur;
 
     private int terrain;
+    private int batiment;
     int numero ;
 
     public Hexagone(int hauteur, int terrain, int n) {
@@ -18,6 +20,14 @@ public class Hexagone {
         this.terrain = terrain;
         this.numero = n;
     }
+    public Hexagone(int hauteur, int terrain, int n, int batiment) {
+        this.Hauteur = hauteur;
+        this.terrain = terrain;
+        this.batiment = batiment;
+        this.numero = n;
+    }
+
+
     public int getHauteur() {
         return Hauteur;
     }
@@ -28,5 +38,9 @@ public class Hexagone {
     public boolean HexagoneLibre(){
         if (terrain == 0) return true;
         else return false;
+    }
+
+    public int getBatiment() {
+        return batiment;
     }
 }
