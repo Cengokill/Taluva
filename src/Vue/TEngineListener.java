@@ -93,14 +93,9 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void mouseMoved(MouseEvent e) {
             tengine.hexTiles.hoverTilePosition = e.getPoint();
+            tengine.hexTiles.updateCursorPosOnTiles(e);
             tengine.hexTiles.miseAJour();
         }
-
-
-
-
-
-
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {

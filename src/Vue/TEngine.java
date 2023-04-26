@@ -57,7 +57,7 @@ public class TEngine extends JFrame {
         BufferedImage maisonTile;
         BufferedImage waterTile;
         BufferedImage hoverTile;
-        BufferedImage voidTile;
+        BufferedImage voidTile, voidTile_transparent;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
         BufferedImage foretTile_0, foretTile_1, foretTile_2;
@@ -82,11 +82,15 @@ public class TEngine extends JFrame {
 
         ControleurMediateur controleur;
 
+        int hoveredTile_x;
+        int hoveredTile_y;
+
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
             this.controleur = controleur;
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
+            voidTile_transparent = getReducedOpacityImage(voidTile, 0.5f);
             grassTile_0 = lisImageBuf("Grass_0_Tile");
             grassTile_1 = lisImageBuf("Grass_1_Tile");
             grassTile_2 = lisImageBuf("Grass_2_Tile");
@@ -241,13 +245,21 @@ public class TEngine extends JFrame {
 
                     //System.out.println(tileId);
 
+
+
+
+
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                     g.drawImage(tile, x , y - heightoffset, null);
 
                     if (map[i][j].getBatiment() == Hexagone.MAISON) {
                         tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
                         g.drawImage(tile, x , y - heightoffset, null);
+                    }
 
+                    System.out.println(map[hoveredTile_x][hoveredTile_y].getTerrain());
+                    if (map[hoveredTile_x][hoveredTile_y].getHauteur() != map[i][j].getHauteur()) {
+                        g.drawImage(voidTile_transparent, x , y - heightoffset, null);
                     }
                 }
             }
@@ -328,6 +340,23 @@ public class TEngine extends JFrame {
             }
             //System.out.println("Nul bebou: " + id + " - " + numero_texture);
             return null;
+        }
+
+        public void updateCursorPosOnTiles(MouseEvent e) {
+            int tileWidth = voidTile.getWidth();
+            int tileHeight = voidTile.getWidth();
+            int horizontalOffset = tileWidth;
+            int verticalOffset = (int) (tileHeight * 0.75);
+
+            Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
+                    (int) ((e.getY() - cameraOffset.y) / zoomFactor));
+
+            // Convertir les coordonnées du système de pixels en coordonnées du système de grille
+            int i = (int) (clickPositionAdjusted.y / verticalOffset);
+            int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
+
+            hoveredTile_x = i;
+            hoveredTile_y = j;
         }
 
         private void displayHoverTile(Graphics g) {
@@ -422,52 +451,49 @@ public class TEngine extends JFrame {
                 int i = (int) (clickPositionAdjusted.y / verticalOffset);
                 int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
 
-
                 Hexagone[][] map = jeu.getPlateau().getPlateau();
 
-                // S'assurer que les indices i et j sont à l'intérieur des limites de la matrice 'map'
-                if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
-
-                    int x;
-                    if (i % 2 == 1) {
-                        x = j - 1;
-                    } else {
-                        x = j;
-                    }
-
-                    if (scrollValue == 1) {
-                        if (controleur.peutPlacerTuile(i, j, i - 1, x, i - 1, x + 1)) {
-                            controleur.placeEtage(i, j, i - 1, x, triplet[1][0], i - 1, x + 1, triplet[2][0]);
-                        }
-                    }
-                    else if (scrollValue == 2){
-                        if (controleur.peutPlacerTuile(i, j, i - 1, x + 1, i, j + 1)) {
-                            controleur.placeEtage(i, j, i - 1, x + 1, triplet[1][0], i, j + 1, triplet[2][0]);
-                        }
-                    }
-                    else if (scrollValue == 3){
-                        if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x + 1)) {
-                            controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, x + 1, triplet[2][0]);
-                        }
-                    }
-                    else if (scrollValue == 4){
-                        if (controleur.peutPlacerTuile(i, j, i + 1, x + 1, i + 1, x)) {
-                            controleur.placeEtage(i, j, i + 1, x + 1, triplet[1][0], i + 1, x, triplet[2][0]);
-                        }
-                    }
-                    else if (scrollValue == 5){
-                        if (controleur.peutPlacerTuile(i, j, i + 1, x, i, j - 1)) {
-                            controleur.placeEtage(i, j, i + 1, x, triplet[1][0], i, j - 1, triplet[2][0]);
-                        }
-                    }
-                    else if (scrollValue == 6){
-                        if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x)) {
-                            controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, x, triplet[2][0]);
-                        }
-                    }
-
-                    miseAJour();
+                int x = hoveredTile_x;
+                if (i % 2 == 1) {
+                    x = j - 1;
+                } else {
+                    x = j;
                 }
+                j = hoveredTile_y;
+
+
+                if (scrollValue == 1) {
+                    if (controleur.peutPlacerTuile(i, j, i - 1, x, i - 1, x + 1)) {
+                        controleur.placeEtage(i, j, i - 1, x, triplet[1][0], i - 1, x + 1, triplet[2][0]);
+                    }
+                }
+                else if (scrollValue == 2){
+                    if (controleur.peutPlacerTuile(i, j, i - 1, x + 1, i, j + 1)) {
+                        controleur.placeEtage(i, j, i - 1, x + 1, triplet[1][0], i, j + 1, triplet[2][0]);
+                    }
+                }
+                else if (scrollValue == 3){
+                    if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x + 1)) {
+                        controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, x + 1, triplet[2][0]);
+                    }
+                }
+                else if (scrollValue == 4){
+                    if (controleur.peutPlacerTuile(i, j, i + 1, x + 1, i + 1, x)) {
+                        controleur.placeEtage(i, j, i + 1, x + 1, triplet[1][0], i + 1, x, triplet[2][0]);
+                    }
+                }
+                else if (scrollValue == 5){
+                    if (controleur.peutPlacerTuile(i, j, i + 1, x, i, j - 1)) {
+                        controleur.placeEtage(i, j, i + 1, x, triplet[1][0], i, j - 1, triplet[2][0]);
+                    }
+                }
+                else if (scrollValue == 6){
+                    if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x)) {
+                        controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, x, triplet[2][0]);
+                    }
+                }
+
+                miseAJour();
             }
         }
     }
