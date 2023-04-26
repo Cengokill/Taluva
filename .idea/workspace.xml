@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Ajout de triplés (etages) fonctionnel">
-      <change afterPath="$PROJECT_DIR$/src/Structures/Vector2.java" afterDir="false" />
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Update Coup">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Hexagone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vue/TEngineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngineListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Coup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Coup.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +54,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\x\IdeaProjects\Taluva\ressources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\x\IdeaProjects\Taluva\ressources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -222,7 +222,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682505328249</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="D&amp;Co viollages et volcan">
+      <created>1682510573332</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1682510573332</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Update Coup">
+      <created>1682511580343</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1682511580343</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +271,9 @@
     <MESSAGE value="Version bouton cassée" />
     <MESSAGE value="Version bouton qui marche" />
     <MESSAGE value="Ajout de triplés (etages) fonctionnel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de triplés (etages) fonctionnel" />
+    <MESSAGE value="D&amp;Co viollages et volcan" />
+    <MESSAGE value="Update Coup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Coup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
