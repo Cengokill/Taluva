@@ -16,6 +16,7 @@ public class Hexagone {
     public static final byte TOUR = 10;
     private byte Hauteur;
 
+    private int IDvillage ;
     private byte terrain;
     private byte batiment;
     byte numero ;
@@ -60,7 +61,7 @@ public class Hexagone {
         else return false;
     }
 
-    public int getBatiment() {
-        return batiment;
-    }
+    public int getBatiment() {return batiment;}
+
+    public int getIDvillage (){return IDvillage;}
 }

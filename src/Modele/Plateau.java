@@ -1,6 +1,7 @@
 package Modele;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Plateau {
@@ -66,30 +67,21 @@ public class Plateau {
 
         // Hauteur max
         if (hauteur == 3) {
-            System.out.println("a");
             return false;
         }
         // Vérifie si on place un volcan sur un volcan
         if (plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VOLCAN && plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VIDE) {
-            System.out.println("b");
-
             return false;
         }
 
         // Vérifie la hauteur de toutes les cases
         if (plateau[volcan_x][volcan_y].getHauteur() != hauteur) {
-            System.out.println("c");
-
             return false;
         }
         if (plateau[tile1_x][tile1_y].getHauteur() != hauteur) {
-            System.out.println("d");
-
             return false;
         }
         if (plateau[tile2_x][tile2_y].getHauteur() != hauteur) {
-            System.out.println("e");
-
             return false;
         }
 
@@ -140,14 +132,75 @@ public class Plateau {
                     plateau[tile2_x - 1][tile2_y + 1].getTerrain() != Hexagone.VIDE ||
                     plateau[tile2_x - 1][tile2_y - 1].getTerrain() != Hexagone.VIDE
             )) {
-                System.out.println("f");
                 return false;
             }
         }
 
         return true;
     }
+    public boolean peutPlacerVillage(int x ,int y){
+        if(plateau[x][y].getTerrain()!=Hexagone.VOLCAN ||plateau[x][y].getBatiment()==Hexagone.VIDE){
+            return true;
+        }
+        return false;
 
+    }
+    public boolean VillageQuestionMarK(int x , int y){
+        if (plateau[x][y].getBatiment()==Hexagone.MAISON){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    public ArrayList<Integer> propagation (int x, int y ){
+        ArrayList<Integer> listeDecases = new ArrayList<>();
+        int IDvillage = plateau[x][y].getIDvillage();
+        byte TypeTerrain = plateau[x][y].getTerrain();
+        for (int i = 0; i<plateau.length;i++){
+            for (int j = 0; j<plateau[0].length;j++){
+                if(plateau[i][j].getIDvillage()==IDvillage || (i!=x && y!=j)){// pense a quand place village regarder si tour ou temple
+                    if(plateau[i][j-1].getTerrain()== TypeTerrain) {
+                        listeDecases.add(i);
+                        listeDecases.add(j-1);
+                    }
+                    if(plateau[i-1][j].getTerrain()== TypeTerrain) {
+                        listeDecases.add(i-1);
+                        listeDecases.add(j);
+                    }
+                    if(plateau[i][j+1].getTerrain()== TypeTerrain) {
+                        listeDecases.add(i);
+                        listeDecases.add(j+1);
+                    }
+                    if(plateau[i+1][j].getTerrain()== TypeTerrain) {
+                        listeDecases.add(i+1);
+                        listeDecases.add(j);
+                    }
+                    if(i%2==1){
+                        if(plateau[i-1][j+1].getTerrain()== TypeTerrain) {
+                            listeDecases.add(i-1);
+                            listeDecases.add(j+1);
+                        }
+                        if(plateau[i+1][j+1].getTerrain()== TypeTerrain) {
+                            listeDecases.add(i+1);
+                            listeDecases.add(j+1);
+                        }
+                    }else{
+                        if(plateau[i-1][j-1].getTerrain()== TypeTerrain) {
+                            listeDecases.add(i-1);
+                            listeDecases.add(j-1);
+                        }
+                        if(plateau[i+1][j-1].getTerrain()== TypeTerrain) {
+                            listeDecases.add(i+1);
+                            listeDecases.add(j-1);
+                        }
+                    }
+                }
+            }
+        }
+        return listeDecases;
+    }
+    public boolean estDansTableau(int x , int y){return x>-1 || x<31 || y>-1 || y<31  ;}
     public void joueCoup(Coup coup) {
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
         if (coup.type == Coup.TUILE) {
