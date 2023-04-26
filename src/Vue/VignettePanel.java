@@ -26,7 +26,7 @@ public class VignettePanel extends JPanel {
         int panelHeight = getHeight();
         Point2D center = new Point2D.Float(panelWidth / 2, panelHeight / 2);
         float[] dist = {0.4f, 1.0f}; // Augmentez la distance initiale pour rendre le centre plus transparent
-        Color[] colors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 110)}; // Réduisez l'opacité du noir dans les coins (77/255 ~ 30%)
+        Color[] colors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 130)}; // Réduisez l'opacité du noir dans les coins (77/255 ~ 30%)
         RadialGradientPaint paint = new RadialGradientPaint(center, Math.max(panelWidth, panelHeight) / 2, dist, colors);
 
         g2d.setPaint(paint);
