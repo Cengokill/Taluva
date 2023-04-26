@@ -27,14 +27,14 @@ public class Plateau {
             }
         }
 
-        plateau[18][19] = new Hexagone(1, Hexagone.VOLCAN);
+        plateau[18][19] = new Hexagone(1, Hexagone.GRASS);
         plateau[19][20] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[18][20] = new Hexagone(1, Hexagone.VOLCAN);
+        plateau[18][20] = new Hexagone(1, Hexagone.GRASS);
         plateau[18][21] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[19][17] = new Hexagone(1, Hexagone.VOLCAN);
+        plateau[19][17] = new Hexagone(1, Hexagone.FORET);
         plateau[19][18] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[20][18] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[19][19] = new Hexagone(1, Hexagone.VOLCAN);
+        plateau[20][18] = new Hexagone(1, Hexagone.DESERT);
+        plateau[19][19] = new Hexagone(1, Hexagone.DESERT);
         plateau[17][18] = new Hexagone(1, Hexagone.GRASS);
         plateau[17][18] = new Hexagone(1, Hexagone.GRASS, Hexagone.MAISON);
         plateau[17][19] = new Hexagone(3, Hexagone.GRASS);

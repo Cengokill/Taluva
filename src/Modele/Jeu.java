@@ -1,12 +1,9 @@
 package Modele;
-import javax.swing.*;
 
-import Controleur.ControleurMediateur;
 import Patterns.Observable;
 
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Jeu extends Observable {
     Plateau plateau;
@@ -17,7 +14,7 @@ public class Jeu extends Observable {
     Parametres p;
     int[]score =new int[2];
 
-    byte[] tuile_a_poser = new byte[2];
+    byte[] tuile_a_poser = new byte[5];
 
     LinkedList<Tuile> pioche;
     private static int TAILLE_PIOCHE = 24;
@@ -51,8 +48,11 @@ public class Jeu extends Observable {
 
     public void pioche() {
         Tuile tile_courante = pioche.removeFirst();
-        tuile_a_poser[0] = tile_courante.terrain1;
-        tuile_a_poser[1] = tile_courante.terrain2;
+        tuile_a_poser[0] = tile_courante.terrain0;
+        tuile_a_poser[1] = tile_courante.terrain1;
+        tuile_a_poser[2] = (byte) tile_courante.numero0;
+        tuile_a_poser[3] = (byte) tile_courante.numero1;
+        tuile_a_poser[4] = (byte) tile_courante.numero2;
     }
 
     public boolean joueJoueur(Coup cp) {

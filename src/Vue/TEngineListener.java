@@ -113,7 +113,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                     tengine.hexTiles.scrollValue = 1;
                 }
                 tengine.hexTiles.repaint();
-                System.out.println("Scroll value: " + tengine.hexTiles.scrollValue);
+                //System.out.println("Scroll value: " + tengine.hexTiles.scrollValue);
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = tengine.hexTiles.zoomFactor;

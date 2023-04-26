@@ -82,7 +82,7 @@ public class TEngine extends JFrame {
 
         int scrollValue = 1;
 
-        byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_height]
+        byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
 
         TEngineListener.MouseHandler handler;
 
@@ -131,8 +131,15 @@ public class TEngine extends JFrame {
         public void changerTuileAPoser() {
             byte[] tuiles;
             tuiles = controleur.getTuileAPoser();
-            triplet[1][0] = tuiles[0];
-            triplet[2][0] = tuiles[1];
+            triplet[1][0] = tuiles[0]; // tile 1
+            triplet[2][0] = tuiles[1]; // tile 2
+
+            //System.out.println(tuiles[2]);
+            //System.out.println(tuiles[3]);
+            //System.out.println(tuiles[4]);
+            triplet[0][1] = tuiles[2]; // volcan
+            triplet[1][1] = tuiles[3]; // tile 1
+            triplet[2][1] = tuiles[4]; // tile 2
         }
 
         private Image lisImage(String nom) {
@@ -325,7 +332,7 @@ public class TEngine extends JFrame {
                     return foretTile_2;
                 }
             }
-            System.out.println("Nul bebou: " + id + " - " + numero_texture);
+            //System.out.println("Nul bebou: " + id + " - " + numero_texture);
             return null;
         }
 
@@ -348,9 +355,9 @@ public class TEngine extends JFrame {
                 int y = i * verticalOffset;
 
                 float opacity = 0.5f; // Réduire l'opacité de moitié
-                BufferedImage tile1 = getTileImageFromId(triplet[0][0],0);
-                BufferedImage tile2 = getTileImageFromId(triplet[1][0],0);
-                BufferedImage tile3 = getTileImageFromId(triplet[2][0],0);
+                BufferedImage tile1 = getTileImageFromId(triplet[0][0],triplet[0][1]);
+                BufferedImage tile2 = getTileImageFromId(triplet[1][0],triplet[1][1]);
+                BufferedImage tile3 = getTileImageFromId(triplet[2][0],triplet[2][1]);
                 tile1 = getReducedOpacityImage(tile1, opacity);
                 tile2 = getReducedOpacityImage(tile2, opacity);
                 tile3 = getReducedOpacityImage(tile3, opacity);
