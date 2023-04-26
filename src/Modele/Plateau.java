@@ -24,21 +24,14 @@ public class Plateau {
     private void initPlateau() {
         for (int i = 0; i < plateau.length; i++) {
             for (int j = 0; j < plateau[0].length; j++) {
-                plateau[i][j] = new Hexagone(0, Hexagone.VIDE);
+                plateau[i][j] = new Hexagone((byte) 0, Hexagone.VIDE, (byte)0, (byte)0);
             }
         }
 
-        plateau[18][19] = new Hexagone(1, Hexagone.GRASS);
-        plateau[19][20] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[18][20] = new Hexagone(1, Hexagone.GRASS);
-        plateau[18][21] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[19][17] = new Hexagone(1, Hexagone.FORET);
-        plateau[19][18] = new Hexagone(1, Hexagone.VOLCAN);
-        plateau[20][18] = new Hexagone(1, Hexagone.DESERT);
-        plateau[19][19] = new Hexagone(1, Hexagone.DESERT);
-        plateau[17][18] = new Hexagone(1, Hexagone.GRASS);
-        plateau[17][18] = new Hexagone(1, Hexagone.GRASS, Hexagone.MAISON);
-        plateau[17][19] = new Hexagone(3, Hexagone.GRASS);
+        plateau[18][19] = new Hexagone((byte) 1, Hexagone.GRASS, (byte) 20, (byte)19);
+        plateau[19][20] = new Hexagone((byte)1, Hexagone.VOLCAN, (byte)20, (byte)19);
+        plateau[18][20] = new Hexagone((byte)1, Hexagone.GRASS, (byte)20, (byte)19);
+
     }
 
     public Hexagone[][] getPlateau() {
@@ -158,9 +151,9 @@ public class Plateau {
     public void joueCoup(Coup coup) {
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
         if (coup.type == Coup.TUILE) {
-            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone(hauteur + 1, Hexagone.VOLCAN);
-            plateau[coup.tile1_x][coup.tile1_y] = new Hexagone(hauteur + 1, coup.terrain1);
-            plateau[coup.tile2_x][coup.tile2_y] = new Hexagone(hauteur + 1, coup.terrain2);
+            plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
 
         } else if (coup.type == Coup.BATIMENT){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
@@ -173,7 +166,7 @@ public class Plateau {
                 batiment = Hexagone.MAISON;
             }
 
-            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment);
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone((byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)coup.volcan_x, (byte)coup.volcan_y);
         }
     }
 

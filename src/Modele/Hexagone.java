@@ -14,32 +14,47 @@ public class Hexagone {
     public static final byte MAISON = 10;
     public static final byte TEMPLE = 10;
     public static final byte TOUR = 10;
-    private int Hauteur;
+    private byte Hauteur;
 
     private byte terrain;
     private byte batiment;
-    int numero ;
+    byte numero ;
 
-    public Hexagone(int hauteur, byte terrain) {
+    public byte volcan_x;
+    public byte volcan_y;
+
+    public Hexagone(byte hauteur, byte terrain, byte volcan_x, byte volcan_y) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
-        this.numero = ((int)(Math.random() * 2) + 1);
+        this.numero = (byte) ((int)(Math.random() * 2) + 1);
+        this.volcan_x = volcan_x;
+        this.volcan_y = volcan_y;
     }
-    public Hexagone(int hauteur, byte terrain, byte batiment) {
+    public Hexagone(byte hauteur, byte terrain, byte batiment, byte volcan_x, byte volcan_y) {
         this.Hauteur = hauteur;
         this.terrain = terrain;
         this.batiment = batiment;
-        this.numero = ((int)(Math.random() * 2) + 1);
+        this.numero = (byte) ((int)(Math.random() * 2) + 1);
+        this.volcan_x = volcan_x;
+        this.volcan_y = volcan_y;
     }
 
 
-    public int getHauteur() {
+    public byte getHauteur() {
         return Hauteur;
     }
     public byte getTerrain() {
         return terrain;
     }
-    public int getNum(){return numero;}
+    public byte getNum(){return numero;}
+
+    public int getVolcanX(){
+        return volcan_x;
+    }
+    public int getVolcanY(){
+        return volcan_y;
+    }
+
     public boolean HexagoneLibre(){
         if (terrain == 0) return true;
         else return false;
