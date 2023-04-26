@@ -16,7 +16,7 @@ De nombreuses stratégies découlent des différentes règles de placement. Les 
 | Priorité | Description |
 | --- | --- |
 | 1 | <ul><li> - [x] Affichage du plateau                                                                </li></ul>
-| 1 | <ul><li> - [x ] Ajout de pièces sur le niveau 0                                                     </li></ul>
+| 1 | <ul><li> - [x] Ajout de pièces sur le niveau 0                                                     </li></ul>
 | 1 | <ul><li> - [x] Ajout de pièces sur un niveau supérieur                                             </li></ul>
 | 1 | <ul><li> - [ ] Ajout de huttes                                                                     </li></ul>
 | 1 | <ul><li> - [ ] Ajout de temples                                                                    </li></ul>
