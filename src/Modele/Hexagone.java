@@ -2,13 +2,15 @@ package Modele;
 
 public class Hexagone {
 
+    public static final byte VOLCAN = 32;
+    public static final byte WATER = 16;
+
     public static final byte VIDE = 0;
     public static final byte GRASS = 1;
-    public static final byte MONTAGNE = 0;
-    public static final byte VOLCAN = 32;
-    public static final byte DESERT = 0;
-    public static final byte FORET = 0;
-    public static final byte WATER = 2;
+    public static final byte MONTAGNE = 2;
+    public static final byte DESERT = 3;
+    public static final byte FORET = 4;
+
     public static final byte MAISON = 10;
     private int Hauteur;
 
