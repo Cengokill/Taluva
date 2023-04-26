@@ -1,5 +1,14 @@
+import Controleur.ControleurMediateur;
+import Modele.Jeu;
+import Vue.TEngine;
+
 public class TaluvaMain {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+        Jeu jeu = new Jeu(null);
+        ControleurMediateur controler = new ControleurMediateur(jeu);
+
+        TEngine fenetre = new TEngine(controler);
+        fenetre.setVisible(true);
     }
 }
