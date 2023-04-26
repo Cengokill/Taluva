@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="TEngine avec hauteur de tiles et Listener séparé" />
+    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Hauteur baissée pour le void">
+      <change afterPath="$PROJECT_DIR$/src/Vue/VignettePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -145,7 +149,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682494436977</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Hauteur baissée pour le void">
+      <created>1682494798344</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1682494798344</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,6 +181,7 @@
     <MESSAGE value="Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes" />
     <MESSAGE value="Ajout jeu" />
     <MESSAGE value="TEngine avec hauteur de tiles et Listener séparé" />
-    <option name="LAST_COMMIT_MESSAGE" value="TEngine avec hauteur de tiles et Listener séparé" />
+    <MESSAGE value="Hauteur baissée pour le void" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hauteur baissée pour le void" />
   </component>
 </project>

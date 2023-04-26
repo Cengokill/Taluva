@@ -31,9 +31,20 @@ public class TEngine extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // Créer un JLayeredPane pour superposer les éléments
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(1400, 1000));
+        getContentPane().add(layeredPane);
+
         // Ajouter les tuiles hexagonales
         hexTiles = new HexagonalTiles();
-        getContentPane().add(hexTiles);
+        hexTiles.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
+
+        // Ajouter la vignette
+        VignettePanel vignettePanel = new VignettePanel();
+        vignettePanel.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
 
         // Définir la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
