@@ -1,4 +1,7 @@
-package Modele;
+package Vue;
+
+import Modele.Hexagone;
+import Modele.Plateau;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,6 +29,7 @@ public class TEngine extends JFrame {
 
         // Définir la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
+        addMouseListener(new TEngineListener(this));
     }
 
     public static void main(String[] args) {
@@ -82,6 +86,10 @@ public class TEngine extends JFrame {
             plateau = new Plateau();
         }
 
+        public void miseAJour() {
+            repaint();
+        }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -116,7 +124,7 @@ public class TEngine extends JFrame {
         }
 
         private void displayHexagonMap(Graphics g) {
-            Hexagone[][] map = plateau.plateau;
+            Hexagone[][] map = plateau.getPlateau();
             int tileWidth = voidTile.getWidth();
             int tileHeight = voidTile.getHeight();
             int horizontalOffset = tileWidth;
@@ -127,7 +135,7 @@ public class TEngine extends JFrame {
                     int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                     int y = i * verticalOffset;
                     int tileId = map[i][j].getTypeTion();
-
+                    System.out.println(tileId);
                     BufferedImage tile = getTileImageFromId(tileId);
                     g.drawImage(tile, x , y, null);
                 }
@@ -233,7 +241,7 @@ public class TEngine extends JFrame {
                 int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
 
 
-                Hexagone[][] map = plateau.plateau;
+                Hexagone[][] map = plateau.getPlateau();
 
                 // S'assurer que les indices i et j sont à l'intérieur des limites de la matrice 'map'
                 if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
@@ -271,6 +279,8 @@ public class TEngine extends JFrame {
                         map[i - 1][x] = new Hexagone(0, 0, 0, triplet[2]);
                     }
                     repaint();
+                    map[i][j] = new Hexagone(0, 0, 0, tile_type);
+                    miseAJour();
                 }
             }
         }
@@ -325,17 +335,16 @@ public class TEngine extends JFrame {
                     }
 
                     lastMousePosition = e.getPoint();
-                    repaint();
                 } else {
                     hoverTilePosition = e.getPoint();
-                    repaint();
                 }
+                miseAJour();
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
                 hoverTilePosition = e.getPoint();
-                repaint();
+                miseAJour();
             }
 
             @Override
@@ -364,18 +373,15 @@ public class TEngine extends JFrame {
                     cameraOffset.x -= (e.getX() - cameraOffset.x) * (zoomFactor - prevZoomFactor);
                     cameraOffset.y -= (e.getY() - cameraOffset.y) * (zoomFactor - prevZoomFactor);
 
-                    // Empêcher la caméra de voir des cases dans le négatif
-                    if (cameraOffset.x > 0) {
-                        cameraOffset.x = 0;
-                    }
-                    if (cameraOffset.y > -64) {
-                        cameraOffset.y = -64;
-                    }
-
-                    repaint();
+                // Empêcher la caméra de voir des cases dans le négatif
+                if (cameraOffset.x > 0) {
+                    cameraOffset.x = 0;
                 }
+                if (cameraOffset.y > -64) {
+                    cameraOffset.y = -64;
+                }
+                miseAJour();
             }
-
 
         }
     }

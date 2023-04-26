@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="affichage et intégration des triplés dans tous les sens">
+    <list default="true" id="18bd274a-2fc1-4035-9ad7-03a9dc163e99" name="Changes" comment="Ajout jeu">
+      <change afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Vue/CollecteurEvenements.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Grass_Tile.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Grass_Tile.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/TEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,20 +61,7 @@
       <recent name="Modele" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.TEngine">
-    <configuration name="TEngine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Modele.TEngine" />
-      <module name="Taluva" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Vue.TEngine">
     <configuration name="TaluvaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TaluvaMain" />
       <module name="Taluva" />
@@ -81,9 +69,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Vue.TEngine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Vue.TEngine" />
+      <module name="Taluva" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Vue.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TEngine" />
+        <item itemvalue="Application.Vue.TEngine" />
         <item itemvalue="Application.TaluvaMain" />
       </list>
     </recent_temporary>
@@ -98,6 +99,7 @@
       <updated>1682427307594</updated>
       <workItem from="1682427309245" duration="1490000" />
       <workItem from="1682450291102" duration="600000" />
+      <workItem from="1682488946065" duration="1461000" />
     </task>
     <task id="LOCAL-00001" summary="Push Pull Legs">
       <created>1682427336805</created>
@@ -127,19 +129,19 @@
       <option name="project" value="LOCAL" />
       <updated>1682451046553</updated>
     </task>
-    <task id="LOCAL-00005" summary="Intégration de l'engine aux Hexagones">
-      <created>1682452099841</created>
+    <task id="LOCAL-00005" summary="Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes">
+      <created>1682489739469</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1682452099841</updated>
+      <updated>1682489739470</updated>
     </task>
-    <task id="LOCAL-00006" summary="Haffichage et intégration des triplés dans tous les sens">
-      <created>1682455389751</created>
+    <task id="LOCAL-00006" summary="Ajout jeu">
+      <created>1682490228696</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1682455389751</updated>
+      <updated>1682490228696</updated>
     </task>
     <option name="localTasksCounter" value="7" />
     <servers />
@@ -163,8 +165,8 @@
     <MESSAGE value="Ajout Packages et Structures" />
     <MESSAGE value="Correctifs en soutif" />
     <MESSAGE value="textures" />
-    <MESSAGE value="Intégration de l'engine aux Hexagones" />
-    <MESSAGE value="Haffichage et intégration des triplés dans tous les sens" />
-    <option name="LAST_COMMIT_MESSAGE" value="Haffichage et intégration des triplés dans tous les sens" />
+    <MESSAGE value="Ajouts divers et tentative de séparation propre de TEngine en plusieurs classes" />
+    <MESSAGE value="Ajout jeu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout jeu" />
   </component>
 </project>

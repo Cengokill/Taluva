@@ -27,6 +27,10 @@ public class Plateau {
         plateau[17][19] = new Hexagone(0, 0, 0, Hexagone.GRASS);
     }
 
+    public Hexagone[][] getPlateau() {
+        return plateau;
+    }
+
     // check si la condition de victoire du nb de pièces est bonne
     public boolean fini1(int joueur){
         int nb_pion_vite_J1 = 0;
