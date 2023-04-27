@@ -21,6 +21,7 @@ public class TEngine extends JFrame {
     public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
 
+    Point LastPosition;
     boolean poseTile, mode_plateau = true, mode_numero = false;
     Jeu jeu;
 
@@ -57,7 +58,7 @@ public class TEngine extends JFrame {
 
 
     public class HexagonalTiles extends JPanel {
-        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour;
+        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, chosirMaison;
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
@@ -81,6 +82,9 @@ public class TEngine extends JFrame {
         byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
+
+        boolean enSelection = false;
+        int typeAConstruire=0, posBat_x, posBat_y;
         ControleurMediateur controleur;
         int hoveredTile_x;
         int hoveredTile_y;
@@ -117,13 +121,18 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-            boutonAnnuler = lisImage("Annuler");
+            wrongTile1 = applyYellowFilter(wrongTile1);
+            wrongTile2 = applyYellowFilter(wrongTile2);
+            wrongTile3 = applyYellowFilter(wrongTile3);
+
+            boutonAnnuler = lisImage("annuler");
             maisonTile = lisImageBuf("Batiments/maison");
             templeJungle = lisImageBuf("Batiments/Temple_jungle");
             templePierre = lisImageBuf("Batiments/Temple_pierre");
             templePrairie = lisImageBuf("Batiments/Temple_prairie");
             templeSable = lisImageBuf("Batiments/Temple_sable");
             tour = lisImageBuf("Batiments/tour");
+            chosirMaison = lisImageBuf("Batiments/choisir_maison");
 
             setOpaque(false);
 
@@ -332,6 +341,26 @@ public class TEngine extends JFrame {
                             g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
                         }
                     }
+
+                    if (map[i][j].getBatiment() == Hexagone.MAISON) {
+                        tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
+                        g.drawImage(tile, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
+                        g.drawImage(templeJungle, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
+                        g.drawImage(templePrairie, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
+                        g.drawImage(templePierre, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
+                        g.drawImage(templeSable, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
+                        g.drawImage(tour, x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
+                        int pos_x = x-150;
+                        int pos_y = y -300;
+                        g.drawImage(chosirMaison, pos_x, pos_y,chosirMaison.getWidth()*2,chosirMaison.getWidth()*2, null);
+                    }
+
                 }
             }
         }
@@ -421,6 +450,7 @@ public class TEngine extends JFrame {
 
             Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
                     (int) ((e.getY() - cameraOffset.y) / zoomFactor));
+            LastPosition = clickPositionAdjusted;
 
             // Convertir les coordonnées du système de pixels en coordonnées du système de grille
             int i = (int) (clickPositionAdjusted.y / verticalOffset);
@@ -613,8 +643,6 @@ public class TEngine extends JFrame {
                         g.drawImage(tour, x , y - heightoffset1, null);
                     }
                 }
-
-
             }
         }
 
@@ -679,8 +707,41 @@ public class TEngine extends JFrame {
             }
             j = hoveredTile_y;
             if (controleur.peutPlacerMaison(i, j)) {
-                controleur.placeMaison(i, j);
+                controleur.placeMaison(i, j,(byte) typeAConstruire);
             }
+        }
+
+        private int choisirMaison(int x, int y){
+            if(!enSelection){
+                if (controleur.peutPlacerMaison(x, y)) {
+                    posBat_x = x;
+                    posBat_y = y;
+                    enSelection = true;
+                    controleur.placeMaison(posBat_x, posBat_y,(byte) 4);
+                }
+            }else{
+                int pos_x = posBat_x*voidTile.getWidth();
+                int pos_y = posBat_y*voidTile.getWidth();
+                int type = 0;
+
+                System.out.println(pos_x);
+                System.out.println("LastPosition_x: "+LastPosition.getX()+"LastPosition_y: "+LastPosition.getY());
+
+                if(LastPosition.getX()>=pos_x && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+100 && LastPosition.getY()<=pos_y+100)
+                    type=1;
+                if(LastPosition.getX()>=pos_x+200 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+500 && LastPosition.getY()<=pos_y+100)
+                    type=2;
+                if(LastPosition.getX()>=pos_x+450 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+750 && LastPosition.getY()<=pos_y+100)
+                    type=3;
+
+                if(type!=0){
+                    enSelection = false;
+                    controleur.placeMaison(posBat_x,posBat_y,(byte) type);
+                    typeAConstruire=0;
+                }
+                return type;
+            }
+            return 0;
         }
 
 
@@ -700,8 +761,15 @@ public class TEngine extends JFrame {
 
                 Hexagone[][] map = jeu.getPlateau().getPlateau();
 
+                //System.out.println("type a construire: "+typeAConstruire);
+                //System.out.println("en selection: "+enSelection);
+
                 if(poseTile) placerTuiles(i,j);
-                else placerMaison(i,j);
+                //else if(typeAConstruire!=0) placerMaison(i,j);
+                else typeAConstruire = choisirMaison(i, j);
+
+
+
 
                 miseAJour();
             }

@@ -211,18 +211,20 @@ public class Plateau {
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
 
-        } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3){
-            hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
+        } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
+            //hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
             byte batiment = 0;
-            if (hauteur == 1) {
+            if (coup.type == 1) {
                 batiment = Hexagone.MAISON;
-            } else if (hauteur == 2) {
+            } else if (coup.type == 2) {
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
                 if(plateau[coup.batiment_x][coup.batiment_y].getTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
-            } else if (hauteur == 3) {
+            } else if (coup.type == 3) {
                 batiment = Hexagone.TOUR;
+            } else if (coup.type == 4){
+                batiment = Hexagone.CHOISIR_MAISON;
             }
             plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanX(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanY());
         }

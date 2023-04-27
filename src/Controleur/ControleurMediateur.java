@@ -30,6 +30,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getPlateau().peutPlacerMaison(i,j);
     }
 
+    public void placeMaison(int i, int j, byte type){
+        //int hauteur = jeu.getPlateau().getHauteurTuile(i,j);
+        jeu.getPlateau().placeMaison(i,j,(byte) type);
+
     public void placeMaison(int i, int j){
         jeu.joueurPlaceMaison(i,j);//le joueur courant du jeu place une maison � l'emplacement i, j
     }
