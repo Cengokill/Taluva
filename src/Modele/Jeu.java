@@ -4,20 +4,19 @@ import Patterns.Observable;
 
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
     IA IA1, IA2;
     byte jCourant = 0;
-    Object[] joueurs = new Object[2];
+    Joueur[] joueurs = new Joueur[2];
     Parametres p;
     int[]score =new int[2];
     byte[] tuile_a_poser = new byte[5];
 
-    boolean doit_placer_tuile = true;
-    boolean doit_placer_batiment = false;
+    boolean doit_placer_tuile;
+    boolean doit_placer_batiment;
 
     LinkedList<Tuile> pioche;
     private static int TAILLE_PIOCHE = 24;
@@ -30,11 +29,19 @@ public class Jeu extends Observable {
 
     public void lancePartie(){
         initPioche();
+        initJoueurs();
         plateau = new Plateau();
-        plateau.jCourant = jCourant;
-        pioche();
+        doit_placer_tuile = true;
+        doit_placer_batiment = false;
     }
 
+    public void initJoueurs(){
+        joueurs[0] = new Joueur((byte)0,"Killian");
+        joueurs[1] = new Joueur((byte)1,"Sacha");
+    }
+    public boolean estVictoire(){
+        return false;
+    }
 
     public boolean doit_placer_tuile() {
         return doit_placer_tuile;
@@ -44,6 +51,16 @@ public class Jeu extends Observable {
         return doit_placer_batiment;
     }
 
+    public boolean joueurPlaceEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2){
+        if (doit_placer_batiment) {
+            return false;
+        }
+        plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+        doit_placer_batiment = true;
+        doit_placer_tuile = false;
+        return true;
+    }
+
     public void joueurPlaceMaison(int i, int j){
         //System.out.println(doit_placer_tuile);
         //System.out.println(doit_placer_batiment);
@@ -51,20 +68,9 @@ public class Jeu extends Observable {
             return;
         }
         plateau.placeMaison(jCourant, i,j, (byte) plateau.getHauteurTuile(i,j));
-        changeJoueur();
-        doit_placer_tuile = true;
         doit_placer_batiment = false;
-    }
-
-    public boolean joueCoup(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2){
-        if (doit_placer_batiment) {
-            return false;
-        }
-        plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
-        doit_placer_batiment = true;
-        doit_placer_tuile = false;
-
-        return true;
+        doit_placer_tuile = true;
+        changeJoueur();
     }
 
     public void changeJoueur() {
@@ -73,7 +79,10 @@ public class Jeu extends Observable {
         } else {
             jCourant = (byte) 0;
         }
-        plateau.jCourant = jCourant;
+    }
+
+    public String getJoueurCourant(){
+        return joueurs[jCourant].getPrenom();
     }
 
     public void initPioche(){//24 tuiles
@@ -87,7 +96,7 @@ public class Jeu extends Observable {
         return tuile_a_poser;
     }
 
-    public void joueCoup(Coup coup) {
+    public void joueurPlaceEtage(Coup coup) {
         plateau.joueCoup(coup);
     }
 

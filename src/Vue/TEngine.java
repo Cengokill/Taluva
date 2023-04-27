@@ -66,37 +66,30 @@ public class TEngine extends JFrame {
         BufferedImage foretTile_0, foretTile_1, foretTile_2;
         BufferedImage desertTile_0, desertTile_1, desertTile_2;
         BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
+        BufferedImage joueurCourant;
         Image boutonAnnuler;
         int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
+        int largeur_joueurCourant, hauteur_joueurCourant, posX_joueurCourant, posY_joueurCourant;
         TEngine tengine;
         Point hoverTilePosition = new Point(-tile_size, -tile_size);
         Point cameraOffset = new Point(0, 0);
         Point lastMousePosition;
         double zoomFactor = 0.3;
         double zoomIncrement = 0.1;
-
         private Plateau plateau;
-
         int scrollValue = 1;
-
         byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
-
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
-
         ControleurMediateur controleur;
-
         int hoveredTile_x;
         int hoveredTile_y;
-
         Color[] couleurs_joueurs;
-
-
-
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
             this.controleur = controleur;
+            joueurCourant = lisImageBuf("Joueur_Courant");
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
             voidTile_transparent = getReducedOpacityImage(voidTile, 0.5f);
@@ -124,7 +117,7 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-            boutonAnnuler = lisImage("annuler");
+            boutonAnnuler = lisImage("Annuler");
             maisonTile = lisImageBuf("Batiments/maison");
             templeJungle = lisImageBuf("Batiments/Temple_jungle");
             templePierre = lisImageBuf("Batiments/Temple_pierre");
@@ -194,13 +187,24 @@ public class TEngine extends JFrame {
         public void afficherBoutonAnnuler(Graphics g){
             posY_bouton_annuler = (int) (hauteur*.15);
             posX_bouton_annuler = (int) (largeur*.80);
-
             int x = (int)(posX_bouton_annuler/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
             int y = (int)(posY_bouton_annuler/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
             int largeur = (int)(largeur_bouton/zoomFactor);
-            int longueur = (int)(hauteur_bouton/zoomFactor);
+            int hauteur = (int)(hauteur_bouton/zoomFactor);
+            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, hauteur);
+        }
 
-            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, longueur);
+        public void afficheJoueurCourant(Graphics g){
+            posY_joueurCourant = (int) (hauteur*.05);
+            posX_joueurCourant = (int) (largeur*.40);
+            int x = (int)(posX_joueurCourant/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
+            int y = (int)(posY_joueurCourant/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
+            int largeur = (int)(largeur_joueurCourant/zoomFactor);
+            int hauteur = (int)(hauteur_joueurCourant/zoomFactor);
+            tracer((Graphics2D) g, joueurCourant, x, y, largeur, hauteur);
+            Font font = new Font("Roboto", Font.BOLD, (int) (40/zoomFactor));
+            g.setFont(font);
+            g.drawString(jeu.getJoueurCourant(), x, y+hauteur);
         }
 
         private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
@@ -225,19 +229,24 @@ public class TEngine extends JFrame {
             g2d.translate(cameraOffset.x, cameraOffset.y);
             g2d.scale(zoomFactor, zoomFactor);
 
-            //définit la taille des boutons
+            //définit la taille des boutons et des encadrés
             double rapport_bouton = (double) 207/603;
             largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
             hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
+
+            double rapport_joueurCourant = (double) 131/603;
+            largeur_joueurCourant = (int) Math.min(largeur*.22, hauteur*.22);
+            hauteur_joueurCourant = (int) (largeur_joueurCourant*rapport_joueurCourant);
 
             displayHexagonMap(g);
 
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
 
+            //affichage des boutons et des encadrés
             afficherBoutonAnnuler(g);
+            afficheJoueurCourant(g);
         }
-
 
         /////////////////
         // 0 = VOID    //
@@ -279,9 +288,6 @@ public class TEngine extends JFrame {
                     if (map[i][j].getTerrain() == Hexagone.VIDE) {
                         heightoffset -= 50;
                     }
-
-
-
 
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                     g.drawImage(tile, x , y - heightoffset, null);
