@@ -78,6 +78,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void mouseClicked(MouseEvent e) {
             tengine.hexTiles.addToCursor(e);
+            tengine.hexTiles.annuleConstruction(e);
         }
 
         //public Point getLastPosition(){
@@ -87,6 +88,10 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON3) {
+                tengine.hexTiles.lastMousePosition = e.getPoint();
+                lastPosition = e.getPoint();
+            }
+            if (e.getButton() == MouseEvent.BUTTON2) {
                 tengine.hexTiles.lastMousePosition = e.getPoint();
                 lastPosition = e.getPoint();
             }

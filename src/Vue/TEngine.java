@@ -844,5 +844,19 @@ public class TEngine extends JFrame {
                 miseAJour();
             }
         }
+
+        public void annuleConstruction(MouseEvent e){
+            if (SwingUtilities.isRightMouseButton(e)) {
+                if(enSelection){
+                    byte numJoueur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getNumJoueur();
+                    byte hauteur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getHauteur();
+                    byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getTerrain();
+                    int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanI();
+                    int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanJ();
+                    jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
+                    enSelection=false;
+                }
+            }
+        }
     }
 }
