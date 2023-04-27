@@ -50,8 +50,35 @@ public class TEngine extends JFrame {
         // Définir la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
 
+        //addImage("save", 50, 50, layeredPane);
+
         listener = new TEngineListener(this);
         poseTile = true;
+    }
+
+    public void addImage(String nom_image, int x, int y, JLayeredPane layeredPane) {
+        // Chargez l'image que vous voulez afficher
+        Image image = null;
+        try {
+            image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
+        Image finalImage = image;
+        JPanel imagePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (finalImage != null) {
+                    g.drawImage(finalImage, 0, 0, this);
+                }
+            }
+        };
+        imagePanel.setBounds(50, 50, 1000, 1000);
+        imagePanel.setOpaque(false);
+        layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
     }
 
 
@@ -223,16 +250,7 @@ public class TEngine extends JFrame {
             timer.start();
         }
 
-        public void afficherBoutonAnnuler(Graphics g){
-            posY_bouton_annuler = (int) (hauteur*.15);
-            posX_bouton_annuler = (int) (largeur*.80);
-            int x = (int)(posX_bouton_annuler/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
-            int y = (int)(posY_bouton_annuler/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
-            int largeur = (int)(largeur_bouton/zoomFactor);
-            int hauteur = (int)(hauteur_bouton/zoomFactor);
-            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, hauteur);
-        }
-
+        /*
         public void afficheJoueurCourant(Graphics g){
             posY_joueurCourant = (int) (hauteur*.05);
             posX_joueurCourant = (int) (largeur*.40);
@@ -245,6 +263,7 @@ public class TEngine extends JFrame {
             g.setFont(font);
             g.drawString(jeu.getJoueurCourant(), x, y+hauteur);
         }
+         */
 
         private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
             g.drawImage(i, x, y, l, h, null);
@@ -283,8 +302,7 @@ public class TEngine extends JFrame {
             else displayHoverMaison(g);
 
             //affichage des boutons et des encadrés
-            afficherBoutonAnnuler(g);
-            afficheJoueurCourant(g);
+            //afficheJoueurCourant(g);
         }
 
         private void displayHexagonMap(Graphics g) {
