@@ -10,6 +10,8 @@ public class Plateau {
     protected int[] nbPionsJ2;
     private Historique historique;
 
+    byte jCourant;
+
     public Plateau(){
 
         plateau = new Hexagone [40][40];

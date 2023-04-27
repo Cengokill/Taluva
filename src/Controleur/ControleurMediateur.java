@@ -17,20 +17,21 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public boolean peutPlacerTuile(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
-        System.out.println(jeu.getPlateau().peutPlacerTuile(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y));
+        //System.out.println(jeu.getPlateau().peutPlacerTuile(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y));
         return jeu.getPlateau().peutPlacerTuile(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y);
     }
 
     public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
-        jeu.joueurPlaceEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
-        jeu.pioche();
+        if (jeu.joueCoup(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2)) {
+            jeu.pioche();
+        }
     }
     public boolean peutPlacerMaison(int i,int j){
         return jeu.getPlateau().peutPlacerMaison(i,j);
     }
 
     public void placeMaison(int i, int j){
-        jeu.joueurPlaceMaison(i,j);//le joueur courant du jeu place une maison à l'emplacement i, j
+        jeu.joueurPlaceMaison(i,j);//le joueur courant du jeu place une maison ï¿½ l'emplacement i, j
     }
     public Hexagone[][] getPlateau() {
         return jeu.getPlateau().getPlateau();
