@@ -1,6 +1,7 @@
 package Vue;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -72,16 +73,21 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
     // Mouse, drag and things //
     ////////////////////////////
     class MouseHandler extends MouseAdapter implements MouseWheelListener {
+        Point lastPosition;
         @Override
         public void mouseClicked(MouseEvent e) {
             tengine.hexTiles.addToCursor(e);
         }
 
+        public Point getLastPosition(){
+            return lastPosition;
+        }
 
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON3) {
                 tengine.hexTiles.lastMousePosition = e.getPoint();
+                lastPosition = e.getPoint();
             }
         }
 
