@@ -33,6 +33,7 @@ public class Jeu extends Observable {
         plateau = new Plateau();
         doit_placer_tuile = true;
         doit_placer_batiment = false;
+        pioche();
     }
 
     public void initJoueurs(){
@@ -62,8 +63,6 @@ public class Jeu extends Observable {
     }
 
     public void joueurPlaceMaison(int i, int j){
-        //System.out.println(doit_placer_tuile);
-        //System.out.println(doit_placer_batiment);
         if (doit_placer_tuile) {
             return;
         }

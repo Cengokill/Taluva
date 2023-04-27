@@ -454,8 +454,6 @@ public class TEngine extends JFrame {
                 } else {
                     x2 = j;
                 }
-
-
                 BufferedImage tile1 = getTileImageFromId(triplet[0][0],triplet[0][1]);
                 BufferedImage tile2 = getTileImageFromId(triplet[1][0],triplet[1][1]);
                 BufferedImage tile3 = getTileImageFromId(triplet[2][0],triplet[2][1]);
