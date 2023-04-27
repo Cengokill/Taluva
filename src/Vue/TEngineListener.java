@@ -10,7 +10,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.*;
 
 public class TEngineListener extends MouseAdapter implements MouseWheelListener {
-    private TEngine tengine;
+    private final TEngine tengine;
 
     public TEngineListener(TEngine t) {
         super();
@@ -35,20 +35,16 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             // Code à exécuter lorsque la touche est enfoncée
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_E) {
-                if(tengine.poseTile)  tengine.poseTile = false;
-                else tengine.poseTile = true;
+                tengine.poseTile = !tengine.poseTile;
             }
             if (keyCode == KeyEvent.VK_CONTROL) {
-                if(tengine.mode_plateau)  tengine.mode_plateau = false;
-                else tengine.mode_plateau = true;
+                tengine.mode_plateau = !tengine.mode_plateau;
             }
             if (keyCode == KeyEvent.VK_A) {
-                if(tengine.mode_plateau)  tengine.mode_plateau = false;
-                else tengine.mode_plateau = true;
+                tengine.mode_plateau = !tengine.mode_plateau;
             }
             if (keyCode == KeyEvent.VK_Z) {
-                if(tengine.mode_numero)  tengine.mode_numero = false;
-                else tengine.mode_numero = true;
+                tengine.mode_numero = !tengine.mode_numero;
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 tengine.hexTiles.shake();
@@ -58,17 +54,19 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void keyReleased(KeyEvent e) {
             // Code à exécuter lorsque la touche est relâchée
-            int keyCode = e.getKeyCode();
+            //int keyCode = e.getKeyCode();
 
         }
 
         @Override
         public void keyTyped(KeyEvent e) {
             // Code à exécuter lorsque la touche est tapée (après avoir été enfoncée et relâchée)
+            /*
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_E) {
 
             }
+             */
         }
     }
 
@@ -82,9 +80,9 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             tengine.hexTiles.addToCursor(e);
         }
 
-        public Point getLastPosition(){
-            return lastPosition;
-        }
+        //public Point getLastPosition(){
+        //    return lastPosition;
+        //}
 
         @Override
         public void mousePressed(MouseEvent e) {
