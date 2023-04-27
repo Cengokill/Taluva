@@ -226,7 +226,7 @@ public class Plateau {
             } else if (hauteur == 3) {
                 batiment = Hexagone.TOUR;
             }
-            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanX(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanY());
         }
     }
 
