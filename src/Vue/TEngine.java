@@ -93,7 +93,7 @@ public class TEngine extends JFrame {
         BufferedImage[] choisirBat = new BufferedImage[8];
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
-        BufferedImage voidTile, voidTile_transparent;
+        BufferedImage voidTile, voidTile_transparent, voidTileOld;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
         BufferedImage foretTile_0, foretTile_1, foretTile_2;
@@ -122,6 +122,8 @@ public class TEngine extends JFrame {
         int hoveredTile_x;
         int hoveredTile_y;
         Color[] couleurs_joueurs;
+        String[] nomJoueurs;
+
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
@@ -129,7 +131,8 @@ public class TEngine extends JFrame {
             joueurCourant = lisImageBuf("Joueur_Courant");
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
-            voidTile_transparent = getReducedOpacityImage(voidTile, 0.5f);
+            voidTileOld = lisImageBuf("Void_Tile_old");
+            voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.5f);
             grassTile_0 = lisImageBuf("Grass_0_Tile");
             grassTile_1 = lisImageBuf("Grass_1_Tile");
             grassTile_2 = lisImageBuf("Grass_2_Tile");
@@ -154,9 +157,9 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-            wrongTile1 = applyYellowFilter(wrongTile1);
-            wrongTile2 = applyYellowFilter(wrongTile2);
-            wrongTile3 = applyYellowFilter(wrongTile3);
+            //wrongTile1 = applyYellowFilter(wrongTile1);
+            //wrongTile2 = applyYellowFilter(wrongTile2);
+            //wrongTile3 = applyYellowFilter(wrongTile3);
 
             boutonAnnuler = lisImage("annuler");
             maisonTile = lisImageBuf("Batiments/maison");
@@ -290,6 +293,7 @@ public class TEngine extends JFrame {
 
         @Override
         protected void paintComponent(Graphics g) {
+
             changerTuileAPoser();
             changerPoseTile();
 
@@ -345,11 +349,14 @@ public class TEngine extends JFrame {
                                     g.drawImage(voidTile_transparent, x , y - heightoffset + 5, null);
                                 }
                             }
-                        } else {
+                        }
+                        /*
+                        else {
                             if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
                                 g.drawImage(voidTile_transparent, x , y - heightoffset, null);
                             }
                         }
+                         */
                     }
 
                     if (mode_numero) {

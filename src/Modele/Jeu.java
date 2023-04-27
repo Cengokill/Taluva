@@ -35,6 +35,8 @@ public class Jeu extends Observable {
         doit_placer_tuile = true;
         doit_placer_batiment = false;
         pioche();
+        joueurs[0].setPrenom("Jonathan attend la fin du projet");
+        joueurs[1].setPrenom("Ah mon écran est cassé, je dois aller faire la cuisine");
     }
 
     public void calculScore(){
