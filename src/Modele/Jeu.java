@@ -67,10 +67,17 @@ public class Jeu extends Observable {
             return;
         }
         plateau.placeBatiment(jCourant, i,j, type_bat);
-        joueurs[jCourant].incrementeHutte();
+        if(type_bat == 0) {
+            joueurs[jCourant].incrementeHutte();
+        }
+        else if(type_bat == 1) {
+            joueurs[jCourant].incrementeTemple();
+        }
+        else if(type_bat == 2) {
+            joueurs[jCourant].incrementeTour();
+        }
         doit_placer_batiment = false;
         doit_placer_tuile = true;
-        changeJoueur();
     }
 
     public void changeJoueur() {

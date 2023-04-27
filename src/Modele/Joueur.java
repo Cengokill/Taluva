@@ -1,7 +1,7 @@
 package Modele;
 
 public class Joueur {
-    private byte type;
+    private byte type_bat;
     private String prenom;
     private String couleur;
     private int nbTours;
@@ -10,7 +10,7 @@ public class Joueur {
     private int nbVillages;
 
     public Joueur(byte type, String prenom){
-        this.type = type;//0 pour humain, 1 pour IA
+        this.type_bat = type;//0 pour humain, 1 pour IA
         this.prenom = prenom;
         this.nbHuttes = 0;
         this.nbTours = 0;
@@ -18,8 +18,8 @@ public class Joueur {
         this.nbVillages = 0;
     }
 
-    public byte getType(){
-        return type;
+    public byte getTypeBat(){
+        return type_bat;
     }
 
     public String getPrenom(){
@@ -57,4 +57,8 @@ public class Joueur {
         nbTours++;}
     public void incrementeVillage(){
         nbVillages++;}
+
+    public void incrementeTemple() {
+        nbTemples++;
+    }
 }
