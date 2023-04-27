@@ -22,7 +22,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
-        jeu.getPlateau().placeEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+        jeu.joueurPlaceEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         jeu.pioche();
     }
     public boolean peutPlacerMaison(int i,int j){
@@ -30,8 +30,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void placeMaison(int i, int j){
-        int hauteur = jeu.getPlateau().getHauteurTuile(i,j);
-        jeu.getPlateau().placeMaison(i,j,(byte) hauteur);
+        jeu.joueurPlaceMaison(i,j);//le joueur courant du jeu place une maison à l'emplacement i, j
     }
     public Hexagone[][] getPlateau() {
         return jeu.getPlateau().getPlateau();
