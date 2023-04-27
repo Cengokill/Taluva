@@ -9,10 +9,11 @@ public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
     IA IA1, IA2;
-    byte jCourant = 0;
+    byte jCourant;
+    byte jVainqueur;
     Joueur[] joueurs = new Joueur[2];
     Parametres p;
-    int[]score =new int[2];
+    int[]score = new int[2];
     byte[] tuile_a_poser = new byte[5];
 
     boolean doit_placer_tuile;
@@ -36,11 +37,60 @@ public class Jeu extends Observable {
         pioche();
     }
 
+    public void calculScore(){
+        for(int i = 0; i<joueurs.length; i++){
+            score[i] = joueurs[i].getNbTemples()*9 + joueurs[i].getNbTours()*3 + joueurs[i].getNbHuttes();
+        }
+    }
+
     public void initJoueurs(){
         joueurs[0] = new Joueur((byte)0,"Killian");
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
-    public boolean estVictoire(){
+    public boolean estFinPartie() {
+        int nb_temples_j0 = joueurs[0].getNbTemples();
+        int nb_temples_j1 = joueurs[1].getNbTemples();
+        int nb_tours_j0 = joueurs[0].getNbTours();
+        int nb_tours_j1 = joueurs[1].getNbTours();
+        int nb_huttes_j0 = joueurs[0].getNbHuttes();
+        int nb_huttes_j1 = joueurs[1].getNbHuttes();
+        if (nb_temples_j0 == 2) {
+            if (nb_temples_j1 < 2) {
+                jVainqueur = 0;
+                return true;
+            }
+            if (nb_temples_j1 == 2) {
+                if (nb_tours_j0 > nb_tours_j1) {
+                    jVainqueur = 0;
+                    return true;
+                }
+                if (nb_tours_j0 < nb_tours_j1) {
+                    jVainqueur = 1;
+                    return true;
+                }
+                if (nb_tours_j0 == nb_tours_j1) {
+                    if (nb_huttes_j0 > nb_huttes_j1) {
+                        jVainqueur = 0;
+                        return true;
+                    }
+                    if (nb_huttes_j0 < nb_huttes_j1) {
+                        jVainqueur = 1;
+                        return true;
+                    }
+                    else {//égalité
+                        jVainqueur = -1;
+                    }
+                }
+            }
+        }else{
+            if (nb_temples_j0 == 2) {
+                jVainqueur = 1;
+                return true;
+            }
+        }
+        if(pioche.isEmpty()){
+            return true;
+        }
         return false;
     }
 
