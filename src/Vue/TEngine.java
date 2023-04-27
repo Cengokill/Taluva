@@ -21,6 +21,7 @@ public class TEngine extends JFrame {
     public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
 
+    Point LastPosition;
     boolean poseTile, mode_plateau = true, mode_numero = false;
     Jeu jeu;
 
@@ -57,7 +58,7 @@ public class TEngine extends JFrame {
 
 
     public class HexagonalTiles extends JPanel {
-        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour;
+        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, chosirMaison;
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
@@ -66,37 +67,33 @@ public class TEngine extends JFrame {
         BufferedImage foretTile_0, foretTile_1, foretTile_2;
         BufferedImage desertTile_0, desertTile_1, desertTile_2;
         BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
+        BufferedImage joueurCourant;
         Image boutonAnnuler;
         int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
+        int largeur_joueurCourant, hauteur_joueurCourant, posX_joueurCourant, posY_joueurCourant;
         TEngine tengine;
         Point hoverTilePosition = new Point(-tile_size, -tile_size);
         Point cameraOffset = new Point(0, 0);
         Point lastMousePosition;
         double zoomFactor = 0.3;
         double zoomIncrement = 0.1;
-
         private Plateau plateau;
-
         int scrollValue = 1;
-
         byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
-
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
 
+        boolean enSelection = false;
+        int typeAConstruire=0, posBat_x, posBat_y;
         ControleurMediateur controleur;
-
         int hoveredTile_x;
         int hoveredTile_y;
-
         Color[] couleurs_joueurs;
-
-
-
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
             this.controleur = controleur;
+            joueurCourant = lisImageBuf("Joueur_Courant");
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
             voidTile_transparent = getReducedOpacityImage(voidTile, 0.5f);
@@ -124,6 +121,10 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
+            wrongTile1 = applyYellowFilter(wrongTile1);
+            wrongTile2 = applyYellowFilter(wrongTile2);
+            wrongTile3 = applyYellowFilter(wrongTile3);
+
             boutonAnnuler = lisImage("annuler");
             maisonTile = lisImageBuf("Batiments/maison");
             templeJungle = lisImageBuf("Batiments/Temple_jungle");
@@ -131,6 +132,7 @@ public class TEngine extends JFrame {
             templePrairie = lisImageBuf("Batiments/Temple_prairie");
             templeSable = lisImageBuf("Batiments/Temple_sable");
             tour = lisImageBuf("Batiments/tour");
+            chosirMaison = lisImageBuf("Batiments/choisir_maison");
 
             setOpaque(false);
 
@@ -194,13 +196,24 @@ public class TEngine extends JFrame {
         public void afficherBoutonAnnuler(Graphics g){
             posY_bouton_annuler = (int) (hauteur*.15);
             posX_bouton_annuler = (int) (largeur*.80);
-
             int x = (int)(posX_bouton_annuler/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
             int y = (int)(posY_bouton_annuler/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
             int largeur = (int)(largeur_bouton/zoomFactor);
-            int longueur = (int)(hauteur_bouton/zoomFactor);
+            int hauteur = (int)(hauteur_bouton/zoomFactor);
+            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, hauteur);
+        }
 
-            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, longueur);
+        public void afficheJoueurCourant(Graphics g){
+            posY_joueurCourant = (int) (hauteur*.05);
+            posX_joueurCourant = (int) (largeur*.40);
+            int x = (int)(posX_joueurCourant/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
+            int y = (int)(posY_joueurCourant/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
+            int largeur = (int)(largeur_joueurCourant/zoomFactor);
+            int hauteur = (int)(hauteur_joueurCourant/zoomFactor);
+            tracer((Graphics2D) g, joueurCourant, x, y, largeur, hauteur);
+            Font font = new Font("Roboto", Font.BOLD, (int) (40/zoomFactor));
+            g.setFont(font);
+            g.drawString(jeu.getJoueurCourant(), x, y+hauteur);
         }
 
         private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
@@ -225,19 +238,24 @@ public class TEngine extends JFrame {
             g2d.translate(cameraOffset.x, cameraOffset.y);
             g2d.scale(zoomFactor, zoomFactor);
 
-            //définit la taille des boutons
+            //définit la taille des boutons et des encadrés
             double rapport_bouton = (double) 207/603;
             largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
             hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
+
+            double rapport_joueurCourant = (double) 131/603;
+            largeur_joueurCourant = (int) Math.min(largeur*.22, hauteur*.22);
+            hauteur_joueurCourant = (int) (largeur_joueurCourant*rapport_joueurCourant);
 
             displayHexagonMap(g);
 
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
 
+            //affichage des boutons et des encadrés
             afficherBoutonAnnuler(g);
+            afficheJoueurCourant(g);
         }
-
 
         /////////////////
         // 0 = VOID    //
@@ -280,26 +298,8 @@ public class TEngine extends JFrame {
                         heightoffset -= 50;
                     }
 
-
-
-
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                     g.drawImage(tile, x , y - heightoffset, null);
-
-                    if (map[i][j].getBatiment() == Hexagone.MAISON) {
-                        tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-                        g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-                        g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-                        g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-                        g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-                        g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-                        g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    }
 
                     if (poseTile) {
                         if (mode_plateau) {
@@ -326,6 +326,26 @@ public class TEngine extends JFrame {
                             g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
                         }
                     }
+
+                    if (map[i][j].getBatiment() == Hexagone.MAISON) {
+                        tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
+                        g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
+                        g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
+                        g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
+                        g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
+                        g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
+                        g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x , y - heightoffset, null);
+                    } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
+                        int pos_x = x-150;
+                        int pos_y = y -300;
+                        g.drawImage(chosirMaison, pos_x, pos_y,chosirMaison.getWidth()*2,chosirMaison.getWidth()*2, null);
+                    }
+
                 }
             }
         }
@@ -415,6 +435,7 @@ public class TEngine extends JFrame {
 
             Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
                     (int) ((e.getY() - cameraOffset.y) / zoomFactor));
+            LastPosition = clickPositionAdjusted;
 
             // Convertir les coordonnées du système de pixels en coordonnées du système de grille
             int i = (int) (clickPositionAdjusted.y / verticalOffset);
@@ -448,8 +469,6 @@ public class TEngine extends JFrame {
                 } else {
                     j2 = j;
                 }
-
-
                 BufferedImage tile1 = getTileImageFromId(triplet[0][0],triplet[0][1]);
                 BufferedImage tile2 = getTileImageFromId(triplet[1][0],triplet[1][1]);
                 BufferedImage tile3 = getTileImageFromId(triplet[2][0],triplet[2][1]);
@@ -609,8 +628,6 @@ public class TEngine extends JFrame {
                         g.drawImage(tour, x , y - heightoffset1, null);
                     }
                 }
-
-
             }
         }
 
@@ -674,9 +691,42 @@ public class TEngine extends JFrame {
                 x = j;
             }
             j = hoveredTile_y;
-            if (controleur.peutPlacerMaison(i, j)) {
-                controleur.placeMaison(i, j);
+            if (controleur.peutPlacerBatiment(i, j)) {
+                controleur.placeBatiment(i, j,(byte) typeAConstruire);
             }
+        }
+
+        private int choisirMaison(int x, int y){
+            if(!enSelection){
+                if (controleur.peutPlacerBatiment(x, y)) {
+                    posBat_x = x;
+                    posBat_y = y;
+                    enSelection = true;
+                    controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+                }
+            }else{
+                int pos_x = posBat_x*voidTile.getWidth();
+                int pos_y = posBat_y*voidTile.getWidth();
+                int type = 0;
+
+                System.out.println(pos_x);
+                System.out.println("LastPosition_x: "+LastPosition.getX()+"LastPosition_y: "+LastPosition.getY());
+
+                if(LastPosition.getX()>=pos_x && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+100 && LastPosition.getY()<=pos_y+100)
+                    type=1;
+                if(LastPosition.getX()>=pos_x+200 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+500 && LastPosition.getY()<=pos_y+100)
+                    type=2;
+                if(LastPosition.getX()>=pos_x+450 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+750 && LastPosition.getY()<=pos_y+100)
+                    type=3;
+
+                if(type!=0){
+                    enSelection = false;
+                    controleur.placeBatiment(posBat_x,posBat_y,(byte) type);
+                    typeAConstruire=0;
+                }
+                return type;
+            }
+            return 0;
         }
 
 
@@ -697,8 +747,15 @@ public class TEngine extends JFrame {
                 System.out.println("j: " + j);
                 Hexagone[][] map = jeu.getPlateau().getPlateau();
 
+                //System.out.println("type a construire: "+typeAConstruire);
+                //System.out.println("en selection: "+enSelection);
+
                 if(poseTile) placerTuiles(i,j);
-                else placerMaison(i,j);
+                //else if(typeAConstruire!=0) placerMaison(i,j);
+                else typeAConstruire = choisirMaison(i, j);
+
+
+
 
                 miseAJour();
             }
