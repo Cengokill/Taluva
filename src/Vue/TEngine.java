@@ -219,9 +219,6 @@ public class TEngine extends JFrame {
                     cameraOffset.y += deltaY;
                     repaint();
                 }
-
-                // N'oubliez pas de redessiner / mettre à jour votre composant de jeu ici, par exemple :
-                // yourGameComponent.repaint();
             });
 
             // Démarrez le Timer
