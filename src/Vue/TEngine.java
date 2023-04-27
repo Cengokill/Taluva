@@ -50,7 +50,7 @@ public class TEngine extends JFrame {
         // Définir la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
 
-        //addImage("save", 50, 50, layeredPane);
+        addImage("map_layer_little", 50, 800, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
@@ -76,7 +76,7 @@ public class TEngine extends JFrame {
                 }
             }
         };
-        imagePanel.setBounds(50, 50, 1000, 1000);
+        imagePanel.setBounds(x, y, 1000, 1000);
         imagePanel.setOpaque(false);
         layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
     }
