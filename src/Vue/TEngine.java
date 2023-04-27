@@ -442,11 +442,11 @@ public class TEngine extends JFrame {
                 int x = j * horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
-                int x2;
+                int j2;
                 if (i % 2 == 1) {
-                    x2 = j - 1;
+                    j2 = j - 1;
                 } else {
-                    x2 = j;
+                    j2 = j;
                 }
 
 
@@ -457,32 +457,32 @@ public class TEngine extends JFrame {
                 float opacity = 1f;
 
                 if (scrollValue == 1) {
-                    if (!controleur.peutPlacerTuile(i, j, i - 1, x2, i - 1, x2 + 1)) {
+                    if (!controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
                         opacity = 0.4f;
                     }
                 }
                 else if (scrollValue == 2){
-                    if (!controleur.peutPlacerTuile(i, j, i - 1, x2 + 1, i, j + 1)) {
+                    if (!controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
                         opacity = 0.4f;
                     }
                 }
                 else if (scrollValue == 3){
-                    if (!controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x2 + 1)) {
+                    if (!controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
                         opacity = 0.4f;
                     }
                 }
                 else if (scrollValue == 4){
-                    if (!controleur.peutPlacerTuile(i, j, i + 1, x2 + 1, i + 1, x2)) {
+                    if (!controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
                         opacity = 0.4f;
                     }
                 }
                 else if (scrollValue == 5){
-                    if (!controleur.peutPlacerTuile(i, j, i + 1, x2, i, j - 1)) {
+                    if (!controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
                         opacity = 0.4f;
                     }
                 }
                 else if (scrollValue == 6){
-                    if (!controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x2)) {
+                    if (!controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
                         opacity = 0.4f;
                     }
                 }
@@ -552,7 +552,7 @@ public class TEngine extends JFrame {
             if (num_joueur < 0 || num_joueur > 3) {
                 return image;
             }
-            System.out.println(num_joueur);
+            //System.out.println(num_joueur);
             BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = outputImage.createGraphics();
             g2d.drawImage(image, 0, 0, null);
@@ -625,41 +625,41 @@ public class TEngine extends JFrame {
         }
 
         public void placerTuiles(int i, int j) {
-            int x;
+            int j_modified;
             if (i % 2 == 1) {
-                x = j - 1;
+                j_modified = j - 1;
             } else {
-                x = j;
+                j_modified = j;
             }
 
             if (scrollValue == 1) {
-                if (controleur.peutPlacerTuile(i, j, i - 1, x, i - 1, x + 1)) {
-                    controleur.placeEtage(i, j, i - 1, x, triplet[1][0], i - 1, x + 1, triplet[2][0]);
+                if (controleur.peutPlacerTuile(i, j, i - 1, j_modified, i - 1, j_modified + 1)) {
+                    controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
                 }
             }
             else if (scrollValue == 2){
-                if (controleur.peutPlacerTuile(i, j, i - 1, x + 1, i, j + 1)) {
-                    controleur.placeEtage(i, j, i - 1, x + 1, triplet[1][0], i, j + 1, triplet[2][0]);
+                if (controleur.peutPlacerTuile(i, j, i - 1, j_modified + 1, i, j + 1)) {
+                    controleur.placeEtage(i, j, i - 1, j_modified + 1, triplet[1][0], i, j + 1, triplet[2][0]);
                 }
             }
             else if (scrollValue == 3){
-                if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, x + 1)) {
-                    controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, x + 1, triplet[2][0]);
+                if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j_modified + 1)) {
+                    controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, j_modified + 1, triplet[2][0]);
                 }
             }
             else if (scrollValue == 4){
-                if (controleur.peutPlacerTuile(i, j, i + 1, x + 1, i + 1, x)) {
-                    controleur.placeEtage(i, j, i + 1, x + 1, triplet[1][0], i + 1, x, triplet[2][0]);
+                if (controleur.peutPlacerTuile(i, j, i + 1, j_modified + 1, i + 1, j_modified)) {
+                    controleur.placeEtage(i, j, i + 1, j_modified + 1, triplet[1][0], i + 1, j_modified, triplet[2][0]);
                 }
             }
             else if (scrollValue == 5){
-                if (controleur.peutPlacerTuile(i, j, i + 1, x, i, j - 1)) {
-                    controleur.placeEtage(i, j, i + 1, x, triplet[1][0], i, j - 1, triplet[2][0]);
+                if (controleur.peutPlacerTuile(i, j, i + 1, j_modified, i, j - 1)) {
+                    controleur.placeEtage(i, j, i + 1, j_modified, triplet[1][0], i, j - 1, triplet[2][0]);
                 }
             }
             else if (scrollValue == 6){
-                if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, x)) {
-                    controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, x, triplet[2][0]);
+                if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j_modified)) {
+                    controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, j_modified, triplet[2][0]);
                 }
             }
 
@@ -693,7 +693,8 @@ public class TEngine extends JFrame {
                 // Convertir les coordonnées du système de pixels en coordonnées du système de grille
                 int i = (int) (clickPositionAdjusted.y / verticalOffset);
                 int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
-
+                System.out.println("i: " + i);
+                System.out.println("j: " + j);
                 Hexagone[][] map = jeu.getPlateau().getPlateau();
 
                 if(poseTile) placerTuiles(i,j);
