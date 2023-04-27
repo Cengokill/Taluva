@@ -17,7 +17,6 @@ public class Hexagone {
     public static final byte TEMPLE_PIERRE = 13;
     public static final byte TEMPLE_PRAIRIE = 14;
     public static final byte TOUR = 15;
-
     public static final byte CHOISIR_MAISON = 16;
 
     private byte hauteur;

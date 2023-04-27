@@ -7,6 +7,8 @@ import Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -50,8 +52,35 @@ public class TEngine extends JFrame {
         // Définir la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
 
+        //addImage("save", 50, 50, layeredPane);
+
         listener = new TEngineListener(this);
         poseTile = true;
+    }
+
+    public void addImage(String nom_image, int x, int y, JLayeredPane layeredPane) {
+        // Chargez l'image que vous voulez afficher
+        Image image = null;
+        try {
+            image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
+        Image finalImage = image;
+        JPanel imagePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (finalImage != null) {
+                    g.drawImage(finalImage, 0, 0, this);
+                }
+            }
+        };
+        imagePanel.setBounds(50, 50, 1000, 1000);
+        imagePanel.setOpaque(false);
+        layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
     }
 
 
@@ -61,6 +90,7 @@ public class TEngine extends JFrame {
         private static final int SHAKE_DISTANCE = 10; // Distance maximale de déplacement en pixels
 
         BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, chosirMaison;
+        BufferedImage[] choisirBat = new BufferedImage[3];
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
@@ -135,7 +165,10 @@ public class TEngine extends JFrame {
             templePrairie = lisImageBuf("Batiments/Temple_prairie");
             templeSable = lisImageBuf("Batiments/Temple_sable");
             tour = lisImageBuf("Batiments/tour");
-            chosirMaison = lisImageBuf("Batiments/choisir_maison");
+            for(int i=0;i<choisirBat.length;i++){
+                choisirBat[i] = lisImageBuf("Batiments/choisir_bat_"+(i+1));
+            }
+
 
             setOpaque(false);
 
@@ -223,16 +256,7 @@ public class TEngine extends JFrame {
             timer.start();
         }
 
-        public void afficherBoutonAnnuler(Graphics g){
-            posY_bouton_annuler = (int) (hauteur*.15);
-            posX_bouton_annuler = (int) (largeur*.80);
-            int x = (int)(posX_bouton_annuler/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
-            int y = (int)(posY_bouton_annuler/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
-            int largeur = (int)(largeur_bouton/zoomFactor);
-            int hauteur = (int)(hauteur_bouton/zoomFactor);
-            tracer((Graphics2D) g, boutonAnnuler, x, y, largeur, hauteur);
-        }
-
+        /*
         public void afficheJoueurCourant(Graphics g){
             posY_joueurCourant = (int) (hauteur*.05);
             posX_joueurCourant = (int) (largeur*.40);
@@ -245,6 +269,7 @@ public class TEngine extends JFrame {
             g.setFont(font);
             g.drawString(jeu.getJoueurCourant(), x, y+hauteur);
         }
+         */
 
         private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
             g.drawImage(i, x, y, l, h, null);
@@ -283,8 +308,7 @@ public class TEngine extends JFrame {
             else displayHoverMaison(g);
 
             //affichage des boutons et des encadrés
-            afficherBoutonAnnuler(g);
-            afficheJoueurCourant(g);
+            //afficheJoueurCourant(g);
         }
 
         private void displayHexagonMap(Graphics g) {
@@ -351,7 +375,11 @@ public class TEngine extends JFrame {
                     } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
                         int pos_x = x-150;
                         int pos_y = y -300;
-                        g.drawImage(chosirMaison, pos_x, pos_y,chosirMaison.getWidth()*2,chosirMaison.getWidth()*2, null);
+                        int value = scrollValue%3;
+                        if(value==1) value = 0;
+                        else if(value==2) value = 1;
+                        else value = 2;
+                        g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
                     }
 
                 }
@@ -691,45 +719,20 @@ public class TEngine extends JFrame {
         }
 
 
-
-        private int choisirMaison(int x, int y){
-            if(!enSelection){
-                if (controleur.peutPlacerBatiment(x, y)) {
-                    posBat_x = x;
-                    posBat_y = y;
-                    enSelection = true;
-                    controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
-                }
-            }else{
-                int pos_x = posBat_x*voidTile.getWidth();
-                int pos_y = posBat_y*voidTile.getWidth();
-                int type = 0;
-
-                pos_y-=200;
-                pos_x-=2000;
-                System.out.println("x: "+pos_y+" y : "+pos_x);
-                System.out.println("LastPosition_x: "+LastPosition.getX()+" LastPosition_y: "+LastPosition.getY());
-                if(LastPosition.getX()>=pos_y && LastPosition.getY()>=pos_x){
-                    System.out.println("1");
-                }
-
-
-
-                if(LastPosition.getX()>=pos_y && LastPosition.getY()>=pos_x && LastPosition.getX()<=pos_y+200 && LastPosition.getY()<=pos_x+200)
-                    type=1;
-                if(LastPosition.getX()>=pos_x+200 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+500 && LastPosition.getY()<=pos_y+100)
-                    type=2;
-                if(LastPosition.getX()>=pos_x+450 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+750 && LastPosition.getY()<=pos_y+100)
-                    type=3;
-
-                if(type!=0){
-                    enSelection = false;
-                    controleur.placeBatiment(posBat_x,posBat_y,(byte) type);
-                    typeAConstruire=0;
-                }
-                return type;
+        public void placerMaison(int i, int j) {
+            int test = scrollValue%3;
+            if (test == 1) {
+                enSelection = false;
+                controleur.placeBatiment(i,j,(byte) 1);
             }
-            return 0;
+            else if (test == 2){
+                enSelection = false;
+                controleur.placeBatiment(i,j,(byte) 2);
+            }
+            else if (test == 0){
+                enSelection = false;
+                controleur.placeBatiment(i,j,(byte) 3);
+            }
         }
 
 
@@ -748,15 +751,19 @@ public class TEngine extends JFrame {
                 System.out.println("i: " + i);
                 System.out.println("j: " + j);
 
-                //System.out.println("type a construire: "+typeAConstruire);
-                //System.out.println("en selection: "+enSelection);
-
                 if(poseTile) placerTuiles(i,j);
-                //else if(typeAConstruire!=0) placerMaison(i,j);
-                else typeAConstruire = choisirMaison(i, j);
-
-
-
+                else{
+                    if(!enSelection){
+                        if (controleur.peutPlacerBatiment(i, j)) {
+                            posBat_x = i;
+                            posBat_y = j;
+                            enSelection = true;
+                            controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+                        }
+                    }else{
+                        placerMaison(posBat_x,posBat_y);
+                    }
+                }
 
                 miseAJour();
             }
