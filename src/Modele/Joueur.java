@@ -50,6 +50,18 @@ public class Joueur {
         return nbTemplesPlaces;
     }
 
+    public int getNbHuttes(){
+        return nbHuttes;
+    }
+
+    public int getNbTours(){
+        return nbTours;
+    }
+
+    public int getNbTemples(){
+        return nbTemples;
+    }
+
     public void setCouleur(String couleur){
         this.couleur = couleur;
     }

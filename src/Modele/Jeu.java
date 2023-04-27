@@ -48,10 +48,10 @@ public class Jeu extends Observable {
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
     public boolean estFinPartie() {
-        int nb_temples_j = joueurs[jCourant].getNbTemplesPlaces();
-        int nb_tours_j = joueurs[jCourant].getNbToursPlacees();
-        int nb_huttes_j = joueurs[jCourant].getNbHuttesPlacees();
-        if ((nb_temples_j >= 1 && nb_tours_j >= 1) || (nb_temples_j >= 1 && nb_huttes_j >= 1) || (nb_tours_j >= 1 && nb_huttes_j >= 1)) {
+        int nb_temples_j = joueurs[jCourant].getNbTemples();
+        int nb_tours_j = joueurs[jCourant].getNbTours();
+        int nb_huttes_j = joueurs[jCourant].getNbHuttes();
+        if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
             return true;
         }
