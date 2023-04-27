@@ -90,7 +90,7 @@ public class TEngine extends JFrame {
         private static final int SHAKE_DISTANCE = 10; // Distance maximale de déplacement en pixels
 
         BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, chosirMaison;
-        BufferedImage[] choisirBat = new BufferedImage[3];
+        BufferedImage[] choisirBat = new BufferedImage[8];
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
         BufferedImage voidTile, voidTile_transparent;
@@ -165,9 +165,14 @@ public class TEngine extends JFrame {
             templePrairie = lisImageBuf("Batiments/Temple_prairie");
             templeSable = lisImageBuf("Batiments/Temple_sable");
             tour = lisImageBuf("Batiments/tour");
-            for(int i=0;i<choisirBat.length;i++){
-                choisirBat[i] = lisImageBuf("Batiments/choisir_bat_"+(i+1));
+            for(int i=0;i<3;i++){
+                choisirBat[i] = lisImageBuf("Batiments/Selecteur/choisir_bat_"+(i+1));
             }
+            choisirBat[3] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_2");
+            choisirBat[4] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_3");
+            choisirBat[5] = lisImageBuf("Batiments/Selecteur/choisir_bat_2_sans_3");
+            choisirBat[6] = lisImageBuf("Batiments/Selecteur/choisir_bat_3_sans_2");
+            choisirBat[7] = lisImageBuf("Batiments/Selecteur/choisir_bat_sans_23");
 
 
             setOpaque(false);
@@ -378,11 +383,44 @@ public class TEngine extends JFrame {
                         int value = scrollValue%3;
                         if(value==1) value = 0;
                         else if(value==0) value = 1;
-                        g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                        int[] coups = coupJouable(i,j);
+                        if(coups[1]==0&&coups[2]==0) value=1;
+                        else if(coups[1]==0){
+                            value= scrollValue%2;
+                            if(value==0) value=2;
+                        }
+                        else if(coups[2]==0){
+                            value= scrollValue%2;
+                            if(value==1) value = 0;
+                            else if(value==0) value = 1;
+                        }
+
+                        if(coups[1]==0){
+                            if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                            else{
+                                if(value==1) g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                                else g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null); // attention ici 2 fois sur 3
+                            }
+                        }else{
+                            if(coups[2]==0){
+                                if(value==1) g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                                else g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                            }else{
+                                g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                            }
+                        }
                     }
 
                 }
             }
+        }
+
+        public int[] coupJouable(int i,int j){
+            int[] coups = new int[3];
+            coups[0] = 1;
+            if(jeu.getPlateau().getHauteurTuile(i,j)==3) coups[2] = 1;
+            if(aCiteAutour(i,j)) coups[1] = 1;
+            return coups;
         }
 
         private BufferedImage getTileImageFromId(int id, int numero_texture) {
@@ -743,6 +781,18 @@ public class TEngine extends JFrame {
 
         public void placerMaison(int i, int j) {
             int value = scrollValue%3;
+            int[] coupsJouable = coupJouable(i,j);
+            if(coupsJouable[1]==0&&coupsJouable[2]==0) value=1;
+            else if(coupsJouable[1]==0){
+                value= scrollValue%2;
+                if(value==0) value=2;
+            }
+            else if(coupsJouable[2]==0){
+                value= scrollValue%2;
+            }
+
+            System.out.println("value: "+value);
+
             if (value == 1) { // place hut
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 1);

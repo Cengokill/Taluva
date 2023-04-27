@@ -30,9 +30,9 @@ public class Plateau {
                 plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
-        //plateau[18][19] = new Hexagone((byte) 1, Hexagone.GRASS, (byte) 20, (byte)19);
-        plateau[19][20] = new Hexagone((byte)1, Hexagone.VOLCAN, (byte)19, (byte)20);
-        //plateau[18][20] = new Hexagone((byte)1, Hexagone.GRASS, (byte)19, (byte)20);
+        plateau[18][19] = new Hexagone((byte) 3, Hexagone.GRASS, (byte) 20, (byte)19);
+        plateau[19][20] = new Hexagone((byte)3, Hexagone.VOLCAN, (byte)19, (byte)20);
+        plateau[18][20] = new Hexagone((byte)3, Hexagone.GRASS, (byte)19, (byte)20);
 
     }
 
