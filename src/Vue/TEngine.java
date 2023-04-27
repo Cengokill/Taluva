@@ -284,22 +284,21 @@ public class TEngine extends JFrame {
 
 
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
-                    tile = applyColorFilter(tile, map[i][j].getNumJoueur());
                     g.drawImage(tile, x , y - heightoffset, null);
 
                     if (map[i][j].getBatiment() == Hexagone.MAISON) {
                         tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-                        g.drawImage(tile, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-                        g.drawImage(templeJungle, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-                        g.drawImage(templePrairie, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-                        g.drawImage(templePierre, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-                        g.drawImage(templeSable, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-                        g.drawImage(tour, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     }
 
                     if (poseTile) {
