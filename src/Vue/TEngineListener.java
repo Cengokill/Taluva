@@ -80,14 +80,14 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if (e.getButton() == MouseEvent.BUTTON2) {
+            if (e.getButton() == MouseEvent.BUTTON3) {
                 tengine.hexTiles.lastMousePosition = e.getPoint();
             }
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            if (SwingUtilities.isMiddleMouseButton(e)) {
+            if (SwingUtilities.isRightMouseButton(e)) {
                 int dx = e.getX() - tengine.hexTiles.lastMousePosition.x;
                 int dy = e.getY() - tengine.hexTiles.lastMousePosition.y;
 
@@ -130,7 +130,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            if (SwingUtilities.isRightMouseButton(e)) {
+            if (!e.isControlDown()) {
                 // Lorsque le bouton droit est enfoncé, modifiez la valeur de scrollValue
                 tengine.hexTiles.scrollValue -= e.getWheelRotation();
                 if (tengine.hexTiles.scrollValue < 1) {
@@ -143,7 +143,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = tengine.hexTiles.zoomFactor;
-                tengine.hexTiles.zoomFactor -= (wheelRotation * tengine.hexTiles.zoomIncrement)/5;
+                tengine.hexTiles.zoomFactor -= (wheelRotation * tengine.hexTiles.zoomIncrement) / 5;
 
                 // Limiter le zoom minimum et maximum
                 double minZoom = 0.2;
@@ -164,6 +164,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                 tengine.hexTiles.miseAJour();
             }
         }
+
     }
 
 }
