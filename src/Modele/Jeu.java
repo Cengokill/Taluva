@@ -9,10 +9,11 @@ public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
     IA IA1, IA2;
-    byte jCourant = 0;
+    byte jCourant;
+    byte jVainqueur;
     Joueur[] joueurs = new Joueur[2];
     Parametres p;
-    int[]score =new int[2];
+    int[]score = new int[2];
     byte[] tuile_a_poser = new byte[5];
 
     boolean doit_placer_tuile;
@@ -36,11 +37,27 @@ public class Jeu extends Observable {
         pioche();
     }
 
+    public void calculScore(){
+        for(int i = 0; i<joueurs.length; i++){
+            score[i] = joueurs[i].getNbTemplesPlaces()*9 + joueurs[i].getNbToursPlacees()*3 + joueurs[i].getNbHuttesPlacees();
+        }
+    }
+
     public void initJoueurs(){
         joueurs[0] = new Joueur((byte)0,"Killian");
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
-    public boolean estVictoire(){
+    public boolean estFinPartie() {
+        int nb_temples_j = joueurs[jCourant].getNbTemples();
+        int nb_tours_j = joueurs[jCourant].getNbTours();
+        int nb_huttes_j = joueurs[jCourant].getNbHuttes();
+        if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
+            jVainqueur = jCourant;
+            return true;
+        }
+        if(pioche.isEmpty()){
+            return true;
+        }
         return false;
     }
 
@@ -69,6 +86,8 @@ public class Jeu extends Observable {
         plateau.placeBatiment(jCourant, i,j, type_bat);
         if(type_bat!=4){
             if(type_bat == 0) {
+                if(plateau.getHauteurTuile(i,j)==2) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(i,j)==3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
             else if(type_bat == 1) {
