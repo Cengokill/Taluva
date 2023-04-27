@@ -220,7 +220,6 @@ public class Plateau {
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
-            //hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
             byte batiment = 0;
             if (coup.type == 1) {
                 batiment = Hexagone.MAISON;
