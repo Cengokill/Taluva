@@ -719,21 +719,22 @@ public class TEngine extends JFrame {
 
 
         public void placerMaison(int i, int j) {
-            int test = scrollValue%3;
-            if (test == 1) {
+            int value = scrollValue%3;
+            if (value == 1) { // place hut
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 1);
             }
-            else if (test == 2){
-                enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 3);
+            else if (value == 2){ // place tour
+                if(jeu.getPlateau().getHauteurTuile(i,j)==3){
+                    enSelection = false;
+                    controleur.placeBatiment(i,j,(byte) 3);
+                }
             }
-            else if (test == 0){
+            else if (value == 0){ // place temple
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 2);
             }
         }
-
 
         public void addToCursor(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {

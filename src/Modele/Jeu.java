@@ -86,6 +86,8 @@ public class Jeu extends Observable {
         plateau.placeBatiment(jCourant, i,j, type_bat);
         if(type_bat!=4){
             if(type_bat == 0) {
+                if(plateau.getHauteurTuile(i,j)==2) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(i,j)==3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
             else if(type_bat == 1) {
