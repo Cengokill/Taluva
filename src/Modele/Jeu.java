@@ -62,11 +62,11 @@ public class Jeu extends Observable {
         return true;
     }
 
-    public void joueurPlaceMaison(int i, int j){
+    public void joueurPlaceBatiment(int i, int j, byte type_bat){
         if (doit_placer_tuile) {
             return;
         }
-        plateau.placeBatiment(jCourant, i,j, (byte) plateau.getHauteurTuile(i,j));
+        plateau.placeBatiment(jCourant, i,j, type_bat);
         joueurs[jCourant].incrementeHutte();
         doit_placer_batiment = false;
         doit_placer_tuile = true;

@@ -706,18 +706,18 @@ public class TEngine extends JFrame {
                 x = j;
             }
             j = hoveredTile_y;
-            if (controleur.peutPlacerMaison(i, j)) {
-                controleur.placeMaison(i, j,(byte) typeAConstruire);
+            if (controleur.peutPlacerBatiment(i, j)) {
+                controleur.placeBatiment(i, j,(byte) typeAConstruire);
             }
         }
 
         private int choisirMaison(int x, int y){
             if(!enSelection){
-                if (controleur.peutPlacerMaison(x, y)) {
+                if (controleur.peutPlacerBatiment(x, y)) {
                     posBat_x = x;
                     posBat_y = y;
                     enSelection = true;
-                    controleur.placeMaison(posBat_x, posBat_y,(byte) 4);
+                    controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
                 }
             }else{
                 int pos_x = posBat_x*voidTile.getWidth();
@@ -736,7 +736,7 @@ public class TEngine extends JFrame {
 
                 if(type!=0){
                     enSelection = false;
-                    controleur.placeMaison(posBat_x,posBat_y,(byte) type);
+                    controleur.placeBatiment(posBat_x,posBat_y,(byte) type);
                     typeAConstruire=0;
                 }
                 return type;

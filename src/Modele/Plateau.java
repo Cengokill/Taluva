@@ -1,7 +1,5 @@
 package Modele;
 
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Plateau {
@@ -241,8 +239,8 @@ public class Plateau {
     public boolean peutPlacerMaison(int i,int j){
         return plateau[i][j].getTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE;
     }
-    public void placeMaison(byte joueurCourant, int i,int j, byte type){
-        Coup coup = new Coup(joueurCourant, i,j,type);
+    public void placeBatiment(byte joueurCourant, int i, int j, byte type_bat){
+        Coup coup = new Coup(joueurCourant, i,j,type_bat);
         historique.ajoute(coup);
         joueCoup(coup);
     }
