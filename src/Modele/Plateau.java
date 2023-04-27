@@ -246,7 +246,7 @@ public class Plateau {
     }
 
     public boolean peutPlacerMaison(int i,int j){
-        return plateau[i][j].getTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE;
+        return (plateau[i][j].getTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE && plateau[i][j].getTerrain()!=Hexagone.VIDE );
     }
     public void placeBatiment(byte joueurCourant, int i, int j, byte type_bat){
         Coup coup = new Coup(joueurCourant, i,j,type_bat);

@@ -377,8 +377,7 @@ public class TEngine extends JFrame {
                         int pos_y = y -300;
                         int value = scrollValue%3;
                         if(value==1) value = 0;
-                        else if(value==2) value = 1;
-                        else value = 2;
+                        else if(value==0) value = 1;
                         g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
                     }
 
@@ -727,11 +726,11 @@ public class TEngine extends JFrame {
             }
             else if (test == 2){
                 enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 2);
+                controleur.placeBatiment(i,j,(byte) 3);
             }
             else if (test == 0){
                 enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 3);
+                controleur.placeBatiment(i,j,(byte) 2);
             }
         }
 
@@ -755,6 +754,7 @@ public class TEngine extends JFrame {
                 else{
                     if(!enSelection){
                         if (controleur.peutPlacerBatiment(i, j)) {
+                            System.out.println("on peut");
                             posBat_x = i;
                             posBat_y = j;
                             enSelection = true;
