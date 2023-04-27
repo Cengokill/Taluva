@@ -31,6 +31,8 @@ De nombreuses stratégies découlent des différentes règles de placement. Les 
 | 3 | <ul><li> - [ ] Charger la partie                                                                    </li></ul>
 | 3 | <ul><li> - [ ] IA aléatoire                                                                         </li></ul>
 | 3 | <ul><li> - [ ] IA intelligente utilisant un arbre ET/OU                                             </li></ul>
+| 3 | <ul><li> - [ ] IA contre joueur                                                                     </li></ul>
+| 3 | <ul><li> - [ ] IA contre IA                                                                         </li></ul>
 | 3 | <ul><li> - [ ] Score                                                                                </li></ul>
 | 4 | <ul><li> - [ ] Boutons qui changent d'apparence si la souris les survole                            </li></ul>
 | 4 | <ul><li> - [ ] Un menu d'accueil permettant de choisir le mode de jeu et de modifier les paramètres </li></ul>
