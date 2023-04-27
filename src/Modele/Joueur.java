@@ -7,15 +7,15 @@ public class Joueur {
     private int nbTours;
     private int nbHuttes;
     private int nbTemples;
-    private int nbVillage ;
+    private int nbVillages;
 
     public Joueur(byte type, String prenom){
         this.type = type;//0 pour humain, 1 pour IA
         this.prenom = prenom;
-        this.nbTours = 0;
         this.nbHuttes = 0;
+        this.nbTours = 0;
         this.nbTemples = 0;
-        this.nbVillage = 0;
+        this.nbVillages = 0;
     }
 
     public byte getType(){
@@ -45,6 +45,16 @@ public class Joueur {
     public void setCouleur(String couleur){
         this.couleur = couleur;
     }
-    public int getNbVillage(){return nbVillage;}
-    public void incrementVillage(){nbVillage++;}
+    public int getNbVillages(){return nbVillages;}
+
+    public void incrementTour(){
+        nbTemples++;}
+
+    public void incrementeHutte(){
+        nbHuttes++;}
+
+    public void incrementeTour(){
+        nbTours++;}
+    public void incrementeVillage(){
+        nbVillages++;}
 }

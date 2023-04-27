@@ -66,7 +66,8 @@ public class Jeu extends Observable {
         if (doit_placer_tuile) {
             return;
         }
-        plateau.placeMaison(jCourant, i,j, (byte) plateau.getHauteurTuile(i,j));
+        plateau.placeBatiment(jCourant, i,j, (byte) plateau.getHauteurTuile(i,j));
+        joueurs[jCourant].incrementeHutte();
         doit_placer_batiment = false;
         doit_placer_tuile = true;
         changeJoueur();
@@ -106,10 +107,6 @@ public class Jeu extends Observable {
         tuile_a_poser[2] = (byte) tuile_courante.numero0;
         tuile_a_poser[3] = (byte) tuile_courante.numero1;
         tuile_a_poser[4] = (byte) tuile_courante.numero2;
-    }
-
-    public void joueJoueur(Coup cp) {
-        return;
     }
 
     public void annuler() {
