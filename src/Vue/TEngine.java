@@ -394,7 +394,6 @@ public class TEngine extends JFrame {
                             if(value==1) value = 0;
                             else if(value==0) value = 1;
                         }
-
                         if(coups[1]==0){
                             if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
                             else{
@@ -789,22 +788,25 @@ public class TEngine extends JFrame {
             }
             else if(coupsJouable[2]==0){
                 value= scrollValue%2;
+                if(value==1) value = 0;
+                else if(value==0) value = 1;
             }
 
-            System.out.println("value: "+value);
-
             if (value == 1) { // place hut
+                System.out.println("hut");
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 1);
             }
             else if (value == 2){ // place tour
                 if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
+                    System.out.println("tour");
                     enSelection = false;
                     controleur.placeBatiment(i,j,(byte) 3);
                 }
             }
             else if (value == 0){ // place temple
                 if(aCiteAutour(i,j)){
+                    System.out.println("temple");
                     enSelection = false;
                     controleur.placeBatiment(i,j,(byte) 2);
                 }
