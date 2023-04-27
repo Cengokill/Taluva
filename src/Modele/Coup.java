@@ -6,6 +6,7 @@ public class Coup {
     public static final byte BATIMENT = 1;
 
     byte type;//0 : placer une tuile, 1 : placer un bâtiment
+    byte num_joueur;
 
     int volcan_x;
     int volcan_y;
@@ -18,7 +19,8 @@ public class Coup {
     int batiment_x;
     int batiment_y;
 
-    public Coup(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {// placement TUILE
+    public Coup(byte num_joueur, int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {// placement TUILE
+        this.num_joueur = num_joueur;
         this.type = TUILE;
         this.volcan_x = volcan_x;
         this.volcan_y = volcan_y;
@@ -29,10 +31,14 @@ public class Coup {
         this.tile2_y = tile2_y;
         this.terrain2 = terrain2;
     }
-    public Coup(int batiment_x, int batiment_y, byte typeBatiment) {// placement BATIMENT
+    public Coup(byte num_joueur, int batiment_x, int batiment_y, byte typeBatiment) {// placement BATIMENT
+        this.num_joueur = num_joueur;
         this.type = typeBatiment;
-
         this.batiment_x = batiment_x;
         this.batiment_y = batiment_y;
+    }
+
+    public byte getNumJoueur() {
+        return num_joueur;
     }
 }

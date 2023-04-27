@@ -4,6 +4,7 @@ import Patterns.Observable;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Jeu extends Observable {
     Plateau plateau;
@@ -20,6 +21,7 @@ public class Jeu extends Observable {
     private static int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
+        jCourant = (byte) ((int)(Math.random() * 2));
         pioche = new LinkedList<Tuile>();
         lancePartie();
     }
@@ -28,6 +30,14 @@ public class Jeu extends Observable {
         initPioche();
         plateau = new Plateau();
         pioche();
+    }
+
+    public void joueurPlaceMaison(int i, int j){
+        plateau.placeMaison(jCourant, i,j, (byte) plateau.getHauteurTuile(i,j));
+    }
+
+    public void joueurPlaceEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2){
+        plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
     }
 
     public void initPioche(){//24 tuiles

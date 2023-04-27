@@ -204,7 +204,7 @@ public class Plateau {
     }
     public boolean estDansTableau(int x , int y){return x>-1 || x<31 || y>-1 || y<31  ;}
     public void joueCoup(Coup coup) {
-        byte num_joueur = 0;
+        byte num_joueur = coup.getNumJoueur();
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
         if (coup.type == Coup.TUILE) {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
@@ -230,8 +230,8 @@ public class Plateau {
 
 
     // Nécessite un appel à peutPlacerEtage
-    public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
-        Coup coup = new Coup(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+    public void placeEtage(byte joueurCourant, int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
+        Coup coup = new Coup(joueurCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         historique.ajoute(coup);
         joueCoup(coup);
     }
@@ -239,8 +239,8 @@ public class Plateau {
     public boolean peutPlacerMaison(int i,int j){
         return plateau[i][j].getTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE;
     }
-    public void placeMaison(int i,int j, byte type){
-        Coup coup = new Coup(i,j,type);
+    public void placeMaison(byte joueurCourant, int i,int j, byte type){
+        Coup coup = new Coup(joueurCourant, i,j,type);
         historique.ajoute(coup);
         joueCoup(coup);
     }
