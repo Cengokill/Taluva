@@ -25,10 +25,9 @@ public class Plateau {
     private void initPlateau() {
         for (int i = 0; i < plateau.length; i++) {
             for (int j = 0; j < plateau[0].length; j++) {
-                plateau[i][j] = new Hexagone((byte) 0, Hexagone.VIDE, (byte)0, (byte)0);
+                plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)0, (byte)0);
             }
         }
-
         plateau[18][19] = new Hexagone((byte) 1, Hexagone.GRASS, (byte) 20, (byte)19);
         plateau[19][20] = new Hexagone((byte)1, Hexagone.VOLCAN, (byte)20, (byte)19);
         plateau[18][20] = new Hexagone((byte)1, Hexagone.GRASS, (byte)20, (byte)19);
@@ -64,7 +63,7 @@ public class Plateau {
     public boolean peutPlacerTuile(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
 
         int hauteur = plateau[volcan_x][volcan_y].getHauteur();
-        if (plateau[tile1_x][tile1_y].volcan_x == volcan_x && plateau[tile2_x][tile2_y].volcan_y == volcan_y) {
+        if (plateau[tile1_x][tile1_y].getVolcanX() == volcan_x && plateau[tile2_x][tile2_y].getVolcanY() == volcan_y) {
             return false;
         }
 
@@ -205,6 +204,7 @@ public class Plateau {
     }
     public boolean estDansTableau(int x , int y){return x>-1 || x<31 || y>-1 || y<31  ;}
     public void joueCoup(Coup coup) {
+        byte num_joueur = 0;
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
         if (coup.type == Coup.TUILE) {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
@@ -224,7 +224,7 @@ public class Plateau {
             } else if (hauteur == 3) {
                 batiment = Hexagone.TOUR;
             }
-            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone((byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)coup.volcan_x, (byte)coup.volcan_y);
         }
     }
 
