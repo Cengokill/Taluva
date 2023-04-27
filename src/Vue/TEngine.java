@@ -724,17 +724,17 @@ public class TEngine extends JFrame {
         private boolean aCiteAutour(int i,int j){
             boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
             if(i%2==1){
-                if(possedeBatiment(i-1,j+1)) {
-                    bool = true;
-                }
-                if(possedeBatiment(i+1,j+1)) {
-                    bool = true;
-                }
-            }else{
                 if(possedeBatiment(i-1,j-1)) {
                     bool = true;
                 }
                 if(possedeBatiment(i+1,j-1)) {
+                    bool = true;
+                }
+            }else{
+                if(possedeBatiment(i-1,j+1)) {
+                    bool = true;
+                }
+                if(possedeBatiment(i+1,j+1)) {
                     bool = true;
                 }
             }
