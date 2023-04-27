@@ -617,15 +617,18 @@ public class TEngine extends JFrame {
                 int heightoffset1 = triplet[0][1];
                 heightoffset1 *= 30;
 
-                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getTerrain() != Hexagone.VOLCAN){
-                    if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
-                    else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
-                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
-                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.MONTAGNE) g.drawImage(templePierre, x , y - heightoffset1, null);
-                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.GRASS) g.drawImage(templePrairie, x , y - heightoffset1, null);
-                        if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.FORET) g.drawImage(templeJungle, x , y - heightoffset1, null);
-                    }else if(jeu.getPlateau().getHauteurTuile(i,j)==3){
-                        g.drawImage(tour, x , y - heightoffset1, null);
+                if(!enSelection){
+                    if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getTerrain() != Hexagone.VOLCAN){
+                        if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
+                        else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
+                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
+                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.MONTAGNE) g.drawImage(templePierre, x , y - heightoffset1, null);
+                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.GRASS) g.drawImage(templePrairie, x , y - heightoffset1, null);
+                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.FORET) g.drawImage(templeJungle, x , y - heightoffset1, null);
+                        }else if(jeu.getPlateau().getHauteurTuile(i,j)==3){
+                            g.drawImage(tour, x , y - heightoffset1, null);
+
+                        }
                     }
                 }
             }
@@ -709,10 +712,17 @@ public class TEngine extends JFrame {
                 int pos_y = posBat_y*voidTile.getWidth();
                 int type = 0;
 
-                System.out.println(pos_x);
-                System.out.println("LastPosition_x: "+LastPosition.getX()+"LastPosition_y: "+LastPosition.getY());
+                pos_y-=200;
+                pos_x-=2000;
+                System.out.println("x: "+pos_y+" y : "+pos_x);
+                System.out.println("LastPosition_x: "+LastPosition.getX()+" LastPosition_y: "+LastPosition.getY());
+                if(LastPosition.getX()>=pos_y && LastPosition.getY()>=pos_x){
+                    System.out.println("1");
+                }
 
-                if(LastPosition.getX()>=pos_x && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+100 && LastPosition.getY()<=pos_y+100)
+
+
+                if(LastPosition.getX()>=pos_y && LastPosition.getY()>=pos_x && LastPosition.getX()<=pos_y+200 && LastPosition.getY()<=pos_x+200)
                     type=1;
                 if(LastPosition.getX()>=pos_x+200 && LastPosition.getY()>=pos_y && LastPosition.getX()<=pos_x+500 && LastPosition.getY()<=pos_y+100)
                     type=2;
