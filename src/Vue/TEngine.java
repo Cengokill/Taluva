@@ -124,10 +124,6 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-            wrongTile1 = applyYellowFilter(wrongTile1);
-            wrongTile2 = applyYellowFilter(wrongTile2);
-            wrongTile3 = applyYellowFilter(wrongTile3);
-
             boutonAnnuler = lisImage("annuler");
             maisonTile = lisImageBuf("Batiments/maison");
             templeJungle = lisImageBuf("Batiments/Temple_jungle");
