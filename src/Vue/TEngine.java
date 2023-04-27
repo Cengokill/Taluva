@@ -747,14 +747,13 @@ public class TEngine extends JFrame {
                 // Convertir les coordonnées du système de pixels en coordonnées du système de grille
                 int i = clickPositionAdjusted.y / verticalOffset;
                 int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-                System.out.println("i: " + i);
-                System.out.println("j: " + j);
+                //System.out.println("i: " + i);
+                //System.out.println("j: " + j);
 
                 if(poseTile) placerTuiles(i,j);
                 else{
                     if(!enSelection){
                         if (controleur.peutPlacerBatiment(i, j)) {
-                            System.out.println("on peut");
                             posBat_x = i;
                             posBat_y = j;
                             enSelection = true;
