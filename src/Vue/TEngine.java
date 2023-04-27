@@ -21,7 +21,7 @@ public class TEngine extends JFrame {
     public HexagonalTiles hexTiles;
     ControleurMediateur controleur;
 
-    boolean poseTile, mode_plateau = false, mode_numero = false;
+    boolean poseTile, mode_plateau = true, mode_numero = false;
     Jeu jeu;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
@@ -483,9 +483,9 @@ public class TEngine extends JFrame {
                 tile2 = getReducedOpacityImage(tile2, opacity);
                 tile3 = getReducedOpacityImage(tile3, opacity);
 
-                int heightoffset1 = triplet[0][1];
-                int heightoffset2 = triplet[1][1];
-                int heightoffset3 = triplet[2][1];
+                int heightoffset1 = 1;
+                int heightoffset2 = 1;
+                int heightoffset3 = 1;
                 heightoffset1 *= 30;
                 heightoffset2 *= 30;
                 heightoffset3 *= 30;
