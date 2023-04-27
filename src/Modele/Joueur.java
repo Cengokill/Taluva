@@ -4,18 +4,26 @@ public class Joueur {
     private byte type_bat;
     private String prenom;
     private String couleur;
-    private int nbTours;
+    //définit le nombre de bâtiments initial
     private int nbHuttes;
+    private int nbTours;
     private int nbTemples;
-    private int nbVillages;
+    //définit le nombre de bâtiments placés en jeu
+    private int nbToursPlacees;
+    private int nbHuttesPlacees;
+    private int nbTemplesPlaces;
+    private int nbVillages;//nombre de villages construits
 
     public Joueur(byte type, String prenom){
         this.type_bat = type;//0 pour humain, 1 pour IA
         this.prenom = prenom;
-        this.nbHuttes = 0;
-        this.nbTours = 0;
-        this.nbTemples = 0;
-        this.nbVillages = 0;
+        nbHuttesPlacees = 0;
+        nbToursPlacees = 0;
+        nbTemplesPlaces = 0;
+        nbVillages = 0;
+        nbHuttes = 20;
+        nbTours = 3;
+        nbTemples = 2;
     }
 
     public byte getTypeBat(){
@@ -30,16 +38,16 @@ public class Joueur {
         return couleur;
     }
 
-    public int getNbTours(){
-        return nbTours;
+    public int getNbToursPlacees(){
+        return nbToursPlacees;
     }
 
-    public int getNbHuttes(){
-        return nbHuttes;
+    public int getNbHuttesPlacees(){
+        return nbHuttesPlacees;
     }
 
-    public int getNbTemples(){
-        return nbTemples;
+    public int getNbTemplesPlaces(){
+        return nbTemplesPlaces;
     }
 
     public void setCouleur(String couleur){
@@ -47,18 +55,22 @@ public class Joueur {
     }
     public int getNbVillages(){return nbVillages;}
 
-    public void incrementTour(){
-        nbTemples++;}
-
     public void incrementeHutte(){
-        nbHuttes++;}
+        nbHuttes--;
+        nbHuttesPlacees++;}
 
     public void incrementeTour(){
-        nbTours++;}
-    public void incrementeVillage(){
-        nbVillages++;}
+        nbTours--;
+        nbToursPlacees++;}
 
     public void incrementeTemple() {
-        nbTemples++;
+        nbTemples--;
+        nbTemplesPlaces++;
+    }
+
+    public void incrementeVillage() {
+        nbVillages++;
     }
 }
+
+

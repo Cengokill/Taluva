@@ -39,7 +39,7 @@ public class Jeu extends Observable {
 
     public void calculScore(){
         for(int i = 0; i<joueurs.length; i++){
-            score[i] = joueurs[i].getNbTemples()*9 + joueurs[i].getNbTours()*3 + joueurs[i].getNbHuttes();
+            score[i] = joueurs[i].getNbTemplesPlaces()*9 + joueurs[i].getNbToursPlacees()*3 + joueurs[i].getNbHuttesPlacees();
         }
     }
 
@@ -48,45 +48,12 @@ public class Jeu extends Observable {
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
     public boolean estFinPartie() {
-        int nb_temples_j0 = joueurs[0].getNbTemples();
-        int nb_temples_j1 = joueurs[1].getNbTemples();
-        int nb_tours_j0 = joueurs[0].getNbTours();
-        int nb_tours_j1 = joueurs[1].getNbTours();
-        int nb_huttes_j0 = joueurs[0].getNbHuttes();
-        int nb_huttes_j1 = joueurs[1].getNbHuttes();
-        if (nb_temples_j0 == 2) {
-            if (nb_temples_j1 < 2) {
-                jVainqueur = 0;
-                return true;
-            }
-            if (nb_temples_j1 == 2) {
-                if (nb_tours_j0 > nb_tours_j1) {
-                    jVainqueur = 0;
-                    return true;
-                }
-                if (nb_tours_j0 < nb_tours_j1) {
-                    jVainqueur = 1;
-                    return true;
-                }
-                if (nb_tours_j0 == nb_tours_j1) {
-                    if (nb_huttes_j0 > nb_huttes_j1) {
-                        jVainqueur = 0;
-                        return true;
-                    }
-                    if (nb_huttes_j0 < nb_huttes_j1) {
-                        jVainqueur = 1;
-                        return true;
-                    }
-                    else {//égalité
-                        jVainqueur = -1;
-                    }
-                }
-            }
-        }else{
-            if (nb_temples_j0 == 2) {
-                jVainqueur = 1;
-                return true;
-            }
+        int nb_temples_j = joueurs[jCourant].getNbTemplesPlaces();
+        int nb_tours_j = joueurs[jCourant].getNbToursPlacees();
+        int nb_huttes_j = joueurs[jCourant].getNbHuttesPlacees();
+        if ((nb_temples_j >= 1 && nb_tours_j >= 1) || (nb_temples_j >= 1 && nb_huttes_j >= 1) || (nb_tours_j >= 1 && nb_huttes_j >= 1)) {
+            jVainqueur = jCourant;
+            return true;
         }
         if(pioche.isEmpty()){
             return true;
