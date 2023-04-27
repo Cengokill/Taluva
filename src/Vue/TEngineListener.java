@@ -50,6 +50,9 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                 if(tengine.mode_numero)  tengine.mode_numero = false;
                 else tengine.mode_numero = true;
             }
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                tengine.hexTiles.shake();
+            }
         }
 
         @Override
