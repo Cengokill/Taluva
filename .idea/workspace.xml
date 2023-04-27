@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Mode plateau et mode numéro (A et Z)">
+    <list default="true" id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="maison">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controleur/ControleurMediateur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -15,9 +19,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2P0DzlLcvgnG8PQJ83TJbwuDjsB" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="TaluvaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TaluvaMain" />
@@ -32,6 +50,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="Tengine Tuiles Triplé fix">
       <created>1682539548423</created>
@@ -89,7 +108,42 @@
       <option name="project" value="LOCAL" />
       <updated>1682547794104</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Plateau">
+      <created>1682548159378</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1682548159378</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Plateau" />
+      <created>1682585374491</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1682585374491</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Changement controles">
+      <created>1682586246895</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1682586246896</updated>
+    </task>
+    <task id="LOCAL-00011" summary="edit affichages">
+      <created>1682586771639</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1682586771639</updated>
+    </task>
+    <task id="LOCAL-00012" summary="maison">
+      <created>1682591178301</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1682591178301</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -102,6 +156,10 @@
     <MESSAGE value="Toggle niveaux avec ctrl" />
     <MESSAGE value="Images" />
     <MESSAGE value="Mode plateau et mode numéro (A et Z)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mode plateau et mode numéro (A et Z)" />
+    <MESSAGE value="Plateau" />
+    <MESSAGE value="Changement controles" />
+    <MESSAGE value="edit affichages" />
+    <MESSAGE value="maison" />
+    <option name="LAST_COMMIT_MESSAGE" value="maison" />
   </component>
 </project>

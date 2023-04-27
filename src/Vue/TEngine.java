@@ -89,6 +89,11 @@ public class TEngine extends JFrame {
         int hoveredTile_x;
         int hoveredTile_y;
 
+        Color[] couleurs_joueurs;
+
+
+
+
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
             this.controleur = controleur;
@@ -146,6 +151,12 @@ public class TEngine extends JFrame {
 
             largeur = tengine.getWidth();
             hauteur = tengine.getHeight();
+
+            couleurs_joueurs = new Color[4];
+            couleurs_joueurs[0] = new Color(255, 0, 0, 127);
+            couleurs_joueurs[1] = new Color(0, 233, 255, 127);
+            couleurs_joueurs[2] = new Color(183, 0, 255, 127);
+            couleurs_joueurs[3] = new Color(255, 185, 0, 127);
         }
 
         public void changerTuileAPoser() {
@@ -204,9 +215,14 @@ public class TEngine extends JFrame {
             repaint();
         }
 
+        private void changerPoseTile() {
+            poseTile = jeu.doit_placer_tuile();
+        }
+
         @Override
         protected void paintComponent(Graphics g) {
             changerTuileAPoser();
+            changerPoseTile();
 
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
@@ -272,6 +288,7 @@ public class TEngine extends JFrame {
 
 
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
+                    tile = applyColorFilter(tile, map[i][j].getNumJoueur());
                     g.drawImage(tile, x , y - heightoffset, null);
 
                     if (map[i][j].getBatiment() == Hexagone.MAISON) {
@@ -531,6 +548,21 @@ public class TEngine extends JFrame {
             g2d.drawImage(image, 0, 0, null);
             g2d.setComposite(AlphaComposite.SrcAtop);
             g2d.setColor(new Color(255, 0, 0, 127));
+            g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+            g2d.dispose();
+            return outputImage;
+        }
+
+        public BufferedImage applyColorFilter(BufferedImage image, byte num_joueur) {
+            if (num_joueur < 0 || num_joueur > 3) {
+                return image;
+            }
+            System.out.println(num_joueur);
+            BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = outputImage.createGraphics();
+            g2d.drawImage(image, 0, 0, null);
+            g2d.setComposite(AlphaComposite.SrcAtop);
+            g2d.setColor(couleurs_joueurs[num_joueur]);
             g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
             g2d.dispose();
             return outputImage;
