@@ -89,7 +89,7 @@ public class TEngine extends JFrame {
         private static final int SHAKE_INTERVAL = 25; // Intervalle entre les mouvements en millisecondes
         private static final int SHAKE_DISTANCE = 10; // Distance maximale de déplacement en pixels
 
-        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, chosirMaison;
+        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, constructionMode;
         BufferedImage[] choisirBat = new BufferedImage[8];
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
@@ -173,7 +173,7 @@ public class TEngine extends JFrame {
             choisirBat[5] = lisImageBuf("Batiments/Selecteur/choisir_bat_2_sans_3");
             choisirBat[6] = lisImageBuf("Batiments/Selecteur/choisir_bat_3_sans_2");
             choisirBat[7] = lisImageBuf("Batiments/Selecteur/choisir_bat_sans_23");
-
+            constructionMode = lisImageBuf("Batiments/Selecteur/construction");
 
             setOpaque(false);
 
@@ -687,16 +687,15 @@ public class TEngine extends JFrame {
 
                 if(!enSelection){
                     if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getTerrain() != Hexagone.VOLCAN){
-                        if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
+                        /*if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
                         else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.MONTAGNE) g.drawImage(templePierre, x , y - heightoffset1, null);
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.GRASS) g.drawImage(templePrairie, x , y - heightoffset1, null);
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.FORET) g.drawImage(templeJungle, x , y - heightoffset1, null);
                         }else if(jeu.getPlateau().getHauteurTuile(i,j)==3){
-                            g.drawImage(tour, x , y - heightoffset1, null);
-
-                        }
+                            g.drawImage(tour, x , y - heightoffset1, null);*/
+                        g.drawImage(constructionMode, x+50 , y - heightoffset1+50, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
                     }
                 }
             }
