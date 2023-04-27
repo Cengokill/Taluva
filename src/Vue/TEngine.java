@@ -89,6 +89,8 @@ public class TEngine extends JFrame {
         TEngineListener.KeyboardListener keyboardlisten;
 
         boolean enSelection = false;
+
+        public boolean clicDroiteEnfonce = false;
         int typeAConstruire=0, posBat_x, posBat_y;
         ControleurMediateur controleur;
         int hoveredTile_x;
@@ -478,7 +480,7 @@ public class TEngine extends JFrame {
         }
 
         private void displayHoverTile(Graphics g) {
-            if (hoverTile != null) {
+            if (hoverTile != null && !clicDroiteEnfonce) {
                 int tileWidth = voidTile.getWidth();
                 int tileHeight = voidTile.getWidth(); // Important !!
                 int horizontalOffset = tileWidth;

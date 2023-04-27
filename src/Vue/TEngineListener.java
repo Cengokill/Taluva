@@ -97,6 +97,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void mouseDragged(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
+                tengine.hexTiles.clicDroiteEnfonce = true;
                 int dx = e.getX() - tengine.hexTiles.lastMousePosition.x;
                 int dy = e.getY() - tengine.hexTiles.lastMousePosition.y;
 
@@ -135,6 +136,9 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             tengine.hexTiles.hoverTilePosition = e.getPoint();
             tengine.hexTiles.updateCursorPosOnTiles(e);
             tengine.hexTiles.miseAJour();
+            if (!SwingUtilities.isRightMouseButton(e)) {
+                tengine.hexTiles.clicDroiteEnfonce = false;
+            }
         }
 
         @Override
