@@ -717,6 +717,29 @@ public class TEngine extends JFrame {
             miseAJour();
         }
 
+        private boolean possedeBatiment(int i,int j){
+            return (jeu.getPlateau().getBatiment(i,j)==Hexagone.TOUR||jeu.getPlateau().getBatiment(i,j)==Hexagone.MAISON||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_FORET
+                    ||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE);
+        }
+        private boolean aCiteAutour(int i,int j){
+            boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
+            if(i%2==1){
+                if(possedeBatiment(i-1,j+1)) {
+                    bool = true;
+                }
+                if(possedeBatiment(i+1,j+1)) {
+                    bool = true;
+                }
+            }else{
+                if(possedeBatiment(i-1,j-1)) {
+                    bool = true;
+                }
+                if(possedeBatiment(i+1,j-1)) {
+                    bool = true;
+                }
+            }
+            return bool;
+        }
 
         public void placerMaison(int i, int j) {
             int value = scrollValue%3;
@@ -725,14 +748,16 @@ public class TEngine extends JFrame {
                 controleur.placeBatiment(i,j,(byte) 1);
             }
             else if (value == 2){ // place tour
-                if(jeu.getPlateau().getHauteurTuile(i,j)==3){
+                if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
                     enSelection = false;
                     controleur.placeBatiment(i,j,(byte) 3);
                 }
             }
             else if (value == 0){ // place temple
-                enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 2);
+                if(aCiteAutour(i,j)){
+                    enSelection = false;
+                    controleur.placeBatiment(i,j,(byte) 2);
+                }
             }
         }
 

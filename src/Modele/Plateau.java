@@ -255,6 +255,10 @@ public class Plateau {
         joueCoup(coup);
     }
 
+    public int getBatiment(int i,int j){
+        return plateau[i][j].getBatiment();
+    }
+
     public int getHauteurTuile(int i,int j){
         return plateau[i][j].getHauteur();
     }
