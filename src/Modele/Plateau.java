@@ -1,5 +1,9 @@
 package Modele;
 
+import org.w3c.dom.ls.LSOutput;
+
+import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Plateau {
@@ -23,12 +27,12 @@ public class Plateau {
     private void initPlateau() {
         for (int i = 0; i < plateau.length; i++) {
             for (int j = 0; j < plateau[0].length; j++) {
-                plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)0, (byte)0);
+                plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
-        plateau[18][19] = new Hexagone((byte) 1, Hexagone.GRASS, (byte) 20, (byte)19);
-        plateau[19][20] = new Hexagone((byte)1, Hexagone.VOLCAN, (byte)20, (byte)19);
-        plateau[18][20] = new Hexagone((byte)1, Hexagone.GRASS, (byte)20, (byte)19);
+        //plateau[18][19] = new Hexagone((byte) 1, Hexagone.GRASS, (byte) 20, (byte)19);
+        plateau[19][20] = new Hexagone((byte)1, Hexagone.VOLCAN, (byte)19, (byte)20);
+        //plateau[18][20] = new Hexagone((byte)1, Hexagone.GRASS, (byte)19, (byte)20);
 
     }
 
@@ -58,81 +62,87 @@ public class Plateau {
         return false;
     }
 
-    public boolean peutPlacerTuile(int volcan_x, int volcan_y, int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
+    public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
 
-        int hauteur = plateau[volcan_x][volcan_y].getHauteur();
-        if (plateau[tile1_x][tile1_y].getVolcanX() == volcan_x && plateau[tile2_x][tile2_y].getVolcanY() == volcan_y) {
+        /*
+        System.out.println("================================");
+        System.out.println("volcan_y: " + volcan_y);
+        System.out.println("tile1_y: " + tile1_y);
+        System.out.println("tile2_y: " + tile2_y);
+        System.out.println();
+        System.out.println("volcan_x: " + volcan_x);
+        System.out.println("tile1_x: " + tile1_x);
+        System.out.println("tile2_x: " + tile2_x);
+         */
+
+        int hauteur = plateau[volcan_i][volcan_j].getHauteur();
+        if (plateau[tile1_i][tile1_j].getVolcanJ() == volcan_j && plateau[tile2_i][tile2_j].getVolcanI() == volcan_i) {
             return false;
         }
+
 
         // Hauteur max
         if (hauteur == 3) {
             return false;
         }
         // Vérifie si on place un volcan sur un volcan
-        if (plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VOLCAN && plateau[volcan_x][volcan_y].getTerrain() != Hexagone.VIDE) {
+        if (plateau[volcan_i][volcan_j].getTerrain() != Hexagone.VOLCAN && plateau[volcan_i][volcan_j].getTerrain() != Hexagone.VIDE) {
             return false;
         }
+
 
         // Vérifie la hauteur de toutes les cases
-        if (plateau[volcan_x][volcan_y].getHauteur() != hauteur) {
+        if (plateau[volcan_i][volcan_j].getHauteur() != hauteur) {
             return false;
         }
-        if (plateau[tile1_x][tile1_y].getHauteur() != hauteur) {
+        if (plateau[tile1_i][tile1_j].getHauteur() != hauteur) {
             return false;
         }
-        if (plateau[tile2_x][tile2_y].getHauteur() != hauteur) {
+        if (plateau[tile2_i][tile2_j].getHauteur() != hauteur) {
             return false;
         }
 
-        if (plateau[volcan_x][volcan_y].getTerrain() == Hexagone.VIDE && plateau[tile1_x][tile1_y].getTerrain() == Hexagone.VIDE && plateau[tile2_x][tile2_y].getTerrain() == Hexagone.VIDE) {
-            if (volcan_y % 2 == 1) {
-                volcan_x = volcan_x + 1;
-            } else {
-                volcan_x = volcan_x;
-            }
-            if (tile1_y % 2 == 1) {
-                tile1_x = tile1_x + 1;
-            } else {
-                tile1_x = tile1_x;
-            }
-            if (tile2_y % 2 == 1) {
-                tile2_x = tile2_x + 1;
-            } else {
-                tile2_x = tile2_x;
-            }
+
+        if (plateau[volcan_i][volcan_j].getTerrain() == Hexagone.VIDE && plateau[tile1_i][tile1_j].getTerrain() == Hexagone.VIDE && plateau[tile2_i][tile2_j].getTerrain() == Hexagone.VIDE) {
+
+
             if (!(
-                    // Volcan proche d'une ile
-                    plateau[volcan_x + 1][volcan_y].getTerrain() != Hexagone.VIDE ||
-                    plateau[volcan_x - 1][volcan_y].getTerrain() != Hexagone.VIDE ||
+                    // Gauche droite
+                    plateau[volcan_i][volcan_j - 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_i][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_i][tile1_j - 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_i][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_i][tile2_j - 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_i][tile2_j + 1].getTerrain() != Hexagone.VIDE)) {
 
-                    plateau[volcan_x][volcan_y + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[volcan_x][volcan_y - 1].getTerrain() != Hexagone.VIDE ||
+                if (volcan_i % 2 == 1) {
+                    volcan_j -= 1;
+                }
+                if (tile1_i % 2 == 1) {
+                    tile1_j -= 1;
+                }
+                if (tile2_i % 2 == 1) {
+                    tile2_j -= 1;
+                }
 
-                    plateau[volcan_x - 1][volcan_y + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[volcan_x - 1][volcan_y - 1].getTerrain() != Hexagone.VIDE ||
+                if (!(
+                    plateau[volcan_i - 1][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_i - 1][volcan_j].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_i + 1][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[volcan_i + 1][volcan_j].getTerrain() != Hexagone.VIDE ||
 
-                    // Tile 1 proche d'une ile
-                    plateau[tile1_x + 1][tile1_y].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile1_x - 1][tile1_y].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_i - 1][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_i - 1][tile1_j].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_i + 1][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile1_i + 1][tile1_j].getTerrain() != Hexagone.VIDE ||
 
-                    plateau[tile1_x][tile1_y + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile1_x][tile1_y - 1].getTerrain() != Hexagone.VIDE ||
-
-                    plateau[tile1_x - 1][tile1_y + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile1_x - 1][tile1_y - 1].getTerrain() != Hexagone.VIDE ||
-
-                    // Tile 2 proche d'une ile
-                    plateau[tile2_x + 1][tile2_y].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile2_x - 1][tile2_y].getTerrain() != Hexagone.VIDE ||
-
-                    plateau[tile2_x][tile2_y + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile2_x][tile2_y - 1].getTerrain() != Hexagone.VIDE ||
-
-                    plateau[tile2_x - 1][tile2_y + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile2_x - 1][tile2_y - 1].getTerrain() != Hexagone.VIDE
-            )) {
-                return false;
+                    plateau[tile2_i - 1][tile2_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_i - 1][tile2_j].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_i + 1][tile2_j + 1].getTerrain() != Hexagone.VIDE ||
+                    plateau[tile2_i + 1][tile2_j].getTerrain() != Hexagone.VIDE
+                )) {
+                    return false;
+                }
             }
         }
 
@@ -224,7 +234,7 @@ public class Plateau {
             } else if (coup.type == 4){
                 batiment = Hexagone.CHOISIR_MAISON;
             }
-            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanX(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanY());
+            plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanI(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanJ());
         }
     }
 

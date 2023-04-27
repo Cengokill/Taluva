@@ -25,27 +25,27 @@ public class Hexagone {
     private byte terrain;
     private byte batiment;
     private byte numero ;
-    private byte volcan_x;
-    private byte volcan_y;
+    private byte volcan_j;
+    private byte volcan_i;
     private byte num_joueur;
 
-    public Hexagone(byte hauteur, byte terrain, byte volcan_x, byte volcan_y) {
+    public Hexagone(byte hauteur, byte terrain, byte volcan_i, byte volcan_j) {
         this.num_joueur = -1;
         this.hauteur = hauteur;
         this.terrain = terrain;
         this.numero = (byte) ((int)(Math.random() * 2) + 1);
-        this.volcan_x = volcan_x;
-        this.volcan_y = volcan_y;
+        this.volcan_i = volcan_i;
+        this.volcan_j = volcan_j;
     }
 
-    public Hexagone(byte numero_joueur, byte hauteur, byte terrain, byte batiment, byte volcan_x, byte volcan_y) {
+    public Hexagone(byte numero_joueur, byte hauteur, byte terrain, byte batiment, byte volcan_i, byte volcan_j) {
         this.num_joueur = numero_joueur;
         this.hauteur = hauteur;
         this.terrain = terrain;
         this.batiment = batiment;
         this.numero = (byte) ((int)(Math.random() * 2) + 1);
-        this.volcan_x = volcan_x;
-        this.volcan_y = volcan_y;
+        this.volcan_i = volcan_i;
+        this.volcan_j = volcan_j;
     }
 
     public byte getNumJoueur(){return num_joueur;}
@@ -58,11 +58,11 @@ public class Hexagone {
     }
     public byte getNum(){return numero;}
 
-    public int getVolcanX(){
-        return volcan_x;
+    public int getVolcanJ(){
+        return volcan_j;
     }
-    public int getVolcanY(){
-        return volcan_y;
+    public int getVolcanI(){
+        return volcan_i;
     }
 
     public boolean HexagoneLibre(){
