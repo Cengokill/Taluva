@@ -301,21 +301,6 @@ public class TEngine extends JFrame {
                     BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                     g.drawImage(tile, x , y - heightoffset, null);
 
-                    if (map[i][j].getBatiment() == Hexagone.MAISON) {
-                        tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-                        g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-                        g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-                        g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-                        g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-                        g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-                        g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                    }
-
                     if (poseTile) {
                         if (mode_plateau) {
                             if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
@@ -344,17 +329,17 @@ public class TEngine extends JFrame {
 
                     if (map[i][j].getBatiment() == Hexagone.MAISON) {
                         tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-                        g.drawImage(tile, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-                        g.drawImage(templeJungle, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-                        g.drawImage(templePrairie, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-                        g.drawImage(templePierre, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-                        g.drawImage(templeSable, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-                        g.drawImage(tour, x , y - heightoffset, null);
+                        g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x , y - heightoffset, null);
                     } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
                         int pos_x = x-150;
                         int pos_y = y -300;
