@@ -3,7 +3,6 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Hexagone;
 import Modele.Jeu;
-import Modele.Plateau;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,8 +14,6 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public class TEngine extends JFrame {
-    int width = 400;
-    int height = 200;
     int tile_size = 148;
     TEngineListener listener;
     public HexagonalTiles hexTiles;
@@ -82,7 +79,6 @@ public class TEngine extends JFrame {
         Point lastMousePosition;
         double zoomFactor = 0.3;
         double zoomIncrement = 0.1;
-        private Plateau plateau;
         int scrollValue = 1;
         byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
         TEngineListener.MouseHandler handler;
@@ -291,37 +287,15 @@ public class TEngine extends JFrame {
             afficheJoueurCourant(g);
         }
 
-        /////////////////
-        // 0 = VOID    //
-        // 1 = Grass   //
-        /////////////////
-        private void displayIntMap(int[][] map, Graphics g) {
-            int tileWidth = voidTile.getWidth();
-            int tileHeight = voidTile.getWidth();
-            int horizontalOffset = tileWidth;
-            int verticalOffset = (int) (tileHeight * 0.75);
-
-            for (int i = 0; i < map.length; i++) {
-                for (int j = 0; j < map[0].length; j++) {
-                    int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
-                    int y = i * verticalOffset;
-                    int tileId = map[i][j];
-                    BufferedImage tile = getTileImageFromId(tileId, 0);
-                    g.drawImage(tile, x , y, null);
-                }
-            }
-        }
-
         private void displayHexagonMap(Graphics g) {
             Hexagone[][] map = controleur.getPlateau();
             int tileWidth = voidTile.getWidth();
             int tileHeight = voidTile.getWidth();
-            int horizontalOffset = tileWidth;
             int verticalOffset = (int) (tileHeight * 0.75);
 
             for (int i = 0; i < map.length; i++) {
                 for (int j = 0; j < map[0].length; j++) {
-                    int x = j*horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
+                    int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                     int y = i * verticalOffset;
                     int tileId = map[i][j].getTerrain();
 
@@ -464,7 +438,6 @@ public class TEngine extends JFrame {
         public void updateCursorPosOnTiles(MouseEvent e) {
             int tileWidth = voidTile.getWidth();
             int tileHeight = voidTile.getWidth();
-            int horizontalOffset = tileWidth;
             int verticalOffset = (int) (tileHeight * 0.75);
 
             Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
@@ -472,8 +445,8 @@ public class TEngine extends JFrame {
             LastPosition = clickPositionAdjusted;
 
             // Convertir les coordonnées du système de pixels en coordonnées du système de grille
-            int i = (int) (clickPositionAdjusted.y / verticalOffset);
-            int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
+            int i = clickPositionAdjusted.y / verticalOffset;
+            int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
 
             hoveredTile_x = i;
             hoveredTile_y = j;
@@ -483,18 +456,17 @@ public class TEngine extends JFrame {
             if (hoverTile != null && !clicDroiteEnfonce) {
                 int tileWidth = voidTile.getWidth();
                 int tileHeight = voidTile.getWidth(); // Important !!
-                int horizontalOffset = tileWidth;
                 int verticalOffset = (int) (tileHeight * 0.75);
 
                 Point hoverTilePositionAdjusted = new Point((int) ((hoverTilePosition.x - cameraOffset.x) / zoomFactor),
                         (int) ((hoverTilePosition.y - cameraOffset.y) / zoomFactor));
 
                 // Convertir les coordonnées du système de pixels en coordonnées du système de grille
-                int i = (int) (hoverTilePositionAdjusted.y / verticalOffset);
-                int j = (int) ((hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
+                int i = hoverTilePositionAdjusted.y / verticalOffset;
+                int j = (hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
 
                 // Convertir les coordonnées du système de grille en coordonnées du système de pixels
-                int x = j * horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
+                int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
                 int j2;
@@ -569,7 +541,7 @@ public class TEngine extends JFrame {
                 else if (scrollValue == 3){
                     g.drawImage(tile1, x , y - heightoffset1, null);
                     g.drawImage(tile2, x + tileWidth, y -  heightoffset2, null);
-                    g.drawImage(tile3, x +  + tileWidth/2, y + verticalOffset - heightoffset3, null);
+                    g.drawImage(tile3, x +  tileWidth /2, y + verticalOffset - heightoffset3, null);
                 }
                 else if (scrollValue == 4){
                     g.drawImage(tile1, x , y - heightoffset1, null);
@@ -633,21 +605,19 @@ public class TEngine extends JFrame {
             if (hoverTile != null) {
                 int tileWidth = voidTile.getWidth();
                 int tileHeight = voidTile.getWidth(); // Important !!
-                int horizontalOffset = tileWidth;
                 int verticalOffset = (int) (tileHeight * 0.75);
 
                 Point hoverTilePositionAdjusted = new Point((int) ((hoverTilePosition.x - cameraOffset.x) / zoomFactor),
                         (int) ((hoverTilePosition.y - cameraOffset.y) / zoomFactor));
 
                 // Convertir les coordonnées du système de pixels en coordonnées du système de grille
-                int i = (int) (hoverTilePositionAdjusted.y / verticalOffset);
-                int j = (int) ((hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
+                int i = hoverTilePositionAdjusted.y / verticalOffset;
+                int j = (hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
 
                 // Convertir les coordonnées du système de grille en coordonnées du système de pixels
-                int x = j * horizontalOffset - (i % 2 == 1 ? tileWidth / 2 : 0);
+                int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
-                float opacity = 0.5f; // Réduire l'opacité de moitié
                 int heightoffset1 = triplet[0][1];
                 heightoffset1 *= 30;
 
@@ -720,18 +690,7 @@ public class TEngine extends JFrame {
             miseAJour();
         }
 
-        public void placerMaison(int i, int j){
-            int x = hoveredTile_x;
-            if (i % 2 == 1) {
-                x = j - 1;
-            } else {
-                x = j;
-            }
-            j = hoveredTile_y;
-            if (controleur.peutPlacerBatiment(i, j)) {
-                controleur.placeBatiment(i, j,(byte) typeAConstruire);
-            }
-        }
+
 
         private int choisirMaison(int x, int y){
             if(!enSelection){
@@ -778,18 +737,16 @@ public class TEngine extends JFrame {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 int tileWidth = voidTile.getWidth();
                 int tileHeight = voidTile.getWidth();
-                int horizontalOffset = tileWidth;
                 int verticalOffset = (int) (tileHeight * 0.75);
 
                 Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
                         (int) ((e.getY() - cameraOffset.y) / zoomFactor));
 
                 // Convertir les coordonnées du système de pixels en coordonnées du système de grille
-                int i = (int) (clickPositionAdjusted.y / verticalOffset);
-                int j = (int) ((clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / horizontalOffset);
+                int i = clickPositionAdjusted.y / verticalOffset;
+                int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
                 System.out.println("i: " + i);
                 System.out.println("j: " + j);
-                Hexagone[][] map = jeu.getPlateau().getPlateau();
 
                 //System.out.println("type a construire: "+typeAConstruire);
                 //System.out.println("en selection: "+enSelection);
