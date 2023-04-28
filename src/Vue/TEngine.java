@@ -109,7 +109,7 @@ public class TEngine extends JFrame {
         BufferedImage[] choisirBat = new BufferedImage[8];
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
-        BufferedImage voidTile, voidTile_transparent;
+        BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
         BufferedImage foretTile_0, foretTile_1, foretTile_2;
@@ -135,6 +135,8 @@ public class TEngine extends JFrame {
         int hoveredTile_x;
         int hoveredTile_y;
         Color[] couleurs_joueurs;
+        String[] nomJoueurs;
+
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
@@ -142,7 +144,10 @@ public class TEngine extends JFrame {
             joueurCourant = lisImageBuf("Joueur_Courant");
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
-            voidTile_transparent = getReducedOpacityImage(voidTile, 0.5f);
+            whiteTile = lisImageBuf("White_Tile");
+            voidTileOld = lisImageBuf("Void_Tile_old");
+            voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
+            whiteTile = getReducedOpacityImage(whiteTile, 0.2f);
             grassTile_0 = lisImageBuf("Grass_0_Tile");
             grassTile_1 = lisImageBuf("Grass_1_Tile");
             grassTile_2 = lisImageBuf("Grass_2_Tile");
@@ -167,9 +172,9 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-            wrongTile1 = applyYellowFilter(wrongTile1);
-            wrongTile2 = applyYellowFilter(wrongTile2);
-            wrongTile3 = applyYellowFilter(wrongTile3);
+            //wrongTile1 = applyYellowFilter(wrongTile1);
+            //wrongTile2 = applyYellowFilter(wrongTile2);
+            //wrongTile3 = applyYellowFilter(wrongTile3);
 
             maisonTile = lisImageBuf("Batiments/maison");
             templeJungle = lisImageBuf("Batiments/Temple_jungle");
@@ -297,6 +302,7 @@ public class TEngine extends JFrame {
 
         @Override
         protected void paintComponent(Graphics g) {
+
             changerTuileAPoser();
             changerPoseTile();
 
@@ -340,12 +346,36 @@ public class TEngine extends JFrame {
                         if (mode_plateau) {
                             if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
                                 if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
-                                    g.drawImage(voidTile_transparent, x , y - heightoffset + 5, null);
+                                    g.drawImage(voidTile_transparent, x, y - heightoffset + 5, null);
                                 }
                             }
-                        } else {
+                        }
+                        /*
+                        else {
                             if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
                                 g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+                            }
+                        }
+                         */
+                        if (map[i][j].getTerrain() == Hexagone.VOLCAN) {
+                            int j2;
+                            if (i % 2 == 1) {
+                                j2 = j - 1;
+                            } else {
+                                j2 = j;
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
                             }
                         }
                     }
@@ -407,7 +437,6 @@ public class TEngine extends JFrame {
                             }
                         }
                     }
-
                 }
             }
         }
