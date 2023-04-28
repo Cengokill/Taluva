@@ -75,7 +75,7 @@ public class Plateau implements Serializable {
         System.out.println("tile1_x: " + tile1_x);
         System.out.println("tile2_x: " + tile2_x);
          */
-        if(isEmpty()) return true;
+        if(estVide()) return true;
 
 
         int hauteur = plateau[volcan_i][volcan_j].getHauteur();
@@ -217,21 +217,31 @@ public class Plateau implements Serializable {
     public ArrayList<Position> voisins(int l, int c){
         ArrayList<Position> listeVoisins = new ArrayList<>();
         if(l%2==1){
-            if(estHexagone(l-1,c-1)) {
+            if(estHexagoneVide(l-1,c-1)) {
                 listeVoisins.add(new Position(l-1,c-1));
             }
-            if(estHexagone(l+1,c-1)) {
+            if(estHexagoneVide(l+1,c-1)) {
                 listeVoisins.add(new Position(l+1,c-1));
             }
         }else{
-            if(estHexagone(l-1,c+1)) {
+            if(estHexagoneVide(l-1,c+1)) {
                 listeVoisins.add(new Position(l-1,c+1));
             }
-            if(estHexagone(l+1,c+1)) {
+            if(estHexagoneVide(l+1,c+1)) {
                 listeVoisins.add(new Position(l+1,c+1));
             }
         }
         return listeVoisins;
+    }
+
+    public void metAjourPositionsLibres(ArrayList<Position> listeVoisins){
+        for(Position p : positions_libres){
+            //si p est dans positions_libres et n'est pas de l'eau, on l'enlève
+            if(!estHexagoneVide(p.getL(), p.getC())) {
+                positions_libres.remove(p);
+            }
+        }
+        positions_libres.addAll(listeVoisins);
     }
 
     public boolean estCaseHorsPlateau(int l, int c){
@@ -241,7 +251,7 @@ public class Plateau implements Serializable {
         return false;
     }
 
-    public boolean estHexagone(int l, int c){
+    public boolean estHexagoneVide(int l, int c){
         if(estCaseHorsPlateau(l,c)){
             return false;
         }
@@ -258,6 +268,7 @@ public class Plateau implements Serializable {
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
             ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
+            metAjourPositionsLibres(listeVoisins);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
@@ -320,7 +331,7 @@ public class Plateau implements Serializable {
         return historique.peutRefaire();
     }
 
-    public boolean isEmpty(){
+    public boolean estVide(){
         for(int i=0;i<plateau.length;i++){
             for(int j=0;j<plateau[0].length;j++){
                 if(plateau[i][j].getTerrain()!=Hexagone.VIDE && plateau[i][j].getTerrain()!=Hexagone.WATER) return false;
@@ -341,5 +352,9 @@ public class Plateau implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<Position> getPositionsLibres(){
+        return positions_libres;
     }
 }

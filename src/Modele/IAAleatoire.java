@@ -1,7 +1,6 @@
 package Modele;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 class IAAleatoire extends IA {
 
@@ -15,8 +14,8 @@ class IAAleatoire extends IA {
         int taille_x = jeu.getPlateau().plateau.length;
         int taille_y = jeu.getPlateau().plateau[0].length;
         byte numIA = jeu.getNumJoueurCourant();
-        System.out.println("isEmpty: "+jeu.getPlateau().isEmpty());
-        if(jeu.getPlateau().isEmpty()){ // l'IA est le premier à jouer donc on place au centres
+        System.out.println("isEmpty: "+jeu.getPlateau().estVide());
+        if(jeu.getPlateau().estVide()){ // l'IA est le premier à jouer donc on place au centres
             i = taille_x/2;
             j = taille_y/2;
 
