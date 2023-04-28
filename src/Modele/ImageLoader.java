@@ -3,10 +3,13 @@ package Modele;
 import Vue.TEngine;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import static Modele.GameState.couleurs_joueurs;
 
 public class ImageLoader {
 
@@ -103,4 +106,158 @@ public class ImageLoader {
         g2d.dispose();
         return reducedOpacityImage;
     }
+
+    public static void addImage(String nom_image, int x, int y, int width, int height, double rapport, JLayeredPane layeredPane) {
+        // Chargez l'image que vous voulez afficher
+        Image image = null;
+        int largeur = layeredPane.getWidth();
+        int hauteur = layeredPane.getHeight();
+        int largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
+        int hauteur_bouton = (int) (largeur_bouton*rapport);
+        try {
+            image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
+        Image finalImage = image;
+        JPanel imagePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (finalImage != null) {
+                    g.drawImage(finalImage, 0, 0, 0, 0, this);
+                }
+            }
+        };
+        imagePanel.setBounds(x, y, largeur_bouton, hauteur_bouton);
+        imagePanel.setOpaque(false);
+        layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
+    }
+
+    public static Image lisImage(String nom) {
+        String CHEMIN = "ressources/";
+        Image img = null;
+        try{
+            img = ImageIO.read(new File(CHEMIN + nom + ".png"));
+        } catch (IOException e) {
+            System.err.println("Impossible de charger l'image " + nom);
+        }
+        return img;
+    }
+
+    public static BufferedImage getTileImageFromId(int id, int numero_texture) {
+        if (id == Hexagone.VIDE) {
+            return voidTile;
+        }
+        if (id == Hexagone.GRASS) {
+            if (numero_texture == 0) {
+                return grassTile_0;
+            }
+            if (numero_texture == 1) {
+                return grassTile_1;
+            }
+            if (numero_texture == 2) {
+                return grassTile_2;
+            }
+        }
+        if (id == Hexagone.VOLCAN) {
+            if (numero_texture == 0) {
+                return volcanTile_0;
+            }
+            if (numero_texture == 1) {
+                return volcanTile_1;
+            }
+            if (numero_texture == 2) {
+                return volcanTile_2;
+            }
+        }
+        if (id == Hexagone.WATER) {
+            if (numero_texture == 0) {
+                return waterTile;
+            }
+            if (numero_texture == 1) {
+                return waterTile;
+            }
+            if (numero_texture == 2) {
+                return waterTile;
+            }
+        }
+        if (id == Hexagone.MAISON) {
+            return maisonTile;
+        }
+        if (id == Hexagone.DESERT) {
+            if (numero_texture == 0) {
+                return desertTile_0;
+            }
+            if (numero_texture == 1) {
+                return desertTile_1;
+            }
+            if (numero_texture == 2) {
+                return desertTile_2;
+            }
+        }
+        if (id == Hexagone.MONTAGNE) {
+            if (numero_texture == 0) {
+                return montagneTile_0;
+            }
+            if (numero_texture == 1) {
+                return montagneTile_1;
+            }
+            if (numero_texture == 2) {
+                return montagneTile_2;
+            }
+        }
+        if (id == Hexagone.FORET) {
+            if (numero_texture == 0) {
+                return foretTile_0;
+            }
+            if (numero_texture == 1) {
+                return foretTile_1;
+            }
+            if (numero_texture == 2) {
+                return foretTile_2;
+            }
+        }
+        return null;
+    }
+
+    public static BufferedImage applyColorFilter(BufferedImage image, byte num_joueur) {
+        if (num_joueur < 0 || num_joueur > 3) {
+            return image;
+        }
+        //System.out.println(num_joueur);
+        BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.setComposite(AlphaComposite.SrcAtop);
+        g2d.setColor(couleurs_joueurs[num_joueur]);
+        g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g2d.dispose();
+        return outputImage;
+    }
+
+    public static BufferedImage applyYellowFilter(BufferedImage image) {
+        BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.setComposite(AlphaComposite.SrcAtop);
+        g2d.setColor(new Color(240, 252, 7, 127));
+        g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g2d.dispose();
+        return outputImage;
+    }
+
+    public static BufferedImage applyRedFilter(BufferedImage image) {
+        BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.setComposite(AlphaComposite.SrcAtop);
+        g2d.setColor(new Color(255, 0, 0, 127));
+        g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g2d.dispose();
+        return outputImage;
+    }
+
 }

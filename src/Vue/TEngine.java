@@ -4,14 +4,11 @@ import Controleur.ControleurMediateur;
 import Modele.Hexagone;
 import Modele.ImageLoader;
 import Modele.Jeu;
-import Modele.Coup;
 import Structures.TripletDePosition;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +16,8 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import static Modele.ImageLoader.*;
+import static Modele.Camera.*;
+import static Modele.GameState.*;
 
 
 public class TEngine extends JFrame {
@@ -27,7 +26,6 @@ public class TEngine extends JFrame {
     ControleurMediateur controleur;
 
     Point LastPosition;
-    boolean poseTile, mode_plateau = true, mode_numero = false;
     Jeu jeu;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
@@ -69,88 +67,17 @@ public class TEngine extends JFrame {
         poseTile = true;
     }
 
-    public void addImage(String nom_image, int x, int y, int width, int height, double rapport, JLayeredPane layeredPane) {
-        // Chargez l'image que vous voulez afficher
-        Image image = null;
-        int largeur = layeredPane.getWidth();
-        int hauteur = layeredPane.getHeight();
-        int largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
-        int hauteur_bouton = (int) (largeur_bouton*rapport);
-        try {
-            image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
-        Image finalImage = image;
-        JPanel imagePanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (finalImage != null) {
-                    g.drawImage(finalImage, 0, 0, 0, 0, this);
-                }
-            }
-        };
-        imagePanel.setBounds(x, y, largeur_bouton, hauteur_bouton);
-        imagePanel.setOpaque(false);
-        layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
-    }
-
 
     public class HexagonalTiles extends JPanel {
-
-
-        /////////////////////////////////////////////////////
-        // SHAKE                                           //
-        /////////////////////////////////////////////////////
-        private static final int SHAKE_DURATION = 200; // Durée de l'effet en millisecondes
-        private static final int SHAKE_INTERVAL = 25; // Intervalle entre les mouvements en millisecondes
-        private static final int SHAKE_DISTANCE = 10; // Distance maximale de déplacement en pixels
-
-
-
-        /////////////////////////////////////////////////////
-        // CAMERA                                          //
-        /////////////////////////////////////////////////////
-        public static int tile_size = 148;
-        double zoomFactor = 0.3;
-        double zoomIncrement = 0.1;
-        static Point hoverTilePosition = new Point(-tile_size, -tile_size);
-        static Point cameraOffset = new Point(0, 0);
-        static Point lastMousePosition;
 
         /////////////////////////////////////////////////////
         // HANDLER                                         //
         /////////////////////////////////////////////////////
-        int scrollValue = 1;
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
-        public boolean clicDroiteEnfonce = false;
-
-        /////////////////////////////////////////////////////
-        // HOVERED TILE                                    //
-        /////////////////////////////////////////////////////
-        byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
-        int hoveredTile_x;
-        int hoveredTile_y;
 
 
-        /////////////////////////////////////////////////////
-        // ???                                             //
-        /////////////////////////////////////////////////////
-        boolean enSelection = false,unefoisIA=false;
-        int typeAConstruire=0, posBat_x, posBat_y;
         ControleurMediateur controleur;
-
-
-        /////////////////////////////////////////////////////
-        // JOUEURS                                         //
-        /////////////////////////////////////////////////////
-        Color[] couleurs_joueurs;
-        String[] nomJoueurs;
-
         static TEngine tengine;
 
 
@@ -185,24 +112,12 @@ public class TEngine extends JFrame {
             triplet[1][0] = tuiles[0]; // tile 1
             triplet[2][0] = tuiles[1]; // tile 2
 
-            //System.out.println(tuiles[2]);
-            //System.out.println(tuiles[3]);
-            //System.out.println(tuiles[4]);
+
             triplet[0][1] = tuiles[2]; // volcan
             triplet[1][1] = tuiles[3]; // tile 1
             triplet[2][1] = tuiles[4]; // tile 2
         }
 
-        private Image lisImage(String nom) {
-            String CHEMIN = "ressources/";
-            Image img = null;
-            try{
-                img = ImageIO.read(new File(CHEMIN + nom + ".png"));
-            } catch (IOException e) {
-                System.err.println("Impossible de charger l'image " + nom);
-            }
-            return img;
-        }
 
         public void affichetripletpossible(){
             for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
@@ -210,33 +125,6 @@ public class TEngine extends JFrame {
                 System.out.println("("+ t.getX().getL()+", "+t.getX().getC()+") "+"("+ t.getY().getL()+", "+t.getY().getC()+") "+"("+ t.getZ().getL()+", "+t.getZ().getC()+") ");
                 System.out.println();
             }
-        }
-
-        public void shake() {
-            Random random = new Random();
-            long startTime = System.currentTimeMillis();
-            long endTime = startTime + SHAKE_DURATION;
-
-            // Créez un Timer pour exécuter l'animation en arrière-plan
-            Timer timer = new Timer(SHAKE_INTERVAL, null);
-            timer.addActionListener(e -> {
-                if (System.currentTimeMillis() >= endTime) {
-                    // Arrêtez le Timer et réinitialisez les décalages de la caméra
-                    timer.stop();
-
-                } else {
-                    int deltaX = random.nextInt(SHAKE_DISTANCE * 2) - SHAKE_DISTANCE;
-                    int deltaY = random.nextInt(SHAKE_DISTANCE * 2) - SHAKE_DISTANCE;
-
-                    // Mettre à jour les décalages de la caméra
-                    cameraOffset.x += deltaX;
-                    cameraOffset.y += deltaY;
-                    repaint();
-                }
-            });
-
-            // Démarrez le Timer
-            timer.start();
         }
 
         /*
@@ -441,83 +329,6 @@ public class TEngine extends JFrame {
             return coups;
         }
 
-        private BufferedImage getTileImageFromId(int id, int numero_texture) {
-            if (id == Hexagone.VIDE) {
-                return voidTile;
-            }
-            if (id == Hexagone.GRASS) {
-                if (numero_texture == 0) {
-                    return grassTile_0;
-                }
-                if (numero_texture == 1) {
-                    return grassTile_1;
-                }
-                if (numero_texture == 2) {
-                    return grassTile_2;
-                }
-            }
-            if (id == Hexagone.VOLCAN) {
-                if (numero_texture == 0) {
-                    return volcanTile_0;
-                }
-                if (numero_texture == 1) {
-                    return volcanTile_1;
-                }
-                if (numero_texture == 2) {
-                    return volcanTile_2;
-                }
-            }
-            if (id == Hexagone.WATER) {
-                if (numero_texture == 0) {
-                    return waterTile;
-                }
-                if (numero_texture == 1) {
-                    return waterTile;
-                }
-                if (numero_texture == 2) {
-                    return waterTile;
-                }
-            }
-            if (id == Hexagone.MAISON) {
-                return maisonTile;
-            }
-            if (id == Hexagone.DESERT) {
-                if (numero_texture == 0) {
-                    return desertTile_0;
-                }
-                if (numero_texture == 1) {
-                    return desertTile_1;
-                }
-                if (numero_texture == 2) {
-                    return desertTile_2;
-                }
-            }
-            if (id == Hexagone.MONTAGNE) {
-                if (numero_texture == 0) {
-                    return montagneTile_0;
-                }
-                if (numero_texture == 1) {
-                    return montagneTile_1;
-                }
-                if (numero_texture == 2) {
-                    return montagneTile_2;
-                }
-            }
-            if (id == Hexagone.FORET) {
-                if (numero_texture == 0) {
-                    return foretTile_0;
-                }
-                if (numero_texture == 1) {
-                    return foretTile_1;
-                }
-                if (numero_texture == 2) {
-                    return foretTile_2;
-                }
-            }
-            //System.out.println("Nul bebou: " + id + " - " + numero_texture);
-            return null;
-        }
-
         public void updateCursorPosOnTiles(MouseEvent e) {
             int tileWidth = voidTile.getWidth();
             int tileHeight = voidTile.getWidth();
@@ -645,42 +456,6 @@ public class TEngine extends JFrame {
             }
         }
 
-        public BufferedImage applyRedFilter(BufferedImage image) {
-            BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = outputImage.createGraphics();
-            g2d.drawImage(image, 0, 0, null);
-            g2d.setComposite(AlphaComposite.SrcAtop);
-            g2d.setColor(new Color(255, 0, 0, 127));
-            g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
-            g2d.dispose();
-            return outputImage;
-        }
-
-        public BufferedImage applyColorFilter(BufferedImage image, byte num_joueur) {
-            if (num_joueur < 0 || num_joueur > 3) {
-                return image;
-            }
-            //System.out.println(num_joueur);
-            BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = outputImage.createGraphics();
-            g2d.drawImage(image, 0, 0, null);
-            g2d.setComposite(AlphaComposite.SrcAtop);
-            g2d.setColor(couleurs_joueurs[num_joueur]);
-            g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
-            g2d.dispose();
-            return outputImage;
-        }
-
-        public BufferedImage applyYellowFilter(BufferedImage image) {
-            BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = outputImage.createGraphics();
-            g2d.drawImage(image, 0, 0, null);
-            g2d.setComposite(AlphaComposite.SrcAtop);
-            g2d.setColor(new Color(240, 252, 7, 127));
-            g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
-            g2d.dispose();
-            return outputImage;
-        }
 
         private void displayHoverMaison(Graphics g) {
             if (hoverTile != null) {
