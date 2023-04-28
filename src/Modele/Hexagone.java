@@ -64,12 +64,6 @@ public class Hexagone {
         return volcan_i;
     }
 
-    public boolean HexagoneLibre(){
-        if (terrain == 0) return true;
-        else return false;
-    }
-
     public int getBatiment() {return batiment;}
-
     public int getIDvillage (){return IDvillage;}
 }
