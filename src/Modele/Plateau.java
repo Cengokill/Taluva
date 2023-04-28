@@ -216,6 +216,18 @@ public class Plateau implements Serializable {
 
     public ArrayList<Position> voisins(int l, int c){
         ArrayList<Position> listeVoisins = new ArrayList<>();
+        if(estHexagoneVide(l-1,c)){
+            listeVoisins.add(new Position(l-1,c));
+        }
+        if(estHexagoneVide(l+1,c)){
+            listeVoisins.add(new Position(l+1,c));
+        }
+        if(estHexagoneVide(l,c-1)){
+            listeVoisins.add(new Position(l,c-1));
+        }
+        if(estHexagoneVide(l,c+1)){
+            listeVoisins.add(new Position(l,c+1));
+        }
         if(l%2==1){
             if(estHexagoneVide(l-1,c-1)) {
                 listeVoisins.add(new Position(l-1,c-1));
@@ -268,6 +280,10 @@ public class Plateau implements Serializable {
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
             ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
+            metAjourPositionsLibres(listeVoisins);
+            listeVoisins = voisins(coup.tile1_x,coup.tile1_y);
+            metAjourPositionsLibres(listeVoisins);
+            listeVoisins = voisins(coup.tile2_x,coup.tile2_y);
             metAjourPositionsLibres(listeVoisins);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
