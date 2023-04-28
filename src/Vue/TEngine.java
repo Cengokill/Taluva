@@ -76,21 +76,26 @@ public class TEngine extends JFrame {
         // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
         Image finalImage = image;
         JPanel imagePanel = new JPanel() {
+
+            int largeur_bouton, hauteur_bouton, largeur_joueurCourant, hauteur_joueurCourant;
+            int largeur, hauteur;
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                largeur = layeredPane.getWidth();
+                hauteur = layeredPane.getHeight();
                 if (finalImage != null) {
                     //définit la taille des boutons et des encadrés
-                    /*
+
                     double rapport_bouton = (double) 207/603;
-                    largeur_bouton = (int) Math.min(layeredPane.getWidth()*.22, hauteur*.22);
+                    largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
                     hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
 
                     double rapport_joueurCourant = (double) 131/603;
                     largeur_joueurCourant = (int) Math.min(largeur*.22, hauteur*.22);
                     hauteur_joueurCourant = (int) (largeur_joueurCourant*rapport_joueurCourant);
-                     */
-                    g.drawImage(finalImage, 0, 0, this);
+
+                    g.drawImage(finalImage, 0, 0, width, height, this);
                 }
             }
         };
