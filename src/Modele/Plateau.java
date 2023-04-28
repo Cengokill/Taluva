@@ -23,6 +23,13 @@ public class Plateau implements Serializable {
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
         initPlateau();
         positions_libres = new ArrayList<>();
+        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-2));
+        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-2));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2+2));
+        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-2));
         positions_libres_batiments = new ArrayList<>();
     }
 
