@@ -1,21 +1,19 @@
 package Modele;
 
-import org.w3c.dom.ls.LSOutput;
-
-import java.awt.*;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Plateau implements Serializable {
+    int LIGNES = 40;
+    int COLONNES = 40;
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
     protected int[] nbPionsJ2;
     private Historique historique;
+    private ArrayList<Position> positions_libres;
 
     public Plateau(){
-
-        plateau = new Hexagone [40][40];
+        plateau = new Hexagone [LIGNES][COLONNES];
         historique = new Historique();
         nbPionsJ1 = new int [3];
         nbPionsJ2 = new int [3];
@@ -23,6 +21,7 @@ public class Plateau implements Serializable {
         nbPionsJ1[1]=10 ; nbPionsJ2[1]=10;
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
         initPlateau();
+        positions_libres = new ArrayList<>();
     }
 
 
@@ -214,7 +213,43 @@ public class Plateau implements Serializable {
         }
         return listeDecases;
     }
-    public boolean estDansTableau(int x , int y){return x>-1 || x<31 || y>-1 || y<31  ;}
+
+    public ArrayList<Position> voisins(int l, int c){
+        ArrayList<Position> listeVoisins = new ArrayList<>();
+        if(l%2==1){
+            if(estHexagone(l-1,c-1)) {
+                listeVoisins.add(new Position(l-1,c-1));
+            }
+            if(estHexagone(l+1,c-1)) {
+                listeVoisins.add(new Position(l+1,c-1));
+            }
+        }else{
+            if(estHexagone(l-1,c+1)) {
+                listeVoisins.add(new Position(l-1,c+1));
+            }
+            if(estHexagone(l+1,c+1)) {
+                listeVoisins.add(new Position(l+1,c+1));
+            }
+        }
+        return listeVoisins;
+    }
+
+    public boolean estCaseHorsPlateau(int l, int c){
+        if(l<0 || l>=LIGNES || c<0 || c>=COLONNES){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estHexagone(int l, int c){
+        if(estCaseHorsPlateau(l,c)){
+            return false;
+        }
+        if(plateau[l][c].getTerrain()==Hexagone.VIDE){
+            return true;
+        }
+        return false;
+    }
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
@@ -222,6 +257,7 @@ public class Plateau implements Serializable {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();

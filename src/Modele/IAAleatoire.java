@@ -24,7 +24,7 @@ class IAAleatoire extends IA {
             if (i % 2 == 1) {
                 j_modified = j - 1;
             } else {
-                j_modified = j;
+                j_modified = j + 1;
             }
 
             byte[] tuiles = jeu.getTuilesAPoser();
@@ -35,6 +35,8 @@ class IAAleatoire extends IA {
 
             // controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
             return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified,triplet[2][0]);
+        }else{
+
         }
 
 

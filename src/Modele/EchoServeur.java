@@ -17,8 +17,9 @@ public class EchoServeur implements Runnable{
         try{
             OutputStream out = socket_client.getOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(out);
+            System.out.println("Coup envoyé : " + c);
             oos.writeObject(c);
-            oos.flush();
+            oos.flush();//on vide le buffer
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
