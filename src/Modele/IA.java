@@ -6,7 +6,8 @@ public class IA {
     public static IA nouvelle(Jeu j, Parametres p) {
         IA resultat = null;
 
-        String type = p.getType_IA();
+        //String type = p.getType_IA();
+        String type = "Aléatoire";
         switch (type) {
             case "Aléatoire":
                 resultat = new IAAleatoire();

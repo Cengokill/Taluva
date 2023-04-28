@@ -31,9 +31,9 @@ public class Plateau {
                 plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
-        plateau[18][19] = new Hexagone((byte) 3, Hexagone.GRASS, (byte) 20, (byte)19);
-        plateau[19][20] = new Hexagone((byte)3, Hexagone.VOLCAN, (byte)19, (byte)20);
-        plateau[18][20] = new Hexagone((byte)3, Hexagone.GRASS, (byte)19, (byte)20);
+        //plateau[18][19] = new Hexagone((byte) 3, Hexagone.GRASS, (byte) 20, (byte)19);
+        //plateau[19][20] = new Hexagone((byte)3, Hexagone.VOLCAN, (byte)19, (byte)20);
+        //plateau[18][20] = new Hexagone((byte)3, Hexagone.GRASS, (byte)19, (byte)20);
 
     }
 
@@ -75,6 +75,8 @@ public class Plateau {
         System.out.println("tile1_x: " + tile1_x);
         System.out.println("tile2_x: " + tile2_x);
          */
+        if(isEmpty()) return true;
+
 
         int hauteur = plateau[volcan_i][volcan_j].getHauteur();
         if (plateau[tile1_i][tile1_j].getVolcanJ() == volcan_j && plateau[tile2_i][tile2_j].getVolcanI() == volcan_i) {
@@ -279,6 +281,15 @@ public class Plateau {
 
     public boolean peutRefaire() {
         return historique.peutRefaire();
+    }
+
+    public boolean isEmpty(){
+        for(int i=0;i<plateau.length;i++){
+            for(int j=0;j<plateau[0].length;j++){
+                if(plateau[i][j].getTerrain()!=Hexagone.VIDE && plateau[i][j].getTerrain()!=Hexagone.WATER) return false;
+            }
+        }
+        return true;
     }
 
     public boolean annuler() {
