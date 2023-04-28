@@ -87,12 +87,6 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void keyTyped(KeyEvent e) {
             // Code à exécuter lorsque la touche est tapée (après avoir été enfoncée et relâchée)
-            /*
-            int keyCode = e.getKeyCode();
-            if (keyCode == KeyEvent.VK_E) {
-
-            }
-             */
         }
     }
 
@@ -132,11 +126,6 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
                 int minY = -2000 - ((int)(10*zoomFactor) - 2)*(tengine.hexTiles.getHeight());
                 int maxY = 10000;
 
-
-
-                    //System.out.println(minY);
-                    //System.out.println(tengine.hexTiles.cameraOffset.y);
-                    //System.out.println(tengine.hexTiles.zoomFactor);
 
                 cameraOffset.x = Math.min(Math.max(cameraOffset.x + dx, minX), maxX);
                 cameraOffset.y = Math.min(Math.max(cameraOffset.y + dy, minY), maxY);

@@ -3,8 +3,6 @@ package Modele;
 import Patterns.Observable;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -25,7 +23,7 @@ public class Jeu extends Observable {
     boolean doit_placer_batiment;
 
     LinkedList<Tuile> pioche;
-    private static int TAILLE_PIOCHE = 24;
+    private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
         //jCourant = (byte) ((int)(Math.random() * 2));
@@ -34,7 +32,7 @@ public class Jeu extends Observable {
         joueursObjet[0] = joueur1;
         joueursObjet[1] = IA1;
 
-        pioche = new LinkedList<Tuile>();
+        pioche = new LinkedList<>();
         lancePartie();
 
     }
@@ -49,16 +47,11 @@ public class Jeu extends Observable {
 
         if (estJoueurCourantUneIA()) {
             // Pour pas que l'IA joue directement
-            // Attendez un certain temps avant d'exécuter l'action finale
+            // Attendez un certain temps avant d'exï¿½cuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
-            Timer timer = new Timer(delai, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    joueIA();
-                }
-            });
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-            timer.start(); // Démarrez le timer
+            Timer timer = new Timer(delai, e -> joueIA());
+            timer.setRepeats(false); // Ne rï¿½pï¿½tez pas l'action finale, exï¿½cutez-lï¿½ une seule fois
+            timer.start(); // Dï¿½marrez le timer
         }
 
     }
@@ -87,7 +80,7 @@ public class Jeu extends Observable {
         changeJoueur();
 
         /*if (p.getTypeJeu().compareTo("AIcAI") == 0) {
-            // Attendez un certain temps avant d'exécuter l'action finale
+            // Attendez un certain temps avant d'exï¿½cuter l'action finale
             int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
             Timer timer = new Timer(delai, new ActionListener() {
                 @Override
@@ -96,8 +89,8 @@ public class Jeu extends Observable {
                 }
             });
 
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-la une seule fois
-            timer.start(); // Démarrez le timer
+            timer.setRepeats(false); // Ne rï¿½pï¿½tez pas l'action finale, exï¿½cutez-la une seule fois
+            timer.start(); // Dï¿½marrez le timer
         }*/
     }
 
@@ -119,10 +112,7 @@ public class Jeu extends Observable {
             jVainqueur = jCourant;
             return true;
         }
-        if(pioche.isEmpty()){
-            return true;
-        }
-        return false;
+        return pioche.isEmpty();
     }
 
     public boolean doit_placer_tuile() {

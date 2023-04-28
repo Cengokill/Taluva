@@ -1,6 +1,5 @@
 package Modele;
 
-import Vue.TEngine;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -107,7 +106,7 @@ public class ImageLoader {
         return reducedOpacityImage;
     }
 
-    public static void addImage(String nom_image, int x, int y, int width, int height, double rapport, JLayeredPane layeredPane) {
+    public static void addImage(String nom_image, int x, int y, double rapport, JLayeredPane layeredPane) {
         // Chargez l'image que vous voulez afficher
         Image image = null;
         int largeur = layeredPane.getWidth();

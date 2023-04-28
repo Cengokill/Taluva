@@ -6,14 +6,10 @@ import Modele.ImageLoader;
 import Modele.Jeu;
 import Structures.TripletDePosition;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import static Modele.ImageLoader.*;
 import static Modele.Camera.*;
@@ -55,13 +51,10 @@ public class TEngine extends JFrame {
         //Définit la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
         //Définit les boutons et encadrés
-        int panelWidth = layeredPane.getWidth();
-        int panelHeight = layeredPane.getHeight();
-        int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton = 0, hauteur_bouton = 0;
-        int largeur_joueurCourant, hauteur_joueurCourant, posX_joueurCourant, posY_joueurCourant;
+        int  largeur_bouton = 0, hauteur_bouton = 0;
 
-        addImage("map_layer_little", 50, 800, 1, 1000, 1000, layeredPane);
-        addImage("Annuler", 50, 50, 207/603, largeur_bouton, hauteur_bouton, layeredPane);
+        addImage("map_layer_little", 50, 800, 1000, layeredPane);
+        addImage("Annuler", 50, 50, hauteur_bouton, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
@@ -83,7 +76,7 @@ public class TEngine extends JFrame {
 
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
-            this.tengine = t;
+            tengine = t;
             this.controleur = controleur;
 
 
@@ -125,25 +118,6 @@ public class TEngine extends JFrame {
                 System.out.println("("+ t.getX().getL()+", "+t.getX().getC()+") "+"("+ t.getY().getL()+", "+t.getY().getC()+") "+"("+ t.getZ().getL()+", "+t.getZ().getC()+") ");
                 System.out.println();
             }
-        }
-
-        /*
-        public void afficheJoueurCourant(Graphics g){
-            posY_joueurCourant = (int) (hauteur*.05);
-            posX_joueurCourant = (int) (largeur*.40);
-            int x = (int)(posX_joueurCourant/zoomFactor) - (int)(cameraOffset.x/zoomFactor);
-            int y = (int)(posY_joueurCourant/zoomFactor) - (int)(cameraOffset.y/zoomFactor);
-            int largeur = (int)(largeur_joueurCourant/zoomFactor);
-            int hauteur = (int)(hauteur_joueurCourant/zoomFactor);
-            tracer((Graphics2D) g, joueurCourant, x, y, largeur, hauteur);
-            Font font = new Font("Roboto", Font.BOLD, (int) (40/zoomFactor));
-            g.setFont(font);
-            g.drawString(jeu.getJoueurCourant(), x, y+hauteur);
-        }
-         */
-
-        private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
-            g.drawImage(i, x, y, l, h, null);
         }
 
         public void miseAJour() {
@@ -210,13 +184,6 @@ public class TEngine extends JFrame {
                                 }
                             }
                         }
-                        /*
-                        else {
-                            if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
-                                g.drawImage(voidTile_transparent, x , y - heightoffset, null);
-                            }
-                        }
-                         */
                         if (map[i][j].getTerrain() == Hexagone.VOLCAN) {
                             int j2;
                             if (i % 2 == 1) {
@@ -406,13 +373,25 @@ public class TEngine extends JFrame {
                     }
                 }
                 if (opacity != 1f) {
-                    tile1 = applyRedFilter(tile1);
-                    tile2 = applyRedFilter(tile1);
-                    tile3 = applyRedFilter(tile1);
+                    if (tile1 != null) {
+                        tile1 = applyRedFilter(tile1);
+                    }
+                    if (tile1 != null) {
+                        tile2 = applyRedFilter(tile1);
+                    }
+                    if (tile1 != null) {
+                        tile3 = applyRedFilter(tile1);
+                    }
                 }
-                tile1 = ImageLoader.getReducedOpacityImage(tile1, opacity);
-                tile2 = ImageLoader.getReducedOpacityImage(tile2, opacity);
-                tile3 = ImageLoader.getReducedOpacityImage(tile3, opacity);
+                if (tile1 != null) {
+                    tile1 = ImageLoader.getReducedOpacityImage(tile1, opacity);
+                }
+                if (tile2 != null) {
+                    tile2 = ImageLoader.getReducedOpacityImage(tile2, opacity);
+                }
+                if (tile3 != null) {
+                    tile3 = ImageLoader.getReducedOpacityImage(tile3, opacity);
+                }
 
                 int heightoffset1 = 1;
                 int heightoffset2 = 1;
@@ -606,9 +585,6 @@ public class TEngine extends JFrame {
                     // Convertir les coordonnées du système de pixels en coordonnées du système de grille
                     int i = clickPositionAdjusted.y / verticalOffset;
                     int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-                    //System.out.println("("+i+", "+j+")");
-                    //System.out.println("num joueur courant : "+jeu.getNumJoueurCourant());
-                    //System.out.println("num truc : "+jeu.getPlateau().getTuile(i,j).getNumJoueur());
 
                     if(poseTile) placerTuiles(i,j);
                     else{
