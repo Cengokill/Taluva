@@ -755,7 +755,7 @@ public class TEngine extends JFrame {
 
         private boolean possedeBatiment(int i,int j){
             return (jeu.getPlateau().getBatiment(i,j)==Hexagone.TOUR||jeu.getPlateau().getBatiment(i,j)==Hexagone.MAISON||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_FORET
-                    ||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE);
+                    ||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
         }
         private boolean aCiteAutour(int i,int j){
             boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
@@ -792,20 +792,17 @@ public class TEngine extends JFrame {
             }
 
             if (value == 1) { // place hut
-                System.out.println("hut");
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 1);
             }
             else if (value == 2){ // place tour
                 if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
-                    System.out.println("tour");
                     enSelection = false;
                     controleur.placeBatiment(i,j,(byte) 3);
                 }
             }
             else if (value == 0){ // place temple
                 if(aCiteAutour(i,j)){
-                    System.out.println("temple");
                     enSelection = false;
                     controleur.placeBatiment(i,j,(byte) 2);
                 }
@@ -826,6 +823,8 @@ public class TEngine extends JFrame {
                 int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
                 //System.out.println("i: " + i);
                 //System.out.println("j: " + j);
+                //System.out.println("num joueur courant : "+jeu.getNumJoueurCourant());
+                //System.out.println("num truc : "+jeu.getPlateau().getTuile(i,j).getNumJoueur());
 
                 if(poseTile) placerTuiles(i,j);
                 else{
@@ -840,7 +839,6 @@ public class TEngine extends JFrame {
                         placerMaison(posBat_x,posBat_y);
                     }
                 }
-
                 miseAJour();
             }
         }

@@ -98,8 +98,8 @@ public class Jeu extends Observable {
             }
             doit_placer_batiment = false;
             doit_placer_tuile = true;
+            changeJoueur();
         }
-
     }
 
     public void changeJoueur() {
@@ -152,6 +152,10 @@ public class Jeu extends Observable {
     }
 
     public void reinitialise() {
+    }
+
+    public byte getNumJoueurCourant(){
+        return jCourant;
     }
 
     public Plateau getPlateau() {
