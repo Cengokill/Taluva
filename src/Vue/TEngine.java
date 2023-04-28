@@ -891,6 +891,7 @@ public class TEngine extends JFrame {
                     // Convertir les coordonnées du système de pixels en coordonnées du système de grille
                     int i = clickPositionAdjusted.y / verticalOffset;
                     int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+                    //System.out.println("("+i+", "+j+")");
                     //System.out.println("num joueur courant : "+jeu.getNumJoueurCourant());
                     //System.out.println("num truc : "+jeu.getPlateau().getTuile(i,j).getNumJoueur());
 

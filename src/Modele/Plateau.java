@@ -77,17 +77,23 @@ public class Plateau implements Serializable {
         return false;
     }
 
-
-
     public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
         //TripletDePosition courant = new TripletDePosition(new Position(volcan_i,volcan_j),new Position(tile1_i,tile1_j),new Position(tile2_i,tile2_j));
         for(TripletDePosition p : tripletsPossible){
-            if(p.getX().getL()==volcan_i && p.getX().getC()==volcan_j && p.getY().getL()==tile1_i && p.getY().getC()==tile1_j && p.getZ().getL()==tile2_i && p.getZ().getC()==tile2_j) return true;
-            if(p.getX().getL()==volcan_i && p.getX().getC()==volcan_j && p.getY().getL()==tile2_i && p.getY().getC()==tile2_j && p.getZ().getL()==tile1_i && p.getZ().getC()==tile1_j) return true;
-            if(p.getX().getL()==tile1_i && p.getX().getC()==tile1_j && p.getY().getL()==volcan_i && p.getY().getC()==volcan_j && p.getZ().getL()==tile2_i && p.getZ().getC()==tile2_j) return true;
-            if(p.getX().getL()==tile1_i && p.getX().getC()==tile1_j && p.getY().getL()==tile2_i && p.getY().getC()==tile2_j && p.getZ().getL()==volcan_i && p.getZ().getC()==volcan_j) return true;
-            if(p.getX().getL()==tile2_i && p.getX().getC()==tile2_j && p.getY().getL()==volcan_i && p.getY().getC()==volcan_j && p.getZ().getL()==tile1_i && p.getZ().getC()==tile1_j) return true;
-            if(p.getX().getL()==tile2_i && p.getX().getC()==tile2_j && p.getY().getL()==tile1_i && p.getY().getC()==tile1_j && p.getZ().getL()==volcan_i && p.getZ().getC()==volcan_j) return true;
+            if(estHexagoneVide(p.getX().getL(),p.getX().getC())&&estHexagoneVide(p.getY().getL(),p.getY().getC())&&estHexagoneVide(p.getZ().getL(),p.getZ().getC())) {
+                if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
+                    return true;
+                if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
+                    return true;
+                if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
+                    return true;
+                if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
+                    return true;
+                if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
+                    return true;
+                if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
+                    return true;
+            }
         }
 
         return false;
@@ -272,11 +278,14 @@ public class Plateau implements Serializable {
         return listeVoisins;
     }
 
+    public void supprimeTriplets(TripletDePosition pos){
+        tripletsPossible.remove(pos);
+    }
+
     public void creerTriplets(ArrayList<Position> voisins){
         ArrayList<TripletDePosition> triplets = new ArrayList<>();
         for(Position p : voisins){
             ArrayList<Position> voisinsDeVoisins = new ArrayList<>();
-            //System.out.println("ici i: "+p.getL()+" j: "+p.getC());
             voisinsDeVoisins = voisins(p.getL(),p.getC());
             Position courant = new Position(p.getL(),p.getC()) ;
             Position enHautDroite;
@@ -320,14 +329,18 @@ public class Plateau implements Serializable {
                 aSupprimer.add(p);
             }
         }
+        //System.out.println("Pour être sur taille AVANT: "+listeVoisins.size());
+
         for(Position p : aSupprimer){
             listeVoisins.remove(p);
             for(TripletDePosition t : tripletsPossible){
-                if((t.getX().getL()==p.getL() && t.getX().getC()==p.getC())||(t.getY().getL()==p.getL() && t.getY().getC()==p.getC())||(t.getZ().getL()==p.getL() && t.getZ().getC()==p.getC())){
+                if(((t.getX().getL()==p.getL() && t.getX().getC()==p.getC())||(t.getY().getL()==p.getL() && t.getY().getC()==p.getC())||(t.getZ().getL()==p.getL() && t.getZ().getC()==p.getC()))
+                        ||!estHexagoneVide(t.getX().getL(),t.getX().getC())||!estHexagoneVide(t.getY().getL(),t.getY().getC())||!estHexagoneVide(t.getZ().getL(),t.getZ().getC())){
                     tripletsaSupprimer.add(t);
                 }
             }
         }
+        //System.out.println("Pour être sur taille APRES: "+listeVoisins.size());
         for(TripletDePosition t : tripletsaSupprimer){
             tripletsPossible.remove(t);
         }
@@ -347,6 +360,9 @@ public class Plateau implements Serializable {
             return false;
         }
         if(plateau[l][c].getTerrain()==Hexagone.VIDE){
+            return true;
+        }
+        if(plateau[l][c].getTerrain()==Hexagone.WATER){
             return true;
         }
         return false;
@@ -415,7 +431,6 @@ public class Plateau implements Serializable {
     }
 
     public int[] getBatimentPlacable(int i,int j, int numJoueur){
-        System.out.println("getBatimentPlacable i: "+i+" j: "+j);
         int[] coups = new int[3];
         coups[0] = 1;
         if(getHauteurTuile(i,j)==3) coups[2] = 1;
@@ -479,6 +494,9 @@ public class Plateau implements Serializable {
         return true;
     }
 
+    public void supprimePosBatiment(Position pos){
+        positions_libres_batiments.remove(pos);
+    }
     public ArrayList<Position> getPositions_libres_batiments(){
         return positions_libres_batiments;
     }

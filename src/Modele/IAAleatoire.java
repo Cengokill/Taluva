@@ -19,14 +19,6 @@ class IAAleatoire extends IA {
         }
         return j_modified;
     }
-
-    private ArrayList<Position> copieTab(ArrayList<Position> tab){
-        ArrayList<Position> Copie = new ArrayList<>();
-        for (int i=0;i<tab.size();i++){
-            Copie.add(tab.get(i));
-        }
-        return Copie;
-    }
     public Coup joue() {
 
         Random r = new Random();
@@ -53,8 +45,14 @@ class IAAleatoire extends IA {
             }else{
                 // Trouver un emplacement pour les hexagones
                 ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
-                //System.out.println("positionPossible taille: "+positionsPossible.size());
                 TripletDePosition positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
+                boolean bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getX().getL(),positionsrandom.getX().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getY().getL(),positionsrandom.getY().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getZ().getL(),positionsrandom.getZ().getC());
+                while(!bon){
+                    jeu.getPlateau().supprimeTriplets(positionsrandom);
+                    positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
+                    bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getX().getL(),positionsrandom.getX().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getY().getL(),positionsrandom.getY().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getZ().getL(),positionsrandom.getZ().getC());
+                }
+
                 int x1 = positionsrandom.getX().getL();
                 int x2 = positionsrandom.getY().getL();
                 int x3 = positionsrandom.getZ().getL();
@@ -68,9 +66,14 @@ class IAAleatoire extends IA {
         }
         else if(jeu.doit_placer_batiment()){
             // Trouver un emplaçement pour le batiment
-            ArrayList<Position> positionPossibles = copieTab(jeu.getPlateau().getPositions_libres_batiments());
-            System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
+            ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
+            //System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
             Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
+            while(jeu.getPlateau().getBatiment(positionrandom.getL(),positionrandom.getC())!=0){
+                jeu.getPlateau().supprimePosBatiment(positionrandom);
+                positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
+            }
+
             jeu.getPlateau().supprimeLibreBatiments(positionrandom);
 
 

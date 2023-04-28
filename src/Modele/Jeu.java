@@ -68,7 +68,6 @@ public class Jeu extends Observable {
     }
 
     public void joueIA() {
-        System.out.println("joueIA");
         if (!estJoueurCourantUneIA()) {
             return;
         }
