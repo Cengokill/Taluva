@@ -79,21 +79,33 @@ public class Plateau implements Serializable {
 
     public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
         //TripletDePosition courant = new TripletDePosition(new Position(volcan_i,volcan_j),new Position(tile1_i,tile1_j),new Position(tile2_i,tile2_j));
+        System.out.println("#######################################");
+        System.out.println("#######################################");
+        System.out.println("#######################################");
+        System.out.println(tripletsPossible.size());
+        System.out.println("#######################################");
         for(TripletDePosition p : tripletsPossible){
-            if(estHexagoneVide(p.getX().getL(),p.getX().getC())&&estHexagoneVide(p.getY().getL(),p.getY().getC())&&estHexagoneVide(p.getZ().getL(),p.getZ().getC())) {
-                if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
-                    return true;
-                if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
-                    return true;
-                if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
-                    return true;
-                if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
-                    return true;
-                if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
-                    return true;
-                if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
-                    return true;
-            }
+            System.out.println("============================");
+            System.out.println(p.getX().l);
+            System.out.println(p.getX().c);
+            System.out.println(p.getY().l);
+            System.out.println(p.getY().c);
+            System.out.println(p.getZ().l);
+            System.out.println(p.getZ().c);
+
+            if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
+                return true;
+            if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
+                return true;
+            if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
+                return true;
+            if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
+                return true;
+            if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
+                return true;
+            if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
+                return true;
+
         }
 
         return false;
@@ -248,33 +260,31 @@ public class Plateau implements Serializable {
 
     public ArrayList<Position> voisins(int l, int c){
         ArrayList<Position> listeVoisins = new ArrayList<>();
-        //if(estHexagoneVide(l-1,c)){
-            listeVoisins.add(new Position(l-1,c));
-        //}
-        //if(estHexagoneVide(l+1,c)){
-            listeVoisins.add(new Position(l+1,c));
-        //}
-        //if(estHexagoneVide(l,c-1)){
-            listeVoisins.add(new Position(l,c-1));
-        //}
-        //if(estHexagoneVide(l,c+1)){
-            listeVoisins.add(new Position(l,c+1));
-        //}
-        if(l%2==1){
-            //if(estHexagoneVide(l-1,c-1)) {
-                listeVoisins.add(new Position(l-1,c-1));
-            //}
-            //if(estHexagoneVide(l+1,c-1)) {
-                listeVoisins.add(new Position(l+1,c-1));
-            //}
-        }else{
-            //if(estHexagoneVide(l-1,c+1)) {
-                listeVoisins.add(new Position(l-1,c+1));
-            //}
-            //if(estHexagoneVide(l+1,c+1)) {
-                listeVoisins.add(new Position(l+1,c+1));
-            //}
+
+        // Gauche
+        listeVoisins.add(new Position(l,c-1));
+
+
+        // Droite
+        listeVoisins.add(new Position(l,c+1));
+
+        // Si ligne impaire
+        if(l%2==1) {
+            c = c - 1;
         }
+
+        // En bas a gauche
+        listeVoisins.add(new Position(l+1,c));
+
+        // En bas a droite
+        listeVoisins.add(new Position(l+1,c+1));
+
+        // En haut a gauche
+        listeVoisins.add(new Position(l-1,c));
+
+        // En haut a droite
+        listeVoisins.add(new Position(l-1,c+1));
+
         return listeVoisins;
     }
 
@@ -294,27 +304,20 @@ public class Plateau implements Serializable {
             Position droite;
             Position enHautGauche;
             Position enBasGauche;
-            if(p.getL()%2==1){
-                enHautDroite = voisinsDeVoisins.get(0);
-                enBasDroite = voisinsDeVoisins.get(1);
-                gauche = voisinsDeVoisins.get(2);
-                droite = voisinsDeVoisins.get(3);
-                enHautGauche = voisinsDeVoisins.get(4);
-                enBasGauche = voisinsDeVoisins.get(5);
-            }else{
-                enHautGauche = voisinsDeVoisins.get(0);
-                enBasGauche = voisinsDeVoisins.get(1);
-                gauche = voisinsDeVoisins.get(2);
-                droite = voisinsDeVoisins.get(3);
-                enHautDroite = voisinsDeVoisins.get(4);
-                enBasDroite = voisinsDeVoisins.get(5);
+            gauche = voisinsDeVoisins.get(0);
+            droite = voisinsDeVoisins.get(1);
+            enBasGauche = voisinsDeVoisins.get(2);
+            enBasDroite = voisinsDeVoisins.get(3);
+            enHautGauche= voisinsDeVoisins.get(4);
+            enHautDroite = voisinsDeVoisins.get(5);
+            if (estHexagoneVide(p.getL(), p.getC())) {
+                if(estHexagoneVide(enHautDroite.getL(),enHautDroite.getC())&&estHexagoneVide(enHautGauche.getL(),enHautGauche.getC())) triplets.add(new TripletDePosition(courant,enHautDroite,enHautGauche));
+                if(estHexagoneVide(enHautDroite.getL(),enHautDroite.getC())&&estHexagoneVide(droite.getL(),droite.getC())) triplets.add(new TripletDePosition(courant,enHautDroite,droite));
+                if(estHexagoneVide(enHautGauche.getL(),enHautGauche.getC())&&estHexagoneVide(gauche.getL(),gauche.getC())) triplets.add(new TripletDePosition(courant,enHautGauche,gauche));
+                if(estHexagoneVide(gauche.getL(),gauche.getC())&&estHexagoneVide(enBasGauche.getL(),enBasGauche.getC())) triplets.add(new TripletDePosition(courant,gauche,enBasGauche));
+                if(estHexagoneVide(enBasGauche.getL(),enBasGauche.getC())&&estHexagoneVide(enBasDroite.getL(),enBasDroite.getC())) triplets.add(new TripletDePosition(courant,enBasGauche,enBasDroite));
+                if(estHexagoneVide(enBasDroite.getL(),enBasDroite.getC())&&estHexagoneVide(droite.getL(),droite.getC())) triplets.add(new TripletDePosition(courant,enBasDroite,droite));
             }
-            if(estHexagoneVide(enHautDroite.getL(),enHautDroite.getC())&&estHexagoneVide(enHautGauche.getL(),enHautGauche.getC())) triplets.add(new TripletDePosition(courant,enHautDroite,enHautGauche));
-            if(estHexagoneVide(enHautDroite.getL(),enHautDroite.getC())&&estHexagoneVide(droite.getL(),droite.getC())) triplets.add(new TripletDePosition(courant,enHautDroite,droite));
-            if(estHexagoneVide(enHautGauche.getL(),enHautGauche.getC())&&estHexagoneVide(gauche.getL(),gauche.getC())) triplets.add(new TripletDePosition(courant,enHautGauche,gauche));
-            if(estHexagoneVide(gauche.getL(),gauche.getC())&&estHexagoneVide(enBasGauche.getL(),enBasGauche.getC())) triplets.add(new TripletDePosition(courant,gauche,enBasGauche));
-            if(estHexagoneVide(enBasGauche.getL(),enBasGauche.getC())&&estHexagoneVide(enBasDroite.getL(),enBasDroite.getC())) triplets.add(new TripletDePosition(courant,enBasGauche,enBasDroite));
-            if(estHexagoneVide(enBasDroite.getL(),enBasDroite.getC())&&estHexagoneVide(droite.getL(),droite.getC())) triplets.add(new TripletDePosition(courant,enBasDroite,droite));
         }
         tripletsPossible.addAll(triplets);
     }
