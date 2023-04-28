@@ -86,7 +86,7 @@ public class Jeu extends Observable {
         }
         getPlateau().joueCoup(c);
 
-        if (p.getTypeJeu().compareTo("AIcAI") == 0) {
+        /*if (p.getTypeJeu().compareTo("AIcAI") == 0) {
             // Attendez un certain temps avant d'exécuter l'action finale
             int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
             Timer timer = new Timer(delai, new ActionListener() {
@@ -98,7 +98,7 @@ public class Jeu extends Observable {
 
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-la une seule fois
             timer.start(); // Démarrez le timer
-        }
+        }*/
     }
 
     public void calculScore(){

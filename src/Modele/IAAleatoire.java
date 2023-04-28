@@ -19,13 +19,22 @@ class IAAleatoire extends IA {
         if(jeu.getPlateau().isEmpty()){ // l'IA est le premier à jouer donc on place au centres
             i = taille_x/2;
             j = taille_y/2;
+
+            int j_modified;
+            if (i % 2 == 1) {
+                j_modified = j - 1;
+            } else {
+                j_modified = j;
+            }
+
             byte[] tuiles = jeu.getTuilesAPoser();
             byte[][] triplet = new byte[3][2];
             triplet[1][0] = tuiles[0]; // tile 1
             triplet[2][0] = tuiles[1]; // tile 2
             triplet[0][0] = tuiles[2];
 
-            return new Coup(numIA,i,j,jeu.getTuilesAPoser()[0],jeu.getTuilesAPoser()[1],triplet[1][0],i,j,triplet[2][0]);
+            // controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
+            return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified,triplet[2][0]);
         }
 
 
