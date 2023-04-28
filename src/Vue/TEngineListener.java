@@ -52,6 +52,24 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             if (e.getKeyCode() == KeyEvent.VK_N) {
                 tengine.hexTiles.affichetripletpossible();
             }
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                tengine.hexTiles.scrollValue++;
+                if (tengine.hexTiles.scrollValue < 1) {
+                    tengine.hexTiles.scrollValue = 6;
+                } else if (tengine.hexTiles.scrollValue > 6) {
+                    tengine.hexTiles.scrollValue = 1;
+                }
+                tengine.hexTiles.repaint();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                tengine.hexTiles.scrollValue--;
+                if (tengine.hexTiles.scrollValue < 1) {
+                    tengine.hexTiles.scrollValue = 6;
+                } else if (tengine.hexTiles.scrollValue > 6) {
+                    tengine.hexTiles.scrollValue = 1;
+                }
+                tengine.hexTiles.repaint();
+            }
         }
 
         @Override
