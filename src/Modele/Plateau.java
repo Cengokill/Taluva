@@ -1,5 +1,7 @@
 package Modele;
 
+import Structures.TripletDePosition;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +13,8 @@ public class Plateau implements Serializable {
     protected int[] nbPionsJ2;
     private Historique historique;
     private ArrayList<Position> positions_libres;
+
+    private ArrayList<TripletDePosition> tripletsPossible;
     private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
@@ -31,6 +35,7 @@ public class Plateau implements Serializable {
         positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-1));
         positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-2));
         positions_libres_batiments = new ArrayList<>();
+        tripletsPossible = new ArrayList<>();
     }
 
 
@@ -255,15 +260,27 @@ public class Plateau implements Serializable {
         return listeVoisins;
     }
 
+    public void creerTriplets(ArrayList<Position> voisins){
+        ArrayList<TripletDePosition> triplets = new ArrayList<>();
+        for(Position p : voisins){
+            ArrayList<Position> voisinsDeVoisins = new ArrayList<>();
+            voisinsDeVoisins = voisins(p.getL(),p.getC());
+            //if(voisinsDeVoisins.get(0).getL()==0)
+        }
+
+    }
+
+
     public void metAjourPositionsLibres(ArrayList<Position> listeVoisins){
-        for(Position p : positions_libres){
+        for(Position p : listeVoisins){
             //si p est dans positions_libres et n'est pas de l'eau, on l'enlève
             if(!estHexagoneVide(p.getL(), p.getC())) {
-                positions_libres.remove(p);
+                listeVoisins.remove(p);
             }
         }
         positions_libres.addAll(listeVoisins);
     }
+
 
     public boolean estCaseHorsPlateau(int l, int c){
         if(l<0 || l>=LIGNES || c<0 || c>=COLONNES){
@@ -288,9 +305,11 @@ public class Plateau implements Serializable {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
-            ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
+            // On ajoute les emplacements libres des batiments
             positions_libres_batiments.add(new Position(coup.tile1_x,coup.tile1_y));
             positions_libres_batiments.add(new Position(coup.tile2_x,coup.tile2_y));
+            // On ajoute les emplacements libres des tuiles
+            ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
             metAjourPositionsLibres(listeVoisins);
             listeVoisins = voisins(coup.tile1_x,coup.tile1_y);
             metAjourPositionsLibres(listeVoisins);
