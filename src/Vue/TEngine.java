@@ -356,7 +356,7 @@ public class TEngine extends JFrame {
                     int tileId = map[i][j].getTerrain();
 
                     int heightoffset = map[i][j].getHauteur();
-                    heightoffset *= 50;
+                    heightoffset *= 80;
 
                     if (map[i][j].getTerrain() == Hexagone.VIDE) {
                         heightoffset -= 50;
