@@ -108,7 +108,7 @@ public class TEngine extends JFrame {
         BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, constructionMode;
         BufferedImage[] choisirBat = new BufferedImage[8];
         BufferedImage waterTile;
-        BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
+        BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
         BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
@@ -167,6 +167,14 @@ public class TEngine extends JFrame {
             wrongTile1 = lisImageBuf("Wrong_height_1_hex");
             wrongTile2 = lisImageBuf("Wrong_height_2_hex");
             wrongTile3 = lisImageBuf("Wrong_height_3_hex");
+
+            beacons = lisImageBuf("Beacons");
+            beacon_1 = lisImageBuf("Beacon_1");
+            beacon_2 = lisImageBuf("Beacon_2");
+            beacon_3 = lisImageBuf("Beacon_3");
+            beacon_4 = lisImageBuf("Beacon_4");
+            beacon_5 = lisImageBuf("Beacon_5");
+            beacon_6 = lisImageBuf("Beacon_6");
 
             wrongTile1 = getReducedOpacityImage(wrongTile1, 0.5f);
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
@@ -366,6 +374,7 @@ public class TEngine extends JFrame {
                             }
                             if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
                                 g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                                g.drawImage(beacon_1, x, y - heightoffset + 5, null);
                             } else if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
                                 g.drawImage(whiteTile, x, y - heightoffset + 5, null);
                             } else if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
@@ -376,6 +385,25 @@ public class TEngine extends JFrame {
                                 g.drawImage(whiteTile, x, y - heightoffset + 5, null);
                             } else if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
                                 g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            }
+
+                            if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
+                                g.drawImage(beacon_1, x, y - heightoffset + 5, null);
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
+                                g.drawImage(beacon_2, x, y - heightoffset + 5, null);
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
+                                g.drawImage(beacon_3, x, y - heightoffset + 5, null);
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
+                                g.drawImage(beacon_4, x, y - heightoffset + 5, null);
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
+                                g.drawImage(beacon_5, x, y - heightoffset + 5, null);
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
+                                g.drawImage(beacon_6, x, y - heightoffset + 5, null);
                             }
                         }
                     }
