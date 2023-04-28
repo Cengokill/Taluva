@@ -3,10 +3,11 @@ package Modele;
 import org.w3c.dom.ls.LSOutput;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Plateau {
+public class Plateau implements Serializable {
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
     protected int[] nbPionsJ2;

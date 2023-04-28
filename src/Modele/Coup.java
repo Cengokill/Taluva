@@ -1,6 +1,8 @@
 package Modele;
 
-public class Coup {
+import java.io.Serializable;
+
+public class Coup implements Serializable {
 
     public static final byte TUILE = 0;
     public static final byte BATIMENT = 1;
