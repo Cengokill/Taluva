@@ -4,6 +4,9 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.awt.*;
 import java.lang.reflect.Array;
+import Structures.TripletDePosition;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Plateau {
@@ -11,6 +14,10 @@ public class Plateau {
     protected int[] nbPionsJ1;
     protected int[] nbPionsJ2;
     private Historique historique;
+    private ArrayList<Position> positions_libres;
+
+    private ArrayList<TripletDePosition> tripletsPossible;
+    private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
 
@@ -22,7 +29,18 @@ public class Plateau {
         nbPionsJ1[1]=10 ; nbPionsJ2[1]=10;
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
         initPlateau();
+        positions_libres = new ArrayList<>();
+        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-2));
+        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-2));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2+2));
+        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-2));
+        positions_libres_batiments = new ArrayList<>();
+        tripletsPossible = new ArrayList<>();
     }
+
 
     private void initPlateau() {
         for (int i = 0; i < plateau.length; i++) {
@@ -74,6 +92,8 @@ public class Plateau {
         System.out.println("tile1_x: " + tile1_x);
         System.out.println("tile2_x: " + tile2_x);
          */
+        if(estVide()) return true;
+
 
         int hauteur = plateau[volcan_i][volcan_j].getHauteur();
         if (plateau[tile1_i][tile1_j].getVolcanJ() == volcan_j && plateau[tile2_i][tile2_j].getVolcanI() == volcan_i) {
@@ -210,6 +230,77 @@ public class Plateau {
         }
         return listeDecases;
     }
+
+    public ArrayList<Position> voisins(int l, int c){
+        ArrayList<Position> listeVoisins = new ArrayList<>();
+        if(estHexagoneVide(l-1,c)){
+            listeVoisins.add(new Position(l-1,c));
+        }
+        if(estHexagoneVide(l+1,c)){
+            listeVoisins.add(new Position(l+1,c));
+        }
+        if(estHexagoneVide(l,c-1)){
+            listeVoisins.add(new Position(l,c-1));
+        }
+        if(estHexagoneVide(l,c+1)){
+            listeVoisins.add(new Position(l,c+1));
+        }
+        if(l%2==1){
+            if(estHexagoneVide(l-1,c-1)) {
+                listeVoisins.add(new Position(l-1,c-1));
+            }
+            if(estHexagoneVide(l+1,c-1)) {
+                listeVoisins.add(new Position(l+1,c-1));
+            }
+        }else{
+            if(estHexagoneVide(l-1,c+1)) {
+                listeVoisins.add(new Position(l-1,c+1));
+            }
+            if(estHexagoneVide(l+1,c+1)) {
+                listeVoisins.add(new Position(l+1,c+1));
+            }
+        }
+        return listeVoisins;
+    }
+
+    public void creerTriplets(ArrayList<Position> voisins){
+        ArrayList<TripletDePosition> triplets = new ArrayList<>();
+        for(Position p : voisins){
+            ArrayList<Position> voisinsDeVoisins = new ArrayList<>();
+            voisinsDeVoisins = voisins(p.getL(),p.getC());
+            //if(voisinsDeVoisins.get(0).getL()==0)
+        }
+
+    }
+
+
+    public void metAjourPositionsLibres(ArrayList<Position> listeVoisins){
+        for(Position p : listeVoisins){
+            //si p est dans positions_libres et n'est pas de l'eau, on l'enlève
+            if(!estHexagoneVide(p.getL(), p.getC())) {
+                listeVoisins.remove(p);
+            }
+        }
+        positions_libres.addAll(listeVoisins);
+    }
+
+
+    public boolean estCaseHorsPlateau(int l, int c){
+        if(l<0 || l>=LIGNES || c<0 || c>=COLONNES){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estHexagoneVide(int l, int c){
+        if(estCaseHorsPlateau(l,c)){
+            return false;
+        }
+        if(plateau[l][c].getTerrain()==Hexagone.VIDE){
+            return true;
+        }
+        return false;
+    }
     public boolean estDansTableau(int x , int y){return x>-1 || x<31 || y>-1 || y<31  ;}
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
@@ -218,6 +309,16 @@ public class Plateau {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            // On ajoute les emplacements libres des batiments
+            positions_libres_batiments.add(new Position(coup.tile1_x,coup.tile1_y));
+            positions_libres_batiments.add(new Position(coup.tile2_x,coup.tile2_y));
+            // On ajoute les emplacements libres des tuiles
+            ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
+            metAjourPositionsLibres(listeVoisins);
+            listeVoisins = voisins(coup.tile1_x,coup.tile1_y);
+            metAjourPositionsLibres(listeVoisins);
+            listeVoisins = voisins(coup.tile2_x,coup.tile2_y);
+            metAjourPositionsLibres(listeVoisins);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
@@ -234,6 +335,7 @@ public class Plateau {
             } else if (coup.type == 4){
                 batiment = Hexagone.CHOISIR_MAISON;
             }
+            if(batiment!=Hexagone.CHOISIR_MAISON) positions_libres_batiments.remove(new Position(coup.batiment_x,coup.batiment_y));
             plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanI(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanJ());
         }
     }
