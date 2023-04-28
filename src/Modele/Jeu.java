@@ -46,9 +46,8 @@ public class Jeu extends Observable {
         doit_placer_tuile = true;
         doit_placer_batiment = false;
         pioche();
-        System.out.println("bonsoir");
+
         if (estJoueurCourantUneIA()) {
-            System.out.println("joueur courant une IA");
             // Pour pas que l'IA joue directement
             // Attendez un certain temps avant d'exécuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
@@ -65,26 +64,27 @@ public class Jeu extends Observable {
     }
 
     public boolean estJoueurCourantUneIA() {
-        System.out.println("joueur: "+joueursObjet[jCourant]);
-        System.out.println("jcourant : "+jCourant);
         return joueursObjet[jCourant] instanceof IA;
     }
 
     public void joueIA() {
         System.out.println("joueIA");
         if (!estJoueurCourantUneIA()) {
-            System.out.println("on rentre dans le premier if");
             return;
         }
-        Coup c = ((IA)joueursObjet[jCourant]).joue();
-        System.out.println("c: " + c);
-
-        System.out.println("x: "+c.volcan_x+" y: "+c.volcan_y);
-        System.out.println("ici: "+getPlateau().estPlaceLibre(c.volcan_x,c.volcan_y));
+        Coup c = ((IA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estPlaceLibre(c.volcan_x,c.volcan_y)) {
             return;
         }
+        getPlateau().joueCoup(c);   // place la plateforme
+        doit_placer_batiment = true;
+        doit_placer_tuile = false;
+
+        c = ((IA)joueursObjet[jCourant]).joue(); // batiment
         getPlateau().joueCoup(c);
+        doit_placer_batiment = false;
+        doit_placer_tuile = true;
+        changeJoueur();
 
         /*if (p.getTypeJeu().compareTo("AIcAI") == 0) {
             // Attendez un certain temps avant d'exécuter l'action finale
@@ -203,7 +203,6 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-        
     }
 
     public void refaire() {

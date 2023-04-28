@@ -1,5 +1,6 @@
 package Modele;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 class IAAleatoire extends IA {
@@ -14,28 +15,39 @@ class IAAleatoire extends IA {
         int taille_x = jeu.getPlateau().plateau.length;
         int taille_y = jeu.getPlateau().plateau[0].length;
         byte numIA = jeu.getNumJoueurCourant();
-        System.out.println("isEmpty: "+jeu.getPlateau().estVide());
-        if(jeu.getPlateau().estVide()){ // l'IA est le premier à jouer donc on place au centres
-            i = taille_x/2;
-            j = taille_y/2;
 
-            int j_modified;
-            if (i % 2 == 1) {
-                j_modified = j - 1;
-            } else {
-                j_modified = j + 1;
+        if(jeu.doit_placer_tuile()){
+            if(jeu.getPlateau().estVide()){ // l'IA est le premier à jouer donc on place au centres
+                i = taille_x/2;
+                j = taille_y/2;
+
+                int j_modified;
+                if (i % 2 == 1) {
+                    j_modified = j - 1;
+                } else {
+                    j_modified = j;
+                }
+
+                byte[] tuiles = jeu.getTuilesAPoser();
+                byte[][] triplet = new byte[3][2];
+                triplet[1][0] = tuiles[0]; // tile 1
+                triplet[2][0] = tuiles[1]; // tile 2
+                triplet[0][0] = tuiles[2];
+
+                // controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
+                return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified+1,triplet[2][0]);
             }
+        }
+        else if(jeu.doit_placer_batiment()){
+            // Trouver un emplaçement pour le batiment
+            ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
+            Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
 
-            byte[] tuiles = jeu.getTuilesAPoser();
-            byte[][] triplet = new byte[3][2];
-            triplet[1][0] = tuiles[0]; // tile 1
-            triplet[2][0] = tuiles[1]; // tile 2
-            triplet[0][0] = tuiles[2];
+            // Choisir un batiment à placer
+            int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.getL(),positionrandom.getC(),numIA);
+            byte batiment = (byte) (batimensPlacable[r.nextInt(batimensPlacable.length-1)]);
 
-            // controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
-            return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified,triplet[2][0]);
-        }else{
-
+            return new Coup(numIA,positionrandom.getL(),positionrandom.getC(),batiment);
         }
 
 

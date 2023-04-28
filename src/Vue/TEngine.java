@@ -666,8 +666,6 @@ public class TEngine extends JFrame {
             return outputImage;
         }
 
-
-
         private void displayHoverMaison(Graphics g) {
             if (hoverTile != null) {
                 int tileWidth = voidTile.getWidth();
@@ -760,6 +758,7 @@ public class TEngine extends JFrame {
             return (jeu.getPlateau().getBatiment(i,j)==Hexagone.TOUR||jeu.getPlateau().getBatiment(i,j)==Hexagone.MAISON||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_FORET
                     ||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
         }
+
         private boolean aCiteAutour(int i,int j){
             boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
             if(i%2==1){

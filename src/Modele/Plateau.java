@@ -11,6 +11,7 @@ public class Plateau implements Serializable {
     protected int[] nbPionsJ2;
     private Historique historique;
     private ArrayList<Position> positions_libres;
+    private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
         plateau = new Hexagone [LIGNES][COLONNES];
@@ -22,6 +23,7 @@ public class Plateau implements Serializable {
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
         initPlateau();
         positions_libres = new ArrayList<>();
+        positions_libres_batiments = new ArrayList<>();
     }
 
 
@@ -280,6 +282,8 @@ public class Plateau implements Serializable {
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
             ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
+            positions_libres_batiments.add(new Position(coup.tile1_x,coup.tile1_y));
+            positions_libres_batiments.add(new Position(coup.tile2_x,coup.tile2_y));
             metAjourPositionsLibres(listeVoisins);
             listeVoisins = voisins(coup.tile1_x,coup.tile1_y);
             metAjourPositionsLibres(listeVoisins);
@@ -301,6 +305,7 @@ public class Plateau implements Serializable {
             } else if (coup.type == 4){
                 batiment = Hexagone.CHOISIR_MAISON;
             }
+            if(batiment!=Hexagone.CHOISIR_MAISON) positions_libres_batiments.remove(new Position(coup.batiment_x,coup.batiment_y));
             plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanI(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanJ());
         }
     }
@@ -325,6 +330,40 @@ public class Plateau implements Serializable {
     public int getBatiment(int i,int j){
         return plateau[i][j].getBatiment();
     }
+
+    public int[] getBatimentPlacable(int i,int j, int numJoueur){
+        int[] coups = new int[3];
+        coups[0] = 1;
+        if(getHauteurTuile(i,j)==3) coups[2] = 1;
+        if(aCiteAutour(i,j,numJoueur)) coups[1] = 1;
+        return coups;
+    }
+
+    private boolean possedeBatiment(int i,int j,int numJoueur){
+        return (getBatiment(i,j)==Hexagone.TOUR||getBatiment(i,j)==Hexagone.MAISON||getBatiment(i,j)==Hexagone.TEMPLE_SABLE||getBatiment(i,j)==Hexagone.TEMPLE_FORET
+                ||getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(getTuile(i,j).getNumJoueur()==numJoueur);
+    }
+
+    private boolean aCiteAutour(int i,int j,int numJoueur){
+        boolean bool = possedeBatiment(i-1,j,numJoueur)||possedeBatiment(i+1,j,numJoueur)||possedeBatiment(i,j-1,numJoueur)||possedeBatiment(i,j+1,numJoueur);
+        if(i%2==1){
+            if(possedeBatiment(i-1,j-1,numJoueur)) {
+                bool = true;
+            }
+            if(possedeBatiment(i+1,j-1,numJoueur)) {
+                bool = true;
+            }
+        }else{
+            if(possedeBatiment(i-1,j+1,numJoueur)) {
+                bool = true;
+            }
+            if(possedeBatiment(i+1,j+1,numJoueur)) {
+                bool = true;
+            }
+        }
+        return bool;
+    }
+
 
     public int getHauteurTuile(int i,int j){
         return plateau[i][j].getHauteur();
@@ -354,6 +393,10 @@ public class Plateau implements Serializable {
             }
         }
         return true;
+    }
+
+    public ArrayList<Position> getPositions_libres_batiments(){
+        return positions_libres_batiments;
     }
 
     public boolean annuler() {
