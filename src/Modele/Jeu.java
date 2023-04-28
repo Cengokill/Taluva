@@ -2,6 +2,9 @@ package Modele;
 
 import Patterns.Observable;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -12,6 +15,8 @@ public class Jeu extends Observable {
     byte jCourant;
     byte jVainqueur;
     Joueur[] joueurs = new Joueur[2];
+
+    Object[] joueursObjet = new Object[2];
     Parametres p;
     int[]score = new int[2];
     byte[] tuile_a_poser = new byte[5];
@@ -23,9 +28,15 @@ public class Jeu extends Observable {
     private static int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
-        jCourant = (byte) ((int)(Math.random() * 2));
+        //jCourant = (byte) ((int)(Math.random() * 2));
+        jCourant = 1;
+        IA1 = IA.nouvelle(this,this.p);
+        joueursObjet[0] = joueur1;
+        joueursObjet[1] = IA1;
+
         pioche = new LinkedList<Tuile>();
         lancePartie();
+
     }
 
     public void lancePartie(){
@@ -35,6 +46,59 @@ public class Jeu extends Observable {
         doit_placer_tuile = true;
         doit_placer_batiment = false;
         pioche();
+
+        if (estJoueurCourantUneIA()) {
+            // Pour pas que l'IA joue directement
+            // Attendez un certain temps avant d'exécuter l'action finale
+            int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
+            Timer timer = new Timer(delai, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    joueIA();
+                }
+            });
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+            timer.start(); // Démarrez le timer
+        }
+
+    }
+
+    public boolean estJoueurCourantUneIA() {
+        return joueursObjet[jCourant] instanceof IA;
+    }
+
+    public void joueIA() {
+        System.out.println("joueIA");
+        if (!estJoueurCourantUneIA()) {
+            return;
+        }
+        Coup c = ((IA)joueursObjet[jCourant]).joue(); // tuiles
+        if (!getPlateau().estPlaceLibre(c.volcan_x,c.volcan_y)) {
+            return;
+        }
+        getPlateau().joueCoup(c);   // place la plateforme
+        doit_placer_batiment = true;
+        doit_placer_tuile = false;
+
+        c = ((IA)joueursObjet[jCourant]).joue(); // batiment
+        getPlateau().joueCoup(c);
+        doit_placer_batiment = false;
+        doit_placer_tuile = true;
+        changeJoueur();
+
+        /*if (p.getTypeJeu().compareTo("AIcAI") == 0) {
+            // Attendez un certain temps avant d'exécuter l'action finale
+            int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
+            Timer timer = new Timer(delai, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    joueIA();
+                }
+            });
+
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-la une seule fois
+            timer.start(); // Démarrez le timer
+        }*/
     }
 
     public void calculScore(){
@@ -98,8 +162,8 @@ public class Jeu extends Observable {
             }
             doit_placer_batiment = false;
             doit_placer_tuile = true;
+            changeJoueur();
         }
-
     }
 
     public void changeJoueur() {
@@ -139,7 +203,6 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-        
     }
 
     public void refaire() {
@@ -152,6 +215,10 @@ public class Jeu extends Observable {
     }
 
     public void reinitialise() {
+    }
+
+    public byte getNumJoueurCourant(){
+        return jCourant;
     }
 
     public Plateau getPlateau() {

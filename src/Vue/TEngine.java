@@ -49,18 +49,28 @@ public class TEngine extends JFrame {
         vignettePanel.setBounds(0, 0, 1400, 1000);
         layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
 
-        // Définir la couleur d'arrière-plan en bleu océan
+        //Définit la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
+        //Définit les boutons et encadrés
+        int panelWidth = layeredPane.getWidth();
+        int panelHeight = layeredPane.getHeight();
+        int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton = 0, hauteur_bouton = 0;
+        int largeur_joueurCourant, hauteur_joueurCourant, posX_joueurCourant, posY_joueurCourant;
 
-        addImage("map_layer_little", 50, 800, layeredPane);
+        addImage("map_layer_little", 50, 800, 1, 1000, 1000, layeredPane);
+        addImage("Annuler", 50, 50, 207/603, largeur_bouton, hauteur_bouton, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
     }
 
-    public void addImage(String nom_image, int x, int y, JLayeredPane layeredPane) {
+    public void addImage(String nom_image, int x, int y, int width, int height, double rapport, JLayeredPane layeredPane) {
         // Chargez l'image que vous voulez afficher
         Image image = null;
+        int largeur = layeredPane.getWidth();
+        int hauteur = layeredPane.getHeight();
+        int largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
+        int hauteur_bouton = (int) (largeur_bouton*rapport);
         try {
             image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
         } catch (IOException e) {
@@ -74,11 +84,17 @@ public class TEngine extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (finalImage != null) {
-                    g.drawImage(finalImage, 0, 0, this);
+                    g.drawImage(finalImage, 0, 0, 0, 0, this);
+                    /*
+                    largeur = layeredPane.getWidth();
+                    hauteur = layeredPane.getHeight();
+                    largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
+                    hauteur_bouton = (int) (largeur_bouton*rapport);
+                     */
                 }
             }
         };
-        imagePanel.setBounds(x, y, 1000, 1000);
+        imagePanel.setBounds(x, y, largeur_bouton, hauteur_bouton);
         imagePanel.setOpaque(false);
         layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
     }
@@ -89,20 +105,17 @@ public class TEngine extends JFrame {
         private static final int SHAKE_INTERVAL = 25; // Intervalle entre les mouvements en millisecondes
         private static final int SHAKE_DISTANCE = 10; // Distance maximale de déplacement en pixels
 
-        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, chosirMaison;
-        BufferedImage[] choisirBat = new BufferedImage[3];
+        BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, constructionMode;
+        BufferedImage[] choisirBat = new BufferedImage[8];
         BufferedImage waterTile;
         BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3;
-        BufferedImage voidTile, voidTile_transparent;
+        BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
         BufferedImage grassTile_0, grassTile_1, grassTile_2;
         BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
         BufferedImage foretTile_0, foretTile_1, foretTile_2;
         BufferedImage desertTile_0, desertTile_1, desertTile_2;
         BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
         BufferedImage joueurCourant;
-        Image boutonAnnuler;
-        int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton, hauteur_bouton;
-        int largeur_joueurCourant, hauteur_joueurCourant, posX_joueurCourant, posY_joueurCourant;
         TEngine tengine;
         Point hoverTilePosition = new Point(-tile_size, -tile_size);
         Point cameraOffset = new Point(0, 0);
@@ -122,6 +135,8 @@ public class TEngine extends JFrame {
         int hoveredTile_x;
         int hoveredTile_y;
         Color[] couleurs_joueurs;
+        String[] nomJoueurs;
+
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             this.tengine = t;
@@ -129,7 +144,10 @@ public class TEngine extends JFrame {
             joueurCourant = lisImageBuf("Joueur_Courant");
             waterTile = lisImageBuf("Water_Tile");
             voidTile = lisImageBuf("Void_Tile");
-            voidTile_transparent = getReducedOpacityImage(voidTile, 0.5f);
+            whiteTile = lisImageBuf("White_Tile");
+            voidTileOld = lisImageBuf("Void_Tile_old");
+            voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
+            whiteTile = getReducedOpacityImage(whiteTile, 0.2f);
             grassTile_0 = lisImageBuf("Grass_0_Tile");
             grassTile_1 = lisImageBuf("Grass_1_Tile");
             grassTile_2 = lisImageBuf("Grass_2_Tile");
@@ -154,37 +172,36 @@ public class TEngine extends JFrame {
             wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
             wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-            wrongTile1 = applyYellowFilter(wrongTile1);
-            wrongTile2 = applyYellowFilter(wrongTile2);
-            wrongTile3 = applyYellowFilter(wrongTile3);
+            //wrongTile1 = applyYellowFilter(wrongTile1);
+            //wrongTile2 = applyYellowFilter(wrongTile2);
+            //wrongTile3 = applyYellowFilter(wrongTile3);
 
-            boutonAnnuler = lisImage("annuler");
             maisonTile = lisImageBuf("Batiments/maison");
             templeJungle = lisImageBuf("Batiments/Temple_jungle");
             templePierre = lisImageBuf("Batiments/Temple_pierre");
             templePrairie = lisImageBuf("Batiments/Temple_prairie");
             templeSable = lisImageBuf("Batiments/Temple_sable");
             tour = lisImageBuf("Batiments/tour");
-            for(int i=0;i<choisirBat.length;i++){
-                choisirBat[i] = lisImageBuf("Batiments/choisir_bat_"+(i+1));
+            for(int i=0;i<3;i++){
+                choisirBat[i] = lisImageBuf("Batiments/Selecteur/choisir_bat_"+(i+1));
             }
-
+            choisirBat[3] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_2");
+            choisirBat[4] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_3");
+            choisirBat[5] = lisImageBuf("Batiments/Selecteur/choisir_bat_2_sans_3");
+            choisirBat[6] = lisImageBuf("Batiments/Selecteur/choisir_bat_3_sans_2");
+            choisirBat[7] = lisImageBuf("Batiments/Selecteur/choisir_bat_sans_23");
+            constructionMode = lisImageBuf("Batiments/Selecteur/construction");
 
             setOpaque(false);
-
             cameraOffset.x = -2100;
             cameraOffset.y = -1700;
 
             triplet[0][0] = Hexagone.VOLCAN;
             triplet[1][0] = Hexagone.VIDE;
             triplet[2][0] = Hexagone.VIDE;
-
             triplet[0][1] = 0;
             triplet[1][1] = 0;
             triplet[2][1] = 0;
-
-            largeur = tengine.getWidth();
-            hauteur = tengine.getHeight();
 
             couleurs_joueurs = new Color[4];
             couleurs_joueurs[0] = new Color(255, 0, 0, 127);
@@ -285,6 +302,7 @@ public class TEngine extends JFrame {
 
         @Override
         protected void paintComponent(Graphics g) {
+
             changerTuileAPoser();
             changerPoseTile();
 
@@ -292,15 +310,6 @@ public class TEngine extends JFrame {
             Graphics2D g2d = (Graphics2D) g;
             g2d.translate(cameraOffset.x, cameraOffset.y);
             g2d.scale(zoomFactor, zoomFactor);
-
-            //définit la taille des boutons et des encadrés
-            double rapport_bouton = (double) 207/603;
-            largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
-            hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
-
-            double rapport_joueurCourant = (double) 131/603;
-            largeur_joueurCourant = (int) Math.min(largeur*.22, hauteur*.22);
-            hauteur_joueurCourant = (int) (largeur_joueurCourant*rapport_joueurCourant);
 
             displayHexagonMap(g);
 
@@ -337,12 +346,36 @@ public class TEngine extends JFrame {
                         if (mode_plateau) {
                             if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
                                 if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
-                                    g.drawImage(voidTile_transparent, x , y - heightoffset + 5, null);
+                                    g.drawImage(voidTile_transparent, x, y - heightoffset + 5, null);
                                 }
                             }
-                        } else {
+                        }
+                        /*
+                        else {
                             if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
                                 g.drawImage(voidTile_transparent, x , y - heightoffset, null);
+                            }
+                        }
+                         */
+                        if (map[i][j].getTerrain() == Hexagone.VOLCAN) {
+                            int j2;
+                            if (i % 2 == 1) {
+                                j2 = j - 1;
+                            } else {
+                                j2 = j;
+                            }
+                            if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+                            } else if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
+                                g.drawImage(whiteTile, x, y - heightoffset + 5, null);
                             }
                         }
                     }
@@ -378,11 +411,42 @@ public class TEngine extends JFrame {
                         int value = scrollValue%3;
                         if(value==1) value = 0;
                         else if(value==0) value = 1;
-                        g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                        int[] coups = coupJouable(i,j);
+                        if(coups[1]==0&&coups[2]==0) value=1;
+                        else if(coups[1]==0){
+                            value= scrollValue%2;
+                            if(value==0) value=2;
+                        }
+                        else if(coups[2]==0){
+                            value= scrollValue%2;
+                            if(value==1) value = 0;
+                            else if(value==0) value = 1;
+                        }
+                        if(coups[1]==0){
+                            if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                            else{
+                                if(value==1) g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                                else g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null); // attention ici 2 fois sur 3
+                            }
+                        }else{
+                            if(coups[2]==0){
+                                if(value==1) g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                                else g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                            }else{
+                                g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                            }
+                        }
                     }
-
                 }
             }
+        }
+
+        public int[] coupJouable(int i,int j){
+            int[] coups = new int[3];
+            coups[0] = 1;
+            if(jeu.getPlateau().getHauteurTuile(i,j)==3) coups[2] = 1;
+            if(aCiteAutour(i,j)) coups[1] = 1;
+            return coups;
         }
 
         private BufferedImage getTileImageFromId(int id, int numero_texture) {
@@ -626,8 +690,6 @@ public class TEngine extends JFrame {
             return outputImage;
         }
 
-
-
         private void displayHoverMaison(Graphics g) {
             if (hoverTile != null) {
                 int tileWidth = voidTile.getWidth();
@@ -650,16 +712,15 @@ public class TEngine extends JFrame {
 
                 if(!enSelection){
                     if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getTerrain() != Hexagone.VOLCAN){
-                        if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
+                        /*if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
                         else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.MONTAGNE) g.drawImage(templePierre, x , y - heightoffset1, null);
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.GRASS) g.drawImage(templePrairie, x , y - heightoffset1, null);
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.FORET) g.drawImage(templeJungle, x , y - heightoffset1, null);
                         }else if(jeu.getPlateau().getHauteurTuile(i,j)==3){
-                            g.drawImage(tour, x , y - heightoffset1, null);
-
-                        }
+                            g.drawImage(tour, x , y - heightoffset1, null);*/
+                        g.drawImage(constructionMode, x+50 , y - heightoffset1+50, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
                     }
                 }
             }
@@ -717,22 +778,60 @@ public class TEngine extends JFrame {
             miseAJour();
         }
 
+        private boolean possedeBatiment(int i,int j){
+            return (jeu.getPlateau().getBatiment(i,j)==Hexagone.TOUR||jeu.getPlateau().getBatiment(i,j)==Hexagone.MAISON||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_FORET
+                    ||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
+        }
+
+        private boolean aCiteAutour(int i,int j){
+            boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
+            if(i%2==1){
+                if(possedeBatiment(i-1,j-1)) {
+                    bool = true;
+                }
+                if(possedeBatiment(i+1,j-1)) {
+                    bool = true;
+                }
+            }else{
+                if(possedeBatiment(i-1,j+1)) {
+                    bool = true;
+                }
+                if(possedeBatiment(i+1,j+1)) {
+                    bool = true;
+                }
+            }
+            return bool;
+        }
 
         public void placerMaison(int i, int j) {
             int value = scrollValue%3;
+            int[] coupsJouable = coupJouable(i,j);
+            if(coupsJouable[1]==0&&coupsJouable[2]==0) value=1;
+            else if(coupsJouable[1]==0){
+                value= scrollValue%2;
+                if(value==0) value=2;
+            }
+            else if(coupsJouable[2]==0){
+                value= scrollValue%2;
+                if(value==1) value = 0;
+                else if(value==0) value = 1;
+            }
+
             if (value == 1) { // place hut
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 1);
             }
             else if (value == 2){ // place tour
-                if(jeu.getPlateau().getHauteurTuile(i,j)==3){
+                if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
                     enSelection = false;
                     controleur.placeBatiment(i,j,(byte) 3);
                 }
             }
             else if (value == 0){ // place temple
-                enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 2);
+                if(aCiteAutour(i,j)){
+                    enSelection = false;
+                    controleur.placeBatiment(i,j,(byte) 2);
+                }
             }
         }
 
@@ -750,6 +849,8 @@ public class TEngine extends JFrame {
                 int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
                 //System.out.println("i: " + i);
                 //System.out.println("j: " + j);
+                //System.out.println("num joueur courant : "+jeu.getNumJoueurCourant());
+                //System.out.println("num truc : "+jeu.getPlateau().getTuile(i,j).getNumJoueur());
 
                 if(poseTile) placerTuiles(i,j);
                 else{
@@ -764,8 +865,21 @@ public class TEngine extends JFrame {
                         placerMaison(posBat_x,posBat_y);
                     }
                 }
-
                 miseAJour();
+            }
+        }
+
+        public void annuleConstruction(MouseEvent e){
+            if (SwingUtilities.isRightMouseButton(e)) {
+                if(enSelection){
+                    byte numJoueur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getNumJoueur();
+                    byte hauteur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getHauteur();
+                    byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getTerrain();
+                    int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanI();
+                    int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanJ();
+                    jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
+                    enSelection=false;
+                }
             }
         }
     }

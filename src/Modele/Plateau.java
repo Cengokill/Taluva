@@ -1,20 +1,20 @@
 package Modele;
 
-import org.w3c.dom.ls.LSOutput;
-
-import java.awt.*;
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Plateau {
+public class Plateau implements Serializable {
+    int LIGNES = 40;
+    int COLONNES = 40;
     protected Hexagone[][] plateau ;
     protected int[] nbPionsJ1;
     protected int[] nbPionsJ2;
     private Historique historique;
+    private ArrayList<Position> positions_libres;
+    private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
-
-        plateau = new Hexagone [40][40];
+        plateau = new Hexagone [LIGNES][COLONNES];
         historique = new Historique();
         nbPionsJ1 = new int [3];
         nbPionsJ2 = new int [3];
@@ -22,7 +22,17 @@ public class Plateau {
         nbPionsJ1[1]=10 ; nbPionsJ2[1]=10;
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
         initPlateau();
+        positions_libres = new ArrayList<>();
+        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-2));
+        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-2));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2+2));
+        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-1));
+        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-2));
+        positions_libres_batiments = new ArrayList<>();
     }
+
 
     private void initPlateau() {
         for (int i = 0; i < plateau.length; i++) {
@@ -30,9 +40,9 @@ public class Plateau {
                 plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
-        //plateau[18][19] = new Hexagone((byte) 1, Hexagone.GRASS, (byte) 20, (byte)19);
-        plateau[19][20] = new Hexagone((byte)1, Hexagone.VOLCAN, (byte)19, (byte)20);
-        //plateau[18][20] = new Hexagone((byte)1, Hexagone.GRASS, (byte)19, (byte)20);
+        //plateau[18][19] = new Hexagone((byte) 3, Hexagone.GRASS, (byte) 20, (byte)19);
+        //plateau[19][20] = new Hexagone((byte)3, Hexagone.VOLCAN, (byte)19, (byte)20);
+        //plateau[18][20] = new Hexagone((byte)3, Hexagone.GRASS, (byte)19, (byte)20);
 
     }
 
@@ -74,6 +84,8 @@ public class Plateau {
         System.out.println("tile1_x: " + tile1_x);
         System.out.println("tile2_x: " + tile2_x);
          */
+        if(estVide()) return true;
+
 
         int hauteur = plateau[volcan_i][volcan_j].getHauteur();
         if (plateau[tile1_i][tile1_j].getVolcanJ() == volcan_j && plateau[tile2_i][tile2_j].getVolcanI() == volcan_i) {
@@ -210,7 +222,65 @@ public class Plateau {
         }
         return listeDecases;
     }
-    public boolean estDansTableau(int x , int y){return x>-1 || x<31 || y>-1 || y<31  ;}
+
+    public ArrayList<Position> voisins(int l, int c){
+        ArrayList<Position> listeVoisins = new ArrayList<>();
+        if(estHexagoneVide(l-1,c)){
+            listeVoisins.add(new Position(l-1,c));
+        }
+        if(estHexagoneVide(l+1,c)){
+            listeVoisins.add(new Position(l+1,c));
+        }
+        if(estHexagoneVide(l,c-1)){
+            listeVoisins.add(new Position(l,c-1));
+        }
+        if(estHexagoneVide(l,c+1)){
+            listeVoisins.add(new Position(l,c+1));
+        }
+        if(l%2==1){
+            if(estHexagoneVide(l-1,c-1)) {
+                listeVoisins.add(new Position(l-1,c-1));
+            }
+            if(estHexagoneVide(l+1,c-1)) {
+                listeVoisins.add(new Position(l+1,c-1));
+            }
+        }else{
+            if(estHexagoneVide(l-1,c+1)) {
+                listeVoisins.add(new Position(l-1,c+1));
+            }
+            if(estHexagoneVide(l+1,c+1)) {
+                listeVoisins.add(new Position(l+1,c+1));
+            }
+        }
+        return listeVoisins;
+    }
+
+    public void metAjourPositionsLibres(ArrayList<Position> listeVoisins){
+        for(Position p : positions_libres){
+            //si p est dans positions_libres et n'est pas de l'eau, on l'enlève
+            if(!estHexagoneVide(p.getL(), p.getC())) {
+                positions_libres.remove(p);
+            }
+        }
+        positions_libres.addAll(listeVoisins);
+    }
+
+    public boolean estCaseHorsPlateau(int l, int c){
+        if(l<0 || l>=LIGNES || c<0 || c>=COLONNES){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estHexagoneVide(int l, int c){
+        if(estCaseHorsPlateau(l,c)){
+            return false;
+        }
+        if(plateau[l][c].getTerrain()==Hexagone.VIDE){
+            return true;
+        }
+        return false;
+    }
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
@@ -218,6 +288,14 @@ public class Plateau {
             plateau[coup.volcan_x][coup.volcan_y] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile1_x][coup.tile1_y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcan_x, (byte)coup.volcan_y);
             plateau[coup.tile2_x][coup.tile2_y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcan_x, (byte)coup.volcan_y);
+            ArrayList<Position> listeVoisins = voisins(coup.volcan_x,coup.volcan_y);
+            positions_libres_batiments.add(new Position(coup.tile1_x,coup.tile1_y));
+            positions_libres_batiments.add(new Position(coup.tile2_x,coup.tile2_y));
+            metAjourPositionsLibres(listeVoisins);
+            listeVoisins = voisins(coup.tile1_x,coup.tile1_y);
+            metAjourPositionsLibres(listeVoisins);
+            listeVoisins = voisins(coup.tile2_x,coup.tile2_y);
+            metAjourPositionsLibres(listeVoisins);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
@@ -234,6 +312,7 @@ public class Plateau {
             } else if (coup.type == 4){
                 batiment = Hexagone.CHOISIR_MAISON;
             }
+            if(batiment!=Hexagone.CHOISIR_MAISON) positions_libres_batiments.remove(new Position(coup.batiment_x,coup.batiment_y));
             plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanI(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanJ());
         }
     }
@@ -254,6 +333,44 @@ public class Plateau {
         historique.ajoute(coup);
         joueCoup(coup);
     }
+
+    public int getBatiment(int i,int j){
+        return plateau[i][j].getBatiment();
+    }
+
+    public int[] getBatimentPlacable(int i,int j, int numJoueur){
+        int[] coups = new int[3];
+        coups[0] = 1;
+        if(getHauteurTuile(i,j)==3) coups[2] = 1;
+        if(aCiteAutour(i,j,numJoueur)) coups[1] = 1;
+        return coups;
+    }
+
+    private boolean possedeBatiment(int i,int j,int numJoueur){
+        return (getBatiment(i,j)==Hexagone.TOUR||getBatiment(i,j)==Hexagone.MAISON||getBatiment(i,j)==Hexagone.TEMPLE_SABLE||getBatiment(i,j)==Hexagone.TEMPLE_FORET
+                ||getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(getTuile(i,j).getNumJoueur()==numJoueur);
+    }
+
+    private boolean aCiteAutour(int i,int j,int numJoueur){
+        boolean bool = possedeBatiment(i-1,j,numJoueur)||possedeBatiment(i+1,j,numJoueur)||possedeBatiment(i,j-1,numJoueur)||possedeBatiment(i,j+1,numJoueur);
+        if(i%2==1){
+            if(possedeBatiment(i-1,j-1,numJoueur)) {
+                bool = true;
+            }
+            if(possedeBatiment(i+1,j-1,numJoueur)) {
+                bool = true;
+            }
+        }else{
+            if(possedeBatiment(i-1,j+1,numJoueur)) {
+                bool = true;
+            }
+            if(possedeBatiment(i+1,j+1,numJoueur)) {
+                bool = true;
+            }
+        }
+        return bool;
+    }
+
 
     public int getHauteurTuile(int i,int j){
         return plateau[i][j].getHauteur();
@@ -276,6 +393,19 @@ public class Plateau {
         return historique.peutRefaire();
     }
 
+    public boolean estVide(){
+        for(int i=0;i<plateau.length;i++){
+            for(int j=0;j<plateau[0].length;j++){
+                if(plateau[i][j].getTerrain()!=Hexagone.VIDE && plateau[i][j].getTerrain()!=Hexagone.WATER) return false;
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<Position> getPositions_libres_batiments(){
+        return positions_libres_batiments;
+    }
+
     public boolean annuler() {
         if (peutAnnuler()) {
             return true;
@@ -288,5 +418,9 @@ public class Plateau {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<Position> getPositionsLibres(){
+        return positions_libres;
     }
 }

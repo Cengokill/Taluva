@@ -4,11 +4,11 @@ public class Joueur {
     private byte type_bat;
     private String prenom;
     private String couleur;
-    //définit le nombre de bâtiments initial
+    //dï¿½finit le nombre de bï¿½timents initial
     private int nbHuttes;
     private int nbTours;
     private int nbTemples;
-    //définit le nombre de bâtiments placés en jeu
+    //dï¿½finit le nombre de bï¿½timents placï¿½s en jeu
     private int nbToursPlacees;
     private int nbHuttesPlacees;
     private int nbTemplesPlaces;
@@ -24,6 +24,10 @@ public class Joueur {
         nbHuttes = 20;
         nbTours = 3;
         nbTemples = 2;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
     public byte getTypeBat(){
