@@ -57,16 +57,20 @@ public class TEngine extends JFrame {
         int largeur, hauteur, posY_bouton_annuler, posX_bouton_annuler, largeur_bouton = 0, hauteur_bouton = 0;
         int largeur_joueurCourant, hauteur_joueurCourant, posX_joueurCourant, posY_joueurCourant;
 
-        addImage("map_layer_little", 50, 800, 1000, 1000, layeredPane);
-        addImage("Annuler", 50, 50, largeur_bouton, hauteur_bouton, layeredPane);
+        addImage("map_layer_little", 50, 800, 1, 1000, 1000, layeredPane);
+        addImage("Annuler", 50, 50, 207/603, largeur_bouton, hauteur_bouton, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
     }
 
-    public void addImage(String nom_image, int x, int y, int width, int height, JLayeredPane layeredPane) {
+    public void addImage(String nom_image, int x, int y, int width, int height, double rapport, JLayeredPane layeredPane) {
         // Chargez l'image que vous voulez afficher
         Image image = null;
+        int largeur = layeredPane.getWidth();
+        int hauteur = layeredPane.getHeight();
+        int largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
+        int hauteur_bouton = (int) (largeur_bouton*rapport);
         try {
             image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
         } catch (IOException e) {
@@ -76,30 +80,21 @@ public class TEngine extends JFrame {
         // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
         Image finalImage = image;
         JPanel imagePanel = new JPanel() {
-
-            int largeur_bouton, hauteur_bouton, largeur_joueurCourant, hauteur_joueurCourant;
-            int largeur, hauteur;
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                largeur = layeredPane.getWidth();
-                hauteur = layeredPane.getHeight();
                 if (finalImage != null) {
-                    //définit la taille des boutons et des encadrés
-
-                    double rapport_bouton = (double) 207/603;
+                    g.drawImage(finalImage, 0, 0, 0, 0, this);
+                    /*
+                    largeur = layeredPane.getWidth();
+                    hauteur = layeredPane.getHeight();
                     largeur_bouton = (int) Math.min(largeur*.22, hauteur*.22);
-                    hauteur_bouton = (int) (largeur_bouton*rapport_bouton);
-
-                    double rapport_joueurCourant = (double) 131/603;
-                    largeur_joueurCourant = (int) Math.min(largeur*.22, hauteur*.22);
-                    hauteur_joueurCourant = (int) (largeur_joueurCourant*rapport_joueurCourant);
-
-                    g.drawImage(finalImage, 0, 0, width, height, this);
+                    hauteur_bouton = (int) (largeur_bouton*rapport);
+                     */
                 }
             }
         };
-        imagePanel.setBounds(x, y, width, height);
+        imagePanel.setBounds(x, y, largeur_bouton, hauteur_bouton);
         imagePanel.setOpaque(false);
         layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
     }
