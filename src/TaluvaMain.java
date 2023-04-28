@@ -1,12 +1,14 @@
 import Controleur.ControleurMediateur;
 import Modele.EchoClient;
 import Modele.EchoServeur;
+import Modele.ImageLoader;
 import Modele.Jeu;
 import Vue.TEngine;
 
 public class TaluvaMain {
     public static void main(String[] args) {
 
+        ImageLoader.loadImages();
         Jeu jeu = new Jeu(null);
         ControleurMediateur controler = new ControleurMediateur(jeu);
         EchoServeur serveur = new EchoServeur(6500);
