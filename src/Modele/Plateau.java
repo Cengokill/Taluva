@@ -79,19 +79,19 @@ public class Plateau implements Serializable {
 
     public boolean peutPlacerTuileFromTriplets(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
         for(TripletDePosition p : tripletsPossible){
-
+            // Attention le Point X des triplets correspond toujours au volcan !!
             if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
                 return true;
             if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
                 return true;
-            if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
-                return true;
-            if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
-                return true;
-            if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
-                return true;
-            if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
-                return true;
+            //if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
+            //    return true;
+            //if (p.getX().getL() == tile1_i && p.getX().getC() == tile1_j && p.getY().getL() == tile2_i && p.getY().getC() == tile2_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
+            //    return true;
+            //if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == volcan_i && p.getY().getC() == volcan_j && p.getZ().getL() == tile1_i && p.getZ().getC() == tile1_j)
+            //    return true;
+            //if (p.getX().getL() == tile2_i && p.getX().getC() == tile2_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == volcan_i && p.getZ().getC() == volcan_j)
+            //    return true;
 
         }
 
