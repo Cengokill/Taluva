@@ -22,7 +22,7 @@ public class Hexagone {
     private byte hauteur;
     private int IDvillage ;
     private byte terrain;
-    private byte batiment;
+    private byte batiment = 0;
     private byte numero ;
     private byte volcan_j;
     private byte volcan_i;

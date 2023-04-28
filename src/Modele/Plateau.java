@@ -429,7 +429,7 @@ public class Plateau implements Serializable {
         historique.ajoute(coup);
         joueCoup(coup);
     }
-
+<
     public int getBatiment(int i,int j){
         return plateau[i][j].getBatiment();
     }
@@ -443,8 +443,7 @@ public class Plateau implements Serializable {
     }
 
     private boolean possedeBatiment(int i,int j,int numJoueur){
-        return (getBatiment(i,j)==Hexagone.TOUR||getBatiment(i,j)==Hexagone.MAISON||getBatiment(i,j)==Hexagone.TEMPLE_SABLE||getBatiment(i,j)==Hexagone.TEMPLE_FORET
-                ||getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(getTuile(i,j).getNumJoueur()==numJoueur);
+        return (getBatiment(i,j) != 0 && getTuile(i,j).getNumJoueur()==numJoueur);
     }
 
     private boolean aCiteAutour(int i,int j,int numJoueur){
