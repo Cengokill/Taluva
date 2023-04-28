@@ -147,7 +147,7 @@ public class TEngine extends JFrame {
             whiteTile = lisImageBuf("White_Tile");
             voidTileOld = lisImageBuf("Void_Tile_old");
             voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
-            whiteTile = getReducedOpacityImage(whiteTile, 0.2f);
+            whiteTile = getReducedOpacityImage(whiteTile, 0.35f);
             grassTile_0 = lisImageBuf("Grass_0_Tile");
             grassTile_1 = lisImageBuf("Grass_1_Tile");
             grassTile_2 = lisImageBuf("Grass_2_Tile");
