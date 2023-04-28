@@ -1,5 +1,7 @@
 package Modele;
 
+import Structures.TripletDePosition;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,6 +19,14 @@ class IAAleatoire extends IA {
         }
         return j_modified;
     }
+
+    private ArrayList<Position> copieTab(ArrayList<Position> tab){
+        ArrayList<Position> Copie = new ArrayList<>();
+        for (int i=0;i<tab.size();i++){
+            Copie.add(tab.get(i));
+        }
+        return Copie;
+    }
     public Coup joue() {
 
         Random r = new Random();
@@ -26,6 +36,7 @@ class IAAleatoire extends IA {
         byte numIA = jeu.getNumJoueurCourant();
 
         if(jeu.doit_placer_tuile()){
+
             byte[] tuiles = jeu.getTuilesAPoser();
             byte[][] triplet = new byte[3][2];
             triplet[1][0] = tuiles[0]; // tile 1
@@ -41,23 +52,41 @@ class IAAleatoire extends IA {
                 return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified+1,triplet[2][0]);
             }else{
                 // Trouver un emplacement pour les hexagones
-                ArrayList<Position> positionsPossible = jeu.getPlateau().getPositionsLibres();
-                Position positionrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
+                ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
+                //System.out.println("positionPossible taille: "+positionsPossible.size());
+                TripletDePosition positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
+                int x1 = positionsrandom.getX().getL();
+                int x2 = positionsrandom.getY().getL();
+                int x3 = positionsrandom.getZ().getL();
 
-                // On prend une orientation aléatoire
+                int y1 = positionsrandom.getX().getC();
+                int y2 = positionsrandom.getY().getC();
+                int y3 = positionsrandom.getZ().getC();
 
-
-                //return new Coup(numIA,volcan_x,volcan_y,x1-1,y2,triplet[1][0],x1-1,y2+1,triplet[2][0]);
+                return new Coup(numIA,x1,y1,x2,y2,triplet[1][0],x3,y3,triplet[2][0]);
             }
         }
         else if(jeu.doit_placer_batiment()){
             // Trouver un emplaçement pour le batiment
-            ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
+            ArrayList<Position> positionPossibles = copieTab(jeu.getPlateau().getPositions_libres_batiments());
+            System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
             Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
+            jeu.getPlateau().supprimeLibreBatiments(positionrandom);
+
 
             // Choisir un batiment à placer
+            byte batiment;
             int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.getL(),positionrandom.getC(),numIA);
-            byte batiment = (byte) (batimensPlacable[r.nextInt(batimensPlacable.length-1)]);
+            if(batimensPlacable[1]==0&&batimensPlacable[2]==0) batiment=1;
+            else if(batimensPlacable[1]==0){
+                int value = r.nextInt(2);
+                if(value==0) batiment=1;
+                else batiment = 3;
+            }else{
+                int value = r.nextInt(2);
+                if(value==0) batiment=1;
+                else batiment = 2;
+            }
 
             return new Coup(numIA,positionrandom.getL(),positionrandom.getC(),batiment);
         }

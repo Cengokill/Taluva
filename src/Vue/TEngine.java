@@ -3,6 +3,8 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Hexagone;
 import Modele.Jeu;
+import Modele.Coup;
+import Structures.TripletDePosition;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -127,7 +129,7 @@ public class TEngine extends JFrame {
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
 
-        boolean enSelection = false;
+        boolean enSelection = false,unefoisIA=false;
 
         public boolean clicDroiteEnfonce = false;
         int typeAConstruire=0, posBat_x, posBat_y;
@@ -243,6 +245,13 @@ public class TEngine extends JFrame {
             return img;
         }
 
+        public void affichetripletpossible(){
+            for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
+                System.out.println("libre en : ");
+                System.out.println("("+ t.getX().getL()+", "+t.getX().getC()+") "+"("+ t.getY().getL()+", "+t.getY().getC()+") "+"("+ t.getZ().getL()+", "+t.getZ().getC()+") ");
+                System.out.println();
+            }
+        }
         private BufferedImage lisImageBuf(String nom) {
             String CHEMIN = "ressources/";
             BufferedImage img = null;
@@ -302,6 +311,12 @@ public class TEngine extends JFrame {
 
         public void miseAJour() {
             repaint();
+            if(jeu.estJoueurCourantUneIA()){  // Faire jouer l'IA
+                if(unefoisIA){
+                    jeu.joueIA();
+                    unefoisIA=false;
+                }
+            }
         }
 
         private void changerPoseTile() {
@@ -864,36 +879,37 @@ public class TEngine extends JFrame {
         }
 
         public void addToCursor(MouseEvent e) {
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                int tileWidth = voidTile.getWidth();
-                int tileHeight = voidTile.getWidth();
-                int verticalOffset = (int) (tileHeight * 0.75);
+            if(!jeu.estJoueurCourantUneIA()){
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    int tileWidth = voidTile.getWidth();
+                    int tileHeight = voidTile.getWidth();
+                    int verticalOffset = (int) (tileHeight * 0.75);
 
-                Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
-                        (int) ((e.getY() - cameraOffset.y) / zoomFactor));
+                    Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
+                            (int) ((e.getY() - cameraOffset.y) / zoomFactor));
 
-                // Convertir les coordonnées du système de pixels en coordonnées du système de grille
-                int i = clickPositionAdjusted.y / verticalOffset;
-                int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-                //System.out.println("i: " + i);
-                //System.out.println("j: " + j);
-                //System.out.println("num joueur courant : "+jeu.getNumJoueurCourant());
-                //System.out.println("num truc : "+jeu.getPlateau().getTuile(i,j).getNumJoueur());
+                    // Convertir les coordonnées du système de pixels en coordonnées du système de grille
+                    int i = clickPositionAdjusted.y / verticalOffset;
+                    int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+                    //System.out.println("num joueur courant : "+jeu.getNumJoueurCourant());
+                    //System.out.println("num truc : "+jeu.getPlateau().getTuile(i,j).getNumJoueur());
 
-                if(poseTile) placerTuiles(i,j);
-                else{
-                    if(!enSelection){
-                        if (controleur.peutPlacerBatiment(i, j)) {
-                            posBat_x = i;
-                            posBat_y = j;
-                            enSelection = true;
-                            controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+                    if(poseTile) placerTuiles(i,j);
+                    else{
+                        if(!enSelection){
+                            if (controleur.peutPlacerBatiment(i, j)) {
+                                posBat_x = i;
+                                posBat_y = j;
+                                enSelection = true;
+                                controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+                            }
+                        }else{
+                            placerMaison(posBat_x,posBat_y);
                         }
-                    }else{
-                        placerMaison(posBat_x,posBat_y);
                     }
+                    unefoisIA=true;
+                    miseAJour();
                 }
-                miseAJour();
             }
         }
 

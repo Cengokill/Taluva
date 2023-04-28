@@ -74,6 +74,7 @@ public class Jeu extends Observable {
         }
         Coup c = ((IA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estPlaceLibre(c.volcan_x,c.volcan_y)) {
+            System.out.println("pas libre A DEBUGGER");
             return;
         }
         getPlateau().joueCoup(c);   // place la plateforme

@@ -49,6 +49,9 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 tengine.hexTiles.shake();
             }
+            if (e.getKeyCode() == KeyEvent.VK_N) {
+                tengine.hexTiles.affichetripletpossible();
+            }
         }
 
         @Override
@@ -80,10 +83,6 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
             tengine.hexTiles.addToCursor(e);
             tengine.hexTiles.annuleConstruction(e);
         }
-
-        //public Point getLastPosition(){
-        //    return lastPosition;
-        //}
 
         @Override
         public void mousePressed(MouseEvent e) {
