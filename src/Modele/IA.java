@@ -1,12 +1,13 @@
 package Modele;
 
-public class IA {
+public class IA implements Runnable{//une IA est exécutée par un nouveau thread
     protected Jeu jeu;
 
     public static IA nouvelle(Jeu j, Parametres p) {
         IA resultat = null;
 
-        String type = p.getType_IA();
+        //String type = p.getType_IA();
+        String type = "Aléatoire";
         switch (type) {
             case "Aléatoire":
                 resultat = new IAAleatoire();
@@ -26,5 +27,10 @@ public class IA {
 
     public Coup joue() {
         return null;
+    }
+
+    @Override
+    public void run() {
+
     }
 }
