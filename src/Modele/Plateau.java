@@ -77,21 +77,8 @@ public class Plateau implements Serializable {
         return false;
     }
 
-    public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
-        //TripletDePosition courant = new TripletDePosition(new Position(volcan_i,volcan_j),new Position(tile1_i,tile1_j),new Position(tile2_i,tile2_j));
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println(tripletsPossible.size());
-        System.out.println("#######################################");
+    public boolean peutPlacerTuileFromTriplets(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
         for(TripletDePosition p : tripletsPossible){
-            System.out.println("============================");
-            System.out.println(p.getX().l);
-            System.out.println(p.getX().c);
-            System.out.println(p.getY().l);
-            System.out.println(p.getY().c);
-            System.out.println(p.getZ().l);
-            System.out.println(p.getZ().c);
 
             if (p.getX().getL() == volcan_i && p.getX().getC() == volcan_j && p.getY().getL() == tile1_i && p.getY().getC() == tile1_j && p.getZ().getL() == tile2_i && p.getZ().getC() == tile2_j)
                 return true;
@@ -109,15 +96,10 @@ public class Plateau implements Serializable {
         }
 
         return false;
-        /*
-        System.out.println("================================");
-        System.out.println("volcan_y: " + volcan_y);
-        System.out.println("tile1_y: " + tile1_y);
-        System.out.println("tile2_y: " + tile2_y);
-        System.out.println();
-        System.out.println("volcan_x: " + volcan_x);
-        System.out.println("tile1_x: " + tile1_x);
-        System.out.println("tile2_x: " + tile2_x);
+    }
+
+    public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
+        // TODO Vérifier que ça tue pas un village et faire en sort que 2 villages séparés aient pas le meme ID
 
         if(estVide()) return true;
 
@@ -193,7 +175,7 @@ public class Plateau implements Serializable {
             }
         }
 
-        return true;*/
+        return true;
     }
     public boolean peutPlacerVillage(int x ,int y){
         if(plateau[x][y].getTerrain()!=Hexagone.VOLCAN ||plateau[x][y].getBatiment()==Hexagone.VIDE){
@@ -310,13 +292,24 @@ public class Plateau implements Serializable {
             enBasDroite = voisinsDeVoisins.get(3);
             enHautGauche= voisinsDeVoisins.get(4);
             enHautDroite = voisinsDeVoisins.get(5);
-            if (estHexagoneVide(p.getL(), p.getC())) {
-                if(estHexagoneVide(enHautDroite.getL(),enHautDroite.getC())&&estHexagoneVide(enHautGauche.getL(),enHautGauche.getC())) triplets.add(new TripletDePosition(courant,enHautDroite,enHautGauche));
-                if(estHexagoneVide(enHautDroite.getL(),enHautDroite.getC())&&estHexagoneVide(droite.getL(),droite.getC())) triplets.add(new TripletDePosition(courant,enHautDroite,droite));
-                if(estHexagoneVide(enHautGauche.getL(),enHautGauche.getC())&&estHexagoneVide(gauche.getL(),gauche.getC())) triplets.add(new TripletDePosition(courant,enHautGauche,gauche));
-                if(estHexagoneVide(gauche.getL(),gauche.getC())&&estHexagoneVide(enBasGauche.getL(),enBasGauche.getC())) triplets.add(new TripletDePosition(courant,gauche,enBasGauche));
-                if(estHexagoneVide(enBasGauche.getL(),enBasGauche.getC())&&estHexagoneVide(enBasDroite.getL(),enBasDroite.getC())) triplets.add(new TripletDePosition(courant,enBasGauche,enBasDroite));
-                if(estHexagoneVide(enBasDroite.getL(),enBasDroite.getC())&&estHexagoneVide(droite.getL(),droite.getC())) triplets.add(new TripletDePosition(courant,enBasDroite,droite));
+
+            if (peutPlacerTuile(courant.getL(), courant.getC(), enHautGauche.getL(), enHautGauche.getC(), enHautDroite.getL(), enHautDroite.getC())) {
+                triplets.add(new TripletDePosition(courant, enHautGauche, enHautDroite));
+            }
+            if (peutPlacerTuile(courant.getL(), courant.getC(), enHautGauche.getL(), enHautGauche.getC(), gauche.getL(), gauche.getC())) {
+                triplets.add(new TripletDePosition(courant, enHautGauche, gauche));
+            }
+            if (peutPlacerTuile(courant.getL(), courant.getC(), droite.getL(), droite.getC(), enHautDroite.getL(), enHautDroite.getC())) {
+                triplets.add(new TripletDePosition(courant, droite, enHautDroite));
+            }
+            if (peutPlacerTuile(courant.getL(), courant.getC(), gauche.getL(), gauche.getC(), enBasGauche.getL(), enBasGauche.getC())) {
+                triplets.add(new TripletDePosition(courant, gauche, enBasGauche));
+            }
+            if (peutPlacerTuile(courant.getL(), courant.getC(), enBasDroite.getL(), enBasGauche.getC(), enBasDroite.getL(), enBasDroite.getC())) {
+                triplets.add(new TripletDePosition(courant, enBasGauche, enBasDroite));
+            }
+            if (peutPlacerTuile(courant.getL(), courant.getC(), enBasDroite.getL(), enBasDroite.getC(), droite.getL(), droite.getC())) {
+                triplets.add(new TripletDePosition(courant, enBasDroite, droite));
             }
         }
         tripletsPossible.addAll(triplets);
@@ -370,6 +363,14 @@ public class Plateau implements Serializable {
         }
         return false;
     }
+    public boolean estVolcan(int l, int c){
+        return plateau[l][c].getTerrain() == Hexagone.VOLCAN;
+    }
+
+    public boolean aPourVolcan(int hexagone_c, int hexagon_l, int volcan_c, int volcan_l) {
+        return plateau[hexagone_c][hexagon_l].getVolcanJ() == volcan_c &&  plateau[hexagone_c][hexagon_l].getVolcanI() == volcan_l;
+    }
+
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
         int hauteur = plateau[coup.volcan_x][coup.volcan_y].getHauteur();
