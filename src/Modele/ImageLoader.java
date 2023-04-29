@@ -106,7 +106,7 @@ public class ImageLoader {
         return reducedOpacityImage;
     }
 
-    public static void addImage(String nom_image, int x, int y, double facteur, double rapport, JLayeredPane layeredPane) {
+    public static void addImage(String nom_image, double facteur_x, double facteur_y, double facteur, double rapport, JLayeredPane layeredPane) {
         // Chargez l'image que vous voulez afficher
         Image image = null;
         try {
@@ -119,8 +119,7 @@ public class ImageLoader {
         // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
         Image finalImage = image;
         JPanel imagePanel = new JPanel() {
-            int largeur;
-            int hauteur;
+            int largeur, hauteur, pos_x, pos_y;
             public int largeur_bouton;
             public int hauteur_bouton;
             @Override
@@ -128,16 +127,19 @@ public class ImageLoader {
                 super.paintComponent(g);
                 largeur = layeredPane.getWidth();
                 hauteur = layeredPane.getHeight();
+                pos_x = (int) (largeur*facteur_x);
+                pos_y = (int) (hauteur*facteur_y);
+                System.out.println("pos_x : " + pos_x + " pos_y : " + pos_y);
                 System.out.println("largeur : " + largeur + " hauteur : " + hauteur);
                 largeur_bouton = (int) Math.min(largeur*facteur, hauteur*facteur);
                 hauteur_bouton = (int) (largeur_bouton/rapport);
                 //System.out.println("largeur_bouton : " + largeur_bouton + " hauteur_bouton : " + hauteur_bouton);
                 if (finalImage != null) {
-                    g.drawImage(finalImage, 0, 0, largeur_bouton, hauteur_bouton, this);
+                    g.drawImage(finalImage, pos_x, pos_y, largeur_bouton, hauteur_bouton, this);
                 }
             }
         };
-        imagePanel.setBounds(x, y, 1000, 1000);
+        imagePanel.setBounds(0, 0, 3000, 2000);
         imagePanel.setOpaque(false);
         layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
     }

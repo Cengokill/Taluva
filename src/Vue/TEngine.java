@@ -51,14 +51,16 @@ public class TEngine extends JFrame {
         //Définit la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
         //Définit les boutons et encadrés
-        addImage("map_layer_little", 50, 750, 0.20, 1, layeredPane);
+        //JPanel imagePanel = new JPanel();
+        addImage("map_layer_little", 0.05, 0.80, 0.20, 1, layeredPane);
         double rapport_annuler = 603.0/207.0;
-        int position_x_annuler = (int) (getWidth()*0.8);
-        int position_y_annuler = (int) (getHeight()*0.05);
-        int position_x_refaire = position_x_annuler;
-        int position_y_refaire = (int) (getHeight()*0.20);
-        addImage("Annuler", position_x_annuler, position_y_annuler, 0.22, rapport_annuler, layeredPane);
-        addImage("Refaire", position_x_refaire, position_y_refaire, 0.22, rapport_annuler, layeredPane);
+        double facteur_x_annuler = 0.80;
+        double facteur_y_annuler = 0.05;
+        System.out.println(facteur_x_annuler + " " + facteur_y_annuler);
+        double facteur_x_refaire = facteur_x_annuler;
+        double facteur_y_refaire = 0.20;
+        addImage("Annuler", facteur_x_annuler, facteur_y_annuler, 0.22, rapport_annuler, layeredPane);
+        addImage("Refaire", facteur_x_refaire, facteur_y_refaire, 0.22, rapport_annuler, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
