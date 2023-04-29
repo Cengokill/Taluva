@@ -32,6 +32,8 @@ public class TEngine extends JFrame {
         this.controleur.setEngine(this);
         this.jeu = jeu;
         setTitle("Taluva");
+        ImageIcon icon = new ImageIcon("ressources/icon.png");
+        setIconImage(icon.getImage());
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
@@ -58,22 +60,24 @@ public class TEngine extends JFrame {
         getContentPane().setBackground(new Color(64, 164, 223));
         //Définit les boutons et encadrés
         double rapport_annuler = 603.0/207.0;
-        double facteur_x_annuler = 0.82;
+        double facteur_x_annuler = 0.86;
         double facteur_y_annuler = 0.15;
         double facteur_y_refaire = 0.24;
         double facteur_y_quitter = 0.90;
         double rapport_cadre_scores = 288.0/351.0;
-        double facteur_x_cadre_scores = 0.02;
+        double facteur_x_cadre_scores = 0.01;
         double facteur_y_cadre_scores = 0.02;
-        addImage("map_layer_little", 0.05, 0.80, 0.20, 1, layeredPane);
+        double facteur_x_sauvegarder = facteur_x_annuler - 0.13;
+        double facteur_y_sauvegarder = 0.02;
+        addImage("map_layer_little", 0.03, 0.78, 0.20, 1, layeredPane);
+        addImage("Sauvegarder", facteur_x_sauvegarder, facteur_y_sauvegarder, 0.22, rapport_annuler, layeredPane);
+        addImage("Charger", facteur_x_annuler, facteur_y_sauvegarder, 0.22, rapport_annuler, layeredPane);
         addImage("Annuler", facteur_x_annuler, facteur_y_annuler, 0.22, rapport_annuler, layeredPane);
         addImage("Refaire", facteur_x_annuler, facteur_y_refaire, 0.22, rapport_annuler, layeredPane);
         addImage("Quitter", facteur_x_annuler, facteur_y_quitter, 0.22, rapport_annuler, layeredPane);
         addImage("Cadre_scores", facteur_x_cadre_scores, facteur_y_cadre_scores, 0.29, rapport_cadre_scores, layeredPane);
-
         listener = new TEngineListener(this);
         poseTile = true;
-
     }
 
     @Override
