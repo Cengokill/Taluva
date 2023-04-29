@@ -78,7 +78,7 @@ public class Jeu extends Observable {
         doit_placer_batiment = false;
         doit_placer_tuile = true;
         changeJoueur();
-
+        pioche();
         /*if (p.getTypeJeu().compareTo("AIcAI") == 0) {
             // Attendez un certain temps avant d'ex�cuter l'action finale
             int delai = 500; // delai en millisecondes (500 ms = 0.5 s)

@@ -19,6 +19,9 @@ import static Modele.GameState.*;
 public class TEngine extends JFrame {
     TEngineListener listener;
     public HexagonalTiles hexTiles;
+    public VignettePanel vignettePanel;
+    public JLayeredPane layeredPane;
+
     ControleurMediateur controleur;
 
     Point LastPosition;
@@ -29,13 +32,18 @@ public class TEngine extends JFrame {
         this.controleur.setEngine(this);
         this.jeu = jeu;
         setTitle("Taluva");
-        setSize(1400, 1000);
+        ImageIcon icon = new ImageIcon("ressources/icon.png");
+        setIconImage(icon.getImage());
+        //récupère la taille de l'écran
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //Définit la taille de la fenêtre à 60% de la taille de l'écran
+        setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Créer un JLayeredPane pour superposer les éléments
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(1400, 1000));
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(getWidth(), getHeight()));
         getContentPane().add(layeredPane);
 
         // Ajouter les tuiles hexagonales
@@ -44,36 +52,50 @@ public class TEngine extends JFrame {
         layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
 
         // Ajouter la vignette
-        VignettePanel vignettePanel = new VignettePanel();
+        vignettePanel = new VignettePanel();
         vignettePanel.setBounds(0, 0, 1400, 1000);
         layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
 
         //Définit la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
         //Définit les boutons et encadrés
-        int  largeur_bouton = 0, hauteur_bouton = 0;
-
-        addImage("map_layer_little", 50, 800, 1000, layeredPane);
-        addImage("Annuler", 50, 50, hauteur_bouton, layeredPane);
-
+        double rapport_annuler = 603.0/207.0;
+        double facteur_x_annuler = 0.86;
+        double facteur_y_annuler = 0.15;
+        double facteur_y_refaire = 0.24;
+        double facteur_y_quitter = 0.90;
+        double rapport_cadre_scores = 288.0/351.0;
+        double facteur_x_cadre_scores = 0.01;
+        double facteur_y_cadre_scores = 0.02;
+        double facteur_x_sauvegarder = facteur_x_annuler - 0.13;
+        double facteur_y_sauvegarder = 0.02;
+        addImage("map_layer_little", 0.03, 0.78, 0.20, 1, layeredPane);
+        addImage("Sauvegarder", facteur_x_sauvegarder, facteur_y_sauvegarder, 0.22, rapport_annuler, layeredPane);
+        addImage("Charger", facteur_x_annuler, facteur_y_sauvegarder, 0.22, rapport_annuler, layeredPane);
+        addImage("Annuler", facteur_x_annuler, facteur_y_annuler, 0.22, rapport_annuler, layeredPane);
+        addImage("Refaire", facteur_x_annuler, facteur_y_refaire, 0.22, rapport_annuler, layeredPane);
+        addImage("Quitter", facteur_x_annuler, facteur_y_quitter, 0.22, rapport_annuler, layeredPane);
+        addImage("Cadre_scores", facteur_x_cadre_scores, facteur_y_cadre_scores, 0.29, rapport_cadre_scores, layeredPane);
         listener = new TEngineListener(this);
         poseTile = true;
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        hexTiles.setBounds(0, 0, getWidth(), getHeight());
+        vignettePanel.setBounds(0, 0, getWidth(), getHeight());
+    }
 
     public class HexagonalTiles extends JPanel {
-
         /////////////////////////////////////////////////////
         // HANDLER                                         //
         /////////////////////////////////////////////////////
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
 
-
         ControleurMediateur controleur;
-        static TEngine tengine;
-
-
+        public TEngine tengine;
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             tengine = t;
