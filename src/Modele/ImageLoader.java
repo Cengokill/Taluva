@@ -122,7 +122,7 @@ public class ImageLoader {
             image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
         } catch (IOException e) {
             System.err.println("Impossible de charger l'image " + nom_image);
-            System.exit(1);
+            //System.exit(1);
         }
         Image finalImage = image;
         //rédéfinit la méthode paintComponent du jpanel
@@ -150,7 +150,7 @@ public class ImageLoader {
         };
         imagePanel.setBounds(0, 0, 3000, 2000);
         imagePanel.setOpaque(false);
-        layeredPane.add(imagePanel, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(imagePanel, JLayeredPane.POPUP_LAYER);
     }
 
     public static Image lisImage(String nom) {
