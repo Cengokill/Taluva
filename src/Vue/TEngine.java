@@ -20,6 +20,8 @@ public class TEngine extends JFrame {
     TEngineListener listener;
     public HexagonalTiles hexTiles;
     public VignettePanel vignettePanel;
+    public JLayeredPane layeredPane;
+
     ControleurMediateur controleur;
 
     Point LastPosition;
@@ -30,13 +32,16 @@ public class TEngine extends JFrame {
         this.controleur.setEngine(this);
         this.jeu = jeu;
         setTitle("Taluva");
-        setSize(1400, 1000);
+        //récupère la taille de l'écran
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //Définit la taille de la fenêtre à 60% de la taille de l'écran
+        setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Créer un JLayeredPane pour superposer les éléments
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(1400, 1000));
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(getWidth(), getHeight()));
         getContentPane().add(layeredPane);
 
         // Ajouter les tuiles hexagonales

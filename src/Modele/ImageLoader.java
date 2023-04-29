@@ -129,8 +129,8 @@ public class ImageLoader {
                 hauteur = layeredPane.getHeight();
                 pos_x = (int) (largeur*facteur_x);
                 pos_y = (int) (hauteur*facteur_y);
-                System.out.println("pos_x : " + pos_x + " pos_y : " + pos_y);
-                System.out.println("largeur : " + largeur + " hauteur : " + hauteur);
+                //System.out.println("pos_x : " + pos_x + " pos_y : " + pos_y);
+                //System.out.println("largeur : " + largeur + " hauteur : " + hauteur);
                 largeur_bouton = (int) Math.min(largeur*facteur, hauteur*facteur);
                 hauteur_bouton = (int) (largeur_bouton/rapport);
                 //System.out.println("largeur_bouton : " + largeur_bouton + " hauteur_bouton : " + hauteur_bouton);
