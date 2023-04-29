@@ -51,16 +51,19 @@ public class TEngine extends JFrame {
         //Définit la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
         //Définit les boutons et encadrés
-        //JPanel imagePanel = new JPanel();
-        addImage("map_layer_little", 0.05, 0.80, 0.20, 1, layeredPane);
         double rapport_annuler = 603.0/207.0;
-        double facteur_x_annuler = 0.80;
-        double facteur_y_annuler = 0.05;
-        System.out.println(facteur_x_annuler + " " + facteur_y_annuler);
-        double facteur_x_refaire = facteur_x_annuler;
-        double facteur_y_refaire = 0.20;
+        double facteur_x_annuler = 0.82;
+        double facteur_y_annuler = 0.15;
+        double facteur_y_refaire = 0.24;
+        double facteur_y_quitter = 0.90;
+        double rapport_cadre_scores = 288.0/351.0;
+        double facteur_x_cadre_scores = 0.02;
+        double facteur_y_cadre_scores = 0.02;
+        addImage("map_layer_little", 0.05, 0.80, 0.20, 1, layeredPane);
         addImage("Annuler", facteur_x_annuler, facteur_y_annuler, 0.22, rapport_annuler, layeredPane);
-        addImage("Refaire", facteur_x_refaire, facteur_y_refaire, 0.22, rapport_annuler, layeredPane);
+        addImage("Refaire", facteur_x_annuler, facteur_y_refaire, 0.22, rapport_annuler, layeredPane);
+        addImage("Quitter", facteur_x_annuler, facteur_y_quitter, 0.22, rapport_annuler, layeredPane);
+        addImage("Cadre_scores", facteur_x_cadre_scores, facteur_y_cadre_scores, 0.29, rapport_cadre_scores, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
@@ -69,18 +72,14 @@ public class TEngine extends JFrame {
 
 
     public class HexagonalTiles extends JPanel {
-
         /////////////////////////////////////////////////////
         // HANDLER                                         //
         /////////////////////////////////////////////////////
         TEngineListener.MouseHandler handler;
         TEngineListener.KeyboardListener keyboardlisten;
 
-
         ControleurMediateur controleur;
         public TEngine tengine;
-
-
 
         public HexagonalTiles(TEngine t, ControleurMediateur controleur) {
             tengine = t;

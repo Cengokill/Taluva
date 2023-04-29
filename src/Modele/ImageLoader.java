@@ -115,9 +115,9 @@ public class ImageLoader {
             System.err.println("Impossible de charger l'image " + nom_image);
             System.exit(1);
         }
-
-        // Ajoutez un JPanel pour afficher l'image par-dessus l'arrière-plan
         Image finalImage = image;
+        //rédéfinit la méthode paintComponent du jpanel
+
         JPanel imagePanel = new JPanel() {
             int largeur, hauteur, pos_x, pos_y;
             public int largeur_bouton;
