@@ -284,6 +284,69 @@ public class TEngine extends JFrame {
                             }
                         }
                     }
+
+                    int j2;
+                    if (i % 2 == 1) {
+                        j2 = j - 1;
+                    } else {
+                        j2 = j;
+                    }
+                    if (i > 1 && j > 1 && i < map.length - 1 && j < map[0].length - 1) {
+                        if (map[i][j - 1].getHauteur() < map[i][j].getHauteur()) {
+                            if (map[i][j].getHauteur() == 1) {
+                                g.drawImage(applyBlueFilter(plateau_Gauche), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 2) {
+                                g.drawImage(applyYellowFilter(plateau_Gauche), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 3) {
+                                g.drawImage(applyRedFilter(plateau_Gauche), x, y - heightoffset + 55, null);
+                            }
+                        }
+                        if (map[i][j + 1].getHauteur() < map[i][j].getHauteur()) {
+                            if (map[i][j].getHauteur() == 1) {
+                                g.drawImage(applyBlueFilter(plateau_Droite), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 2) {
+                                g.drawImage(applyYellowFilter(plateau_Droite), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 3) {
+                                g.drawImage(applyRedFilter(plateau_Droite), x, y - heightoffset + 55, null);
+                            }
+                        }
+                        if (map[i - 1][j2].getHauteur() < map[i][j].getHauteur()) {
+                            if (map[i][j].getHauteur() == 1) {
+                                g.drawImage(applyBlueFilter(plateau_hautGauche), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 2) {
+                                g.drawImage(applyYellowFilter(plateau_hautGauche), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 3) {
+                                g.drawImage(applyRedFilter(plateau_hautGauche), x, y - heightoffset + 55, null);
+                            }
+                        }
+                        if (map[i - 1][j2 + 1].getHauteur() < map[i][j].getHauteur()) {
+                            if (map[i][j].getHauteur() == 1) {
+                                g.drawImage(applyBlueFilter(plateau_hautDroite), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 2) {
+                                g.drawImage(applyYellowFilter(plateau_hautDroite), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 3) {
+                                g.drawImage(applyRedFilter(plateau_hautDroite), x, y - heightoffset + 55, null);
+                            }
+                        }
+                        if (map[i + 1][j2].getHauteur() < map[i][j].getHauteur()) {
+                            if (map[i][j].getHauteur() == 1) {
+                                g.drawImage(applyBlueFilter(plateau_basGauche), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 2) {
+                                g.drawImage(applyYellowFilter(plateau_basGauche), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 3) {
+                                g.drawImage(applyRedFilter(plateau_basGauche), x, y - heightoffset + 55, null);
+                            }
+                        }
+                        if (map[i + 1][j2 + 1].getHauteur() < map[i][j].getHauteur()) {
+                            if (map[i][j].getHauteur() == 1) {
+                                g.drawImage(applyBlueFilter(plateau_basDroite), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 2) {
+                                g.drawImage(applyYellowFilter(plateau_basDroite), x, y - heightoffset + 55, null);
+                            } else if (map[i][j].getHauteur() == 3) {
+                                g.drawImage(applyRedFilter(plateau_basDroite), x, y - heightoffset + 55, null);
+                            }
+                        }
+                    }
                 }
             }
         }

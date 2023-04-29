@@ -23,6 +23,7 @@ public class ImageLoader {
     public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
     public static BufferedImage joueurCourant;
+    public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
 
 
     public static void loadImages() {
@@ -60,6 +61,14 @@ public class ImageLoader {
         beacon_4 = lisImageBuf("Beacon_4");
         beacon_5 = lisImageBuf("Beacon_5");
         beacon_6 = lisImageBuf("Beacon_6");
+
+        plateau_hautGauche = lisImageBuf("plateau_hautGauche");
+        plateau_hautDroite = lisImageBuf("plateau_hautDroite");
+        plateau_Gauche = lisImageBuf("plateau_Gauche");
+        plateau_Droite = lisImageBuf("plateau_Droite");
+        plateau_basGauche = lisImageBuf("plateau_basGauche");
+        plateau_basDroite = lisImageBuf("plateau_basDroite");
+
 
         wrongTile1 = getReducedOpacityImage(wrongTile1, 0.5f);
         wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
@@ -243,6 +252,17 @@ public class ImageLoader {
         g2d.drawImage(image, 0, 0, null);
         g2d.setComposite(AlphaComposite.SrcAtop);
         g2d.setColor(new Color(240, 252, 7, 127));
+        g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g2d.dispose();
+        return outputImage;
+    }
+
+    public static BufferedImage applyBlueFilter(BufferedImage image) {
+        BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.setComposite(AlphaComposite.SrcAtop);
+        g2d.setColor(new Color(39, 184, 255, 127));
         g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
         g2d.dispose();
         return outputImage;
