@@ -19,6 +19,7 @@ import static Modele.GameState.*;
 public class TEngine extends JFrame {
     TEngineListener listener;
     public HexagonalTiles hexTiles;
+    public VignettePanel vignettePanel;
     ControleurMediateur controleur;
 
     Point LastPosition;
@@ -44,7 +45,7 @@ public class TEngine extends JFrame {
         layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
 
         // Ajouter la vignette
-        VignettePanel vignettePanel = new VignettePanel();
+        vignettePanel = new VignettePanel();
         vignettePanel.setBounds(0, 0, 1400, 1000);
         layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
 
@@ -70,6 +71,12 @@ public class TEngine extends JFrame {
 
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        hexTiles.setBounds(0, 0, getWidth(), getHeight());
+        vignettePanel.setBounds(0, 0, getWidth(), getHeight());
+    }
 
     public class HexagonalTiles extends JPanel {
         /////////////////////////////////////////////////////
