@@ -5,12 +5,12 @@ import Structures.TripletDePosition;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Plateau implements Serializable {
+public class Plateau implements Serializable, Cloneable {
     int LIGNES = 40;
     int COLONNES = 40;
     protected Hexagone[][] plateau ;
-    protected int[] nbPionsJ1;
-    protected int[] nbPionsJ2;
+    protected byte[] nbPionsJ1;
+    protected byte[] nbPionsJ2;
     private Historique historique;
     private ArrayList<Position> positions_libres;
 
@@ -20,8 +20,8 @@ public class Plateau implements Serializable {
     public Plateau(){
         plateau = new Hexagone [LIGNES][COLONNES];
         historique = new Historique();
-        nbPionsJ1 = new int [3];
-        nbPionsJ2 = new int [3];
+        nbPionsJ1 = new byte[3];
+        nbPionsJ2 = new byte[3];
         nbPionsJ1[0]=10 ; nbPionsJ2[0]=10;
         nbPionsJ1[1]=10 ; nbPionsJ2[1]=10;
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
@@ -524,6 +524,66 @@ public class Plateau implements Serializable {
     }
 
     public ArrayList<TripletDePosition> getTripletsPossibles(){
+        return tripletsPossible;
+    }
+
+    public Hexagone[][] copyPlateauMap(Hexagone[][] plateau) {
+        Hexagone[][] nouveauPlateau = new Hexagone[plateau.length][plateau[0].length];
+        for (int i = 0; i < plateau.length; i++) {
+            for (int j = 0; j < plateau[0].length; j++) {
+                nouveauPlateau[i][j] = plateau[i][j].copy();
+            }
+        }
+        return nouveauPlateau;
+    }
+
+    @Override
+    protected Plateau clone() throws CloneNotSupportedException {
+        Plateau plateau = new Plateau();
+        plateau.plateau = copyPlateauMap(this.plateau);
+        plateau.historique = this.historique.copy();
+        byte[][] nbPions = copyPions();
+        plateau.nbPionsJ1 = nbPions[0];
+        plateau.nbPionsJ2 = nbPions[1];
+        plateau.positions_libres = new ArrayList<>();
+        plateau.positions_libres_batiments = new ArrayList<>();
+        plateau.tripletsPossible = new ArrayList<>();
+        return plateau;
+    }
+
+    private byte[][] copyPions() {
+        byte[][] nbPions = new byte[2][3];
+
+        for (int i = 0; i < this.nbPionsJ1.length; i++) {
+            nbPions[0][i] = this.nbPionsJ1[i];
+        }
+        for (int i = 0; i < this.nbPionsJ2.length; i++) {
+            nbPions[1][i] = this.nbPionsJ2[i];
+        }
+        return nbPions;
+    }
+
+    private ArrayList<Position> copyPositionsLibres() {
+        ArrayList<Position> positions_libres = new ArrayList<>();
+        for (int i = 0; i < this.positions_libres.size(); i++) {
+           positions_libres.add(this.positions_libres.get(i).copy());
+        }
+        return positions_libres;
+    }
+
+    private ArrayList<Position> copyPositionsLibresBatiment() {
+        ArrayList<Position> positions_libres_batiments = new ArrayList<>();
+        for (int i = 0; i < this.positions_libres_batiments.size(); i++) {
+            positions_libres_batiments.add(this.positions_libres_batiments.get(i).copy());
+        }
+        return positions_libres_batiments;
+    }
+
+    private ArrayList<TripletDePosition> copyTripletPossibles() {
+        ArrayList<TripletDePosition> tripletsPossible = new ArrayList<>();
+        for (int i = 0; i < this.tripletsPossible.size(); i++) {
+            tripletsPossible.add(this.tripletsPossible.get(i).copy());
+        }
         return tripletsPossible;
     }
 }

@@ -16,4 +16,9 @@ public class Position {
     public int getC() {
         return c;
     }
+
+    public Position copy() {
+        Position position = new Position(this.l, this.c);
+        return position;
+    }
 }
