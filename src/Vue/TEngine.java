@@ -51,13 +51,18 @@ public class TEngine extends JFrame {
         //Définit la couleur d'arrière-plan en bleu océan
         getContentPane().setBackground(new Color(64, 164, 223));
         //Définit les boutons et encadrés
-        int  largeur_bouton = 0, hauteur_bouton = 0;
-
-        addImage("map_layer_little", 50, 800, 1000, layeredPane);
-        addImage("Annuler", 50, 50, hauteur_bouton, layeredPane);
+        addImage("map_layer_little", 50, 750, 0.20, 1, layeredPane);
+        double rapport_annuler = 603.0/207.0;
+        int position_x_annuler = (int) (getWidth()*0.8);
+        int position_y_annuler = (int) (getHeight()*0.05);
+        int position_x_refaire = position_x_annuler;
+        int position_y_refaire = (int) (getHeight()*0.20);
+        addImage("Annuler", position_x_annuler, position_y_annuler, 0.22, rapport_annuler, layeredPane);
+        addImage("Refaire", position_x_refaire, position_y_refaire, 0.22, rapport_annuler, layeredPane);
 
         listener = new TEngineListener(this);
         poseTile = true;
+
     }
 
 
@@ -71,7 +76,7 @@ public class TEngine extends JFrame {
 
 
         ControleurMediateur controleur;
-        static TEngine tengine;
+        public TEngine tengine;
 
 
 
