@@ -38,21 +38,34 @@ public class HexagonalTiles extends JPanel {
         this.jeu = jeu;
 
         setOpaque(false);
+        initCameraPosition();
+
+        initTripletHover();
+        initCouleursJoueurs();
+
+        poseTile = true;
+    }
+
+    private void initCameraPosition() {
         cameraOffset.x = -2100;
         cameraOffset.y = -1700;
+    }
 
+    private void initCouleursJoueurs() {
+        couleurs_joueurs = new Color[4];
+        couleurs_joueurs[0] = new Color(255, 0, 0, 127);
+        couleurs_joueurs[1] = new Color(0, 233, 255, 127);
+        couleurs_joueurs[2] = new Color(183, 0, 255, 127);
+        couleurs_joueurs[3] = new Color(255, 185, 0, 127);
+    }
+
+    private void initTripletHover() {
         triplet[0][0] = Hexagone.VOLCAN;
         triplet[1][0] = Hexagone.VIDE;
         triplet[2][0] = Hexagone.VIDE;
         triplet[0][1] = 0;
         triplet[1][1] = 0;
         triplet[2][1] = 0;
-
-        couleurs_joueurs = new Color[4];
-        couleurs_joueurs[0] = new Color(255, 0, 0, 127);
-        couleurs_joueurs[1] = new Color(0, 233, 255, 127);
-        couleurs_joueurs[2] = new Color(183, 0, 255, 127);
-        couleurs_joueurs[3] = new Color(255, 185, 0, 127);
     }
 
 
@@ -117,194 +130,205 @@ public class HexagonalTiles extends JPanel {
         int tileHeight = voidTile.getWidth();
         int verticalOffset = (int) (tileHeight * 0.75);
 
+        parcoursPlateau(g, map, tileWidth, verticalOffset);
+    }
+
+    private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
+
                 int tileId = map[i][j].getTerrain();
 
-                int heightoffset = map[i][j].getHauteur();
-                heightoffset *= 80;
-
-                if (map[i][j].getTerrain() == Hexagone.VIDE) {
-                    heightoffset -= 50;
-                }
+                int heightoffset = calculHauteurAffichageHexagone(map, i, j);
 
                 BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                 g.drawImage(tile, x , y - heightoffset, null);
 
-                if (poseTile) {
-                    if (mode_plateau) {
-                        if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
-                            if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
-                                g.drawImage(voidTile_transparent, x, y - heightoffset + 5, null);
-                            }
-                        }
-                    }
-                    if (map[i][j].getTerrain() == Hexagone.VOLCAN) {
-                        int j2;
-                        if (i % 2 == 1) {
-                            j2 = j - 1;
-                        } else {
-                            j2 = j;
-                        }
-                        if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
-                            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-                            g.drawImage(beacon_1, x, y - heightoffset + 5, null);
-                        } else if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
-                            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-                        } else if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
-                            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-                        } else if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
-                            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-                        } else if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
-                            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-                        } else if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
-                            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-                        }
+                afficheFiltresTileMode(g, map, i, j, x, y, heightoffset);
+                afficheNumerosNiveaux(g, map, i, j, x, y, heightoffset);
+                afficheBatiments(g, map, i, j, x, y, heightoffset);
+                afficheContourParNiveau(g, map, i, j, x, y, heightoffset);
+            }
+        }
+    }
 
-                        if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
-                            g.drawImage(beacon_1, x, y - heightoffset + 5, null);
-                        }
-                        if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
-                            g.drawImage(beacon_2, x, y - heightoffset + 5, null);
-                        }
-                        if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
-                            g.drawImage(beacon_3, x, y - heightoffset + 5, null);
-                        }
-                        if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
-                            g.drawImage(beacon_4, x, y - heightoffset + 5, null);
-                        }
-                        if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
-                            g.drawImage(beacon_5, x, y - heightoffset + 5, null);
-                        }
-                        if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
-                            g.drawImage(beacon_6, x, y - heightoffset + 5, null);
-                        }
-                    }
-                }
+    private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        int j2 = convertionTileMapToHexagonal(i, j);
+        if (i > 1 && j > 1 && i < map.length - 1 && j < map[0].length - 1) {
+            contour(g, map, i, j, x, y, heightoffset, j - 1, map[i], plateau_Gauche);
+            contour(g, map, i, j, x, y, heightoffset, j + 1, map[i], plateau_Droite);
+            contour(g, map, i - 1, j, x, y, heightoffset, j2, map[i], plateau_hautGauche);
+            contour(g, map, i - 1, j, x, y, heightoffset, j2 + 1, map[i], plateau_hautDroite);
+            contour(g, map, i + 1, j, x, y, heightoffset, j2, map[i], plateau_basGauche);
+            contour(g, map, i + 1, j, x, y, heightoffset, j2 + 1, map[i], plateau_basDroite);
+        }
+    }
 
-                if (mode_numero) {
-                    if (map[i][j].getHauteur() == 1) {
-                        g.drawImage(wrongTile1, x , y - heightoffset + 5, null);
-                    }
-                    if (map[i][j].getHauteur() == 2) {
-                        g.drawImage(wrongTile2, x , y - heightoffset + 5, null);
-                    }
-                    if (map[i][j].getHauteur() == 3) {
-                        g.drawImage(wrongTile3, x , y - heightoffset + 5, null);
-                    }
-                }
+    private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, BufferedImage plateau_gauche) {
+        if (map[i][i2].getHauteur() < hexagones[j].getHauteur()) {
+            if (hexagones[j].getHauteur() == 1) {
+                g.drawImage(applyBlueFilter(plateau_gauche), x, y - heightoffset + 55, null);
+            } else if (hexagones[j].getHauteur() == 2) {
+                g.drawImage(applyYellowFilter(plateau_gauche), x, y - heightoffset + 55, null);
+            } else if (hexagones[j].getHauteur() == 3) {
+                g.drawImage(applyRedFilter(plateau_gauche), x, y - heightoffset + 55, null);
+            }
+        }
+    }
 
-                if (map[i][j].getBatiment() == Hexagone.MAISON) {
-                    tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-                    g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-                    g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-                    g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-                    g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-                    g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-                    g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x , y - heightoffset, null);
-                } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
-                    int pos_x = x-150;
-                    int pos_y = y -300;
-                    int value = scrollValue%3;
-                    if(value==1) value = 0;
-                    else if(value==0) value = 1;
-                    int[] coups = coupJouable(i,j);
-                    if(coups[1]==0&&coups[2]==0) value=1;
-                    else if(coups[1]==0){
-                        value= scrollValue%2;
-                        if(value==0) value=2;
-                    }
-                    else if(coups[2]==0){
-                        value= scrollValue%2;
-                        if(value==1) value = 0;
-                        else if(value==0) value = 1;
-                    }
-                    if(coups[1]==0){
-                        if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                        else{
-                            if(value==1) g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                            else g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null); // attention ici 2 fois sur 3
-                        }
-                    }else{
-                        if(coups[2]==0){
-                            if(value==1) g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                            else g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                        }else{
-                            g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                        }
-                    }
-                }
+    private void afficheBatiments(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        BufferedImage tile;
+        if (map[i][j].getBatiment() == Hexagone.MAISON) {
+            tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
+            g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
+            g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
+            g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
+            g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
+            g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+        } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
+            g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+        } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
+            int pos_x = x -150;
+            int pos_y = y -300;
+            int value = scrollValue%3;
+            if(value==1) value = 0;
+            else if(value==0) value = 1;
+            int[] coups = coupJouable(i, j);
 
-                int j2;
-                if (i % 2 == 1) {
-                    j2 = j - 1;
-                } else {
-                    j2 = j;
-                }
-                if (i > 1 && j > 1 && i < map.length - 1 && j < map[0].length - 1) {
-                    if (map[i][j - 1].getHauteur() < map[i][j].getHauteur()) {
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(applyBlueFilter(plateau_Gauche), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(applyYellowFilter(plateau_Gauche), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(applyRedFilter(plateau_Gauche), x, y - heightoffset + 55, null);
-                        }
-                    }
-                    if (map[i][j + 1].getHauteur() < map[i][j].getHauteur()) {
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(applyBlueFilter(plateau_Droite), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(applyYellowFilter(plateau_Droite), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(applyRedFilter(plateau_Droite), x, y - heightoffset + 55, null);
-                        }
-                    }
-                    if (map[i - 1][j2].getHauteur() < map[i][j].getHauteur()) {
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(applyBlueFilter(plateau_hautGauche), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(applyYellowFilter(plateau_hautGauche), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(applyRedFilter(plateau_hautGauche), x, y - heightoffset + 55, null);
-                        }
-                    }
-                    if (map[i - 1][j2 + 1].getHauteur() < map[i][j].getHauteur()) {
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(applyBlueFilter(plateau_hautDroite), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(applyYellowFilter(plateau_hautDroite), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(applyRedFilter(plateau_hautDroite), x, y - heightoffset + 55, null);
-                        }
-                    }
-                    if (map[i + 1][j2].getHauteur() < map[i][j].getHauteur()) {
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(applyBlueFilter(plateau_basGauche), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(applyYellowFilter(plateau_basGauche), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(applyRedFilter(plateau_basGauche), x, y - heightoffset + 55, null);
-                        }
-                    }
-                    if (map[i + 1][j2 + 1].getHauteur() < map[i][j].getHauteur()) {
-                        if (map[i][j].getHauteur() == 1) {
-                            g.drawImage(applyBlueFilter(plateau_basDroite), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 2) {
-                            g.drawImage(applyYellowFilter(plateau_basDroite), x, y - heightoffset + 55, null);
-                        } else if (map[i][j].getHauteur() == 3) {
-                            g.drawImage(applyRedFilter(plateau_basDroite), x, y - heightoffset + 55, null);
-                        }
-                    }
+            value = updateScrollValue(value, coups);
+            choixBatiment(g, pos_x, pos_y, value, coups);
+        }
+    }
+
+    private int updateScrollValue(int value, int[] coups) {
+        if (coups[1] == 0 && coups[2] == 0) value = 1;
+        else if (coups[1] == 0) {
+            value = scrollValue % 2;
+            if (value == 0) value = 2;
+        } else if (coups[2] == 0) {
+            value = scrollValue % 2;
+            if (value == 1) value = 0;
+            else if (value == 0) value = 1;
+        }
+        return value;
+    }
+
+    private void choixBatiment(Graphics g, int pos_x, int pos_y, int value, int[] coups) {
+        if(coups[1]==0){
+            if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+            else{
+                if(value ==1) g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                else g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null); // attention ici 2 fois sur 3
+            }
+        }else{
+            if(coups[2]==0){
+                if(value ==1) g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                else g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+            }else{
+                g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+            }
+        }
+    }
+
+    private int calculHauteurAffichageHexagone(Hexagone[][] map, int i, int j) {
+        int heightoffset = map[i][j].getHauteur();
+        heightoffset *= 80;
+
+        if (map[i][j].getTerrain() == Hexagone.VIDE) {
+            heightoffset -= 50;
+        }
+        return heightoffset;
+    }
+
+    private void afficheNumerosNiveaux(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        if (mode_numero) {
+            if (map[i][j].getHauteur() == 1) {
+                g.drawImage(wrongTile1, x, y - heightoffset + 5, null);
+            }
+            if (map[i][j].getHauteur() == 2) {
+                g.drawImage(wrongTile2, x, y - heightoffset + 5, null);
+            }
+            if (map[i][j].getHauteur() == 3) {
+                g.drawImage(wrongTile3, x, y - heightoffset + 5, null);
+            }
+        }
+    }
+
+    private void afficheFiltresTileMode(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        if (poseTile) {
+            afficherFiltreSombre(g, map, i, j, x, y, heightoffset);
+            afficherFiltreVolcan(g, map, i, j, x, y, heightoffset);
+        }
+    }
+
+    private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        if (map[i][j].getTerrain() == Hexagone.VOLCAN) {
+            int j2 = convertionTileMapToHexagonal(i, j);
+            illumineVolcanLibre(g, i, j, x, y, heightoffset, j2);
+            afficheDirectionsLibres(g, i, j, x, y, heightoffset, j2);
+        }
+    }
+
+    private void afficherFiltreSombre(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        if (mode_plateau) {
+            if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
+                if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
+                    g.drawImage(voidTile_transparent, x, y - heightoffset + 5, null);
                 }
             }
+        }
+    }
+
+    private int convertionTileMapToHexagonal(int i, int j) {
+        int j2;
+        if (i % 2 == 1) {
+            j2 = j - 1;
+        } else {
+            j2 = j;
+        }
+        return j2;
+    }
+
+    private void afficheDirectionsLibres(Graphics g, int i, int j, int x, int y, int heightoffset, int j2) {
+        if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
+            g.drawImage(beacon_1, x, y - heightoffset + 5, null);
+        }
+        if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
+            g.drawImage(beacon_2, x, y - heightoffset + 5, null);
+        }
+        if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
+            g.drawImage(beacon_3, x, y - heightoffset + 5, null);
+        }
+        if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
+            g.drawImage(beacon_4, x, y - heightoffset + 5, null);
+        }
+        if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
+            g.drawImage(beacon_5, x, y - heightoffset + 5, null);
+        }
+        if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
+            g.drawImage(beacon_6, x, y - heightoffset + 5, null);
+        }
+    }
+
+    private void illumineVolcanLibre(Graphics g, int i, int j, int x, int y, int heightoffset, int j2) {
+        if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
+            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
+            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
+            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
+            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
+            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
+            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
         }
     }
 
@@ -350,12 +374,7 @@ public class HexagonalTiles extends JPanel {
             int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
             int y = i * verticalOffset;
 
-            int j2;
-            if (i % 2 == 1) {
-                j2 = j - 1;
-            } else {
-                j2 = j;
-            }
+            int j2 = convertionTileMapToHexagonal(i, j);
             BufferedImage tile1 = getTileImageFromId(triplet[0][0],triplet[0][1]);
             BufferedImage tile2 = getTileImageFromId(triplet[1][0],triplet[1][1]);
             BufferedImage tile3 = getTileImageFromId(triplet[2][0],triplet[2][1]);
@@ -494,12 +513,7 @@ public class HexagonalTiles extends JPanel {
 
 
     public void placerTuiles(int i, int j) {
-        int j_modified;
-        if (i % 2 == 1) {
-            j_modified = j - 1;
-        } else {
-            j_modified = j;
-        }
+        int j_modified = convertionTileMapToHexagonal(i, j);
 
         if (scrollValue == 1) {
             if (controleur.peutPlacerTuile(i, j, i - 1, j_modified, i - 1, j_modified + 1)) {
@@ -563,16 +577,7 @@ public class HexagonalTiles extends JPanel {
     public void placerMaison(int i, int j) {
         int value = scrollValue%3;
         int[] coupsJouable = coupJouable(i,j);
-        if(coupsJouable[1]==0&&coupsJouable[2]==0) value=1;
-        else if(coupsJouable[1]==0){
-            value= scrollValue%2;
-            if(value==0) value=2;
-        }
-        else if(coupsJouable[2]==0){
-            value= scrollValue%2;
-            if(value==1) value = 0;
-            else if(value==0) value = 1;
-        }
+        value = updateScrollValue(value, coupsJouable);
 
         if (value == 1) { // place hut
             enSelection = false;
