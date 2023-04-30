@@ -2,18 +2,12 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.HexagonalTiles;
-import Modele.Hexagone;
-import Modele.ImageLoader;
 import Modele.Jeu;
-import Structures.TripletDePosition;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.event.MouseEvent;
 
 import static Modele.ImageLoader.*;
-import static Modele.Camera.*;
 import static Modele.GameState.*;
 
 
@@ -28,13 +22,13 @@ public class TEngine {
 
     public static Point LastPosition;
     Jeu jeu;
-    JFrame jframe;
+    JFrame f;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         this.jeu = jeu;
-        this.jframe = getJframe();
+        this.f = getF();
         initFrame();
 
         initPanels(controleur);
@@ -42,19 +36,19 @@ public class TEngine {
         listener = new TEngineListener(this);
         poseTile = true;
 
-        jframe.setVisible(true);
+        f.setVisible(true);
     }
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        jframe.getContentPane().setBackground(new Color(64, 164, 223));
+        f.getContentPane().setBackground(new Color(64, 164, 223));
     }
 
     private void initPanels(ControleurMediateur controleur) {
         // Créer un JLayeredPane pour superposer les éléments
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(jframe.getWidth(), jframe.getHeight()));
-        jframe.getContentPane().add(layeredPane);
+        layeredPane.setPreferredSize(new Dimension(f.getWidth(), f.getHeight()));
+        f.getContentPane().add(layeredPane);
 
         // Ajouter les tuiles hexagonales
         hexTiles = new HexagonalTiles(this, controleur, this.jeu);
@@ -78,8 +72,7 @@ public class TEngine {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                Graphics2D g2d = (Graphics2D) g.create();
-
+                Graphics2D g2d = (Graphics2D)g;
                 largeur = getWidth();
                 hauteur = getHeight();
                 double rapport = 207.0 / 603.0;
@@ -104,18 +97,18 @@ public class TEngine {
     }
 
     private void initFrame() {
-        jframe.setTitle("Taluva");
+        f.setTitle("Taluva");
         ImageIcon icon = new ImageIcon("ressources/icon.png");
-        jframe.setIconImage(icon.getImage());
+        f.setIconImage(icon.getImage());
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        jframe.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setLocationRelativeTo(null);
+        f.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setLocationRelativeTo(null);
     }
 
-    private JFrame getJframe() {
+    private JFrame getF() {
         bouton_save = lisImageBuf("Sauvegarder");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");
         bouton_load = lisImageBuf("Charger");
