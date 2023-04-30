@@ -24,7 +24,11 @@ public class ImageLoader {
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
     public static BufferedImage joueurCourant;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
-
+    public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select,
+            bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_reset, bouton_reset_select;
+    public static int posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_reset;
+    public static int largeur, hauteur, largeur_bouton, hauteur_bouton;
+    public static boolean select_save, select_load, select_annuler, select_refaire, select_reset, select_quitter;
 
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
@@ -116,16 +120,18 @@ public class ImageLoader {
     }
 
     public static void addImage(String nom_image, double facteur_x, double facteur_y, double facteur, double rapport, JLayeredPane layeredPane) {
-        // Chargez l'image que vous voulez afficher
-        Image image = null;
-        try {
-            image = ImageIO.read(new File("ressources/" + nom_image + ".png"));
-        } catch (IOException e) {
-            System.err.println("Impossible de charger l'image " + nom_image);
-            //System.exit(1);
-        }
-        Image finalImage = image;
-        //rédéfinit la méthode paintComponent du jpanel
+        bouton_save = lisImageBuf("Sauvegarder");
+        //bouton_save_select = lisImageBuf("Sauvegarder_select");
+        bouton_load = lisImageBuf("Charger");
+        //bouton_load_select = lisImageBuf("Charger_select");
+        bouton_annuler = lisImageBuf("Annuler");
+        //bouton_annuler_select = lisImageBuf("Annuler_select");
+        bouton_refaire = lisImageBuf("Refaire");
+        //bouton_refaire_select = lisImageBuf("Refaire_select");
+        bouton_reset = lisImageBuf("Reinitialiser");
+        //bouton_reset_select = lisImageBuf("Reinitialiser_select");
+        bouton_quitter = lisImageBuf("Quitter");
+        //bouton_quitter_select = lisImageBuf("Quitter_select");
 
         JPanel imagePanel = new JPanel() {
             int largeur, hauteur, pos_x, pos_y;
@@ -143,9 +149,7 @@ public class ImageLoader {
                 largeur_bouton = (int) Math.min(largeur*facteur, hauteur*facteur);
                 hauteur_bouton = (int) (largeur_bouton/rapport);
                 //System.out.println("largeur_bouton : " + largeur_bouton + " hauteur_bouton : " + hauteur_bouton);
-                if (finalImage != null) {
-                    g.drawImage(finalImage, pos_x, pos_y, largeur_bouton, hauteur_bouton, this);
-                }
+
             }
         };
         imagePanel.setBounds(0, 0, 3000, 2000);
@@ -286,6 +290,48 @@ public class ImageLoader {
         g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
         g2d.dispose();
         return outputImage;
+    }
+
+    public static void afficheBoutonLoad(Graphics g) {
+        if(select_load)
+            g.drawImage(bouton_load_select, posX_boutons, posY_save, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_load, posX_boutons, posY_save, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonSave(Graphics g) {
+        if(select_save)
+            g.drawImage(bouton_save_select, posX_save, posY_save, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_save, posX_save, posY_save, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonAnnuler(Graphics g) {
+        if(select_annuler)
+            g.drawImage(bouton_annuler_select, posX_boutons, posY_annuler, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_annuler, posX_boutons, posY_annuler, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonRefaire(Graphics g) {
+        if(select_refaire)
+            g.drawImage(bouton_refaire_select, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_refaire, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonReset(Graphics g) {
+        if(select_reset)
+            g.drawImage(bouton_reset_select, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonQuitter(Graphics g) {
+        if(select_quitter)
+            g.drawImage(bouton_quitter_select, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_quitter, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
     }
 
 }

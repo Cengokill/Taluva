@@ -18,6 +18,5 @@ public class TaluvaMain {
         t.start();
 
         TEngine fenetre = new TEngine(jeu, controler);
-        fenetre.setVisible(true);
     }
 }

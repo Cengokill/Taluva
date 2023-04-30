@@ -32,7 +32,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
         tengine.hexTiles.addKeyListener(tengine.hexTiles.keyboardlisten);
     }
 
-     class KeyboardListener implements KeyListener {
+     public class KeyboardListener implements KeyListener {
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -93,7 +93,7 @@ public class TEngineListener extends MouseAdapter implements MouseWheelListener 
     ////////////////////////////
     // Mouse, drag and things //
     ////////////////////////////
-    class MouseHandler extends MouseAdapter implements MouseWheelListener {
+    public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
         @Override
         public void mouseClicked(MouseEvent e) {
