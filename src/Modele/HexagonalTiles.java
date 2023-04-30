@@ -127,7 +127,6 @@ public class HexagonalTiles extends JPanel {
     }
 
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
-        boolean aTrouveIle = false;
         for (int i = Math.abs(cameraOffset.y/tileWidth) - 2; i < map.length; i++) {
             for (int j = Math.abs(cameraOffset.x/tileWidth) - 2; j < map[0].length; j++) {
                 int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
@@ -160,6 +159,7 @@ public class HexagonalTiles extends JPanel {
         }
     }
 
+    // TODO A optimiser car faisable en amont à l'init
     private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, BufferedImage plateau_gauche) {
         if (map[i][i2].getHauteur() < hexagones[j].getHauteur()) {
             if (hexagones[j].getHauteur() == 1) {
@@ -172,6 +172,7 @@ public class HexagonalTiles extends JPanel {
         }
     }
 
+    // TODO optimiser colorFilters
     private void afficheBatiments(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
         BufferedImage tile;
         if (map[i][j].getBatiment() == Hexagone.MAISON) {
