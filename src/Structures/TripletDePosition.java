@@ -1,7 +1,5 @@
 package Structures;
 
-import Modele.Position;
-
 public class TripletDePosition {
     private Position x;
     private Position y;

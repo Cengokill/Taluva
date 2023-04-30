@@ -1,7 +1,7 @@
 package Structures;
 
 class Maillon<E> {
-    E element;
+    final E element;
     Maillon<E> suivant;
 
     Maillon(E element, Maillon<E> suivant) {

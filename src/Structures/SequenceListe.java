@@ -103,18 +103,18 @@ public class SequenceListe<E> implements Sequence<E> {
 
     @Override
     public String toString() {
-        String resultat = "SequenceListe [ ";
+        StringBuilder resultat = new StringBuilder("SequenceListe [ ");
         boolean premier = true;
         Maillon<E> m = tete;
         while (m != null) {
             if (!premier)
-                resultat += ", ";
-            resultat += m.element;
+                resultat.append(", ");
+            resultat.append(m.element);
             m = m.suivant;
             premier = false;
         }
-        resultat += " ]";
-        return resultat;
+        resultat.append(" ]");
+        return resultat.toString();
     }
 
     @Override

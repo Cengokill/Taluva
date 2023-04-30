@@ -19,14 +19,14 @@ public class Hexagone {
     public static final byte TOUR = 15;
     public static final byte CHOISIR_MAISON = 16;
 
-    private byte hauteur;
+    private final byte hauteur;
     private int IDvillage ;
-    private byte terrain;
+    private final byte terrain;
     private byte batiment = 0;
-    private byte numero ;
-    private byte volcan_j;
-    private byte volcan_i;
-    private byte num_joueur;
+    private final byte numero ;
+    private final byte volcan_j;
+    private final byte volcan_i;
+    private final byte num_joueur;
 
     public Hexagone(byte hauteur, byte terrain, byte volcan_i, byte volcan_j) {
         this.num_joueur = -1;
@@ -65,8 +65,7 @@ public class Hexagone {
     }
 
     public boolean HexagoneLibre(){
-        if (terrain == 0) return true;
-        else return false;
+        return terrain == 0;
     }
 
     public int getBatiment() {return batiment;}

@@ -3,7 +3,7 @@ package Modele;
 import java.awt.*;
 
 public class GameState {
-    public static byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
+    public static final byte[][] triplet = new byte[3][2]; // [n° tile] [0: tile_type] [1: tile_textureid]
     public static int scrollValue = 1;
     public static int hoveredTile_x;
     public static int hoveredTile_y;

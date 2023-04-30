@@ -17,11 +17,11 @@ public class TEngine {
     public JPanel buttonPanel;
     public JLayeredPane layeredPane;
 
-    ControleurMediateur controleur;
+    final ControleurMediateur controleur;
 
     public static Point LastPosition;
-    Jeu jeu;
-    JFrame jframe;
+    final Jeu jeu;
+    final JFrame jframe;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
         this.controleur = controleur;

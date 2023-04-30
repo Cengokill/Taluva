@@ -2,10 +2,6 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 import java.awt.event.*;
 import static Modele.Camera.*;

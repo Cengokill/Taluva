@@ -1,8 +1,8 @@
-package Modele;
+package Structures;
 
 public class Position {
-    int l;
-    int c;
+    final int l;
+    final int c;
 
     public Position(int l, int c) {
         this.l = l;

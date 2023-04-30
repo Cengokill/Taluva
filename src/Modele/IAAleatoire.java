@@ -1,5 +1,6 @@
 package Modele;
 
+import Structures.Position;
 import Structures.TripletDePosition;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ class IAAleatoire extends IA {
             triplet[1][0] = tuiles[0]; // tile 1
             triplet[2][0] = tuiles[1]; // tile 2
             triplet[0][0] = tuiles[2];
-            if(jeu.getPlateau().estVide()){ // l'IA est le premier à jouer donc on place au centres
+            if(jeu.getPlateau().estVide()){ // l'IA est le premier ï¿½ jouer donc on place au centres
                 i = taille_x/2;
                 j = taille_y/2;
 
@@ -65,7 +66,7 @@ class IAAleatoire extends IA {
             }
         }
         else if(jeu.doit_placer_batiment()){
-            // Trouver un emplaçement pour le batiment
+            // Trouver un emplaï¿½ement pour le batiment
             ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
             //System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
             Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
@@ -77,7 +78,7 @@ class IAAleatoire extends IA {
             jeu.getPlateau().supprimeLibreBatiments(positionrandom);
 
 
-            // Choisir un batiment à placer
+            // Choisir un batiment ï¿½ placer
             byte batiment;
             int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.getL(),positionrandom.getC(),numIA);
             if(batimensPlacable[1]==0&&batimensPlacable[2]==0) batiment=1;
@@ -94,25 +95,6 @@ class IAAleatoire extends IA {
             return new Coup(numIA,positionrandom.getL(),positionrandom.getC(),batiment);
         }
 
-
-        /*boolean estJouable = false;
-        int i = 0, j = 0;
-        while (!estJouable) {
-            Random r = new Random();
-
-            i = r.nextInt(this.jeu.gaufre().lignes());
-            j = r.nextInt(this.jeu.gaufre().colonnes());
-
-            if (!this.jeu.gaufre().estMangee(i, j) && !(i == 0 && j == 0)) {
-                estJouable = true;
-            }
-        }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(200);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
 
         //return new Coup(jeu.getNumJoueurCourant(),)
         return null;

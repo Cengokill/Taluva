@@ -13,7 +13,7 @@ import static Modele.GameState.couleurs_joueurs;
 public class ImageLoader {
 
     public static BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, constructionMode;
-    public static BufferedImage[] choisirBat = new BufferedImage[8];
+    public static final BufferedImage[] choisirBat = new BufferedImage[8];
     public static BufferedImage waterTile;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
@@ -78,10 +78,6 @@ public class ImageLoader {
         wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
         wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
 
-        //wrongTile1 = applyYellowFilter(wrongTile1);
-        //wrongTile2 = applyYellowFilter(wrongTile2);
-        //wrongTile3 = applyYellowFilter(wrongTile3);
-
         maisonTile = lisImageBuf("Batiments/maison");
         templeJungle = lisImageBuf("Batiments/Temple_jungle");
         templePierre = lisImageBuf("Batiments/Temple_pierre");
@@ -144,8 +140,6 @@ public class ImageLoader {
                 hauteur = layeredPane.getHeight();
                 pos_x = (int) (largeur*facteur_x);
                 pos_y = (int) (hauteur*facteur_y);
-                //System.out.println("pos_x : " + pos_x + " pos_y : " + pos_y);
-                //System.out.println("largeur : " + largeur + " hauteur : " + hauteur);
                 largeur_bouton = (int) Math.min(largeur*facteur, hauteur*facteur);
                 hauteur_bouton = (int) (largeur_bouton/rapport);
                 //System.out.println("largeur_bouton : " + largeur_bouton + " hauteur_bouton : " + hauteur_bouton);
