@@ -127,8 +127,9 @@ public class HexagonalTiles extends JPanel {
     }
 
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
+        boolean aTrouveIle = false;
+        for (int i = Math.abs(cameraOffset.y/tileWidth) - 2; i < map.length; i++) {
+            for (int j = Math.abs(cameraOffset.x/tileWidth) - 2; j < map[0].length; j++) {
                 int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
