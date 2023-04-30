@@ -2,19 +2,12 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.HexagonalTiles;
-import Modele.Hexagone;
-import Modele.ImageLoader;
 import Modele.Jeu;
-import Structures.TripletDePosition;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.event.MouseEvent;
 
 import static Modele.ImageLoader.*;
-import static Modele.Camera.*;
-import static Modele.GameState.*;
 
 
 public class TEngine {
@@ -39,10 +32,15 @@ public class TEngine {
 
         initPanels(controleur);
 
-        listener = new TEngineListener(this);
-        poseTile = true;
+        initKeyBoardAndMouseListener();
+
+        setBackgroundColor();
 
         jframe.setVisible(true);
+    }
+
+    private void initKeyBoardAndMouseListener() {
+        listener = new TEngineListener(this);
     }
 
     private void setBackgroundColor() {
@@ -51,29 +49,42 @@ public class TEngine {
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        // Créer un JLayeredPane pour superposer les éléments
-        layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(jframe.getWidth(), jframe.getHeight()));
-        jframe.getContentPane().add(layeredPane);
+        initMultiLayerPanel();
+        initHexagonsPanel(controleur);
+        initVignettePanel();
+        initButtonPanel();
+    }
 
-        // Ajouter les tuiles hexagonales
-        hexTiles = new HexagonalTiles(this, controleur, this.jeu);
-        hexTiles.setBounds(0, 0, 1400, 1000);
-        layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
-
+    private void initVignettePanel() {
         // Ajouter la vignette
         vignettePanel = new VignettePanel();
         vignettePanel.setBounds(0, 0, 1400, 1000);
         layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
+    }
 
-        // Ajouter la vignette
-        initButtonPanel();
+    private void initHexagonsPanel(ControleurMediateur controleur) {
+        // Ajouter les tuiles hexagonales
+        hexTiles = new HexagonalTiles(this, controleur, this.jeu);
+        hexTiles.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
+    }
+
+    private void initMultiLayerPanel() {
+        // Créer un JLayeredPane pour superposer les éléments
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(jframe.getWidth(), jframe.getHeight()));
+        jframe.getContentPane().add(layeredPane);
+    }
+
+    private void initButtonPanel() {
+        createButtonPanel();
+        buttonPanel.setBackground(new Color(0,0,0,0));
         buttonPanel.setBounds(0, 0, 1400, 1000);
         buttonPanel.setOpaque(false);
         layeredPane.add(buttonPanel, JLayeredPane.POPUP_LAYER);
     }
 
-    private void initButtonPanel() {
+    private void createButtonPanel() {
         buttonPanel = new JPanel(){
             @Override
             public void paint(Graphics g) {
@@ -100,7 +111,6 @@ public class TEngine {
                 afficheBoutonQuitter(g2d);
             }
         };
-        buttonPanel.setBackground(new Color(0,0,0,0));
     }
 
     private void initFrame() {
