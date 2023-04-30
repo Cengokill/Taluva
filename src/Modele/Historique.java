@@ -39,4 +39,11 @@ public class Historique implements Serializable {
     public boolean peutRefaire() {
         return !futur.isEmpty();
     }
+
+    public Historique copy() {
+        Historique historique = new Historique();
+        historique.passe = this.passe;
+        historique.futur = this.futur;
+        return historique;
+    }
 }

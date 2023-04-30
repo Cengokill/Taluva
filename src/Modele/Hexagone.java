@@ -72,4 +72,8 @@ public class Hexagone {
     public int getBatiment() {return batiment;}
 
     public int getIDvillage (){return IDvillage;}
+
+    public Hexagone copy() {
+        return new Hexagone(num_joueur, hauteur, terrain, batiment, volcan_i, volcan_j);
+    }
 }
