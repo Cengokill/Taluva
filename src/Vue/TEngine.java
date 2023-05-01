@@ -21,13 +21,13 @@ public class TEngine {
 
     public static Point LastPosition;
     final Jeu jeu;
-    final JFrame jframe;
+    final JFrame f;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         this.jeu = jeu;
-        this.jframe = getJframe();
+        this.f = getF();
         initFrame();
 
         initPanels(controleur);
@@ -36,7 +36,7 @@ public class TEngine {
 
         setBackgroundColor();
 
-        jframe.setVisible(true);
+        f.setVisible(true);
     }
 
     private void initKeyBoardAndMouseListener() {
@@ -45,7 +45,7 @@ public class TEngine {
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        jframe.getContentPane().setBackground(new Color(64, 164, 223));
+        f.getContentPane().setBackground(new Color(64, 164, 223));
     }
 
     private void initPanels(ControleurMediateur controleur) {
@@ -72,8 +72,8 @@ public class TEngine {
     private void initMultiLayerPanel() {
         // Créer un JLayeredPane pour superposer les éléments
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(jframe.getWidth(), jframe.getHeight()));
-        jframe.getContentPane().add(layeredPane);
+        layeredPane.setPreferredSize(new Dimension(f.getWidth(), f.getHeight()));
+        f.getContentPane().add(layeredPane);
     }
 
     private void initButtonPanel() {
@@ -114,18 +114,18 @@ public class TEngine {
     }
 
     private void initFrame() {
-        jframe.setTitle("Taluva");
+        f.setTitle("Taluva");
         ImageIcon icon = new ImageIcon("ressources/icon.png");
-        jframe.setIconImage(icon.getImage());
+        f.setIconImage(icon.getImage());
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        jframe.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setLocationRelativeTo(null);
+        f.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setLocationRelativeTo(null);
     }
 
-    private JFrame getJframe() {
+    private JFrame getF() {
         bouton_save = lisImageBuf("save");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");
         bouton_load = lisImageBuf("load");
