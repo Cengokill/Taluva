@@ -232,19 +232,10 @@ public class HexagonalTiles extends JPanel {
     // TODO optimiser colorFilters
     private void afficheBatiments(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
         BufferedImage tile;
-        if (map[i][j].getBatiment() == Hexagone.MAISON) {
+        if (map[i][j].getBatiment() != Hexagone.CHOISIR_MAISON) {
             tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-            g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-            g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-            g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-            g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-            g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-            g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+            g.drawImage(getBatimentFromPlayerId(map[i][j].getNumJoueur(), (byte) map[i][j].getBatiment()), x, y - heightoffset, null);
+
         } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
             int pos_x = x -150;
             int pos_y = y -300;

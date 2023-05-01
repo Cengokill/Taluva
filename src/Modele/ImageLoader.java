@@ -11,7 +11,26 @@ import static Modele.GameState.couleurs_joueurs;
 
 public class ImageLoader {
 
-    public static BufferedImage maisonTile, templeJungle, templePierre, templePrairie, templeSable,tour, constructionMode;
+    public static BufferedImage
+            maisonTile,
+            maisonTileColor1,
+            maisonTileColor2,
+            templeJungle,
+            templeJungleColor1,
+            templeJungleColor2,
+            templePierre,
+            templePierreColor1,
+            templePierreColor2,
+            templePrairie,
+            templePrairieColor1,
+            templePrairieColor2,
+            templeSable,
+            templeSableColor1,
+            templeSableColor2,
+            tour,
+            tourColor1,
+            tourColor2;
+    public static BufferedImage constructionMode;
     public static final BufferedImage[] choisirBat = new BufferedImage[8];
     public static BufferedImage waterTile;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
@@ -89,6 +108,65 @@ public class ImageLoader {
         hoverTile = lisImageBuf("Hover_Tile");
     }
 
+    public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id) {
+        if (batiment_id == Hexagone.MAISON) {
+            return getMaison(id_player);
+        }
+        if (batiment_id == Hexagone.TEMPLE_FORET) {
+            return getTempleJungle(id_player);
+        }
+        if (batiment_id == Hexagone.TEMPLE_PIERRE) {
+            return getTemplePierre(id_player);
+        }
+        if (batiment_id == Hexagone.TEMPLE_PRAIRIE) {
+            return getTemplePrairie(id_player);
+        }
+        if (batiment_id == Hexagone.TEMPLE_SABLE) {
+            return getTempleSable(id_player);
+        }
+        return null;
+    }
+
+    private static BufferedImage getTempleSable(byte id_player) {
+        if (id_player == 0) {
+            return templeSableColor1;
+        } else {
+            return templeSableColor2;
+        }
+    }
+
+    private static BufferedImage getTemplePrairie(byte id_player) {
+        if (id_player == 0) {
+            return templePrairieColor1;
+        } else {
+            return templePierreColor2;
+        }
+    }
+
+    private static BufferedImage getTemplePierre(byte id_player) {
+        if (id_player == 0) {
+            return templePrairieColor1;
+        } else {
+            return templePierre;
+        }
+    }
+
+    private static BufferedImage getTempleJungle(byte id_player) {
+        if (id_player == 0) {
+            return templeJungleColor1;
+        } else {
+            return templeJungleColor2;
+        }
+    }
+
+    private static BufferedImage getMaison(byte id_player) {
+        if (id_player == 0) {
+            return maisonTileColor1;
+        } else {
+            return maisonTileColor2;
+        }
+    }
+
     private static void readPlayableTilesImages() {
         grassTile_0 = lisImageBuf("Grass_0_Tile");
         grassTile_1 = lisImageBuf("Grass_1_Tile");
@@ -114,6 +192,28 @@ public class ImageLoader {
         templePrairie = lisImageBuf("Batiments/Temple_prairie");
         templeSable = lisImageBuf("Batiments/Temple_sable");
         tour = lisImageBuf("Batiments/tour");
+
+        filtreCouleurBatiments();
+    }
+
+    private static void filtreCouleurBatiments() {
+        maisonTileColor1 = applyColorFilter(maisonTile, (byte) 0);
+        maisonTileColor2 = applyColorFilter(maisonTile, (byte) 1);
+
+        templeJungleColor1 = applyColorFilter(templeJungle, (byte) 0);
+        templeJungleColor2 = applyColorFilter(templeJungle, (byte) 1);
+
+        templePierreColor1 = applyColorFilter(templePierre, (byte) 0);
+        templePierreColor2 = applyColorFilter(templePierre, (byte) 1);
+
+        templePrairieColor1 = applyColorFilter(templePrairie, (byte) 0);
+        templePrairieColor2 = applyColorFilter(templePrairie, (byte) 1);
+
+        templeSableColor1 = applyColorFilter(templeSable, (byte) 0);
+        templeSableColor2 = applyColorFilter(templeSable, (byte) 1);
+
+        tourColor1 = applyColorFilter(tour, (byte) 0);
+        tourColor2 = applyColorFilter(tour, (byte) 1);
     }
 
     private static void readTileOrientationImages() {
