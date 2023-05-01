@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import static Modele.ImageLoader.*;
-import static Modele.GameState.*;
 
 
 public class TEngine {
@@ -18,61 +17,80 @@ public class TEngine {
     public JPanel buttonPanel;
     public JLayeredPane layeredPane;
 
-    ControleurMediateur controleur;
+    final ControleurMediateur controleur;
 
     public static Point LastPosition;
-    Jeu jeu;
-    JFrame f;
+    final Jeu jeu;
+    final JFrame jframe;
 
     public TEngine(Jeu jeu, ControleurMediateur controleur) {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         this.jeu = jeu;
-        this.f = getF();
+        this.jframe = getJframe();
         initFrame();
 
         initPanels(controleur);
 
-        listener = new TEngineListener(this);
-        poseTile = true;
+        initKeyBoardAndMouseListener();
 
-        f.setVisible(true);
+        setBackgroundColor();
+
+        jframe.setVisible(true);
+    }
+
+    private void initKeyBoardAndMouseListener() {
+        listener = new TEngineListener(this);
     }
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        f.getContentPane().setBackground(new Color(64, 164, 223));
+        jframe.getContentPane().setBackground(new Color(64, 164, 223));
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        // Créer un JLayeredPane pour superposer les éléments
-        layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(f.getWidth(), f.getHeight()));
-        f.getContentPane().add(layeredPane);
+        initMultiLayerPanel();
+        initHexagonsPanel(controleur);
+        initVignettePanel();
+        initButtonPanel();
+    }
 
-        // Ajouter les tuiles hexagonales
-        hexTiles = new HexagonalTiles(this, controleur, this.jeu);
-        hexTiles.setBounds(0, 0, 1400, 1000);
-        layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
-
+    private void initVignettePanel() {
         // Ajouter la vignette
         vignettePanel = new VignettePanel();
         vignettePanel.setBounds(0, 0, 1400, 1000);
         layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
+    }
 
-        // Ajouter la vignette
-        initButtonPanel();
+    private void initHexagonsPanel(ControleurMediateur controleur) {
+        // Ajouter les tuiles hexagonales
+        hexTiles = new HexagonalTiles(this, controleur, this.jeu);
+        hexTiles.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
+    }
+
+    private void initMultiLayerPanel() {
+        // Créer un JLayeredPane pour superposer les éléments
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(jframe.getWidth(), jframe.getHeight()));
+        jframe.getContentPane().add(layeredPane);
+    }
+
+    private void initButtonPanel() {
+        createButtonPanel();
+        buttonPanel.setBackground(new Color(0,0,0,0));
         buttonPanel.setBounds(0, 0, 1400, 1000);
         buttonPanel.setOpaque(false);
         layeredPane.add(buttonPanel, JLayeredPane.POPUP_LAYER);
     }
 
-    private void initButtonPanel() {
+    private void createButtonPanel() {
         buttonPanel = new JPanel(){
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                Graphics2D g2d = (Graphics2D)g;
+                Graphics2D g2d = (Graphics2D) g.create();
+
                 largeur = getWidth();
                 hauteur = getHeight();
                 double rapport = 207.0 / 603.0;
@@ -93,22 +111,21 @@ public class TEngine {
                 afficheBoutonQuitter(g2d);
             }
         };
-        buttonPanel.setBackground(new Color(0,0,0,0));
     }
 
     private void initFrame() {
-        f.setTitle("Taluva");
+        jframe.setTitle("Taluva");
         ImageIcon icon = new ImageIcon("ressources/icon.png");
-        f.setIconImage(icon.getImage());
+        jframe.setIconImage(icon.getImage());
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        f.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setLocationRelativeTo(null);
+        jframe.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setLocationRelativeTo(null);
     }
 
-    private JFrame getF() {
+    private JFrame getJframe() {
         bouton_save = lisImageBuf("Sauvegarder");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");
         bouton_load = lisImageBuf("Charger");

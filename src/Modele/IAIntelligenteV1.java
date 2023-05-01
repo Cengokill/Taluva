@@ -1,5 +1,6 @@
 package Modele;
 
+import Structures.Position;
 import Structures.TripletDePosition;
 
 import java.util.ArrayList;
@@ -94,25 +95,6 @@ class IAIntelligenteV1 extends IA {
             return new Coup(numIA,positionrandom.getL(),positionrandom.getC(),batiment);
         }
 
-
-        /*boolean estJouable = false;
-        int i = 0, j = 0;
-        while (!estJouable) {
-            Random r = new Random();
-
-            i = r.nextInt(this.jeu.gaufre().lignes());
-            j = r.nextInt(this.jeu.gaufre().colonnes());
-
-            if (!this.jeu.gaufre().estMangee(i, j) && !(i == 0 && j == 0)) {
-                estJouable = true;
-            }
-        }
-
-        try {
-            TimeUnit.MILLISECONDS.sleep(200);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
 
         //return new Coup(jeu.getNumJoueurCourant(),)
         return null;

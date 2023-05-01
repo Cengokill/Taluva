@@ -9,20 +9,21 @@ import java.util.LinkedList;
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
-    IA IA1, IA2;
+    final IA IA1;
+    IA IA2;
     byte jCourant;
     byte jVainqueur;
-    Joueur[] joueurs = new Joueur[2];
+    final Joueur[] joueurs = new Joueur[2];
 
-    Object[] joueursObjet = new Object[2];
+    final Object[] joueursObjet = new Object[2];
     Parametres p;
-    int[]score = new int[2];
-    byte[] tuile_a_poser = new byte[5];
+    final int[]score = new int[2];
+    final byte[] tuile_a_poser = new byte[5];
 
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
 
-    LinkedList<Tuile> pioche;
+    final LinkedList<Tuile> pioche;
     private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
@@ -79,19 +80,6 @@ public class Jeu extends Observable {
         doit_placer_tuile = true;
         changeJoueur();
         pioche();
-        /*if (p.getTypeJeu().compareTo("AIcAI") == 0) {
-            // Attendez un certain temps avant d'ex�cuter l'action finale
-            int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
-            Timer timer = new Timer(delai, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    joueIA();
-                }
-            });
-
-            timer.setRepeats(false); // Ne r�p�tez pas l'action finale, ex�cutez-la une seule fois
-            timer.start(); // D�marrez le timer
-        }*/
     }
 
     public void calculScore(){

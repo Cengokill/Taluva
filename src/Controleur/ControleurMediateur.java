@@ -5,7 +5,7 @@ import Vue.CollecteurEvenements;
 import Vue.TEngine;
 
 public class ControleurMediateur implements CollecteurEvenements {
-    Jeu jeu;
+    final Jeu jeu;
     TEngine vue;
 
     public ControleurMediateur(Jeu j) {

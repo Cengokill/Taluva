@@ -1,7 +1,7 @@
 package Modele;
 
 public class Pion {
-    byte type;
+    final byte type;
 
 
     public Pion(byte type){

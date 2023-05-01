@@ -1,13 +1,14 @@
 package Modele;
 
+import Structures.Position;
 import Structures.TripletDePosition;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Plateau implements Serializable, Cloneable {
-    int LIGNES = 40;
-    int COLONNES = 40;
+    final int LIGNES = 40;
+    final int COLONNES = 40;
     protected Hexagone[][] plateau ;
     protected byte[] nbPionsJ1;
     protected byte[] nbPionsJ2;
@@ -27,13 +28,6 @@ public class Plateau implements Serializable, Cloneable {
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
         initPlateau();
         positions_libres = new ArrayList<>();
-        /*positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-2));
-        positions_libres.add(new Position(LIGNES/2-2, COLONNES/2-1));
-        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-2));
-        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2-1));
-        positions_libres.add(new Position(LIGNES/2-1, COLONNES/2+2));
-        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-1));
-        positions_libres.add(new Position(LIGNES/2+2, COLONNES/2-2));*/
         positions_libres_batiments = new ArrayList<>();
         tripletsPossible = new ArrayList<>();
     }
@@ -45,9 +39,6 @@ public class Plateau implements Serializable, Cloneable {
                 plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
-        //plateau[18][19] = new Hexagone((byte) 3, Hexagone.GRASS, (byte) 20, (byte)19);
-        //plateau[19][20] = new Hexagone((byte)3, Hexagone.VOLCAN, (byte)19, (byte)20);
-        //plateau[18][20] = new Hexagone((byte)3, Hexagone.GRASS, (byte)19, (byte)20);
 
     }
 
@@ -62,19 +53,14 @@ public class Plateau implements Serializable, Cloneable {
             if(nbPionsJ1[j]==0 && joueur==1)nb_pion_vite_J1++;
             if(nbPionsJ2[j]==0 && joueur==2)nb_pion_vite_J1++;
         }
-        if(nb_pion_vite_J1>=2){return true;}
-        return false;
+        return nb_pion_vite_J1 >= 2;
     }
     public boolean tousLesMeme(int x1 , int y1 , int x2 ,int y2 ,int x3 ,int y3){
-        if(plateau[x1][y1].getHauteur()==plateau[x2][y2].getHauteur() &&plateau[x1][y1].getHauteur()==plateau[x3][y3].getHauteur())
-            return true;
-        return false;
+        return plateau[x1][y1].getHauteur() == plateau[x2][y2].getHauteur() && plateau[x1][y1].getHauteur() == plateau[x3][y3].getHauteur();
     }
 
     public boolean estPlaceLibre(int x1, int y1){
-        if (plateau[x1][y1].getTerrain()<=1)
-            return true;
-        return false;
+        return plateau[x1][y1].getTerrain() <= 1;
     }
 
     public boolean peutPlacerTuileFromTriplets(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
@@ -155,42 +141,31 @@ public class Plateau implements Serializable, Cloneable {
                     tile2_j -= 1;
                 }
 
-                if (!(
-                    plateau[volcan_i - 1][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[volcan_i - 1][volcan_j].getTerrain() != Hexagone.VIDE ||
-                    plateau[volcan_i + 1][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[volcan_i + 1][volcan_j].getTerrain() != Hexagone.VIDE ||
+                return plateau[volcan_i - 1][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
+                        plateau[volcan_i - 1][volcan_j].getTerrain() != Hexagone.VIDE ||
+                        plateau[volcan_i + 1][volcan_j + 1].getTerrain() != Hexagone.VIDE ||
+                        plateau[volcan_i + 1][volcan_j].getTerrain() != Hexagone.VIDE ||
 
-                    plateau[tile1_i - 1][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile1_i - 1][tile1_j].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile1_i + 1][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile1_i + 1][tile1_j].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile1_i - 1][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile1_i - 1][tile1_j].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile1_i + 1][tile1_j + 1].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile1_i + 1][tile1_j].getTerrain() != Hexagone.VIDE ||
 
-                    plateau[tile2_i - 1][tile2_j + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile2_i - 1][tile2_j].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile2_i + 1][tile2_j + 1].getTerrain() != Hexagone.VIDE ||
-                    plateau[tile2_i + 1][tile2_j].getTerrain() != Hexagone.VIDE
-                )) {
-                    return false;
-                }
+                        plateau[tile2_i - 1][tile2_j + 1].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile2_i - 1][tile2_j].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile2_i + 1][tile2_j + 1].getTerrain() != Hexagone.VIDE ||
+                        plateau[tile2_i + 1][tile2_j].getTerrain() != Hexagone.VIDE;
             }
         }
 
         return true;
     }
     public boolean peutPlacerVillage(int x ,int y){
-        if(plateau[x][y].getTerrain()!=Hexagone.VOLCAN ||plateau[x][y].getBatiment()==Hexagone.VIDE){
-            return true;
-        }
-        return false;
+        return plateau[x][y].getTerrain() != Hexagone.VOLCAN || plateau[x][y].getBatiment() == Hexagone.VIDE;
 
     }
     public boolean VillageQuestionMarK(int x , int y){
-        if (plateau[x][y].getBatiment()==Hexagone.MAISON){
-            return true;
-        }else{
-            return false;
-        }
+        return plateau[x][y].getBatiment() == Hexagone.MAISON;
 
     }
     public ArrayList<Integer> propagation (int x, int y ){
@@ -346,10 +321,7 @@ public class Plateau implements Serializable, Cloneable {
 
 
     public boolean estCaseHorsPlateau(int l, int c){
-        if(l<0 || l>=LIGNES || c<0 || c>=COLONNES){
-            return true;
-        }
-        return false;
+        return l < 0 || l >= LIGNES || c < 0 || c >= COLONNES;
     }
 
     public boolean estHexagoneVide(int l, int c){
@@ -359,10 +331,7 @@ public class Plateau implements Serializable, Cloneable {
         if(plateau[l][c].getTerrain()==Hexagone.VIDE){
             return true;
         }
-        if(plateau[l][c].getTerrain()==Hexagone.WATER){
-            return true;
-        }
-        return false;
+        return plateau[l][c].getTerrain() == Hexagone.WATER;
     }
     public boolean estVolcan(int l, int c){
         return plateau[l][c].getTerrain() == Hexagone.VOLCAN;
@@ -490,9 +459,10 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public boolean estVide(){
-        for(int i=0;i<plateau.length;i++){
-            for(int j=0;j<plateau[0].length;j++){
-                if(plateau[i][j].getTerrain()!=Hexagone.VIDE && plateau[i][j].getTerrain()!=Hexagone.WATER) return false;
+        for (Hexagone[] hexagones : plateau) {
+            for (int j = 0; j < plateau[0].length; j++) {
+                if (hexagones[j].getTerrain() != Hexagone.VIDE && hexagones[j].getTerrain() != Hexagone.WATER)
+                    return false;
             }
         }
         return true;
@@ -510,17 +480,11 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public boolean annuler() {
-        if (peutAnnuler()) {
-            return true;
-        }
-        return false;
+        return peutAnnuler();
     }
 
     public boolean refaire() {
-        if (peutRefaire()) {
-            return true;
-        }
-        return false;
+        return peutRefaire();
     }
 
     public ArrayList<TripletDePosition> getTripletsPossibles(){
@@ -537,52 +501,34 @@ public class Plateau implements Serializable, Cloneable {
         return nouveauPlateau;
     }
 
-    @Override
-    protected Plateau clone() throws CloneNotSupportedException {
-        Plateau plateau = new Plateau();
-        plateau.plateau = copyPlateauMap(this.plateau);
-        plateau.historique = this.historique.copy();
-        byte[][] nbPions = copyPions();
-        plateau.nbPionsJ1 = nbPions[0];
-        plateau.nbPionsJ2 = nbPions[1];
-        plateau.positions_libres = new ArrayList<>();
-        plateau.positions_libres_batiments = new ArrayList<>();
-        plateau.tripletsPossible = new ArrayList<>();
-        return plateau;
-    }
-
     private byte[][] copyPions() {
         byte[][] nbPions = new byte[2][3];
 
-        for (int i = 0; i < this.nbPionsJ1.length; i++) {
-            nbPions[0][i] = this.nbPionsJ1[i];
-        }
-        for (int i = 0; i < this.nbPionsJ2.length; i++) {
-            nbPions[1][i] = this.nbPionsJ2[i];
-        }
+        System.arraycopy(this.nbPionsJ1, 0, nbPions[0], 0, this.nbPionsJ1.length);
+        System.arraycopy(this.nbPionsJ2, 0, nbPions[1], 0, this.nbPionsJ2.length);
         return nbPions;
     }
 
     private ArrayList<Position> copyPositionsLibres() {
         ArrayList<Position> positions_libres = new ArrayList<>();
-        for (int i = 0; i < this.positions_libres.size(); i++) {
-           positions_libres.add(this.positions_libres.get(i).copy());
+        for (Position positions_libre : this.positions_libres) {
+            positions_libres.add(positions_libre.copy());
         }
         return positions_libres;
     }
 
     private ArrayList<Position> copyPositionsLibresBatiment() {
         ArrayList<Position> positions_libres_batiments = new ArrayList<>();
-        for (int i = 0; i < this.positions_libres_batiments.size(); i++) {
-            positions_libres_batiments.add(this.positions_libres_batiments.get(i).copy());
+        for (Position positions_libres_batiment : this.positions_libres_batiments) {
+            positions_libres_batiments.add(positions_libres_batiment.copy());
         }
         return positions_libres_batiments;
     }
 
     private ArrayList<TripletDePosition> copyTripletPossibles() {
         ArrayList<TripletDePosition> tripletsPossible = new ArrayList<>();
-        for (int i = 0; i < this.tripletsPossible.size(); i++) {
-            tripletsPossible.add(this.tripletsPossible.get(i).copy());
+        for (TripletDePosition tripletDePosition : this.tripletsPossible) {
+            tripletsPossible.add(tripletDePosition.copy());
         }
         return tripletsPossible;
     }

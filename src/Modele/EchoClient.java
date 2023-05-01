@@ -2,14 +2,13 @@ package Modele;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoClient implements Runnable{
     Socket socket_client;
     InputStream in;
-    String ip_serveur;
-    int port_serveur;
+    final String ip_serveur;
+    final int port_serveur;
 
     public EchoClient(String ip, int p) {
         ip_serveur = ip;
@@ -20,7 +19,7 @@ public class EchoClient implements Runnable{
         try{
             ObjectInputStream ois = new ObjectInputStream(in);
             Coup c = (Coup) ois.readObject();
-            System.out.println("Coup reçu : " + c);
+            System.out.println("Coup reï¿½u : " + c);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

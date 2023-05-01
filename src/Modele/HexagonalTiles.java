@@ -1,13 +1,9 @@
 package Modele;
 
 import Controleur.ControleurMediateur;
-import Modele.Hexagone;
-import Modele.ImageLoader;
 import Structures.TripletDePosition;
 import Vue.TEngine;
-import Vue.TEngine.*;
 import Vue.TEngineListener;
-import Vue.TEngineListener.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import static Modele.Camera.*;
-import static Modele.Camera.zoomFactor;
 import static Modele.GameState.*;
-import static Modele.GameState.enSelection;
 import static Modele.ImageLoader.*;
-import static Modele.ImageLoader.voidTile;
 
 public class HexagonalTiles extends JPanel {
     /////////////////////////////////////////////////////
@@ -28,22 +21,53 @@ public class HexagonalTiles extends JPanel {
     public TEngineListener.MouseHandler handler;
     public TEngineListener.KeyboardListener keyboardlisten;
 
-    ControleurMediateur controleur;
-    public TEngine tengine;
-    public Jeu jeu;
+    final ControleurMediateur controleur;
+    public final TEngine tengine;
+    public final Jeu jeu;
 
     public HexagonalTiles(TEngine t, ControleurMediateur controleur, Jeu jeu) {
-        tengine = t;
+        this.tengine = t;
         this.controleur = controleur;
         this.jeu = jeu;
+        this.setOpaque(false);
 
-        setOpaque(false);
         initCameraPosition();
 
         initTripletHover();
         initCouleursJoueurs();
 
         poseTile = true;
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+        changerTuileAPoser();
+        changerPoseTile();
+
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(cameraOffset.x, cameraOffset.y);
+        g2d.scale(zoomFactor, zoomFactor);
+
+        displayHexagonMap(g);
+
+        if(poseTile) displayHoverTile(g);
+        else displayHoverMaison(g);
+
+        //affichage des boutons et des encadrés
+        //afficheJoueurCourant(g);
+    }
+
+
+    private void displayHexagonMap(Graphics g) {
+        Hexagone[][] map = controleur.getPlateau();
+        int tileWidth = voidTile.getWidth();
+        int tileHeight = voidTile.getWidth();
+        int verticalOffset = (int) (tileHeight * 0.75);
+
+        parcoursPlateau(g, map, tileWidth, verticalOffset);
     }
 
     private void initCameraPosition() {
@@ -104,38 +128,9 @@ public class HexagonalTiles extends JPanel {
         poseTile = jeu.doit_placer_tuile();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-
-        changerTuileAPoser();
-        changerPoseTile();
-
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(cameraOffset.x, cameraOffset.y);
-        g2d.scale(zoomFactor, zoomFactor);
-
-        displayHexagonMap(g);
-
-        if(poseTile) displayHoverTile(g);
-        else displayHoverMaison(g);
-
-        //affichage des boutons et des encadrés
-        //afficheJoueurCourant(g);
-    }
-
-    private void displayHexagonMap(Graphics g) {
-        Hexagone[][] map = controleur.getPlateau();
-        int tileWidth = voidTile.getWidth();
-        int tileHeight = voidTile.getWidth();
-        int verticalOffset = (int) (tileHeight * 0.75);
-
-        parcoursPlateau(g, map, tileWidth, verticalOffset);
-    }
-
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
+        for (int i = Math.abs(cameraOffset.y/tileWidth) - 2; i < map.length; i++) {
+            for (int j = Math.abs(cameraOffset.x/tileWidth) - 2; j < map[0].length; j++) {
                 int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
@@ -146,6 +141,8 @@ public class HexagonalTiles extends JPanel {
                 BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                 g.drawImage(tile, x , y - heightoffset, null);
 
+
+                // TODO optimiser l'affichage, ces fonctions font lag
                 afficheFiltresTileMode(g, map, i, j, x, y, heightoffset);
                 afficheNumerosNiveaux(g, map, i, j, x, y, heightoffset);
                 afficheBatiments(g, map, i, j, x, y, heightoffset);
@@ -154,45 +151,91 @@ public class HexagonalTiles extends JPanel {
         }
     }
 
-    private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
-        int j2 = convertionTileMapToHexagonal(i, j);
-        if (i > 1 && j > 1 && i < map.length - 1 && j < map[0].length - 1) {
-            contour(g, map, i, j, x, y, heightoffset, j - 1, map[i], plateau_Gauche);
-            contour(g, map, i, j, x, y, heightoffset, j + 1, map[i], plateau_Droite);
-            contour(g, map, i - 1, j, x, y, heightoffset, j2, map[i], plateau_hautGauche);
-            contour(g, map, i - 1, j, x, y, heightoffset, j2 + 1, map[i], plateau_hautDroite);
-            contour(g, map, i + 1, j, x, y, heightoffset, j2, map[i], plateau_basGauche);
-            contour(g, map, i + 1, j, x, y, heightoffset, j2 + 1, map[i], plateau_basDroite);
+    private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset) {
+        int colonneConvertieHex = convertionTileMapToHexagonal(ligne, colonne);
+        if (ligne > 1 && colonne > 1 && ligne < map.length - 1 && colonne < map[0].length - 1) {
+
+            String direction = "gauche";
+            contour(g, map, ligne, colonne, xDrawPosition, yDrawPosition, heightoffset, colonne - 1, map[ligne],direction);
+
+            direction = "droite";
+            contour(g, map, ligne, colonne, xDrawPosition, yDrawPosition, heightoffset, colonne + 1, map[ligne], direction);
+
+            direction = "hautGauche";
+            contour(g, map, ligne - 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex, map[ligne], direction);
+
+            direction = "hautDroite";
+            contour(g, map, ligne - 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex + 1, map[ligne], direction);
+
+            direction = "basGauche";
+            contour(g, map, ligne + 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex, map[ligne], direction);
+
+            direction = "basDroite";
+            contour(g, map, ligne + 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex + 1, map[ligne], direction);
         }
     }
 
-    private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, BufferedImage plateau_gauche) {
+    private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, String direction) {
         if (map[i][i2].getHauteur() < hexagones[j].getHauteur()) {
+            BufferedImage etage_1;
+            BufferedImage etage_2;
+            BufferedImage etage_3;
+
+            switch (direction) {
+                case "gauche":
+                    etage_1 = plateau_Gauche_etage1;
+                    etage_2 = plateau_Gauche_etage2;
+                    etage_3 = plateau_Gauche_etage3;
+                    break;
+
+                case "droite":
+                    etage_1 = plateau_Droite_etage1;
+                    etage_2 = plateau_Droite_etage2;
+                    etage_3 = plateau_Droite_etage3;
+                    break;
+
+                case "hautGauche":
+                    etage_1 = plateau_hautGauche_etage1;
+                    etage_2 = plateau_hautGauche_etage2;
+                    etage_3 = plateau_hautGauche_etage3;
+                    break;
+
+                case "hautDroite":
+                    etage_1 = plateau_hautDroite_etage1;
+                    etage_2 = plateau_hautDroite_etage2;
+                    etage_3 = plateau_hautDroite_etage3;
+                    break;
+
+                case "basGauche":
+                    etage_1 = plateau_basGauche_etage1;
+                    etage_2 = plateau_basGauche_etage2;
+                    etage_3 = plateau_basGauche_etage3;
+                    break;
+
+                default:
+                    etage_1 = plateau_basDroite_etage1;
+                    etage_2 = plateau_basDroite_etage2;
+                    etage_3 = plateau_basDroite_etage3;
+                    break;
+            }
+
             if (hexagones[j].getHauteur() == 1) {
-                g.drawImage(applyBlueFilter(plateau_gauche), x, y - heightoffset + 55, null);
+                g.drawImage(etage_1, x, y - heightoffset + 55, null);
             } else if (hexagones[j].getHauteur() == 2) {
-                g.drawImage(applyYellowFilter(plateau_gauche), x, y - heightoffset + 55, null);
+                g.drawImage(etage_2, x, y - heightoffset + 55, null);
             } else if (hexagones[j].getHauteur() == 3) {
-                g.drawImage(applyRedFilter(plateau_gauche), x, y - heightoffset + 55, null);
+                g.drawImage(etage_3, x, y - heightoffset + 55, null);
             }
         }
     }
 
+    // TODO optimiser colorFilters
     private void afficheBatiments(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
         BufferedImage tile;
-        if (map[i][j].getBatiment() == Hexagone.MAISON) {
+        if (map[i][j].getBatiment() != Hexagone.CHOISIR_MAISON) {
             tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-            g.drawImage(applyColorFilter(tile, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_FORET) {
-            g.drawImage(applyColorFilter(templeJungle, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PRAIRIE) {
-            g.drawImage(applyColorFilter(templePrairie, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_PIERRE) {
-            g.drawImage(applyColorFilter(templePierre, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TEMPLE_SABLE) {
-            g.drawImage(applyColorFilter(templeSable, map[i][j].getNumJoueur()), x, y - heightoffset, null);
-        } else if (map[i][j].getBatiment() == Hexagone.TOUR) {
-            g.drawImage(applyColorFilter(tour, map[i][j].getNumJoueur()), x, y - heightoffset, null);
+            g.drawImage(getBatimentFromPlayerId(map[i][j].getNumJoueur(), (byte) map[i][j].getBatiment()), x, y - heightoffset, null);
+
         } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
             int pos_x = x -150;
             int pos_y = y -300;
@@ -381,36 +424,7 @@ public class HexagonalTiles extends JPanel {
 
             float opacity = 1f;
 
-            if (scrollValue == 1) {
-                if (!controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
-                    opacity = 0.4f;
-                }
-            }
-            else if (scrollValue == 2){
-                if (!controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
-                    opacity = 0.4f;
-                }
-            }
-            else if (scrollValue == 3){
-                if (!controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
-                    opacity = 0.4f;
-                }
-            }
-            else if (scrollValue == 4){
-                if (!controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
-                    opacity = 0.4f;
-                }
-            }
-            else if (scrollValue == 5){
-                if (!controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
-                    opacity = 0.4f;
-                }
-            }
-            else if (scrollValue == 6){
-                if (!controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
-                    opacity = 0.4f;
-                }
-            }
+            opacity = updateOpacite(i, j, j2, opacity);
             if (opacity != 1f) {
                 if (tile1 != null) {
                     tile1 = applyRedFilter(tile1);
@@ -432,46 +446,78 @@ public class HexagonalTiles extends JPanel {
                 tile3 = ImageLoader.getReducedOpacityImage(tile3, opacity);
             }
 
-            int heightoffset1 = 1;
-            int heightoffset2 = 1;
-            int heightoffset3 = 1;
-            heightoffset1 *= 30;
-            heightoffset2 *= 30;
-            heightoffset3 *= 30;
-
-            if (scrollValue == 1) {
-                g.drawImage(tile2, x - tileWidth/2, y - verticalOffset -  heightoffset2, null);
-                g.drawImage(tile3, x + tileWidth/2, y - verticalOffset - heightoffset3, null);
-                g.drawImage(tile1, x , y - heightoffset1, null);
-            }
-            else if (scrollValue == 2){
-                g.drawImage(tile2, x + tileWidth/2, y - verticalOffset -  heightoffset2, null);
-                g.drawImage(tile3, x + tileWidth, y - heightoffset3, null);
-                g.drawImage(tile1, x , y - heightoffset1, null);
-
-            }
-            else if (scrollValue == 3){
-                g.drawImage(tile1, x , y - heightoffset1, null);
-                g.drawImage(tile2, x + tileWidth, y -  heightoffset2, null);
-                g.drawImage(tile3, x +  tileWidth /2, y + verticalOffset - heightoffset3, null);
-            }
-            else if (scrollValue == 4){
-                g.drawImage(tile1, x , y - heightoffset1, null);
-                g.drawImage(tile2, x + tileWidth/2, y + verticalOffset -  heightoffset2, null);
-                g.drawImage(tile3, x - tileWidth/2, y + verticalOffset - heightoffset3, null);
-            }
-            else if (scrollValue == 5){
-                g.drawImage(tile1, x , y - heightoffset1, null);
-                g.drawImage(tile3, x - tileWidth, y - heightoffset3, null);
-                g.drawImage(tile2, x - tileWidth/2, y + verticalOffset -  heightoffset2, null);
-            }
-            else if (scrollValue == 6){
-                g.drawImage(tile3, x - tileWidth/2, y - verticalOffset - heightoffset3, null);
-                g.drawImage(tile2, x - tileWidth, y -  heightoffset2, null);
-                g.drawImage(tile1, x , y - heightoffset1, null);
-
-            }
+            afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
         }
+    }
+
+    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int x, int y, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3) {
+        int heightoffset1 = 1;
+        int heightoffset2 = 1;
+        int heightoffset3 = 1;
+        heightoffset1 *= 30;
+        heightoffset2 *= 30;
+        heightoffset3 *= 30;
+
+        if (scrollValue == 1) {
+            g.drawImage(tile2, x - tileWidth /2, y - verticalOffset -  heightoffset2, null);
+            g.drawImage(tile3, x + tileWidth /2, y - verticalOffset - heightoffset3, null);
+            g.drawImage(tile1, x, y - heightoffset1, null);
+        }
+        else if (scrollValue == 2){
+            g.drawImage(tile2, x + tileWidth /2, y - verticalOffset -  heightoffset2, null);
+            g.drawImage(tile3, x + tileWidth, y - heightoffset3, null);
+            g.drawImage(tile1, x, y - heightoffset1, null);
+
+        }
+        else if (scrollValue == 3){
+            g.drawImage(tile1, x, y - heightoffset1, null);
+            g.drawImage(tile2, x + tileWidth, y -  heightoffset2, null);
+            g.drawImage(tile3, x +  tileWidth /2, y + verticalOffset - heightoffset3, null);
+        }
+        else if (scrollValue == 4){
+            g.drawImage(tile1, x, y - heightoffset1, null);
+            g.drawImage(tile2, x + tileWidth /2, y + verticalOffset -  heightoffset2, null);
+            g.drawImage(tile3, x - tileWidth /2, y + verticalOffset - heightoffset3, null);
+        }
+        else if (scrollValue == 5){
+            g.drawImage(tile1, x, y - heightoffset1, null);
+            g.drawImage(tile3, x - tileWidth, y - heightoffset3, null);
+            g.drawImage(tile2, x - tileWidth /2, y + verticalOffset -  heightoffset2, null);
+        }
+        else if (scrollValue == 6){
+            g.drawImage(tile3, x - tileWidth /2, y - verticalOffset - heightoffset3, null);
+            g.drawImage(tile2, x - tileWidth, y -  heightoffset2, null);
+            g.drawImage(tile1, x, y - heightoffset1, null);
+        }
+    }
+
+    private float updateOpacite(int i, int j, int j2, float opacity) {
+        if (scrollValue == 1) {
+            opacity = changeOpacitePeutPasplacerTuile(i, j, j2, opacity, i - 1, i - 1, j2 + 1);
+        }
+        else if (scrollValue == 2){
+            opacity = changeOpacitePeutPasplacerTuile(i, j, j2 + 1, opacity, i - 1, i, j + 1);
+        }
+        else if (scrollValue == 3){
+            opacity = changeOpacitePeutPasplacerTuile(i, j, j + 1, opacity, i, i + 1, j2 + 1);
+        }
+        else if (scrollValue == 4){
+            opacity = changeOpacitePeutPasplacerTuile(i, j, j2 + 1, opacity, i + 1, i + 1, j2);
+        }
+        else if (scrollValue == 5){
+            opacity = changeOpacitePeutPasplacerTuile(i, j, j2, opacity, i + 1, i, j - 1);
+        }
+        else if (scrollValue == 6){
+            opacity = changeOpacitePeutPasplacerTuile(i, j, j - 1, opacity, i, i - 1, j2);
+        }
+        return opacity;
+    }
+
+    private float changeOpacitePeutPasplacerTuile(int i, int j, int j2, float opacity, int i2, int i3, int i4) {
+        if (!controleur.peutPlacerTuile(i, j, i2, j2, i3, i4)) {
+            opacity = 0.4f;
+        }
+        return opacity;
     }
 
 
@@ -516,37 +562,31 @@ public class HexagonalTiles extends JPanel {
         int j_modified = convertionTileMapToHexagonal(i, j);
 
         if (scrollValue == 1) {
-            if (controleur.peutPlacerTuile(i, j, i - 1, j_modified, i - 1, j_modified + 1)) {
-                controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
-            }
+            placeEtageSiPossible(i, j, j_modified, i - 1, i - 1, j_modified + 1);
         }
         else if (scrollValue == 2){
-            if (controleur.peutPlacerTuile(i, j, i - 1, j_modified + 1, i, j + 1)) {
-                controleur.placeEtage(i, j, i - 1, j_modified + 1, triplet[1][0], i, j + 1, triplet[2][0]);
-            }
+            placeEtageSiPossible(i, j, j_modified + 1, i - 1, i, j + 1);
         }
         else if (scrollValue == 3){
-            if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j_modified + 1)) {
-                controleur.placeEtage(i, j, i, j + 1, triplet[1][0], i + 1, j_modified + 1, triplet[2][0]);
-            }
+            placeEtageSiPossible(i, j, j + 1, i, i + 1, j_modified + 1);
         }
         else if (scrollValue == 4){
-            if (controleur.peutPlacerTuile(i, j, i + 1, j_modified + 1, i + 1, j_modified)) {
-                controleur.placeEtage(i, j, i + 1, j_modified + 1, triplet[1][0], i + 1, j_modified, triplet[2][0]);
-            }
+            placeEtageSiPossible(i, j, j_modified + 1, i + 1, i + 1, j_modified);
         }
         else if (scrollValue == 5){
-            if (controleur.peutPlacerTuile(i, j, i + 1, j_modified, i, j - 1)) {
-                controleur.placeEtage(i, j, i + 1, j_modified, triplet[1][0], i, j - 1, triplet[2][0]);
-            }
+            placeEtageSiPossible(i, j, j_modified, i + 1, i, j - 1);
         }
         else if (scrollValue == 6){
-            if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j_modified)) {
-                controleur.placeEtage(i, j, i, j - 1, triplet[1][0], i - 1, j_modified, triplet[2][0]);
-            }
+            placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified);
         }
 
         miseAJour();
+    }
+
+    private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
+        if (controleur.peutPlacerTuile(i, j, i2, j_modified, i3, i4)) {
+            controleur.placeEtage(i, j, i2, j_modified, triplet[1][0], i3, i4, triplet[2][0]);
+        }
     }
 
     private boolean possedeBatiment(int i,int j){
@@ -600,47 +640,59 @@ public class HexagonalTiles extends JPanel {
     public void addToCursor(MouseEvent e) {
         if(!jeu.estJoueurCourantUneIA()){
             if (SwingUtilities.isLeftMouseButton(e)) {
-                int tileWidth = voidTile.getWidth();
-                int tileHeight = voidTile.getWidth();
-                int verticalOffset = (int) (tileHeight * 0.75);
-
-                Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
-                        (int) ((e.getY() - cameraOffset.y) / zoomFactor));
-
-                // Convertir les coordonnées du système de pixels en coordonnées du système de grille
-                int i = clickPositionAdjusted.y / verticalOffset;
-                int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-
-                if(poseTile) placerTuiles(i,j);
-                else{
-                    if(!enSelection){
-                        if (controleur.peutPlacerBatiment(i, j)) {
-                            posBat_x = i;
-                            posBat_y = j;
-                            enSelection = true;
-                            controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
-                        }
-                    }else{
-                        placerMaison(posBat_x,posBat_y);
-                    }
-                }
-                unefoisIA=true;
-                miseAJour();
+                actionsClicGauche(e);
             }
+        }
+    }
+
+    private void actionsClicGauche(MouseEvent e) {
+        int tileWidth = voidTile.getWidth();
+        int tileHeight = voidTile.getWidth();
+        int verticalOffset = (int) (tileHeight * 0.75);
+
+        Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
+                (int) ((e.getY() - cameraOffset.y) / zoomFactor));
+
+        // Convertir les coordonnées du système de pixels en coordonnées du système de grille
+        int i = clickPositionAdjusted.y / verticalOffset;
+        int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+
+        if(poseTile) placerTuiles(i,j);
+        else{
+            placeBatiment(i, j);
+        }
+        unefoisIA=true;
+        miseAJour();
+    }
+
+    private void placeBatiment(int i, int j) {
+        if(!enSelection){
+            if (controleur.peutPlacerBatiment(i, j)) {
+                posBat_x = i;
+                posBat_y = j;
+                enSelection = true;
+                controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+            }
+        }else{
+            placerMaison(posBat_x,posBat_y);
         }
     }
 
     public void annuleConstruction(MouseEvent e){
         if (SwingUtilities.isRightMouseButton(e)) {
             if(enSelection){
-                byte numJoueur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getNumJoueur();
-                byte hauteur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getHauteur();
-                byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getTerrain();
-                int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanI();
-                int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanJ();
-                jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
-                enSelection=false;
+                annulationConstruction();
             }
         }
+    }
+
+    private void annulationConstruction() {
+        byte numJoueur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getNumJoueur();
+        byte hauteur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getHauteur();
+        byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getTerrain();
+        int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanI();
+        int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanJ();
+        jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
+        enSelection=false;
     }
 }

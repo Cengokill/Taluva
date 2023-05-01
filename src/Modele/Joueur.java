@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Joueur {
-    private byte type_bat;
+    private final byte type_bat;
     private String prenom;
     private String couleur;
     //définit le nombre de bâtiments initial

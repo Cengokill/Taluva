@@ -27,8 +27,6 @@ public class Historique implements Serializable {
         //System.out.println("On refait, taille de futur : " + futur.size());
         Coup tete = futur.removeFirst();
         passe.addFirst(tete);
-        //System.out.println("tete vide ? " + tete.estVide());
-        //System.out.println("taille de futur : " + futur.size());
         return tete;
     }
 

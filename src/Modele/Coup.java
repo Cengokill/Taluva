@@ -7,8 +7,8 @@ public class Coup implements Serializable {
     public static final byte TUILE = 0;
     public static final byte BATIMENT = 1;
 
-    byte type;//0 : placer une tuile, 1 : placer un bâtiment
-    byte num_joueur;
+    final byte type;//0 : placer une tuile, 1 : placer un bâtiment
+    final byte num_joueur;
 
     int volcan_x;
     int volcan_y;
