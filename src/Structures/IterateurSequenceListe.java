@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 class IterateurSequenceListe<T> implements Iterateur<T> {
 
-    SequenceListe<T> e;
+    final SequenceListe<T> e;
     Maillon<T> pprec, prec, courant;
     boolean last;
 

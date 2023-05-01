@@ -1,6 +1,7 @@
 import Controleur.ControleurMediateur;
 import Modele.EchoClient;
 import Modele.EchoServeur;
+import Modele.ImageLoader;
 import Modele.Jeu;
 import Vue.TEngine;
 
@@ -16,6 +17,6 @@ public class TaluvaMain {
         t.start();
 
         TEngine fenetre = new TEngine(jeu, controler);
-        fenetre.setVisible(true);
+        ImageLoader.loadImages();
     }
 }

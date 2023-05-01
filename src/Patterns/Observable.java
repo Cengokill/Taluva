@@ -3,10 +3,9 @@ package Patterns;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Observable {
-    List<Observateur> observateurs;
+    final List<Observateur> observateurs;
 
     public Observable() {
         observateurs = new ArrayList<>();

@@ -7,7 +7,7 @@ import java.net.Socket;
 public class EchoServeur implements Runnable{
     ServerSocket socket_serveur;
     Socket socket_client;
-    int port_serveur;
+    final int port_serveur;
 
     public EchoServeur(int p) {
         port_serveur = p;
@@ -17,7 +17,7 @@ public class EchoServeur implements Runnable{
         try{
             OutputStream out = socket_client.getOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(out);
-            System.out.println("Coup envoyé : " + c);
+            System.out.println("Coup envoyï¿½ : " + c);
             oos.writeObject(c);
             oos.flush();//on vide le buffer
         } catch (IOException e) {

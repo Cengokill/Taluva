@@ -2,29 +2,38 @@ package Modele;
 
 import Patterns.Observable;
 
+import javax.swing.*;
 import java.util.Collections;
 import java.util.LinkedList;
 
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
-    IA IA1, IA2;
+    final IA IA1;
+    IA IA2;
     byte jCourant;
     byte jVainqueur;
-    Joueur[] joueurs = new Joueur[2];
+    final Joueur[] joueurs = new Joueur[2];
+
+    final Object[] joueursObjet = new Object[2];
     Parametres p;
-    int[]score = new int[2];
-    byte[] tuile_a_poser = new byte[5];
+    final int[]score = new int[2];
+    final byte[] tuile_a_poser = new byte[5];
 
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
 
-    LinkedList<Tuile> pioche;
-    private static int TAILLE_PIOCHE = 24;
+    final LinkedList<Tuile> pioche;
+    private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
-        jCourant = (byte) ((int)(Math.random() * 2));
-        pioche = new LinkedList<Tuile>();
+        //jCourant = (byte) ((int)(Math.random() * 2));
+        jCourant = 1;
+        IA1 = IA.nouvelle(this,this.p);
+        joueursObjet[0] = joueur1;
+        joueursObjet[1] = IA1;
+
+        pioche = new LinkedList<>();
         lancePartie();
     }
 
@@ -34,6 +43,42 @@ public class Jeu extends Observable {
         plateau = new Plateau();
         doit_placer_tuile = true;
         doit_placer_batiment = false;
+        pioche();
+
+        if (estJoueurCourantUneIA()) {
+            // Pour pas que l'IA joue directement
+            // Attendez un certain temps avant d'ex�cuter l'action finale
+            int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
+            Timer timer = new Timer(delai, e -> joueIA());
+            timer.setRepeats(false); // Ne r�p�tez pas l'action finale, ex�cutez-l� une seule fois
+            timer.start(); // D�marrez le timer
+        }
+
+    }
+
+    public boolean estJoueurCourantUneIA() {
+        return joueursObjet[jCourant] instanceof IA;
+    }
+
+    public void joueIA() {
+        if (!estJoueurCourantUneIA()) {
+            return;
+        }
+        Coup c = ((IA)joueursObjet[jCourant]).joue(); // tuiles
+        if (!getPlateau().estPlaceLibre(c.volcan_x,c.volcan_y)) {
+            System.out.println("pas libre A DEBUGGER");
+            return;
+        }
+        getPlateau().joueCoup(c);   // place la plateforme
+        doit_placer_batiment = true;
+        doit_placer_tuile = false;
+
+        c = ((IA)joueursObjet[jCourant]).joue(); // batiment
+        //getPlateau().joueCoup(c);
+        joueurPlaceBatiment(c.batiment_x,c.batiment_y,c.type);
+        doit_placer_batiment = false;
+        doit_placer_tuile = true;
+        //changeJoueur();
         pioche();
     }
 
@@ -55,10 +100,7 @@ public class Jeu extends Observable {
             jVainqueur = jCourant;
             return true;
         }
-        if(pioche.isEmpty()){
-            return true;
-        }
-        return false;
+        return pioche.isEmpty();
     }
 
     public boolean doit_placer_tuile() {
@@ -74,6 +116,7 @@ public class Jeu extends Observable {
             return false;
         }
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+
         doit_placer_batiment = true;
         doit_placer_tuile = false;
         return true;
@@ -85,19 +128,32 @@ public class Jeu extends Observable {
         }
         plateau.placeBatiment(jCourant, i,j, type_bat);
         if(type_bat!=4){
-            if(type_bat == 0) {
+            if(getNumJoueurCourant()==0) plateau.nb_bat_j1++;
+            if(getNumJoueurCourant()==1) plateau.nb_bat_j2++;
+
+            if(type_bat == 1) {
                 if(plateau.getHauteurTuile(i,j)==2) joueurs[jCourant].incrementeHutte();
                 if(plateau.getHauteurTuile(i,j)==3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
-            else if(type_bat == 1) {
+            else if(type_bat == 2) {
                 joueurs[jCourant].incrementeTemple();
             }
-            else if(type_bat == 2) {
+            else if(type_bat == 3) {
                 joueurs[jCourant].incrementeTour();
             }
+            /*System.out.println("//////////////////////// "+getNumJoueurCourant()+" //////////////////////");
+            System.out.println("score joueur 1 \n hut: "+joueurs[0].getNbHuttesPlacees());
+            System.out.println(" temples: "+joueurs[0].getNbTemplesPlaces());
+            System.out.println(" tour: "+joueurs[0].getNbToursPlacees());
+
+            System.out.println("score joueur 2 \n hut: "+joueurs[1].getNbHuttesPlacees());
+            System.out.println(" temples: "+joueurs[1].getNbTemplesPlaces());
+            System.out.println(" tour: "+joueurs[1].getNbToursPlacees());
+            System.out.println("//////////////////////////////////////////////////////");*/
             doit_placer_batiment = false;
             doit_placer_tuile = true;
+            changeJoueur();
         }
     }
 
@@ -138,7 +194,6 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-        
     }
 
     public void refaire() {
@@ -151,6 +206,10 @@ public class Jeu extends Observable {
     }
 
     public void reinitialise() {
+    }
+
+    public byte getNumJoueurCourant(){
+        return jCourant;
     }
 
     public Plateau getPlateau() {

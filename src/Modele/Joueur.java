@@ -1,18 +1,25 @@
 package Modele;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 public class Joueur {
-    private byte type_bat;
+    private final byte type_bat;
     private String prenom;
     private String couleur;
-    //d�finit le nombre de b�timents initial
+    //définit le nombre de bâtiments initial
     private int nbHuttes;
     private int nbTours;
     private int nbTemples;
-    //d�finit le nombre de b�timents plac�s en jeu
+    //définit le nombre de bâtiments placés en jeu
     private int nbToursPlacees;
     private int nbHuttesPlacees;
     private int nbTemplesPlaces;
     private int nbVillages;//nombre de villages construits
+    //Image de profil
+    private BufferedImage image;
 
     public Joueur(byte type, String prenom){
         this.type_bat = type;//0 pour humain, 1 pour IA
@@ -24,6 +31,21 @@ public class Joueur {
         nbHuttes = 20;
         nbTours = 3;
         nbTemples = 2;
+    }
+
+    public void setImage(String image_nom){
+        String CHEMIN = "ressources/";
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File(CHEMIN + image_nom + ".png"));
+        } catch (IOException e) {
+            System.err.println("Impossible de charger l'image " + CHEMIN + image_nom + ".png");
+        }
+        this.image = image;
+    }
+
+    public BufferedImage getImage(){
+        return image;
     }
 
     public void setPrenom(String prenom) {

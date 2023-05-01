@@ -19,13 +19,13 @@ public class Hexagone {
     public static final byte TOUR = 15;
     public static final byte CHOISIR_MAISON = 16;
 
-    private byte hauteur;
+    private final byte hauteur;
     private int IDvillage ;
-    private byte terrain;
-    private byte batiment;
-    private byte numero ;
-    private byte volcan_j;
-    private byte volcan_i;
+    private final byte terrain;
+    private byte batiment = 0;
+    private final byte numero ;
+    private final byte volcan_j;
+    private final byte volcan_i;
     private byte num_joueur;
 
     public Hexagone(byte hauteur, byte terrain, byte volcan_i, byte volcan_j) {
@@ -64,6 +64,15 @@ public class Hexagone {
         return volcan_i;
     }
 
+    public boolean HexagoneLibre(){
+        return terrain == 0;
+    }
+
     public int getBatiment() {return batiment;}
+
     public int getIDvillage (){return IDvillage;}
+
+    public Hexagone copy() {
+        return new Hexagone(num_joueur, hauteur, terrain, batiment, volcan_i, volcan_j);
+    }
 }

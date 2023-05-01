@@ -1,7 +1,5 @@
 package Structures;
 
-import Modele.Position;
-
 public class TripletDePosition {
     private Position x;
     private Position y;
@@ -38,5 +36,8 @@ public class TripletDePosition {
     }
 
 
-
+    public TripletDePosition copy() {
+        TripletDePosition tripletDePosition = new TripletDePosition(this.x, this.y, this.z);
+        return tripletDePosition;
+    }
 }
