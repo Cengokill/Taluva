@@ -2,6 +2,7 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.HexagonalTiles;
+import Modele.ImageLoader;
 import Modele.Jeu;
 
 import javax.swing.*;
@@ -88,6 +89,7 @@ public class FenetreJeu {
         buttonPanel = new JPanel(){
             @Override
             public void paint(Graphics g) {
+
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
 

@@ -18,5 +18,6 @@ public class TaluvaMain {
 
         FenetreJeu fenetre = new FenetreJeu(jeu, controler);
         ImageLoader.loadImages();
+        fenetre.hexTiles.repaint();
     }
 }

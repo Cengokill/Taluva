@@ -45,7 +45,9 @@ public class HexagonalTiles extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-
+        if (!ImageLoader.loaded) {
+            return;
+        }
         changerTuileAPoser();
         changerPoseTile();
 
@@ -386,6 +388,9 @@ public class HexagonalTiles extends JPanel {
     }
 
     public void updateCursorPosOnTiles(MouseEvent e) {
+        if (!ImageLoader.loaded) {
+            return;
+        }
         int tileWidth = voidTile.getWidth();
         int tileHeight = voidTile.getWidth();
         int verticalOffset = (int) (tileHeight * 0.75);

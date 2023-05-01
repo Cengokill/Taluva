@@ -10,7 +10,7 @@ import java.io.IOException;
 import static Modele.GameState.couleurs_joueurs;
 
 public class ImageLoader {
-
+    public static boolean loaded = false;
     public static BufferedImage
             maisonTile,
             maisonTileColor1,
@@ -81,6 +81,8 @@ public class ImageLoader {
         readBatimentsImages();
         readSelectionBatimentImage();
         readAndFilterContoursImages();
+
+        loaded = true;
     }
 
     private static void readSelectionBatimentImage() {
