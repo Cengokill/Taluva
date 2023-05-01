@@ -124,6 +124,9 @@ public class ImageLoader {
         if (batiment_id == Hexagone.TEMPLE_SABLE) {
             return getTempleSable(id_player);
         }
+        if (batiment_id == Hexagone.TOUR) {
+            return getTour(id_player);
+        }
         return null;
     }
 
@@ -132,6 +135,14 @@ public class ImageLoader {
             return templeSableColor1;
         } else {
             return templeSableColor2;
+        }
+    }
+
+    private static BufferedImage getTour(byte id_player) {
+        if (id_player == 0) {
+            return tourColor1;
+        } else {
+            return tourColor2;
         }
     }
 

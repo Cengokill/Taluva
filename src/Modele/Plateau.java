@@ -396,9 +396,9 @@ public class Plateau implements Serializable, Cloneable {
             } else if (coup.type == 3) {
                 batiment = Hexagone.TOUR;
             } else if (coup.type == 4){
-                batiment = Hexagone.CHOISIR_MAISON;
+                batiment = Hexagone.CHOISIR_BATIMENT;
             }
-            if(batiment!=Hexagone.CHOISIR_MAISON){
+            if(batiment!=Hexagone.CHOISIR_BATIMENT){
                 Position aSupprimer = new Position(coup.batiment_x,coup.batiment_y);
                 positions_libres_batiments.remove(aSupprimer);
             }

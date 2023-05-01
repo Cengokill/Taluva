@@ -2,8 +2,8 @@ package Modele;
 
 import Controleur.ControleurMediateur;
 import Structures.TripletDePosition;
-import Vue.TEngine;
-import Vue.TEngineListener;
+import Vue.FenetreJeu;
+import Vue.FenetreListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,15 +18,18 @@ public class HexagonalTiles extends JPanel {
     /////////////////////////////////////////////////////
     // HANDLER                                         //
     /////////////////////////////////////////////////////
-    public TEngineListener.MouseHandler handler;
-    public TEngineListener.KeyboardListener keyboardlisten;
+    public FenetreListener.MouseHandler handler;
+    public FenetreListener.KeyboardListener keyboardlisten;
 
     final ControleurMediateur controleur;
-    public final TEngine tengine;
+    public final FenetreJeu fenetreJeu;
     public final Jeu jeu;
 
-    public HexagonalTiles(TEngine t, ControleurMediateur controleur, Jeu jeu) {
-        this.tengine = t;
+    public final int HAUTEUR_ETAGE = 80;
+    public final int HAUTEUR_OCEAN = 50;
+
+    public HexagonalTiles(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
+        this.fenetreJeu = t;
         this.controleur = controleur;
         this.jeu = jeu;
         this.setOpaque(false);
@@ -230,19 +233,18 @@ public class HexagonalTiles extends JPanel {
     }
 
     // TODO optimiser colorFilters
-    private void afficheBatiments(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+    private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
-        if (map[i][j].getBatiment() != Hexagone.CHOISIR_MAISON) {
-            tile = getTileImageFromId(Hexagone.MAISON, map[i][j].getNum());
-            g.drawImage(getBatimentFromPlayerId(map[i][j].getNumJoueur(), (byte) map[i][j].getBatiment()), x, y - heightoffset, null);
+        if (map[ligne][colonne].getBatiment() != Hexagone.CHOISIR_BATIMENT) {
+            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment()), x, y - heightoffset, null);
 
-        } else if (map[i][j].getBatiment() == Hexagone.CHOISIR_MAISON) {
+        } else if (map[ligne][colonne].getBatiment() == Hexagone.CHOISIR_BATIMENT) {
             int pos_x = x -150;
             int pos_y = y -300;
             int value = scrollValue%3;
             if(value==1) value = 0;
             else if(value==0) value = 1;
-            int[] coups = coupJouable(i, j);
+            int[] coups = coupJouable(ligne, colonne);
 
             value = updateScrollValue(value, coups);
             choixBatiment(g, pos_x, pos_y, value, coups);
@@ -281,10 +283,10 @@ public class HexagonalTiles extends JPanel {
 
     private int calculHauteurAffichageHexagone(Hexagone[][] map, int i, int j) {
         int heightoffset = map[i][j].getHauteur();
-        heightoffset *= 80;
+        heightoffset *= HAUTEUR_ETAGE;
 
         if (map[i][j].getTerrain() == Hexagone.VIDE) {
-            heightoffset -= 50;
+            heightoffset -= HAUTEUR_OCEAN;
         }
         return heightoffset;
     }
@@ -390,7 +392,7 @@ public class HexagonalTiles extends JPanel {
 
         Point clickPositionAdjusted = new Point((int) ((e.getX() - cameraOffset.x) / zoomFactor),
                 (int) ((e.getY() - cameraOffset.y) / zoomFactor));
-        TEngine.LastPosition = clickPositionAdjusted;
+        FenetreJeu.LastPosition = clickPositionAdjusted;
 
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
@@ -424,6 +426,7 @@ public class HexagonalTiles extends JPanel {
 
             float opacity = 1f;
 
+            // TODO a optimiser
             opacity = updateOpacite(i, j, j2, opacity);
             if (opacity != 1f) {
                 if (tile1 != null) {
@@ -446,6 +449,7 @@ public class HexagonalTiles extends JPanel {
                 tile3 = ImageLoader.getReducedOpacityImage(tile3, opacity);
             }
 
+            y -= jeu.getPlateau().getPlateau()[i][j].getHauteur() * HAUTEUR_ETAGE;
             afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
         }
     }
