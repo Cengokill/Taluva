@@ -26,17 +26,48 @@ public class HexagonalTiles extends JPanel {
     public final Jeu jeu;
 
     public HexagonalTiles(TEngine t, ControleurMediateur controleur, Jeu jeu) {
-        tengine = t;
+        this.tengine = t;
         this.controleur = controleur;
         this.jeu = jeu;
+        this.setOpaque(false);
 
-        setOpaque(false);
         initCameraPosition();
 
         initTripletHover();
         initCouleursJoueurs();
 
         poseTile = true;
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+        changerTuileAPoser();
+        changerPoseTile();
+
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(cameraOffset.x, cameraOffset.y);
+        g2d.scale(zoomFactor, zoomFactor);
+
+        displayHexagonMap(g);
+
+        if(poseTile) displayHoverTile(g);
+        else displayHoverMaison(g);
+
+        //affichage des boutons et des encadrés
+        //afficheJoueurCourant(g);
+    }
+
+
+    private void displayHexagonMap(Graphics g) {
+        Hexagone[][] map = controleur.getPlateau();
+        int tileWidth = voidTile.getWidth();
+        int tileHeight = voidTile.getWidth();
+        int verticalOffset = (int) (tileHeight * 0.75);
+
+        parcoursPlateau(g, map, tileWidth, verticalOffset);
     }
 
     private void initCameraPosition() {
@@ -97,35 +128,6 @@ public class HexagonalTiles extends JPanel {
         poseTile = jeu.doit_placer_tuile();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-
-        changerTuileAPoser();
-        changerPoseTile();
-
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(cameraOffset.x, cameraOffset.y);
-        g2d.scale(zoomFactor, zoomFactor);
-
-        displayHexagonMap(g);
-
-        if(poseTile) displayHoverTile(g);
-        else displayHoverMaison(g);
-
-        //affichage des boutons et des encadrés
-        //afficheJoueurCourant(g);
-    }
-
-    private void displayHexagonMap(Graphics g) {
-        Hexagone[][] map = controleur.getPlateau();
-        int tileWidth = voidTile.getWidth();
-        int tileHeight = voidTile.getWidth();
-        int verticalOffset = (int) (tileHeight * 0.75);
-
-        parcoursPlateau(g, map, tileWidth, verticalOffset);
-    }
-
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
         for (int i = Math.abs(cameraOffset.y/tileWidth) - 2; i < map.length; i++) {
             for (int j = Math.abs(cameraOffset.x/tileWidth) - 2; j < map[0].length; j++) {
@@ -139,6 +141,8 @@ public class HexagonalTiles extends JPanel {
                 BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
                 g.drawImage(tile, x , y - heightoffset, null);
 
+
+                // TODO optimiser l'affichage, ces fonctions font lag
                 afficheFiltresTileMode(g, map, i, j, x, y, heightoffset);
                 afficheNumerosNiveaux(g, map, i, j, x, y, heightoffset);
                 afficheBatiments(g, map, i, j, x, y, heightoffset);
