@@ -382,6 +382,7 @@ public class Plateau implements Serializable, Cloneable {
             listeVoisins = voisins(coup.tile2_x,coup.tile2_y);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(positions_libres);
+            historique.ajoute(coup);
 
         } else if (coup.type == Coup.BATIMENT || coup.type == 2 || coup.type == 3 || coup.type == 4){
             hauteur = plateau[coup.batiment_x][coup.batiment_y].getHauteur();
@@ -404,6 +405,7 @@ public class Plateau implements Serializable, Cloneable {
             }
 
             plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanI(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanJ());
+            historique.ajoute(coup);
         }
     }
 
