@@ -431,28 +431,16 @@ public class HexagonalTiles extends JPanel {
 
             float opacity = 1f;
 
-            // TODO a optimiser
-            opacity = updateOpacite(i, j, j2, opacity);
-            if (opacity != 1f) {
-                if (tile1 != null) {
-                    tile1 = applyRedFilter(tile1);
-                }
-                if (tile1 != null) {
-                    tile2 = applyRedFilter(tile1);
-                }
-                if (tile1 != null) {
-                    tile3 = applyRedFilter(tile1);
+
+            if (tile1 != null && tile2 != null && tile3 != null) {
+                opacity = updateOpacite(i, j, j2, opacity);
+                if (opacity != 1f) {
+                        tile1 = tileErreur;
+                        tile2 = tileErreur;
+                        tile3 = tileErreur;
                 }
             }
-            if (tile1 != null) {
-                tile1 = ImageLoader.getReducedOpacityImage(tile1, opacity);
-            }
-            if (tile2 != null) {
-                tile2 = ImageLoader.getReducedOpacityImage(tile2, opacity);
-            }
-            if (tile3 != null) {
-                tile3 = ImageLoader.getReducedOpacityImage(tile3, opacity);
-            }
+
 
             y -= jeu.getPlateau().getPlateau()[i][j].getHauteur() * HAUTEUR_ETAGE;
             afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
