@@ -2,7 +2,6 @@ package Modele;
 
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,14 +29,67 @@ public class ImageLoader {
     public static int largeur, hauteur, largeur_bouton, hauteur_bouton;
     public static boolean select_save, select_load, select_annuler, select_refaire, select_reset, select_quitter;
 
+    public static BufferedImage
+            plateau_hautGauche_etage1,
+            plateau_hautDroite_etage1,
+            plateau_Gauche_etage1,
+            plateau_Droite_etage1,
+            plateau_basGauche_etage1,
+            plateau_basDroite_etage1,
+            plateau_hautGauche_etage2,
+            plateau_hautDroite_etage2,
+            plateau_Gauche_etage2,
+            plateau_Droite_etage2,
+            plateau_basGauche_etage2,
+            plateau_basDroite_etage2,
+            plateau_hautGauche_etage3,
+            plateau_hautDroite_etage3,
+            plateau_Gauche_etage3,
+            plateau_Droite_etage3,
+            plateau_basGauche_etage3,
+            plateau_basDroite_etage3;
+
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
+
+        readTilesImages();
+        filterTiles();
+
+        readPlayableTilesImages();
+        readHeightImages(lisImageBuf("Wrong_height_1_hex"), lisImageBuf("Wrong_height_2_hex"), lisImageBuf("Wrong_height_3_hex"));
+        readHeightImages(getReducedOpacityImage(wrongTile1, 0.5f), getReducedOpacityImage(wrongTile2, 0.5f), getReducedOpacityImage(wrongTile3, 0.5f));
+        readTileOrientationImages();
+        readBatimentsImages();
+        readSelectionBatimentImage();
+        readAndFilterContoursImages();
+    }
+
+    private static void readSelectionBatimentImage() {
+        for(int i=0;i<3;i++){
+            choisirBat[i] = lisImageBuf("Batiments/Selecteur/choisir_bat_"+(i+1));
+        }
+        choisirBat[3] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_2");
+        choisirBat[4] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_3");
+        choisirBat[5] = lisImageBuf("Batiments/Selecteur/choisir_bat_2_sans_3");
+        choisirBat[6] = lisImageBuf("Batiments/Selecteur/choisir_bat_3_sans_2");
+        choisirBat[7] = lisImageBuf("Batiments/Selecteur/choisir_bat_sans_23");
+        constructionMode = lisImageBuf("Batiments/Selecteur/construction");
+    }
+
+    private static void filterTiles() {
+        voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
+        whiteTile = getReducedOpacityImage(whiteTile, 0.35f);
+    }
+
+    private static void readTilesImages() {
         waterTile = lisImageBuf("Water_Tile");
         voidTile = lisImageBuf("Void_Tile");
         whiteTile = lisImageBuf("White_Tile");
         voidTileOld = lisImageBuf("Void_Tile_old");
-        voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
-        whiteTile = getReducedOpacityImage(whiteTile, 0.35f);
+        hoverTile = lisImageBuf("Hover_Tile");
+    }
+
+    private static void readPlayableTilesImages() {
         grassTile_0 = lisImageBuf("Grass_0_Tile");
         grassTile_1 = lisImageBuf("Grass_1_Tile");
         grassTile_2 = lisImageBuf("Grass_2_Tile");
@@ -53,11 +105,18 @@ public class ImageLoader {
         montagneTile_0 = lisImageBuf("Montagne_0_Tile");
         montagneTile_1 = lisImageBuf("Montagne_1_Tile");
         montagneTile_2 = lisImageBuf("Montagne_2_Tile");
-        hoverTile = lisImageBuf("Hover_Tile");
-        wrongTile1 = lisImageBuf("Wrong_height_1_hex");
-        wrongTile2 = lisImageBuf("Wrong_height_2_hex");
-        wrongTile3 = lisImageBuf("Wrong_height_3_hex");
+    }
 
+    private static void readBatimentsImages() {
+        maisonTile = lisImageBuf("Batiments/maison");
+        templeJungle = lisImageBuf("Batiments/Temple_jungle");
+        templePierre = lisImageBuf("Batiments/Temple_pierre");
+        templePrairie = lisImageBuf("Batiments/Temple_prairie");
+        templeSable = lisImageBuf("Batiments/Temple_sable");
+        tour = lisImageBuf("Batiments/tour");
+    }
+
+    private static void readTileOrientationImages() {
         beacons = lisImageBuf("Beacons");
         beacon_1 = lisImageBuf("Beacon_1");
         beacon_2 = lisImageBuf("Beacon_2");
@@ -65,34 +124,49 @@ public class ImageLoader {
         beacon_4 = lisImageBuf("Beacon_4");
         beacon_5 = lisImageBuf("Beacon_5");
         beacon_6 = lisImageBuf("Beacon_6");
+    }
 
+    private static void readHeightImages(BufferedImage wrong_height_1_hex, BufferedImage wrong_height_2_hex, BufferedImage wrong_height_3_hex) {
+        wrongTile1 = wrong_height_1_hex;
+        wrongTile2 = wrong_height_2_hex;
+        wrongTile3 = wrong_height_3_hex;
+    }
+
+    private static void readAndFilterContoursImages() {
+        readContoursImages();
+        filtreCouleursContoursEtages();
+    }
+
+    private static void readContoursImages() {
         plateau_hautGauche = lisImageBuf("plateau_hautGauche");
         plateau_hautDroite = lisImageBuf("plateau_hautDroite");
         plateau_Gauche = lisImageBuf("plateau_Gauche");
         plateau_Droite = lisImageBuf("plateau_Droite");
         plateau_basGauche = lisImageBuf("plateau_basGauche");
         plateau_basDroite = lisImageBuf("plateau_basDroite");
+    }
 
+    private static void filtreCouleursContoursEtages() {
+        plateau_hautGauche_etage1 = applyBlueFilter(plateau_hautGauche);
+        plateau_hautDroite_etage1 = applyBlueFilter(plateau_hautDroite);
+        plateau_Gauche_etage1 = applyBlueFilter(plateau_Gauche);
+        plateau_Droite_etage1 = applyBlueFilter(plateau_Droite);
+        plateau_basGauche_etage1 = applyBlueFilter(plateau_basGauche);
+        plateau_basDroite_etage1 = applyBlueFilter(plateau_basDroite);
 
-        wrongTile1 = getReducedOpacityImage(wrongTile1, 0.5f);
-        wrongTile2 = getReducedOpacityImage(wrongTile2, 0.5f);
-        wrongTile3 = getReducedOpacityImage(wrongTile3, 0.5f);
+        plateau_hautGauche_etage2 = applyYellowFilter(plateau_hautGauche);
+        plateau_hautDroite_etage2 = applyYellowFilter(plateau_hautDroite);
+        plateau_Gauche_etage2 = applyYellowFilter(plateau_Gauche);
+        plateau_Droite_etage2 = applyYellowFilter(plateau_Droite);
+        plateau_basGauche_etage2 = applyYellowFilter(plateau_basGauche);
+        plateau_basDroite_etage2 = applyYellowFilter(plateau_basDroite);
 
-        maisonTile = lisImageBuf("Batiments/maison");
-        templeJungle = lisImageBuf("Batiments/Temple_jungle");
-        templePierre = lisImageBuf("Batiments/Temple_pierre");
-        templePrairie = lisImageBuf("Batiments/Temple_prairie");
-        templeSable = lisImageBuf("Batiments/Temple_sable");
-        tour = lisImageBuf("Batiments/tour");
-        for(int i=0;i<3;i++){
-            choisirBat[i] = lisImageBuf("Batiments/Selecteur/choisir_bat_"+(i+1));
-        }
-        choisirBat[3] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_2");
-        choisirBat[4] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_3");
-        choisirBat[5] = lisImageBuf("Batiments/Selecteur/choisir_bat_2_sans_3");
-        choisirBat[6] = lisImageBuf("Batiments/Selecteur/choisir_bat_3_sans_2");
-        choisirBat[7] = lisImageBuf("Batiments/Selecteur/choisir_bat_sans_23");
-        constructionMode = lisImageBuf("Batiments/Selecteur/construction");
+        plateau_hautGauche_etage3 = applyRedFilter(plateau_hautGauche);
+        plateau_hautDroite_etage3 = applyRedFilter(plateau_hautDroite);
+        plateau_Gauche_etage3 = applyRedFilter(plateau_Gauche);
+        plateau_Droite_etage3 = applyRedFilter(plateau_Droite);
+        plateau_basGauche_etage3 = applyRedFilter(plateau_basGauche);
+        plateau_basDroite_etage3 = applyRedFilter(plateau_basDroite);
     }
 
     public static BufferedImage lisImageBuf(String nom) {
@@ -113,42 +187,6 @@ public class ImageLoader {
         g2d.drawImage(originalImage, 0, 0, null);
         g2d.dispose();
         return reducedOpacityImage;
-    }
-
-    public static void addImage(String nom_image, double facteur_x, double facteur_y, double facteur, double rapport, JLayeredPane layeredPane) {
-        bouton_save = lisImageBuf("Sauvegarder");
-        //bouton_save_select = lisImageBuf("Sauvegarder_select");
-        bouton_load = lisImageBuf("Charger");
-        //bouton_load_select = lisImageBuf("Charger_select");
-        bouton_annuler = lisImageBuf("Annuler");
-        //bouton_annuler_select = lisImageBuf("Annuler_select");
-        bouton_refaire = lisImageBuf("Refaire");
-        //bouton_refaire_select = lisImageBuf("Refaire_select");
-        bouton_reset = lisImageBuf("Reinitialiser");
-        //bouton_reset_select = lisImageBuf("Reinitialiser_select");
-        bouton_quitter = lisImageBuf("Quitter");
-        //bouton_quitter_select = lisImageBuf("Quitter_select");
-
-        JPanel imagePanel = new JPanel() {
-            int largeur, hauteur, pos_x, pos_y;
-            public int largeur_bouton;
-            public int hauteur_bouton;
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                largeur = layeredPane.getWidth();
-                hauteur = layeredPane.getHeight();
-                pos_x = (int) (largeur*facteur_x);
-                pos_y = (int) (hauteur*facteur_y);
-                largeur_bouton = (int) Math.min(largeur*facteur, hauteur*facteur);
-                hauteur_bouton = (int) (largeur_bouton/rapport);
-                //System.out.println("largeur_bouton : " + largeur_bouton + " hauteur_bouton : " + hauteur_bouton);
-
-            }
-        };
-        imagePanel.setBounds(0, 0, 3000, 2000);
-        imagePanel.setOpaque(false);
-        layeredPane.add(imagePanel, JLayeredPane.POPUP_LAYER);
     }
 
     public static Image lisImage(String nom) {

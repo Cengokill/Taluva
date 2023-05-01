@@ -147,27 +147,80 @@ public class HexagonalTiles extends JPanel {
         }
     }
 
-    private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
-        int j2 = convertionTileMapToHexagonal(i, j);
-        if (i > 1 && j > 1 && i < map.length - 1 && j < map[0].length - 1) {
-            contour(g, map, i, j, x, y, heightoffset, j - 1, map[i], plateau_Gauche);
-            contour(g, map, i, j, x, y, heightoffset, j + 1, map[i], plateau_Droite);
-            contour(g, map, i - 1, j, x, y, heightoffset, j2, map[i], plateau_hautGauche);
-            contour(g, map, i - 1, j, x, y, heightoffset, j2 + 1, map[i], plateau_hautDroite);
-            contour(g, map, i + 1, j, x, y, heightoffset, j2, map[i], plateau_basGauche);
-            contour(g, map, i + 1, j, x, y, heightoffset, j2 + 1, map[i], plateau_basDroite);
+    private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset) {
+        int colonneConvertieHex = convertionTileMapToHexagonal(ligne, colonne);
+        if (ligne > 1 && colonne > 1 && ligne < map.length - 1 && colonne < map[0].length - 1) {
+
+            String direction = "gauche";
+            contour(g, map, ligne, colonne, xDrawPosition, yDrawPosition, heightoffset, colonne - 1, map[ligne],direction);
+
+            direction = "droite";
+            contour(g, map, ligne, colonne, xDrawPosition, yDrawPosition, heightoffset, colonne + 1, map[ligne], direction);
+
+            direction = "hautGauche";
+            contour(g, map, ligne - 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex, map[ligne], direction);
+
+            direction = "hautDroite";
+            contour(g, map, ligne - 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex + 1, map[ligne], direction);
+
+            direction = "basGauche";
+            contour(g, map, ligne + 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex, map[ligne], direction);
+
+            direction = "basDroite";
+            contour(g, map, ligne + 1, colonne, xDrawPosition, yDrawPosition, heightoffset, colonneConvertieHex + 1, map[ligne], direction);
         }
     }
 
-    // TODO A optimiser car faisable en amont à l'init
-    private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, BufferedImage plateau_gauche) {
+    private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, String direction) {
         if (map[i][i2].getHauteur() < hexagones[j].getHauteur()) {
+            BufferedImage etage_1;
+            BufferedImage etage_2;
+            BufferedImage etage_3;
+
+            switch (direction) {
+                case "gauche":
+                    etage_1 = plateau_Gauche_etage1;
+                    etage_2 = plateau_Gauche_etage2;
+                    etage_3 = plateau_Gauche_etage3;
+                    break;
+
+                case "droite":
+                    etage_1 = plateau_Droite_etage1;
+                    etage_2 = plateau_Droite_etage2;
+                    etage_3 = plateau_Droite_etage3;
+                    break;
+
+                case "hautGauche":
+                    etage_1 = plateau_hautGauche_etage1;
+                    etage_2 = plateau_hautGauche_etage2;
+                    etage_3 = plateau_hautGauche_etage3;
+                    break;
+
+                case "hautDroite":
+                    etage_1 = plateau_hautDroite_etage1;
+                    etage_2 = plateau_hautDroite_etage2;
+                    etage_3 = plateau_hautDroite_etage3;
+                    break;
+
+                case "basGauche":
+                    etage_1 = plateau_basGauche_etage1;
+                    etage_2 = plateau_basGauche_etage2;
+                    etage_3 = plateau_basGauche_etage3;
+                    break;
+
+                default:
+                    etage_1 = plateau_basDroite_etage1;
+                    etage_2 = plateau_basDroite_etage2;
+                    etage_3 = plateau_basDroite_etage3;
+                    break;
+            }
+
             if (hexagones[j].getHauteur() == 1) {
-                g.drawImage(applyBlueFilter(plateau_gauche), x, y - heightoffset + 55, null);
+                g.drawImage(etage_1, x, y - heightoffset + 55, null);
             } else if (hexagones[j].getHauteur() == 2) {
-                g.drawImage(applyYellowFilter(plateau_gauche), x, y - heightoffset + 55, null);
+                g.drawImage(etage_2, x, y - heightoffset + 55, null);
             } else if (hexagones[j].getHauteur() == 3) {
-                g.drawImage(applyRedFilter(plateau_gauche), x, y - heightoffset + 55, null);
+                g.drawImage(etage_3, x, y - heightoffset + 55, null);
             }
         }
     }
