@@ -23,15 +23,15 @@ De nombreuses stratégies découlent des différentes règles de placement. Les 
 | 1 | <ul><li> - [x] Ajout de tours                                                                       </li></ul>
 | 1 | <ul><li> - [ ] Propagation des villages                                                             </li></ul>
 | 1 | <ul><li> - [x] Ajout de tours                                                                       </li></ul>
-| 1 | <ul><li> - [ ] Ajout des joueurs et du tour par tour                                                </li></ul>
+| 1 | <ul><li> - [x] Ajout des joueurs et du tour par tour                                                </li></ul>
 | 2 | <ul><li> - [ ] Bouton "coup précédent" qui fonctionne (historique des coups)                        </li></ul>
 | 2 | <ul><li> - [ ] Bouton quitter la partie                                                             </li></ul>
 | 2 | <ul><li> - [ ] Affichage de la fin du jeu, et retour au menu principal                              </li></ul>
 | 3 | <ul><li> - [ ] Sauvegarde de la partie                                                              </li></ul>
 | 3 | <ul><li> - [ ] Charger la partie                                                                    </li></ul>
-| 3 | <ul><li> - [ ] IA aléatoire                                                                         </li></ul>
+| 3 | <ul><li> - [x] IA aléatoire                                                                         </li></ul>
 | 3 | <ul><li> - [ ] IA intelligente utilisant un arbre ET/OU                                             </li></ul>
-| 3 | <ul><li> - [ ] IA contre joueur                                                                     </li></ul>
+| 3 | <ul><li> - [x] IA contre joueur                                                                     </li></ul>
 | 3 | <ul><li> - [ ] IA contre IA                                                                         </li></ul>
 | 3 | <ul><li> - [ ] Score                                                                                </li></ul>
 | 4 | <ul><li> - [ ] Boutons qui changent d'apparence si la souris les survole                            </li></ul>
