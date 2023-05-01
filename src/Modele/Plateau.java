@@ -12,6 +12,9 @@ public class Plateau implements Serializable, Cloneable {
     protected Hexagone[][] plateau ;
     protected byte[] nbPionsJ1;
     protected byte[] nbPionsJ2;
+
+    public int nb_bat_j1, nb_bat_j2;
+
     private Historique historique;
     private ArrayList<Position> positions_libres;
 
@@ -26,6 +29,8 @@ public class Plateau implements Serializable, Cloneable {
         nbPionsJ1[0]=10 ; nbPionsJ2[0]=10;
         nbPionsJ1[1]=10 ; nbPionsJ2[1]=10;
         nbPionsJ1[2]=10 ; nbPionsJ2[2]=10;
+        nb_bat_j1 = 0;
+        nb_bat_j2 = 0;
         initPlateau();
         positions_libres = new ArrayList<>();
         positions_libres_batiments = new ArrayList<>();
@@ -81,8 +86,23 @@ public class Plateau implements Serializable, Cloneable {
                     return true;
             }
         }
-
         return false;
+    }
+
+    public int[] getNbBatEcrase(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j){
+        int nb_bat_1 = 0,nb_bat_2 = 0;
+        if(plateau[volcan_i][volcan_j].getBatiment()!=0 && plateau[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+        if(plateau[tile1_i][tile1_j].getBatiment()!=0 && plateau[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+        if(plateau[tile2_i][tile2_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+
+        if(plateau[volcan_i][volcan_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+        if(plateau[tile1_i][tile1_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+        if(plateau[tile2_i][tile2_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+
+        int[] tab =  new int[2];
+        tab[0] = nb_bat_1;
+        tab[1] = nb_bat_2;
+        return tab;
     }
 
     public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
@@ -106,6 +126,9 @@ public class Plateau implements Serializable, Cloneable {
             return false;
         }
 
+        // Vérifie qu'on detruit pas tous les batiments des joueurs
+        if (plateau[volcan_i][volcan_j].getNumJoueur()==0 && nb_bat_j1!=0 && getNbBatEcrase(volcan_i,volcan_j,tile1_i,tile1_j,tile2_i,tile2_j)[0] >= nb_bat_j1) return false; // joueur 0
+        if (plateau[volcan_i][volcan_j].getNumJoueur()==0 && nb_bat_j2!=0 && getNbBatEcrase(volcan_i,volcan_j,tile1_i,tile1_j,tile2_i,tile2_j)[1] >= nb_bat_j2) return false; // joueur 1
 
         // Vérifie la hauteur de toutes les cases
         if (plateau[volcan_i][volcan_j].getHauteur() != hauteur) {
@@ -379,6 +402,7 @@ public class Plateau implements Serializable, Cloneable {
                 Position aSupprimer = new Position(coup.batiment_x,coup.batiment_y);
                 positions_libres_batiments.remove(aSupprimer);
             }
+
             plateau[coup.batiment_x][coup.batiment_y] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batiment_x][coup.batiment_y].getTerrain(), batiment, (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanI(), (byte)plateau[coup.batiment_x][coup.batiment_y].getVolcanJ());
         }
     }

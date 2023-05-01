@@ -126,9 +126,9 @@ public class TEngine {
     }
 
     private JFrame getJframe() {
-        bouton_save = lisImageBuf("Sauvegarder");
+        bouton_save = lisImageBuf("save");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");
-        bouton_load = lisImageBuf("Charger");
+        bouton_load = lisImageBuf("load");
         //bouton_load_select = lisImageBuf("Charger_select");
         bouton_annuler = lisImageBuf("Annuler");
         //bouton_annuler_select = lisImageBuf("Annuler_select");

@@ -35,7 +35,6 @@ public class Jeu extends Observable {
 
         pioche = new LinkedList<>();
         lancePartie();
-
     }
 
     public void lancePartie(){
@@ -75,10 +74,11 @@ public class Jeu extends Observable {
         doit_placer_tuile = false;
 
         c = ((IA)joueursObjet[jCourant]).joue(); // batiment
-        getPlateau().joueCoup(c);
+        //getPlateau().joueCoup(c);
+        joueurPlaceBatiment(c.batiment_x,c.batiment_y,c.type);
         doit_placer_batiment = false;
         doit_placer_tuile = true;
-        changeJoueur();
+        //changeJoueur();
         pioche();
     }
 
@@ -116,6 +116,7 @@ public class Jeu extends Observable {
             return false;
         }
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+
         doit_placer_batiment = true;
         doit_placer_tuile = false;
         return true;
@@ -127,17 +128,29 @@ public class Jeu extends Observable {
         }
         plateau.placeBatiment(jCourant, i,j, type_bat);
         if(type_bat!=4){
-            if(type_bat == 0) {
+            if(getNumJoueurCourant()==0) plateau.nb_bat_j1++;
+            if(getNumJoueurCourant()==1) plateau.nb_bat_j2++;
+
+            if(type_bat == 1) {
                 if(plateau.getHauteurTuile(i,j)==2) joueurs[jCourant].incrementeHutte();
                 if(plateau.getHauteurTuile(i,j)==3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
-            else if(type_bat == 1) {
+            else if(type_bat == 2) {
                 joueurs[jCourant].incrementeTemple();
             }
-            else if(type_bat == 2) {
+            else if(type_bat == 3) {
                 joueurs[jCourant].incrementeTour();
             }
+            /*System.out.println("//////////////////////// "+getNumJoueurCourant()+" //////////////////////");
+            System.out.println("score joueur 1 \n hut: "+joueurs[0].getNbHuttesPlacees());
+            System.out.println(" temples: "+joueurs[0].getNbTemplesPlaces());
+            System.out.println(" tour: "+joueurs[0].getNbToursPlacees());
+
+            System.out.println("score joueur 2 \n hut: "+joueurs[1].getNbHuttesPlacees());
+            System.out.println(" temples: "+joueurs[1].getNbTemplesPlaces());
+            System.out.println(" tour: "+joueurs[1].getNbToursPlacees());
+            System.out.println("//////////////////////////////////////////////////////");*/
             doit_placer_batiment = false;
             doit_placer_tuile = true;
             changeJoueur();
