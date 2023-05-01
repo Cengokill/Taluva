@@ -91,8 +91,10 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
     ////////////////////////////
     public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
+
         @Override
         public void mouseClicked(MouseEvent e) {
+            System.out.println("Clic en " + e.getX() + " " + e.getY());
             tengine.hexTiles.addToCursor(e);
             tengine.hexTiles.annuleConstruction(e);
         }
