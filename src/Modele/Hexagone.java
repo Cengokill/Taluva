@@ -26,10 +26,10 @@ public class Hexagone {
     private final byte numero ;
     private final byte volcan_j;
     private final byte volcan_i;
-    private final byte num_joueur;
+    private byte num_joueur;
 
     public Hexagone(byte hauteur, byte terrain, byte volcan_i, byte volcan_j) {
-        this.num_joueur = -1;
+        //this.num_joueur = -1;
         this.hauteur = hauteur;
         this.terrain = terrain;
         this.numero = (byte) ((int)(Math.random() * 2) + 1);
