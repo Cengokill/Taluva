@@ -449,7 +449,7 @@ public class Plateau implements Serializable {
         return estDansPlateau(x, y)&&getTuile(x,y).getBatiment()==(byte)10&&getTuile(x,y).getNumJoueur()==Math.abs(IDjoueurs-1);
     }
     public boolean check2 (int x, int y,byte TypeTerrain) {
-        return estDansPlateau(x, y) && getTuile(x,y).getBatiment()==(byte)0&&getTuile(x,y).getTerrain()==TypeTerrain;
+        return estDansPlateau(x, y) && getTuile(x,y).getBatiment()==(byte)0&&getTuile(x,y).getBiomeTerrain()==TypeTerrain;
     }
     public boolean estDansPlateau (int x , int y ){
         return (x<COLONNES)&&(x>-1)&&(y>-1)&&(y<LIGNES);
@@ -457,7 +457,7 @@ public class Plateau implements Serializable {
     public ArrayList<Point2> propagation (int x, int y,byte joueurCourant ){
         ArrayList<Point2> listeDecases = new ArrayList<>();
         byte IDjoueurs =joueurCourant;
-        byte TypeTerrain = getTuile(x,y).getTerrain();
+        byte TypeTerrain = getTuile(x,y).getBiomeTerrain();
         ArrayList<Point2> listeDesHutesVoisine = new ArrayList<>();
         Point2 p = new Point2(x,y);
         listeDesHutesVoisine.add(p);
