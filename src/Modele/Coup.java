@@ -18,6 +18,9 @@ public class Coup implements Serializable {
     int tile2X;
     int tile2Y;
     byte terrain2;
+    int batiment_x;
+    int batiment_y;
+    int IDdeJoueur;
     int batimentX;
     int batimentY;
 
@@ -32,6 +35,8 @@ public class Coup implements Serializable {
         this.tile2X = tile2X;
         this.tile2Y = tile2Y;
         this.terrain2 = terrain2;
+        this.IDdeJoueur=-1;
+
     }
     public Coup(byte num_joueur, int batimentX, int batimentY, byte typeBatiment) {// placement BATIMENT
         this.num_joueur = num_joueur;

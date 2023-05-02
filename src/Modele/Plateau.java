@@ -78,7 +78,7 @@ public class Plateau implements Serializable {
         return plateau;
     }
 
-    // check si la condition de victoire du nb de pièces est bonne
+    // check si la condition de victoire du nb de pi?ces est bonne
     public boolean aGagneJoueur1(int joueur){
         int nb_pion_vite_J1 = 0;
         for (int j = 0; j<3;j++){
@@ -146,7 +146,7 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
-        // TODO Vérifier que ça tue pas un village et faire en sort que 2 villages séparés aient pas le meme ID
+        // TODO V?rifier que ?a tue pas un village et faire en sort que 2 villages s?par?s aient pas le meme ID
 
         if(estVide()) return true;
 
@@ -161,16 +161,16 @@ public class Plateau implements Serializable {
         if (hauteur == 4) {
             return false;
         }
-        // Vérifie si on place un volcan sur un volcan
+        // V?rifie si on place un volcan sur un volcan
         if (plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VOLCAN && plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE) {
             return false;
         }
 
-        // Vérifie qu'on detruit pas tous les batiments des joueurs
+        // V?rifie qu'on detruit pas tous les batiments des joueurs
         if (plateau[ligneVolcan][colonneVolcan].getNumJoueur()==0 && quantiteBatimentJoueur1 !=0 && getNbBatEcrase(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)[0] >= quantiteBatimentJoueur1) return false; // joueur 0
         if (plateau[ligneVolcan][colonneVolcan].getNumJoueur()==0 && quantiteBatimentJoueur2 !=0 && getNbBatEcrase(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)[1] >= quantiteBatimentJoueur2) return false; // joueur 1
 
-        // Vérifie la hauteur de toutes les cases
+        // V?rifie la hauteur de toutes les cases
         if (plateau[ligneVolcan][colonneVolcan].getHauteur() != hauteur) {
             return false;
         }
@@ -188,11 +188,11 @@ public class Plateau implements Serializable {
             if (!(
                     // Gauche droite
                     plateau[ligneVolcan][colonneVolcan - 1].getBiomeTerrain() != Hexagone.VIDE ||
-                    plateau[ligneVolcan][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                    plateau[ligneTile1][colonneTile1 - 1].getBiomeTerrain() != Hexagone.VIDE ||
-                    plateau[ligneTile1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                    plateau[ligneTile2][colonneTile2 - 1].getBiomeTerrain() != Hexagone.VIDE ||
-                    plateau[ligneTile2][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE)) {
+                            plateau[ligneVolcan][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            plateau[ligneTile1][colonneTile1 - 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            plateau[ligneTile1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            plateau[ligneTile2][colonneTile2 - 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            plateau[ligneTile2][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE)) {
 
                 if (ligneVolcan % 2 == 1) {
                     colonneVolcan -= 1;
@@ -230,53 +230,6 @@ public class Plateau implements Serializable {
     public boolean VillageQuestionMarK(int x , int y){
         return plateau[x][y].getBatiment() == Hexagone.MAISON;
 
-    }
-    public ArrayList<Integer> propagation (int x, int y ){
-        ArrayList<Integer> listeDecases = new ArrayList<>();
-        int IDvillage = plateau[x][y].getIDvillage();
-        byte TypeTerrain = plateau[x][y].getBiomeTerrain();
-        for (int i = 0; i<plateau.length;i++){
-            for (int j = 0; j<plateau[0].length;j++){
-                if(plateau[i][j].getIDvillage()==IDvillage || (i!=x && y!=j)){// pense a quand place village regarder si tour ou temple
-                    if(plateau[i][j-1].getBiomeTerrain()== TypeTerrain) {
-                        listeDecases.add(i);
-                        listeDecases.add(j-1);
-                    }
-                    if(plateau[i-1][j].getBiomeTerrain()== TypeTerrain) {
-                        listeDecases.add(i-1);
-                        listeDecases.add(j);
-                    }
-                    if(plateau[i][j+1].getBiomeTerrain()== TypeTerrain) {
-                        listeDecases.add(i);
-                        listeDecases.add(j+1);
-                    }
-                    if(plateau[i+1][j].getBiomeTerrain()== TypeTerrain) {
-                        listeDecases.add(i+1);
-                        listeDecases.add(j);
-                    }
-                    if(i%2==1){
-                        if(plateau[i-1][j+1].getBiomeTerrain()== TypeTerrain) {
-                            listeDecases.add(i-1);
-                            listeDecases.add(j+1);
-                        }
-                        if(plateau[i+1][j+1].getBiomeTerrain()== TypeTerrain) {
-                            listeDecases.add(i+1);
-                            listeDecases.add(j+1);
-                        }
-                    }else{
-                        if(plateau[i-1][j-1].getBiomeTerrain()== TypeTerrain) {
-                            listeDecases.add(i-1);
-                            listeDecases.add(j-1);
-                        }
-                        if(plateau[i+1][j-1].getBiomeTerrain()== TypeTerrain) {
-                            listeDecases.add(i+1);
-                            listeDecases.add(j-1);
-                        }
-                    }
-                }
-            }
-        }
-        return listeDecases;
     }
 
     public ArrayList<Position> voisins(int l, int c){
@@ -359,12 +312,12 @@ public class Plateau implements Serializable {
         ArrayList<Position> aSupprimer = new ArrayList<>();
         ArrayList<TripletDePosition> tripletsaSupprimer = new ArrayList<>();
         for(Position p : listeVoisins){
-            //si p est dans positions_libres et n'est pas de l'eau, on l'enlève
+            //si p est dans positions_libres et n'est pas de l'eau, on l'enl?ve
             if(!estHexagoneVide(p.ligne(), p.colonne())) {
                 aSupprimer.add(p);
             }
         }
-        //System.out.println("Pour être sur taille AVANT: "+listeVoisins.size());
+        //System.out.println("Pour ?tre sur taille AVANT: "+listeVoisins.size());
 
         for(Position p : aSupprimer){
             listeVoisins.remove(p);
@@ -375,7 +328,7 @@ public class Plateau implements Serializable {
                 }
             }
         }
-        //System.out.println("Pour être sur taille APRES: "+listeVoisins.size());
+        //System.out.println("Pour ?tre sur taille APRES: "+listeVoisins.size());
         for(TripletDePosition t : tripletsaSupprimer){
             tripletsPossible.remove(t);
         }
@@ -450,7 +403,7 @@ public class Plateau implements Serializable {
     }
 
 
-    // Nécessite un appel à peutPlacerEtage
+    // N?cessite un appel ? peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
         Coup coup = new Coup(joueurCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         historique.ajoute(coup);
@@ -464,6 +417,232 @@ public class Plateau implements Serializable {
         Coup coup = new Coup(joueurCourant, i,j,type_bat);
         historique.ajoute(coup);
         joueCoup(coup);
+        if (type_bat == (byte)1){
+            ArrayList<Point2> nlh ;
+            nlh = propagation(i,j,joueurCourant);
+            while(nlh.size()!=0) {
+                Point2 a = nlh.remove(0);
+                Coup ah ;
+                if (joueurCourant==(byte)1){
+                    ah=  new Coup(joueurCourant,a.x,a.y,(byte)0);
+                }else {
+                    ah= new Coup(joueurCourant,a.x,a.y,(byte)1);
+                }
+                historique.ajoute(ah);
+                joueCoup(ah);
+            }
+        }
+
+
+    }
+
+    public boolean notIn (ArrayList<Point2> lp, Point2 p){
+        for (int i =0;i<lp.size();i++){
+            if(lp.get(i).PionsEquals(p)){
+                return false;
+            }
+        }
+        return true;
+
+    }
+    public boolean check (int x, int y,int IDjoueurs) {
+        return estDansPlateau(x, y)&&getTuile(x,y).getBatiment()==(byte)10&&getTuile(x,y).getNumJoueur()==Math.abs(IDjoueurs-1);
+    }
+    public boolean check2 (int x, int y,byte TypeTerrain) {
+        return estDansPlateau(x, y) && getTuile(x,y).getBatiment()==(byte)0&&getTuile(x,y).getTerrain()==TypeTerrain;
+    }
+    public boolean estDansPlateau (int x , int y ){
+        return (x<COLONNES)&&(x>-1)&&(y>-1)&&(y<LIGNES);
+    }
+    public ArrayList<Point2> propagation (int x, int y,byte joueurCourant ){
+        ArrayList<Point2> listeDecases = new ArrayList<>();
+        byte IDjoueurs =joueurCourant;
+        byte TypeTerrain = getTuile(x,y).getTerrain();
+        ArrayList<Point2> listeDesHutesVoisine = new ArrayList<>();
+        Point2 p = new Point2(x,y);
+        listeDesHutesVoisine.add(p);
+        int i = 0;
+        while (listeDesHutesVoisine.size()!=i){
+            Point2 HuteCourant = listeDesHutesVoisine.get(i);
+            if(check (HuteCourant.x-1 ,HuteCourant.y,IDjoueurs)){
+                Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y);
+                if(notIn(listeDesHutesVoisine,p1))
+                    listeDesHutesVoisine.add(p1);
+            }
+            if(check (HuteCourant.x+1 ,HuteCourant.y,IDjoueurs)){
+                Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y);
+                if(notIn(listeDesHutesVoisine,p1))
+                    listeDesHutesVoisine.add(p1);
+            }
+            if(check (HuteCourant.x ,HuteCourant.y-1,IDjoueurs)){
+                Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y-1);
+                if(notIn(listeDesHutesVoisine,p1))
+                    listeDesHutesVoisine.add(p1);
+
+            }
+            if(check(HuteCourant.x ,HuteCourant.y+1,IDjoueurs)){
+                Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y+1);
+                if(notIn(listeDesHutesVoisine,p1))
+                    listeDesHutesVoisine.add(p1);
+            }
+            if(i%2==1){
+                if(check (HuteCourant.x-1 ,HuteCourant.y+1,IDjoueurs)){
+                    Point2 p1 = new Point2(HuteCourant.x-1,HuteCourant.y+1);
+                    if(notIn(listeDesHutesVoisine,p1))
+                        listeDesHutesVoisine.add(p1);
+                }
+                if(check (HuteCourant.x+1 ,HuteCourant.y+1,IDjoueurs)){
+                    Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y+1);
+                    if(notIn(listeDesHutesVoisine,p1))
+                        listeDesHutesVoisine.add(p1);
+
+                }
+            }else{
+                if(check (HuteCourant.x-1 ,HuteCourant.y-1,IDjoueurs)){
+                    Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y-1);
+                    if(notIn(listeDesHutesVoisine,p1))
+                        listeDesHutesVoisine.add(p1);
+
+                }
+                if(check (HuteCourant.x+1 ,HuteCourant.y-1,IDjoueurs)){
+                    Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y-1);
+                    if(notIn(listeDesHutesVoisine,p1))
+                        listeDesHutesVoisine.add(p1);
+                }
+            }
+            i++;
+        }
+        listeDesHutesVoisine.remove(0);
+        System.out.println("taille de liste de hute voisine : "+listeDesHutesVoisine.size());
+        i=0;
+        while (listeDesHutesVoisine.size()!=i){
+            Point2 HuteCourant = listeDesHutesVoisine.get(i);
+            if(check2 (HuteCourant.x-1 ,HuteCourant.y,TypeTerrain)){
+                Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y);
+                if(notIn(listeDecases,p1))
+                    listeDecases.add(p1);
+            }
+            if(check2 (HuteCourant.x ,HuteCourant.y+1,TypeTerrain)){
+                Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y+1);
+                if(notIn(listeDecases,p1))
+                    listeDecases.add(p1);
+            }
+            if(check2 (HuteCourant.x+1 ,HuteCourant.y,TypeTerrain)){
+                Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y);
+                if(notIn(listeDecases,p1))
+                    listeDecases.add(p1);
+
+            }
+            if(check2(HuteCourant.x ,HuteCourant.y-1,TypeTerrain)){
+                Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y-1);
+                if(notIn(listeDecases,p1))
+                    listeDecases.add(p1);
+            }
+            if(i%2==1){
+                if(check2 (HuteCourant.x-1 ,HuteCourant.y+1,TypeTerrain)){
+                    Point2 p1 = new Point2(HuteCourant.x-1,HuteCourant.y+1);
+                    if(notIn(listeDecases,p1))
+                        listeDecases.add(p1);
+                }
+                if(check2 (HuteCourant.x+1 ,HuteCourant.y+1,TypeTerrain)){
+                    Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y+1);
+                    if(notIn(listeDecases,p1))
+                        listeDecases.add(p1);
+
+                }
+            }else{
+                if(check2 (HuteCourant.x-1 ,HuteCourant.y-1,TypeTerrain)){
+                    Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y-1);
+                    if(notIn(listeDecases,p1))
+                        listeDecases.add(p1);
+
+                }
+                if(check2 (HuteCourant.x+1 ,HuteCourant.y-1,TypeTerrain)){
+                    Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y-1);
+                    if(notIn(listeDecases,p1))
+                        listeDecases.add(p1);
+                }
+            }
+            i++;
+        }
+        System.out.println("taille de liste de casses :"+listeDecases.size());
+        i=0;
+        while(i<listeDecases.size()){
+            System.out.println(listeDecases.get(i).x+ " "+listeDecases.get(i).y);
+            i++;
+        }
+        return listeDecases;
+    }
+
+    public boolean peutEcraser(Point2 a , Point2 b){
+        int i =0 ;
+        byte IDjoueurs = getTuile(a.x,b.x).getNumJoueur();
+        if(getTuile(a.x,a.y).getBatiment()==10) {
+            if (check(a.x - 1, a.y, IDjoueurs)) {
+                i++;
+            }
+            if (check(a.x, a.y + 1, IDjoueurs)) {
+                i++;
+            }
+            if (check(a.x + 1, a.y, IDjoueurs)) {
+                i++;
+            }
+            if (check(a.x, a.y - 1, IDjoueurs)) {
+                i++;
+            }
+            if (i % 2 == 1) {
+                if (check(a.x - 1, a.y - 1, IDjoueurs)) {
+                    i++;
+                }
+                if (check(a.x + 1, a.y - 1, IDjoueurs)) {
+                    i++;
+
+                }
+            } else {
+                if (check(a.x - 1, a.y + 1, IDjoueurs)) {
+                    i++;
+                }
+                if (check(a.x + 1, a.y - 1, IDjoueurs)) {
+                    i++;
+                }
+            }
+        }
+        if(getTuile(b.x,b.y).getBatiment()==10) {
+            if (check(b.x - 1, b.y, IDjoueurs)) {
+                i++;
+            }
+            if (check(b.x, b.y + 1, IDjoueurs)) {
+                i++;
+            }
+            if (check(b.x + 1, b.y, IDjoueurs)) {
+                i++;
+            }
+            if (check(b.x, b.y - 1, IDjoueurs)) {
+                i++;
+            }
+            if (i % 2 == 1) {
+                if (check(b.x - 1, b.y - 1, IDjoueurs)) {
+                    i++;
+                }
+                if (check(b.x + 1, b.y - 1, IDjoueurs)) {
+                    i++;
+
+                }
+            } else {
+                if (check(b.x - 1, b.y + 1, IDjoueurs)) {
+                    i++;
+                }
+                if (check(b.x + 1, b.y - 1, IDjoueurs)) {
+                    i++;
+                }
+            }
+        }
+        if(getTuile(a.x,a.y).getNumJoueur()==getTuile(b.x,b.y).getNumJoueur()&&getTuile(b.x,b.y).getBatiment()==10&&getTuile(a.x,a.y).getBatiment()==10)
+            i--;
+        if(i>0)
+            return true;
+        else
+            return false;
     }
 
     public int getBatiment(int i,int j){

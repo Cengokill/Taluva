@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Correction encodage commentaires et ajout image de profil joueur">
+    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Ajout EchoServeur et EchoClient">
+      <change afterPath="$PROJECT_DIR$/src/Modele/Position.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Batiments/Selecteur/construction.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Batiments/Selecteur/construction.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/load.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/save.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/ImageLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/ImageLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vue/TEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/TEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/EchoServeur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/EchoServeur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/IAAleatoire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/IAAleatoire.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,15 +37,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="TaluvaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TaluvaMain" />
