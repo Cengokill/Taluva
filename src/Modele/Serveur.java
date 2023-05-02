@@ -4,12 +4,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class EchoServeur implements Runnable{
+public class Serveur implements Runnable{
     ServerSocket socket_serveur;
     Socket socket_client;
     final int port_serveur;
 
-    public EchoServeur(int p) {
+    public Serveur(int p) {
         port_serveur = p;
     }
 

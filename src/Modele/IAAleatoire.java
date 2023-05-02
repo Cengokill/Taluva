@@ -6,7 +6,7 @@ import Structures.TripletDePosition;
 import java.util.ArrayList;
 import java.util.Random;
 
-class IAAleatoire extends IA {
+class IAAleatoire extends AbstractIA {
 
     public IAAleatoire() {
     }
@@ -35,7 +35,7 @@ class IAAleatoire extends IA {
             triplet[1][0] = tuiles[0]; // tile 1
             triplet[2][0] = tuiles[1]; // tile 2
             triplet[0][0] = tuiles[2];
-            if(jeu.getPlateau().estVide()){ // l'IA est le premier � jouer donc on place au centres
+            if(jeu.getPlateau().estVide()){ // l'AbstractIA est le premier � jouer donc on place au centres
                 i = taille_x/2;
                 j = taille_y/2;
 
@@ -47,20 +47,20 @@ class IAAleatoire extends IA {
                 // Trouver un emplacement pour les hexagones
                 ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
                 TripletDePosition positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
-                boolean bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getX().getL(),positionsrandom.getX().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getY().getL(),positionsrandom.getY().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getZ().getL(),positionsrandom.getZ().getC());
+                boolean bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
                 while(!bon){
                     jeu.getPlateau().supprimeTriplets(positionsrandom);
                     positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
-                    bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getX().getL(),positionsrandom.getX().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getY().getL(),positionsrandom.getY().getC())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getZ().getL(),positionsrandom.getZ().getC());
+                    bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
                 }
 
-                int x1 = positionsrandom.getX().getL();
-                int x2 = positionsrandom.getY().getL();
-                int x3 = positionsrandom.getZ().getL();
+                int x1 = positionsrandom.getVolcan().ligne();
+                int x2 = positionsrandom.getTile1().ligne();
+                int x3 = positionsrandom.getTile2().ligne();
 
-                int y1 = positionsrandom.getX().getC();
-                int y2 = positionsrandom.getY().getC();
-                int y3 = positionsrandom.getZ().getC();
+                int y1 = positionsrandom.getVolcan().colonne();
+                int y2 = positionsrandom.getTile1().colonne();
+                int y3 = positionsrandom.getTile2().colonne();
 
                 return new Coup(numIA,x1,y1,x2,y2,triplet[1][0],x3,y3,triplet[2][0]);
             }
@@ -70,7 +70,7 @@ class IAAleatoire extends IA {
             ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
             //System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
             Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
-            while(jeu.getPlateau().getBatiment(positionrandom.getL(),positionrandom.getC())!=0){
+            while(jeu.getPlateau().getBatiment(positionrandom.ligne(),positionrandom.colonne())!=0){
                 jeu.getPlateau().supprimePosBatiment(positionrandom);
                 positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
             }
@@ -80,7 +80,7 @@ class IAAleatoire extends IA {
 
             // Choisir un batiment � placer
             byte batiment;
-            int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.getL(),positionrandom.getC(),numIA);
+            int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.ligne(),positionrandom.colonne(),numIA);
             if(batimensPlacable[1]==0&&batimensPlacable[2]==0) batiment=1;
             else if(batimensPlacable[1]==0){
                 int value = r.nextInt(2);
@@ -92,7 +92,7 @@ class IAAleatoire extends IA {
                 else batiment = 2;
             }
 
-            return new Coup(numIA,positionrandom.getL(),positionrandom.getC(),batiment);
+            return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),batiment);
         }
 
 

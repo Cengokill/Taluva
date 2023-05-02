@@ -1,22 +1,22 @@
 package Modele;
 
-public class IA implements Runnable{//une IA est exécutée par un nouveau thread
+public class AbstractIA implements Runnable{//une AbstractIA est exï¿½cutï¿½e par un nouveau thread
     protected Jeu jeu;
 
-    public static IA nouvelle(Jeu j, Parametres p) {
-        IA resultat = null;
+    public static AbstractIA nouvelle(Jeu j, Parametres p) {
+        AbstractIA resultat = null;
 
         //String type = p.getType_IA();
-        String type = "Aléatoire";
+        String type = "AlÃ©atoire";
         switch (type) {
-            case "Aléatoire":
+            case "AlÃ©atoire":
                 resultat = new IAAleatoire();
                 break;
             case "tropSmart":
                 resultat = new IAIntelligente();//new IAResolveur();
                 break;
             default:
-                System.err.println("IA non supportée.");
+                System.err.println("AbstractIA non supportÃ©e.");
                 System.exit(1);
         }
         if (resultat != null) {

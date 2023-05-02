@@ -1,9 +1,10 @@
-package Modele;
+package Vue;
 
 import Controleur.ControleurMediateur;
+import Modele.Hexagone;
+import Modele.ImageLoader;
+import Modele.Jeu;
 import Structures.TripletDePosition;
-import Vue.FenetreJeu;
-import Vue.FenetreListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import static Modele.Camera.*;
 import static Modele.GameState.*;
 import static Modele.ImageLoader.*;
 
-public class HexagonalTiles extends JPanel {
+public class AffichagePlateau extends JPanel {
     /////////////////////////////////////////////////////
     // HANDLER                                         //
     /////////////////////////////////////////////////////
@@ -28,7 +29,7 @@ public class HexagonalTiles extends JPanel {
     public final int HAUTEUR_ETAGE = 80;
     public final int HAUTEUR_OCEAN = 50;
 
-    public HexagonalTiles(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
+    public AffichagePlateau(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
         this.fenetreJeu = t;
         this.controleur = controleur;
         this.jeu = jeu;
@@ -114,14 +115,14 @@ public class HexagonalTiles extends JPanel {
     public void affichetripletpossible(){
         for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
             System.out.println("libre en : ");
-            System.out.println("("+ t.getX().getL()+", "+t.getX().getC()+") "+"("+ t.getY().getL()+", "+t.getY().getC()+") "+"("+ t.getZ().getL()+", "+t.getZ().getC()+") ");
+            System.out.println("("+ t.getVolcan().ligne()+", "+t.getVolcan().colonne()+") "+"("+ t.getTile1().ligne()+", "+t.getTile1().colonne()+") "+"("+ t.getTile2().ligne()+", "+t.getTile2().colonne()+") ");
             System.out.println();
         }
     }
 
     public void miseAJour() {
         repaint();
-        if(jeu.estJoueurCourantUneIA()){  // Faire jouer l'IA
+        if(jeu.estJoueurCourantUneIA()){  // Faire jouer l'AbstractIA
             if(unefoisIA){
                 jeu.joueIA();
                 unefoisIA=false;
@@ -139,7 +140,7 @@ public class HexagonalTiles extends JPanel {
                 int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
                 int y = i * verticalOffset;
 
-                int tileId = map[i][j].getTerrain();
+                int tileId = map[i][j].getBiomeTerrain();
 
                 int heightoffset = calculHauteurAffichageHexagone(map, i, j);
 
@@ -287,7 +288,7 @@ public class HexagonalTiles extends JPanel {
         int heightoffset = map[i][j].getHauteur();
         heightoffset *= HAUTEUR_ETAGE;
 
-        if (map[i][j].getTerrain() == Hexagone.VIDE) {
+        if (map[i][j].getBiomeTerrain() == Hexagone.VIDE) {
             heightoffset -= HAUTEUR_OCEAN;
         }
         return heightoffset;
@@ -315,7 +316,7 @@ public class HexagonalTiles extends JPanel {
     }
 
     private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
-        if (map[i][j].getTerrain() == Hexagone.VOLCAN) {
+        if (map[i][j].getBiomeTerrain() == Hexagone.VOLCAN) {
             int j2 = convertionTileMapToHexagonal(i, j);
             illumineVolcanLibre(g, i, j, x, y, heightoffset, j2);
             afficheDirectionsLibres(g, i, j, x, y, heightoffset, j2);
@@ -539,7 +540,7 @@ public class HexagonalTiles extends JPanel {
             heightoffset1 *= 30;
 
             if(!enSelection){
-                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getTerrain() != Hexagone.VOLCAN){
+                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != Hexagone.VOLCAN){
                         /*if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
                         else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
@@ -692,9 +693,9 @@ public class HexagonalTiles extends JPanel {
     private void annulationConstruction() {
         byte numJoueur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getNumJoueur();
         byte hauteur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getHauteur();
-        byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getTerrain();
-        int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanI();
-        int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getVolcanJ();
+        byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getBiomeTerrain();
+        int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getLigneVolcan();
+        int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getColonneVolcan();
         jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
         enSelection=false;
     }

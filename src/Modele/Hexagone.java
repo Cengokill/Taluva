@@ -21,26 +21,26 @@ public class Hexagone {
 
     private final byte hauteur;
     private int IDvillage ;
-    private final byte terrain;
+    private final byte biomeTerrain;
     private byte batiment = 0;
     private final byte numero ;
     private final byte volcan_j;
     private final byte volcan_i;
     private byte num_joueur;
 
-    public Hexagone(byte hauteur, byte terrain, byte volcan_i, byte volcan_j) {
+    public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j) {
         //this.num_joueur = -1;
         this.hauteur = hauteur;
-        this.terrain = terrain;
+        this.biomeTerrain = biomeTerrain;
         this.numero = (byte) ((int)(Math.random() * 2) + 1);
         this.volcan_i = volcan_i;
         this.volcan_j = volcan_j;
     }
 
-    public Hexagone(byte numero_joueur, byte hauteur, byte terrain, byte batiment, byte volcan_i, byte volcan_j) {
+    public Hexagone(byte numero_joueur, byte hauteur, byte biomeTerrain, byte batiment, byte volcan_i, byte volcan_j) {
         this.num_joueur = numero_joueur;
         this.hauteur = hauteur;
-        this.terrain = terrain;
+        this.biomeTerrain = biomeTerrain;
         this.batiment = batiment;
         this.numero = (byte) ((int)(Math.random() * 2) + 1);
         this.volcan_i = volcan_i;
@@ -52,20 +52,20 @@ public class Hexagone {
     public byte getHauteur() {
         return hauteur;
     }
-    public byte getTerrain() {
-        return terrain;
+    public byte getBiomeTerrain() {
+        return biomeTerrain;
     }
     public byte getNum(){return numero;}
 
-    public int getVolcanJ(){
+    public int getColonneVolcan(){
         return volcan_j;
     }
-    public int getVolcanI(){
+    public int getLigneVolcan(){
         return volcan_i;
     }
 
     public boolean HexagoneLibre(){
-        return terrain == 0;
+        return biomeTerrain == 0;
     }
 
     public int getBatiment() {return batiment;}
@@ -73,6 +73,6 @@ public class Hexagone {
     public int getIDvillage (){return IDvillage;}
 
     public Hexagone copy() {
-        return new Hexagone(num_joueur, hauteur, terrain, batiment, volcan_i, volcan_j);
+        return new Hexagone(num_joueur, hauteur, biomeTerrain, batiment, volcan_i, volcan_j);
     }
 }

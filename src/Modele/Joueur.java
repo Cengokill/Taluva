@@ -22,7 +22,7 @@ public class Joueur {
     private BufferedImage image;
 
     public Joueur(byte type, String prenom){
-        this.type_bat = type;//0 pour humain, 1 pour IA
+        this.type_bat = type;//0 pour humain, 1 pour AbstractIA
         this.prenom = prenom;
         nbHuttesPlacees = 0;
         nbToursPlacees = 0;

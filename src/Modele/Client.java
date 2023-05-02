@@ -4,13 +4,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class EchoClient implements Runnable{
+public class Client implements Runnable{
     Socket socket_client;
     InputStream in;
     final String ip_serveur;
     final int port_serveur;
 
-    public EchoClient(String ip, int p) {
+    public Client(String ip, int p) {
         ip_serveur = ip;
         port_serveur = p;
     }

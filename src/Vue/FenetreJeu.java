@@ -1,7 +1,6 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
-import Modele.HexagonalTiles;
 import Modele.ImageLoader;
 import Modele.Jeu;
 
@@ -13,7 +12,7 @@ import static Modele.ImageLoader.*;
 
 public class FenetreJeu {
     FenetreListener listener;
-    public HexagonalTiles hexTiles;
+    public AffichagePlateau affichagePlateau;
     public VignettePanel vignettePanel;
     public JPanel buttonPanel;
     public JLayeredPane layeredPane;
@@ -65,9 +64,9 @@ public class FenetreJeu {
 
     private void initHexagonsPanel(ControleurMediateur controleur) {
         // Ajouter les tuiles hexagonales
-        hexTiles = new HexagonalTiles(this, controleur, this.jeu);
-        hexTiles.setBounds(0, 0, 1400, 1000);
-        layeredPane.add(hexTiles, JLayeredPane.DEFAULT_LAYER);
+        affichagePlateau = new AffichagePlateau(this, controleur, this.jeu);
+        affichagePlateau.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(affichagePlateau, JLayeredPane.DEFAULT_LAYER);
     }
 
     private void initMultiLayerPanel() {
@@ -89,7 +88,9 @@ public class FenetreJeu {
         buttonPanel = new JPanel(){
             @Override
             public void paint(Graphics g) {
-
+                if (!ImageLoader.loaded) {
+                    return;
+                }
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
 
@@ -144,7 +145,7 @@ public class FenetreJeu {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                hexTiles.setBounds(0, 0, getWidth(), getHeight());
+                affichagePlateau.setBounds(0, 0, getWidth(), getHeight());
                 vignettePanel.setBounds(0, 0, getWidth(), getHeight());
                 buttonPanel.setBounds(0, 0, getWidth(), getHeight());
             }

@@ -1,43 +1,43 @@
 package Structures;
 
 public class TripletDePosition {
-    private Position x;
-    private Position y;
-    private Position z;
+    private Position volcan;
+    private Position tile1;
+    private Position tile2;
 
-    public TripletDePosition(Position x, Position y, Position z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public TripletDePosition(Position volcan, Position tile1, Position tile2) {
+        this.volcan = volcan;
+        this.tile1 = tile1;
+        this.tile2 = tile2;
     }
 
-    public Position getX() {
-        return x;
+    public Position getVolcan() {
+        return volcan;
     }
 
-    public Position getY() {
-        return y;
+    public Position getTile1() {
+        return tile1;
     }
 
-    public Position getZ() {
-        return z;
+    public Position getTile2() {
+        return tile2;
     }
 
-    public void setX(Position x) {
-        this.x = x;
+    public void setVolcan(Position volcan) {
+        this.volcan = volcan;
     }
 
-    public void setY(Position y) {
-        this.y = y;
+    public void setTile1(Position tile1) {
+        this.tile1 = tile1;
     }
 
-    public void setZ(Position z) {
-        this.z = z;
+    public void setTile2(Position tile2) {
+        this.tile2 = tile2;
     }
 
 
     public TripletDePosition copy() {
-        TripletDePosition tripletDePosition = new TripletDePosition(this.x, this.y, this.z);
+        TripletDePosition tripletDePosition = new TripletDePosition(this.volcan, this.tile1, this.tile2);
         return tripletDePosition;
     }
 }
