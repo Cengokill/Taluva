@@ -28,7 +28,7 @@ public class Hexagone {
     private final byte volcan_i;
     private byte num_joueur;
 
-    public Hexagone(byte hauteur, byte terrain, byte volcan_i, byte volcan_j) {
+    public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j) {
         this.num_joueur = -1;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
