@@ -9,10 +9,10 @@ import static Modele.GameState.*;
 
 
 
-public class TEngineListener extends MouseAdapter implements MouseWheelListener {
-    private final TEngine tengine;
+public class FenetreListener extends MouseAdapter implements MouseWheelListener {
+    private final FenetreJeu tengine;
 
-    public TEngineListener(TEngine t) {
+    public FenetreListener(FenetreJeu t) {
         super();
         tengine = t;
 

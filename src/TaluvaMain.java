@@ -3,7 +3,7 @@ import Modele.EchoClient;
 import Modele.EchoServeur;
 import Modele.ImageLoader;
 import Modele.Jeu;
-import Vue.TEngine;
+import Vue.FenetreJeu;
 
 public class TaluvaMain {
     public static void main(String[] args) {
@@ -16,7 +16,8 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
 
-        TEngine fenetre = new TEngine(jeu, controler);
+        FenetreJeu fenetre = new FenetreJeu(jeu, controler);
         ImageLoader.loadImages();
+        fenetre.hexTiles.repaint();
     }
 }

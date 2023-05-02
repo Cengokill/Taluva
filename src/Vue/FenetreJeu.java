@@ -2,6 +2,7 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.HexagonalTiles;
+import Modele.ImageLoader;
 import Modele.Jeu;
 
 import javax.swing.*;
@@ -10,8 +11,8 @@ import java.awt.*;
 import static Modele.ImageLoader.*;
 
 
-public class TEngine {
-    TEngineListener listener;
+public class FenetreJeu {
+    FenetreListener listener;
     public HexagonalTiles hexTiles;
     public VignettePanel vignettePanel;
     public JPanel buttonPanel;
@@ -23,7 +24,7 @@ public class TEngine {
     final Jeu jeu;
     final JFrame f;
 
-    public TEngine(Jeu jeu, ControleurMediateur controleur) {
+    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         this.jeu = jeu;
@@ -40,7 +41,7 @@ public class TEngine {
     }
 
     private void initKeyBoardAndMouseListener() {
-        listener = new TEngineListener(this);
+        listener = new FenetreListener(this);
     }
 
     private void setBackgroundColor() {
@@ -88,6 +89,7 @@ public class TEngine {
         buttonPanel = new JPanel(){
             @Override
             public void paint(Graphics g) {
+
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
 

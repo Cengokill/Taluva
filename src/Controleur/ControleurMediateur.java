@@ -2,17 +2,17 @@ package Controleur;
 
 import Modele.*;
 import Vue.CollecteurEvenements;
-import Vue.TEngine;
+import Vue.FenetreJeu;
 
 public class ControleurMediateur implements CollecteurEvenements {
     final Jeu jeu;
-    TEngine vue;
+    FenetreJeu vue;
 
     public ControleurMediateur(Jeu j) {
         jeu = j;
     }
 
-    public void setEngine(TEngine vue) {
+    public void setEngine(FenetreJeu vue) {
         this.vue = vue;
     }
 

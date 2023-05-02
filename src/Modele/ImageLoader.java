@@ -10,7 +10,7 @@ import java.io.IOException;
 import static Modele.GameState.couleurs_joueurs;
 
 public class ImageLoader {
-
+    public static boolean loaded = false;
     public static BufferedImage
             maisonTile,
             maisonTileColor1,
@@ -48,6 +48,13 @@ public class ImageLoader {
     public static int largeur, hauteur, largeur_bouton, hauteur_bouton;
     public static boolean select_save, select_load, select_annuler, select_refaire, select_reset, select_quitter;
 
+    public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
+    public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;
+    public static BufferedImage foretTile_0_Red, foretTile_1_Red, foretTile_2_Red;
+    public static BufferedImage desertTile_0_Red, desertTile_1_Red, desertTile_2_Red;
+    public static BufferedImage montagneTile_0_Red, montagneTile_1_Red, montagneTile_2_Red;
+    public static BufferedImage tileErreur;
+
     public static BufferedImage
             plateau_hautGauche_etage1,
             plateau_hautDroite_etage1,
@@ -72,8 +79,6 @@ public class ImageLoader {
         joueurCourant = lisImageBuf("Joueur_Courant");
 
         readTilesImages();
-        filterTiles();
-
         readPlayableTilesImages();
         readHeightImages(lisImageBuf("Wrong_height_1_hex"), lisImageBuf("Wrong_height_2_hex"), lisImageBuf("Wrong_height_3_hex"));
         readHeightImages(getReducedOpacityImage(wrongTile1, 0.5f), getReducedOpacityImage(wrongTile2, 0.5f), getReducedOpacityImage(wrongTile3, 0.5f));
@@ -81,6 +86,10 @@ public class ImageLoader {
         readBatimentsImages();
         readSelectionBatimentImage();
         readAndFilterContoursImages();
+        filterTiles();
+
+
+        loaded = true;
     }
 
     private static void readSelectionBatimentImage() {
@@ -98,6 +107,28 @@ public class ImageLoader {
     private static void filterTiles() {
         voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
         whiteTile = getReducedOpacityImage(whiteTile, 0.35f);
+
+        filterTilesEnRouge();
+    }
+
+    private static void filterTilesEnRouge() {
+        grassTile_0_Red = applyRedFilter(grassTile_0);
+        grassTile_1_Red = applyRedFilter(grassTile_1);
+        grassTile_2_Red = applyRedFilter(grassTile_2);
+        desertTile_0_Red = applyRedFilter(desertTile_0);
+        desertTile_1_Red = applyRedFilter(grassTile_1);
+        desertTile_2_Red = applyRedFilter(desertTile_2);
+        foretTile_0_Red = applyRedFilter(foretTile_0);
+        foretTile_1_Red = applyRedFilter(foretTile_1);
+        foretTile_2_Red = applyRedFilter(foretTile_2);
+        montagneTile_0_Red = applyRedFilter(montagneTile_0);
+        montagneTile_1_Red = applyRedFilter(montagneTile_1);
+        montagneTile_2_Red = applyRedFilter(montagneTile_2);
+        volcanTile_0_Red = applyRedFilter(volcanTile_0);
+        volcanTile_1_Red = applyRedFilter(volcanTile_1);
+        volcanTile_2_Red = applyRedFilter(volcanTile_2);
+
+        tileErreur = getReducedOpacityImage(grassTile_0_Red, 0.5f);
     }
 
     private static void readTilesImages() {
@@ -124,6 +155,9 @@ public class ImageLoader {
         if (batiment_id == Hexagone.TEMPLE_SABLE) {
             return getTempleSable(id_player);
         }
+        if (batiment_id == Hexagone.TOUR) {
+            return getTour(id_player);
+        }
         return null;
     }
 
@@ -132,6 +166,14 @@ public class ImageLoader {
             return templeSableColor1;
         } else {
             return templeSableColor2;
+        }
+    }
+
+    private static BufferedImage getTour(byte id_player) {
+        if (id_player == 0) {
+            return tourColor1;
+        } else {
+            return tourColor2;
         }
     }
 
