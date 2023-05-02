@@ -9,8 +9,8 @@ import java.util.LinkedList;
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
-    final IA IA1;
-    IA IA2;
+    final AbstractIA IA1;
+    AbstractIA IA2;
     byte jCourant;
     byte jVainqueur;
     final Joueur[] joueurs = new Joueur[2];
@@ -29,7 +29,7 @@ public class Jeu extends Observable {
     public Jeu(Parametres p){
         //jCourant = (byte) ((int)(Math.random() * 2));
         jCourant = 1;
-        IA1 = IA.nouvelle(this,this.p);
+        IA1 = AbstractIA.nouvelle(this,this.p);
         joueursObjet[0] = joueur1;
         joueursObjet[1] = IA1;
 
@@ -46,7 +46,7 @@ public class Jeu extends Observable {
         pioche();
 
         if (estJoueurCourantUneIA()) {
-            // Pour pas que l'IA joue directement
+            // Pour pas que l'AbstractIA joue directement
             // Attendez un certain temps avant d'ex�cuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> joueIA());
@@ -57,15 +57,15 @@ public class Jeu extends Observable {
     }
 
     public boolean estJoueurCourantUneIA() {
-        return joueursObjet[jCourant] instanceof IA;
+        return joueursObjet[jCourant] instanceof AbstractIA;
     }
 
     public void joueIA() {
         if (!estJoueurCourantUneIA()) {
             return;
         }
-        Coup c = ((IA)joueursObjet[jCourant]).joue(); // tuiles
-        if (!getPlateau().estPlaceLibre(c.volcan_x,c.volcan_y)) {
+        Coup c = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
+        if (!getPlateau().estHexagoneLibre(c.volcanX,c.volcanY)) {
             System.out.println("pas libre A DEBUGGER");
             return;
         }
@@ -73,9 +73,9 @@ public class Jeu extends Observable {
         doit_placer_batiment = true;
         doit_placer_tuile = false;
 
-        c = ((IA)joueursObjet[jCourant]).joue(); // batiment
+        c = ((AbstractIA)joueursObjet[jCourant]).joue(); // batiment
         //getPlateau().joueCoup(c);
-        joueurPlaceBatiment(c.batiment_x,c.batiment_y,c.type);
+        joueurPlaceBatiment(c.batimentX,c.batimentY,c.typePlacement);
         doit_placer_batiment = false;
         doit_placer_tuile = true;
         //changeJoueur();
@@ -128,8 +128,8 @@ public class Jeu extends Observable {
         }
         plateau.placeBatiment(jCourant, i,j, type_bat);
         if(type_bat!=4){
-            if(getNumJoueurCourant()==0) plateau.nb_bat_j1++;
-            if(getNumJoueurCourant()==1) plateau.nb_bat_j2++;
+            if(getNumJoueurCourant()==0) plateau.quantiteBatimentJoueur1++;
+            if(getNumJoueurCourant()==1) plateau.quantiteBatimentJoueur2++;
 
             if(type_bat == 1) {
                 if(plateau.getHauteurTuile(i,j)==2) joueurs[jCourant].incrementeHutte();

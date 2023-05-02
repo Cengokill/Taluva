@@ -18,14 +18,14 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
 
 
 
-        tengine.hexTiles.handler = new MouseHandler();
-        tengine.hexTiles.addMouseListener(tengine.hexTiles.handler);
-        tengine.hexTiles.addMouseMotionListener(tengine.hexTiles.handler);
-        tengine.hexTiles.addMouseWheelListener(tengine.hexTiles.handler);
+        tengine.affichagePlateau.handler = new MouseHandler();
+        tengine.affichagePlateau.addMouseListener(tengine.affichagePlateau.handler);
+        tengine.affichagePlateau.addMouseMotionListener(tengine.affichagePlateau.handler);
+        tengine.affichagePlateau.addMouseWheelListener(tengine.affichagePlateau.handler);
 
-        tengine.hexTiles.keyboardlisten = new KeyboardListener();
-        tengine.hexTiles.setFocusable(true);
-        tengine.hexTiles.addKeyListener(tengine.hexTiles.keyboardlisten);
+        tengine.affichagePlateau.keyboardlisten = new KeyboardListener();
+        tengine.affichagePlateau.setFocusable(true);
+        tengine.affichagePlateau.addKeyListener(tengine.affichagePlateau.keyboardlisten);
     }
 
      public class KeyboardListener implements KeyListener {
@@ -48,10 +48,10 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 shake();
-                tengine.hexTiles.repaint();
+                tengine.affichagePlateau.repaint();
             }
             if (e.getKeyCode() == KeyEvent.VK_N) {
-                tengine.hexTiles.affichetripletpossible();
+                tengine.affichagePlateau.affichetripletpossible();
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 scrollValue++;
@@ -60,7 +60,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.hexTiles.repaint();
+                tengine.affichagePlateau.repaint();
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 scrollValue--;
@@ -69,7 +69,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.hexTiles.repaint();
+                tengine.affichagePlateau.repaint();
             }
         }
 
@@ -91,12 +91,10 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
     ////////////////////////////
     public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
-
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println("Clic en " + e.getX() + " " + e.getY());
-            tengine.hexTiles.addToCursor(e);
-            tengine.hexTiles.annuleConstruction(e);
+            tengine.affichagePlateau.addToCursor(e);
+            tengine.affichagePlateau.annuleConstruction(e);
         }
 
         @Override
@@ -119,9 +117,9 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 int dy = e.getY() - lastMousePosition.y;
 
                 // Ajouter les bornes pour les déplacements de la caméra
-                int minX = -2500 - ((int)(10*zoomFactor) - 2)*(tengine.hexTiles.getWidth());
+                int minX = -2500 - ((int)(10*zoomFactor) - 2)*(tengine.affichagePlateau.getWidth());
                 int maxX = 10000;
-                int minY = -2000 - ((int)(10*zoomFactor) - 2)*(tengine.hexTiles.getHeight());
+                int minY = -2000 - ((int)(10*zoomFactor) - 2)*(tengine.affichagePlateau.getHeight());
                 int maxY = 10000;
 
 
@@ -140,14 +138,14 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             } else {
                 hoverTilePosition = e.getPoint();
             }
-            tengine.hexTiles.miseAJour();
+            tengine.affichagePlateau.miseAJour();
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
             hoverTilePosition = e.getPoint();
-            tengine.hexTiles.updateCursorPosOnTiles(e);
-            tengine.hexTiles.miseAJour();
+            tengine.affichagePlateau.updateCursorPosOnTiles(e);
+            tengine.affichagePlateau.miseAJour();
             if (!SwingUtilities.isRightMouseButton(e)) {
                 clicDroiteEnfonce = false;
             }
@@ -163,8 +161,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.hexTiles.repaint();
-                //System.out.println("Scroll value: " + tengine.hexTiles.scrollValue);
+                tengine.affichagePlateau.repaint();
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;
@@ -186,7 +183,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 if (cameraOffset.y > -64) {
                     cameraOffset.y = -64;
                 }
-                tengine.hexTiles.miseAJour();
+                tengine.affichagePlateau.miseAJour();
             }
         }
 
