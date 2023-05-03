@@ -6,13 +6,16 @@ import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 import static Modele.ImageLoader.*;
 
 
-public class FenetreJeu {
+public class FenetreJeu extends Container {
     FenetreListener listener;
     public AffichagePlateau affichagePlateau;
+
+    public MenuGraphique menuGraphique;
     public VignettePanel vignettePanel;
     public JPanel buttonPanel;
     public JLayeredPane layeredPane;
@@ -23,20 +26,54 @@ public class FenetreJeu {
     final Jeu jeu;
     final JFrame f;
 
-    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) {
-        this.controleur = controleur;
-        this.controleur.setEngine(this);
-        this.jeu = jeu;
-        this.f = getF();
-        initFrame();
+    public FenetreJeu(Jeu jeu, ControleurMediateur controleur,int menu) throws IOException {
+        if(menu==0){
+            this.controleur = controleur;
+            this.controleur.setEngine(this);
+            this.jeu = jeu;
+            this.f = getF();
+            initFrame();
 
-        initPanels(controleur);
+            initPanels(controleur);
 
-        initKeyBoardAndMouseListener();
+            initKeyBoardAndMouseListener();
 
-        setBackgroundColor();
+            setBackgroundColor();
 
-        f.setVisible(true);
+            f.setVisible(true);
+        }else{
+            this.controleur = controleur;
+            this.controleur.setEngine(this);
+            this.jeu = jeu;
+            this.f = getF();
+            initFrame();
+
+            initPanels(controleur);
+
+            initKeyBoardAndMouseListener();
+
+            setBackgroundColor();
+
+            f.setVisible(true);
+        }
+        /*else {
+            this.controleur = controleur;
+            this.controleur.setEngine(this);
+            this.jeu = jeu;
+            this.f = getFMenu();
+            initMenu();
+            menuGraphique = new MenuGraphique(f);
+
+            f.setVisible(true);
+            System.out.println("menu");
+        }*/
+    }
+
+    private void initMenu() throws IOException {
+        // Ajouter les tuiles hexagonales
+        menuGraphique = new MenuGraphique(f);
+        menuGraphique.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(menuGraphique, JLayeredPane.DEFAULT_LAYER);
     }
 
     private void initKeyBoardAndMouseListener() {
@@ -140,6 +177,15 @@ public class FenetreJeu {
         f.setLocationRelativeTo(null);
     }
 
+    private JFrame getFMenu(){
+        return new JFrame() {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                menuGraphique.setBounds(0, 0, getWidth(), getHeight());
+            }
+        };
+    }
     private JFrame getF() {
         bouton_save = lisImageBuf("Sauvegarder");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");

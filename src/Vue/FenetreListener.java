@@ -16,8 +16,6 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
         super();
         fenetreJeu = t;
 
-
-
         fenetreJeu.affichagePlateau.handler = new MouseHandler();
         fenetreJeu.affichagePlateau.addMouseListener(fenetreJeu.affichagePlateau.handler);
         fenetreJeu.affichagePlateau.addMouseMotionListener(fenetreJeu.affichagePlateau.handler);
