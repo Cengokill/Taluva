@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 
 import static Modele.Camera.*;
 import static Modele.GameState.*;
+import static Modele.Hexagone.*;
 import static Modele.ImageLoader.*;
 
 public class AffichagePlateau extends JPanel {
@@ -90,9 +91,9 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void initTripletHover() {
-        triplet[0][0] = Hexagone.VOLCAN;
-        triplet[1][0] = Hexagone.VIDE;
-        triplet[2][0] = Hexagone.VIDE;
+        triplet[0][0] = VOLCAN;
+        triplet[1][0] = VIDE;
+        triplet[2][0] = VIDE;
         triplet[0][1] = 0;
         triplet[1][1] = 0;
         triplet[2][1] = 0;
@@ -266,10 +267,10 @@ public class AffichagePlateau extends JPanel {
     // TODO optimiser colorFilters
     private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
-        if (map[ligne][colonne].getBatiment() != Hexagone.CHOISIR_BATIMENT) {
+        if (map[ligne][colonne].getBatiment() != CHOISIR_BATIMENT) {
             g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment()), x, y - heightoffset, null);
 
-        } else if (map[ligne][colonne].getBatiment() == Hexagone.CHOISIR_BATIMENT) {
+        } else if (map[ligne][colonne].getBatiment() == CHOISIR_BATIMENT) {
             int pos_x = x -150;
             int pos_y = y -300;
             int value = scrollValue%3;
@@ -316,7 +317,7 @@ public class AffichagePlateau extends JPanel {
         int heightoffset = map[i][j].getHauteur();
         heightoffset *= HAUTEUR_ETAGE;
 
-        if (map[i][j].getBiomeTerrain() == Hexagone.VIDE) {
+        if (map[i][j].getBiomeTerrain() == VIDE) {
             heightoffset -= HAUTEUR_OCEAN;
         }
         return heightoffset;
@@ -344,7 +345,7 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
-        if (map[i][j].getBiomeTerrain() == Hexagone.VOLCAN) {
+        if (map[i][j].getBiomeTerrain() == VOLCAN) {
             int j2 = convertionTileMapToHexagonal(i, j);
             illumineVolcanLibre(g, i, j, x, y, heightoffset, j2);
             afficheDirectionsLibres(g, i, j, x, y, heightoffset, j2);
@@ -568,7 +569,7 @@ public class AffichagePlateau extends JPanel {
             heightoffset1 *= 30;
 
             if(!enSelection){
-                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != Hexagone.VOLCAN){
+                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VOLCAN){
                         /*if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
                         else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
                             if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
@@ -616,8 +617,8 @@ public class AffichagePlateau extends JPanel {
     }
 
     private boolean possedeBatiment(int i,int j){
-        return (jeu.getPlateau().getBatiment(i,j)==Hexagone.TOUR||jeu.getPlateau().getBatiment(i,j)==Hexagone.MAISON||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_FORET
-                ||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==Hexagone.TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
+        return (jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==TEMPLE_FORET
+                ||jeu.getPlateau().getBatiment(i,j)==TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
     }
 
     private boolean aCiteAutour(int i,int j){

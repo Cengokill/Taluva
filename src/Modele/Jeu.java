@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import static Modele.Hexagone.*;
+
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
@@ -169,9 +171,36 @@ public class Jeu extends Observable {
         return joueurs[jCourant].getPrenom();
     }
 
-    public void initPioche(){//24 tuiles
-        for(int i=0;i<TAILLE_PIOCHE;i++){
-            pioche.add(new Tuile());
+    public void initPioche(){//24 tuiles fixes définies
+        byte desert = DESERT;
+        byte foret = FORET;
+        byte prairie = GRASS;
+        byte montagne = MONTAGNE;
+        byte lac = 5;
+        pioche.add(new Tuile(desert, desert));
+        pioche.add(new Tuile(prairie, prairie));
+        pioche.add(new Tuile(foret, foret));
+        pioche.add(new Tuile(montagne, montagne));
+        pioche.add(new Tuile(lac, lac));
+        for(int i=0; i<2; i++){
+            pioche.add(new Tuile(lac, prairie));
+            pioche.add(new Tuile(lac, desert));
+            pioche.add(new Tuile(lac, montagne));
+        }
+        for(int i=0; i<3; i++){
+            pioche.add(new Tuile(lac, foret));
+            pioche.add(new Tuile(montagne, desert));
+        }
+        for(int i=0; i<4; i++){
+            pioche.add(new Tuile(montagne, prairie));
+            pioche.add(new Tuile(montagne, foret));
+            pioche.add(new Tuile(prairie, desert));
+        }
+        for(int i=0; i<8; i++){
+            pioche.add(new Tuile(desert, foret));
+        }
+        for(int i=0; i<11; i++){
+            pioche.add(new Tuile(prairie, foret));
         }
         Collections.shuffle(pioche);
     }

@@ -226,7 +226,7 @@ public class Plateau implements Serializable {
 
     }
     public boolean VillageQuestionMarK(int x , int y){
-        return plateau[x][y].getBatiment() == Hexagone.MAISON;
+        return plateau[x][y].getBatiment() == Hexagone.HUTTE;
 
     }
 
@@ -379,7 +379,7 @@ public class Plateau implements Serializable {
             hauteur = plateau[coup.batimentX][coup.batimentY].getHauteur();
             byte batiment = 0;
             if (coup.typePlacement == 1) {
-                batiment = Hexagone.MAISON;
+                batiment = Hexagone.HUTTE;
             } else if (coup.typePlacement == 2) {
                 if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
                 if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;

@@ -8,12 +8,12 @@ public class Tuile {
     final int numero1;
     final int numero2;
 
-    public Tuile(){
-        //nombre aléatoire entre 1 et 6
-        biome0 = (byte) ((int)(Math.random() * 4) + 1);
-        biome1 = (byte) ((int)(Math.random() * 4) + 1);
+    public Tuile(byte b0, byte b1){
+        //nombre fixe
+        biome0 = b0;
+        biome1 = b1;
         biomeVolcan = Hexagone.VOLCAN;
-        //numero aléatoire entre 0 et 2
+        //numéro aléatoire entre 0 et 2 pour l'affichage visuel uniquement
         numero0 = ((int)(Math.random() * 3));
         numero1 = ((int)(Math.random() * 3));
         numero2 = ((int)(Math.random() * 3));

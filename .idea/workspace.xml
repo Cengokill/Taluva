@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Ajout EchoServeur et EchoClient">
-      <change afterPath="$PROJECT_DIR$/src/Modele/Position.java" afterDir="false" />
+    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Ajout fichier .psd">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/EchoServeur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/EchoServeur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/IAAleatoire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/IAAleatoire.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Hexagone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Hexagone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/ImageLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/ImageLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Plateau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Tuile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Tuile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/AffichagePlateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/AffichagePlateau.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,13 +39,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="TaluvaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TaluvaMain" />
@@ -124,11 +129,12 @@
       <updated>1682548159378</updated>
     </task>
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f35b20d3-ec04-4545-b419-825e52621ac2" name="Changes" comment="Plateau" />
+      <changelist id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="" />
       <created>1682585374491</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682585374491</updated>
+      <workItem from="1683093838425" duration="1497000" />
     </task>
     <task id="LOCAL-00010" summary="Changement controles">
       <created>1682586246895</created>
@@ -172,8 +178,18 @@
       <option name="project" value="LOCAL" />
       <updated>1682682133277</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Ajout fichier .psd">
+      <created>1683093977553</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1683093977553</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -203,6 +219,7 @@
     <MESSAGE value="Affichage du joueur courant" />
     <MESSAGE value="Modification images bâtiments" />
     <MESSAGE value="Ajout EchoServeur et EchoClient" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout EchoServeur et EchoClient" />
+    <MESSAGE value="Ajout fichier .psd" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout fichier .psd" />
   </component>
 </project>
