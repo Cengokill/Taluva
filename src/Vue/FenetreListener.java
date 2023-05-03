@@ -100,11 +100,53 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             return false;
         }
+
+        public boolean estSurAnnuler(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_annuler+ hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur){
+                select_annuler = true;
+                return true;
+            }
+            select_annuler = false;
+            return false;
+        }
+
+        public boolean estSurRefaire(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_refaire+ hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur){
+                select_refaire = true;
+                return true;
+            }
+            select_refaire = false;
+            return false;
+        }
+
+        public boolean estSurQuitter(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_quitter+ hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
+                select_quitter = true;
+                return true;
+            }
+            select_quitter = false;
+            return false;
+        }
         @Override
         public void mouseClicked(MouseEvent e) {
             if(estSurTuto(e)) {
-                //si tuto_on, alors mettre tuto_on = false,
-                //sinon mettre tuto_on = true
+                if(tuto_on) {
+                    tuto_on = false;
+                } else {
+                    tuto_on = true;
+                }
+            }
+            if(estSurAnnuler(e)) {
+                fenetreJeu.affichagePlateau.controleur.annuler();
+            }
+            if(estSurRefaire(e)) {
+                fenetreJeu.affichagePlateau.controleur.refaire();
             }
             fenetreJeu.affichagePlateau.addToCursor(e);
             fenetreJeu.affichagePlateau.annuleConstruction(e);
@@ -156,6 +198,12 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e)) {
+                System.out.println("Cursor.HAND_CURSOR");
+                fenetreJeu.affichagePlateau.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }else{
+                fenetreJeu.affichagePlateau.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
             hoverTilePosition = e.getPoint();
             fenetreJeu.affichagePlateau.updateCursorPosOnTiles(e);
             fenetreJeu.affichagePlateau.miseAJour();

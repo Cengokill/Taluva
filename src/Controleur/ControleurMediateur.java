@@ -51,29 +51,23 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void toucheClavier(String t) {
     }
 
-    public void clicAnnuler(){
+    public void annuler(){
         jeu.annuler();
     }
 
     @Override
-    public void clicRefaire() {
+    public void refaire() {
         jeu.refaire();
     }
 
     @Override
-    public void clicSauvegarder() {
+    public void sauvegarder() {
         jeu.sauvegarder();
     }
 
     @Override
-    public void clicCharger() {
+    public void charger() {
         jeu.charger();
     }
-
-    @Override
-    public void clicRecommencer() {
-        jeu.reinitialise();
-    }
-
 }
 
