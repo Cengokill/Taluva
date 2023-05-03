@@ -182,57 +182,85 @@ public class AffichagePlateau extends JPanel {
         }
     }
 
-    private void contour(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset, int i2, Hexagone[] hexagones, String direction) {
-        if (map[i][i2].getHauteur() < hexagones[j].getHauteur()) {
-            BufferedImage etage_1;
-            BufferedImage etage_2;
-            BufferedImage etage_3;
+    private void contour(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset, int colonneDirection, Hexagone[] hexagones, String direction) {
+        BufferedImage contourEtage1;
+        BufferedImage contourEtage2;
+        BufferedImage contourEtage3;
+        BufferedImage contourTuile;
 
-            switch (direction) {
-                case "gauche":
-                    etage_1 = plateau_Gauche_etage1;
-                    etage_2 = plateau_Gauche_etage2;
-                    etage_3 = plateau_Gauche_etage3;
-                    break;
+        switch (direction) {
+            case "gauche":
+                contourEtage1 = plateau_Gauche_etage1;
+                contourEtage2 = plateau_Gauche_etage2;
+                contourEtage3 = plateau_Gauche_etage3;
+                contourTuile = tuile_Gauche;
+                break;
 
-                case "droite":
-                    etage_1 = plateau_Droite_etage1;
-                    etage_2 = plateau_Droite_etage2;
-                    etage_3 = plateau_Droite_etage3;
-                    break;
+            case "droite":
+                contourEtage1 = plateau_Droite_etage1;
+                contourEtage2 = plateau_Droite_etage2;
+                contourEtage3 = plateau_Droite_etage3;
+                contourTuile = tuile_Droite;
+                break;
 
-                case "hautGauche":
-                    etage_1 = plateau_hautGauche_etage1;
-                    etage_2 = plateau_hautGauche_etage2;
-                    etage_3 = plateau_hautGauche_etage3;
-                    break;
+            case "hautGauche":
+                contourEtage1 = plateau_hautGauche_etage1;
+                contourEtage2 = plateau_hautGauche_etage2;
+                contourEtage3 = plateau_hautGauche_etage3;
+                contourTuile = tuile_hautGauche;
+                break;
 
-                case "hautDroite":
-                    etage_1 = plateau_hautDroite_etage1;
-                    etage_2 = plateau_hautDroite_etage2;
-                    etage_3 = plateau_hautDroite_etage3;
-                    break;
+            case "hautDroite":
+                contourEtage1 = plateau_hautDroite_etage1;
+                contourEtage2 = plateau_hautDroite_etage2;
+                contourEtage3 = plateau_hautDroite_etage3;
+                contourTuile = tuile_hautDroite;
+                break;
 
-                case "basGauche":
-                    etage_1 = plateau_basGauche_etage1;
-                    etage_2 = plateau_basGauche_etage2;
-                    etage_3 = plateau_basGauche_etage3;
-                    break;
+            case "basGauche":
+                contourEtage1 = plateau_basGauche_etage1;
+                contourEtage2 = plateau_basGauche_etage2;
+                contourEtage3 = plateau_basGauche_etage3;
+                contourTuile = tuile_basGauche;
+                break;
 
-                default:
-                    etage_1 = plateau_basDroite_etage1;
-                    etage_2 = plateau_basDroite_etage2;
-                    etage_3 = plateau_basDroite_etage3;
-                    break;
-            }
+            default:
+                contourEtage1 = plateau_basDroite_etage1;
+                contourEtage2 = plateau_basDroite_etage2;
+                contourEtage3 = plateau_basDroite_etage3;
+                contourTuile = tuile_basDroite;
+                break;
+        }
 
-            if (hexagones[j].getHauteur() == 1) {
-                g.drawImage(etage_1, x, y - heightoffset + 55, null);
-            } else if (hexagones[j].getHauteur() == 2) {
-                g.drawImage(etage_2, x, y - heightoffset + 55, null);
-            } else if (hexagones[j].getHauteur() == 3) {
-                g.drawImage(etage_3, x, y - heightoffset + 55, null);
-            }
+
+        if (estCoteTuile(colonneDirection, map[ligne], hexagones[colonne])) {
+                g.drawImage(contourTuile, xDrawPosition, yDrawPosition - heightoffset + 55, null);
+        }
+
+        if (estBordureHauteur(colonneDirection, map[ligne], hexagones[colonne])) {
+            drawContourEtages(g, colonne, xDrawPosition, yDrawPosition, heightoffset, hexagones, contourEtage1, contourEtage2, contourEtage3);
+        }
+    }
+
+    private boolean estBordureHauteur(int colonneDirection, Hexagone[] map, Hexagone hexagoneCourant) {
+        return map[colonneDirection].getHauteur() < hexagoneCourant.getHauteur();
+    }
+
+    private boolean estCoteTuile(int colonneDirection, Hexagone[] map, Hexagone hexagoneCourant) {
+        boolean aMemeVolcan = map[colonneDirection].getColonneVolcan() == hexagoneCourant.getColonneVolcan()
+                                &&
+                              map[colonneDirection].getLigneVolcan() == hexagoneCourant.getLigneVolcan();
+
+        return hexagoneCourant.getBiomeTerrain() != Hexagone.VIDE && !aMemeVolcan;
+    }
+
+    private void drawContourEtages(Graphics g, int j, int x, int y, int heightoffset, Hexagone[] hexagones, BufferedImage contourEtage1, BufferedImage contourEtage2, BufferedImage contourEtage3) {
+        if (hexagones[j].getHauteur() == 1) {
+            g.drawImage(contourEtage1, x, y - heightoffset + 55, null);
+        } else if (hexagones[j].getHauteur() == 2) {
+            g.drawImage(contourEtage2, x, y - heightoffset + 55, null);
+        } else if (hexagones[j].getHauteur() == 3) {
+            g.drawImage(contourEtage3, x, y - heightoffset + 55, null);
         }
     }
 

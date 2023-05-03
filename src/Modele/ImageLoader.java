@@ -44,6 +44,7 @@ public class ImageLoader {
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
     public static BufferedImage joueurCourant;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
+    public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select,
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_reset, bouton_reset_select;
     public static int posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_reset;
@@ -295,6 +296,13 @@ public class ImageLoader {
         plateau_Droite = lisImageBuf("plateau_Droite");
         plateau_basGauche = lisImageBuf("plateau_basGauche");
         plateau_basDroite = lisImageBuf("plateau_basDroite");
+
+        tuile_hautGauche = lisImageBuf("tuile_hautGauche");
+        tuile_hautDroite = lisImageBuf("tuile_hautDroite");
+        tuile_Gauche = lisImageBuf("tuile_Gauche");
+        tuile_Droite = lisImageBuf("tuile_Droite");
+        tuile_basGauche = lisImageBuf("tuile_basGauche");
+        tuile_basDroite = lisImageBuf("tuile_basDroite");
     }
 
     private static void filtreCouleursContoursEtages() {
