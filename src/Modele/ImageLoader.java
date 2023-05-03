@@ -436,7 +436,7 @@ public class ImageLoader {
     }
 
     public static BufferedImage applyColorFilter(BufferedImage image, byte num_joueur) {
-        if (num_joueur < 0 || num_joueur > 3) {
+        if (num_joueur < 0 || num_joueur > 3 || image == null) {
             return image;
         }
         //System.out.println(num_joueur);
@@ -475,6 +475,7 @@ public class ImageLoader {
     public static BufferedImage applyRedFilter(BufferedImage image) {
         if(image ==null) {
             System.err.println("applyRedFilter : image null");
+            return image;
         }
         BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = outputImage.createGraphics();

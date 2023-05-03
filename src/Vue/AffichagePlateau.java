@@ -138,24 +138,34 @@ public class AffichagePlateau extends JPanel {
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
         for (int i = Math.abs(cameraOffset.y/tileWidth) - 2; i < map.length; i++) {
             for (int j = Math.abs(cameraOffset.x/tileWidth) - 2; j < map[0].length; j++) {
-                int x = j* tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
-                int y = i * verticalOffset;
-
-                int tileId = map[i][j].getBiomeTerrain();
-
-                int heightoffset = calculHauteurAffichageHexagone(map, i, j);
-
-                BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
-                g.drawImage(tile, x , y - heightoffset, null);
-
-
-                // TODO optimiser l'affichage, ces fonctions font lag
-                afficheFiltresTileMode(g, map, i, j, x, y, heightoffset);
-                afficheNumerosNiveaux(g, map, i, j, x, y, heightoffset);
-                afficheBatiments(g, map, i, j, x, y, heightoffset);
-                afficheContourParNiveau(g, map, i, j, x, y, heightoffset);
+                affiche(g, map, tileWidth, verticalOffset, i, j);
             }
         }
+    }
+
+    private void affiche(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int i, int j) {
+        int tileId = map[i][j].getBiomeTerrain();
+        if (tileId != VIDE) {
+            afficheHexagone(g, map, tileWidth, verticalOffset, i, j, tileId);
+        }
+    }
+
+    private void afficheHexagone(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int i, int j, int tileId) {
+        int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
+        int y = i * verticalOffset;
+
+
+        int heightoffset = calculHauteurAffichageHexagone(map, i, j);
+
+        BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
+        g.drawImage(tile, x , y - heightoffset, null);
+
+
+        // TODO optimiser l'affichage, ces fonctions font lag
+        afficheFiltresTileMode(g, map, i, j, x, y, heightoffset);
+        afficheNumerosNiveaux(g, map, i, j, x, y, heightoffset);
+        afficheBatiments(g, map, i, j, x, y, heightoffset);
+        afficheContourParNiveau(g, map, i, j, x, y, heightoffset);
     }
 
     private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset) {
