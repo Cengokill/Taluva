@@ -8,11 +8,12 @@ import java.io.File;
 import java.io.IOException;
 
 import static Modele.GameState.couleurs_joueurs;
+import static Modele.Hexagone.*;
 
 public class ImageLoader {
     public static boolean loaded = false;
     public static BufferedImage
-            maisonTile,
+            hutteTile,
             maisonTileColor1,
             maisonTileColor2,
             templeJungle,
@@ -39,6 +40,7 @@ public class ImageLoader {
     public static BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
     public static BufferedImage foretTile_0, foretTile_1, foretTile_2;
     public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
+    public static BufferedImage lacTile_0, lacTile_1, lacTile_2;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
     public static BufferedImage joueurCourant;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
@@ -53,6 +55,7 @@ public class ImageLoader {
     public static BufferedImage foretTile_0_Red, foretTile_1_Red, foretTile_2_Red;
     public static BufferedImage desertTile_0_Red, desertTile_1_Red, desertTile_2_Red;
     public static BufferedImage montagneTile_0_Red, montagneTile_1_Red, montagneTile_2_Red;
+    public static BufferedImage lacTile_0_Red, lacTile_1_Red, lacTile_2_Red;
     public static BufferedImage tileErreur;
 
     public static BufferedImage
@@ -127,6 +130,9 @@ public class ImageLoader {
         volcanTile_0_Red = applyRedFilter(volcanTile_0);
         volcanTile_1_Red = applyRedFilter(volcanTile_1);
         volcanTile_2_Red = applyRedFilter(volcanTile_2);
+        lacTile_0_Red = applyRedFilter(lacTile_0);
+        lacTile_1_Red = applyRedFilter(lacTile_1);
+        lacTile_2_Red = applyRedFilter(lacTile_2);
 
         tileErreur = getReducedOpacityImage(grassTile_0_Red, 0.5f);
     }
@@ -140,7 +146,7 @@ public class ImageLoader {
     }
 
     public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id) {
-        if (batiment_id == Hexagone.MAISON) {
+        if (batiment_id == Hexagone.HUTTE) {
             return getMaison(id_player);
         }
         if (batiment_id == Hexagone.TEMPLE_FORET) {
@@ -225,10 +231,13 @@ public class ImageLoader {
         montagneTile_0 = lisImageBuf("Montagne_0_Tile");
         montagneTile_1 = lisImageBuf("Montagne_1_Tile");
         montagneTile_2 = lisImageBuf("Montagne_2_Tile");
+        lacTile_0 = lisImageBuf("Lac_0_Tile");
+        lacTile_1 = lisImageBuf("Lac_1_Tile");
+        lacTile_2 = lisImageBuf("Lac_2_Tile");
     }
 
     private static void readBatimentsImages() {
-        maisonTile = lisImageBuf("Batiments/maison");
+        hutteTile = lisImageBuf("Batiments/hutte");
         templeJungle = lisImageBuf("Batiments/Temple_jungle");
         templePierre = lisImageBuf("Batiments/Temple_pierre");
         templePrairie = lisImageBuf("Batiments/Temple_prairie");
@@ -239,8 +248,8 @@ public class ImageLoader {
     }
 
     private static void filtreCouleurBatiments() {
-        maisonTileColor1 = applyColorFilter(maisonTile, (byte) 0);
-        maisonTileColor2 = applyColorFilter(maisonTile, (byte) 1);
+        maisonTileColor1 = applyColorFilter(hutteTile, (byte) 0);
+        maisonTileColor2 = applyColorFilter(hutteTile, (byte) 1);
 
         templeJungleColor1 = applyColorFilter(templeJungle, (byte) 0);
         templeJungleColor2 = applyColorFilter(templeJungle, (byte) 1);
@@ -346,7 +355,7 @@ public class ImageLoader {
         if (id == Hexagone.VIDE) {
             return voidTile;
         }
-        if (id == Hexagone.GRASS) {
+        if (id == GRASS) {
             if (numero_texture == 0) {
                 return grassTile_0;
             }
@@ -357,7 +366,7 @@ public class ImageLoader {
                 return grassTile_2;
             }
         }
-        if (id == Hexagone.VOLCAN) {
+        if (id == VOLCAN) {
             if (numero_texture == 0) {
                 return volcanTile_0;
             }
@@ -368,21 +377,10 @@ public class ImageLoader {
                 return volcanTile_2;
             }
         }
-        if (id == Hexagone.WATER) {
-            if (numero_texture == 0) {
-                return waterTile;
-            }
-            if (numero_texture == 1) {
-                return waterTile;
-            }
-            if (numero_texture == 2) {
-                return waterTile;
-            }
+        if (id == HUTTE) {
+            return hutteTile;
         }
-        if (id == Hexagone.MAISON) {
-            return maisonTile;
-        }
-        if (id == Hexagone.DESERT) {
+        if (id == DESERT) {
             if (numero_texture == 0) {
                 return desertTile_0;
             }
@@ -393,7 +391,7 @@ public class ImageLoader {
                 return desertTile_2;
             }
         }
-        if (id == Hexagone.MONTAGNE) {
+        if (id == MONTAGNE) {
             if (numero_texture == 0) {
                 return montagneTile_0;
             }
@@ -404,7 +402,7 @@ public class ImageLoader {
                 return montagneTile_2;
             }
         }
-        if (id == Hexagone.FORET) {
+        if (id == FORET) {
             if (numero_texture == 0) {
                 return foretTile_0;
             }
@@ -413,6 +411,28 @@ public class ImageLoader {
             }
             if (numero_texture == 2) {
                 return foretTile_2;
+            }
+        }
+        if (id == LAC) {
+            if (numero_texture == 0) {
+                return lacTile_0;
+            }
+            if (numero_texture == 1) {
+                return lacTile_1;
+            }
+            if (numero_texture == 2) {
+                return lacTile_2;
+            }
+        }
+        if (id == WATER) {
+            if (numero_texture == 0) {
+                return waterTile;
+            }
+            if (numero_texture == 1) {
+                return waterTile;
+            }
+            if (numero_texture == 2) {
+                return waterTile;
             }
         }
         return null;
@@ -456,6 +476,9 @@ public class ImageLoader {
     }
 
     public static BufferedImage applyRedFilter(BufferedImage image) {
+        if(image ==null) {
+            System.err.println("applyRedFilter : image null");
+        }
         BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = outputImage.createGraphics();
         g2d.drawImage(image, 0, 0, null);

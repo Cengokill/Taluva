@@ -10,8 +10,9 @@ public class Hexagone {
     public static final byte MONTAGNE = 2;
     public static final byte DESERT = 3;
     public static final byte FORET = 4;
+    public static final byte LAC = 5;
 
-    public static final byte MAISON = 10;
+    public static final byte HUTTE = 10;
     public static final byte TEMPLE_FORET = 11;
     public static final byte TEMPLE_SABLE = 12;
     public static final byte TEMPLE_PIERRE = 13;
