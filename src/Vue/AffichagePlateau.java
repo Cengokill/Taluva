@@ -717,7 +717,7 @@ public class AffichagePlateau extends JPanel {
             //listeDesHutesVoisines.remove(i);
             i++;
         }
-        System.out.println("liste: "+listeDesHutesVoisines.size()+" id: "+jeu.getNumJoueurCourant());
+        //System.out.println("liste: "+listeDesHutesVoisines.size()+" id: "+jeu.getNumJoueurCourant());
         return listeDesHutesVoisines;
     }
 
@@ -785,7 +785,7 @@ public class AffichagePlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-        System.out.println("position souris x: "+i+" y: "+j);
+        //System.out.println("position souris x: "+i+" y: "+j);
 
 
         int[] coups = coupJouable(i,j);
