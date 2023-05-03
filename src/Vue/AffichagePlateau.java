@@ -441,10 +441,10 @@ public class AffichagePlateau extends JPanel {
     }
 
     private boolean peutPoserTemple(int i,int j){
-        ArrayList<Point2> pointsVillage = new ArrayList<>();
-        pointsVillage = copyPoints(positionsBatsVillage(i,j));
-        if(pointsVillage.size()<=4) return false;
+        ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
+        if(pointsVillage.size()<=3) return false;
         for(Point2 p : pointsVillage){
+            System.out.println("x: "+p.getPointX()+" y: "+p.getPointY());
             if(estTemple(p.getPointX(),p.getPointY())) return false;
         }
         return true;
@@ -452,8 +452,8 @@ public class AffichagePlateau extends JPanel {
 
     private boolean peutPoserTour(int i,int j){
         ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
-        if(jeu.getPlateau().getHauteurTuile(i,j)<3) return false;
-        for(Point2 p : pointsVillage){
+        if(jeu.getPlateau().getHauteurTuile(i,j)<3) return false;       // On verifie que la hauteur est d'au moins 3
+        for(Point2 p : pointsVillage){                                  // On verifie que la cité ne possède pas déjà une tour
             if(estTour(p.getPointX(),p.getPointY())) return false;
         }
         return true;
@@ -462,7 +462,7 @@ public class AffichagePlateau extends JPanel {
     public int[] coupJouable(int i,int j){
         int[] coups = new int[3];
         coups[0] = 1;
-        if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) coups[0] = 0;
+        if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) coups[0] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté
         if(peutPoserTour(i,j)) coups[2] = 1;
         if(peutPoserTemple(i,j)) coups[1] = 1;
         return coups;
@@ -714,8 +714,10 @@ public class AffichagePlateau extends JPanel {
                         listeDesHutesVoisines.add(p1);
                 }
             }
+            //listeDesHutesVoisines.remove(i);
             i++;
         }
+        System.out.println("liste: "+listeDesHutesVoisines.size()+" id: "+jeu.getNumJoueurCourant());
         return listeDesHutesVoisines;
     }
 
@@ -783,6 +785,8 @@ public class AffichagePlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+        System.out.println("position souris x: "+i+" y: "+j);
+
 
         int[] coups = coupJouable(i,j);
         if(poseTile) placerTuiles(i,j);

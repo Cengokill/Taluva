@@ -30,6 +30,7 @@ public class Plateau implements Serializable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
+        placeEtage((byte) 0,17,17,17,18,(byte) 1,18,17,(byte) 2);
     }
 
     private void initHistorique() {
@@ -499,7 +500,7 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerMaison(int i,int j){
-        return (plateau[i][j].getBiomeTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==Hexagone.VIDE && plateau[i][j].getBiomeTerrain()!=Hexagone.VIDE );
+        return (plateau[i][j].getBiomeTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==VIDE && plateau[i][j].getBiomeTerrain()!=Hexagone.VIDE);
     }
     public void placeBatiment(byte joueurCourant, int i, int j, byte type_bat){
         Coup coup = new Coup(joueurCourant, i,j,type_bat);
@@ -524,6 +525,7 @@ public class Plateau implements Serializable {
 
 
     }
+
     public boolean notIn (ArrayList<Point2> lp, Point2 p){
         for (int i =0;i<lp.size();i++){
             if(lp.get(i).PionsEquals(p)){
@@ -531,10 +533,9 @@ public class Plateau implements Serializable {
             }
         }
         return true;
-
     }
     public boolean check (int x, int y,int IDjoueurs) {
-        return getTuile(x,y).getNumJoueur()==IDjoueurs;
+        return getTuile(x,y).getNumJoueur()==IDjoueurs && (getTuile(x,y).getBatiment()==HUTTE||estTemple(x,y)||estTour(x,y));
     }
     public boolean check2 (int x, int y,byte TypeTerrain) {
         return estDansPlateau(x, y) && getTuile(x,y).getBatiment()==(byte)0&&getTuile(x,y).getBiomeTerrain()==TypeTerrain;
@@ -652,7 +653,7 @@ public class Plateau implements Serializable {
             }
             i++;
         }
-        System.out.println("taille de liste de casses :"+listeDecases.size());
+        //System.out.println("taille de liste de casses :"+listeDecases.size());
         i=0;
         while(i<listeDecases.size()){
             System.out.println(listeDecases.get(i).x+ " "+listeDecases.get(i).y);
