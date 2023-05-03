@@ -6,6 +6,9 @@ import Structures.TripletDePosition;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static Modele.Hexagone.*;
+import static Modele.Hexagone.TEMPLE_SABLE;
+
 public class Plateau implements Serializable {
     final int LIGNES = 40;
     final int COLONNES = 40;
@@ -102,7 +105,96 @@ public class Plateau implements Serializable {
         return false;
     }
 
+    private boolean estTemple(int i,int j){
+        if(getBatiment(i,j)==TEMPLE_PRAIRIE) return true;
+        if(getBatiment(i,j)==TEMPLE_FORET) return true;
+        if(getBatiment(i,j)==TEMPLE_PIERRE) return true;
+        if(getBatiment(i,j)==TEMPLE_SABLE) return true;
+        return false;
+    }
+
+    private boolean estTour(int i,int j){
+        if(getBatiment(i,j)==TOUR) return true;
+        return false;
+    }
+    private ArrayList<Point2> positionsBatsVillage(int x,int y,byte idjoueur){
+        ArrayList<Point2> listeDesHutesVoisines = new ArrayList<>();
+        Point2 positionHutte = new Point2(x,y);
+        listeDesHutesVoisines.add(positionHutte);
+        int i = 0;
+        while (listeDesHutesVoisines.size()!=i){
+            Point2 HuteCourant = listeDesHutesVoisines.get(i);
+            if(check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY(),idjoueur)){
+                Point2 p1 = new Point2(HuteCourant.getPointX()-1 ,HuteCourant.getPointY());
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY(),idjoueur)){
+                Point2 p1 = new Point2(HuteCourant.getPointX()+1 ,HuteCourant.getPointY());
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(check(HuteCourant.getPointX() ,HuteCourant.getPointY()-1,idjoueur)){
+                Point2 p1 = new Point2(HuteCourant.getPointX() ,HuteCourant.getPointY()-1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(check(HuteCourant.getPointX() ,HuteCourant.getPointY()+1,idjoueur)){
+                Point2 p1 = new Point2(HuteCourant.getPointX() ,HuteCourant.getPointY()+1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(HuteCourant.getPointX()%2==1){
+                if(check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1,idjoueur)){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+                if(check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1,idjoueur)){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+            }else{
+                if(check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1,idjoueur)){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+                if(check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1,idjoueur)){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+            }
+            i++;
+        }
+        return listeDesHutesVoisines;
+    }
+
+    private boolean effaceUnVillageEntier(int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2){
+        if(getBatiment(ligneTile1,colonneTile1)==HUTTE){                            // une hutte sur la premiere tuile
+            byte idBat_1 = getPlateau()[ligneTile1][colonneTile1].getNumJoueur();
+            if(getBatiment(ligneTile2,colonneTile2)==HUTTE){                        // sur la deuxieme aussi
+                byte idBat_2 = getPlateau()[ligneTile2][colonneTile2].getNumJoueur();
+                if(idBat_1==idBat_2){                                               // les 2 appartiennent au même joueur
+                    if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=2 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village qui contient 2 huttes
+                }else{                                                              // les 2 appartiennet à des joueurs differents
+                    if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village de idBat_1 qui contient 1 hutte
+                    if(positionsBatsVillage(ligneTile2,colonneTile2,idBat_2).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_2).size()>0) return true; // on efface tout le village de idBat_2 qui contient 1 hutte
+                }
+            }else{ // il n'y a pas de batiment sur la deuxieme hutte
+                if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village qui contient 1 hutte
+            }
+        }
+        return false;
+    }
+
     private boolean peutPlacerTuileFromTriplet(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2, TripletDePosition triplet) {
+        if(estTemple(ligneVolcan,colonneVolcan)||estTemple(ligneTile1,colonneTile1)||estTemple(ligneTile2,colonneTile2)) return false;                                      // On ne place pas sur un temple
+        if(estTour(ligneVolcan,colonneVolcan)||estTour(ligneTile1,colonneTile1)||estTour(ligneTile2,colonneTile2)) return false;                                            // On ne place pas sur une tour
+        if(effaceUnVillageEntier(ligneTile1,colonneTile1,ligneTile2,colonneTile2)||effaceUnVillageEntier(ligneTile2,colonneTile2,ligneTile1,colonneTile1)) return false;    // On efface un village entier
+
         if (estMemePositionTriplet(ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, ligneTile2, colonneTile2, triplet)) {
             return true;
         }

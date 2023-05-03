@@ -288,6 +288,7 @@ public class AffichagePlateau extends JPanel {
             int[] coups = coupJouable(ligne, colonne);
 
             value = updateScrollValue(value, coups);
+            if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
             choixBatiment(g, pos_x, pos_y, value, coups);
         }
     }
@@ -426,11 +427,34 @@ public class AffichagePlateau extends JPanel {
         return false;
     }
 
+    private boolean estTour(int i,int j){
+        if(jeu.getPlateau().getBatiment(i,j)==TOUR) return true;
+        return false;
+    }
+
+    private ArrayList<Point2> copyPoints(ArrayList<Point2> tab1) {
+        ArrayList<Point2> tab2 = new ArrayList<>();
+        for(Point2 p : tab1){
+            tab2.add(p);
+        }
+        return tab2;
+    }
+
     private boolean peutPoserTemple(int i,int j){
-        ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
-        if(pointsVillage.size()<=3) return false;
+        ArrayList<Point2> pointsVillage = new ArrayList<>();
+        pointsVillage = copyPoints(positionsBatsVillage(i,j));
+        if(pointsVillage.size()<=4) return false;
         for(Point2 p : pointsVillage){
             if(estTemple(p.getPointX(),p.getPointY())) return false;
+        }
+        return true;
+    }
+
+    private boolean peutPoserTour(int i,int j){
+        ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
+        if(jeu.getPlateau().getHauteurTuile(i,j)<3) return false;
+        for(Point2 p : pointsVillage){
+            if(estTour(p.getPointX(),p.getPointY())) return false;
         }
         return true;
     }
@@ -439,7 +463,7 @@ public class AffichagePlateau extends JPanel {
         int[] coups = new int[3];
         coups[0] = 1;
         if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) coups[0] = 0;
-        if(jeu.getPlateau().getHauteurTuile(i,j)==3) coups[2] = 1;
+        if(peutPoserTour(i,j)) coups[2] = 1;
         if(peutPoserTemple(i,j)) coups[1] = 1;
         return coups;
     }
@@ -596,6 +620,7 @@ public class AffichagePlateau extends JPanel {
             heightoffset1 *= 30;
 
             if(!enSelection){
+                if(coupJouable(i,j)[0]==0 && coupJouable(i,j)[1]==0 && coupJouable(i,j)[2]==0) return;
                 if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VOLCAN && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VIDE){
                     g.drawImage(constructionMode, x+50 , y - heightoffset1+50, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
                 }
@@ -691,7 +716,6 @@ public class AffichagePlateau extends JPanel {
             }
             i++;
         }
-        //listeDesHutesVoisines.remove(0);
         return listeDesHutesVoisines;
     }
 
@@ -727,7 +751,7 @@ public class AffichagePlateau extends JPanel {
             controleur.placeBatiment(i,j,(byte) 1);
         }
         else if (value == 2){ // place tour
-            if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
+            if(peutPoserTour(i,j)){ // on verifie la condition pour poser une tour
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 3);
             }
@@ -760,8 +784,9 @@ public class AffichagePlateau extends JPanel {
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
 
+        int[] coups = coupJouable(i,j);
         if(poseTile) placerTuiles(i,j);
-        else{
+        else if(coups[0]!=0 || coups[1]!=0 ||coups[2]!=0){
             placeBatiment(i, j);
         }
         unefoisIA=true;

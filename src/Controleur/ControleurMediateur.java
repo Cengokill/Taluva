@@ -17,7 +17,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public boolean peutPlacerTuile(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j) {
-        //System.out.println(jeu.getPlateau().peutPlacerTuile(volcan_x, volcan_y, tile1_x, tile1_y, tile2_x, tile2_y));
         return jeu.getPlateau().estDansTripletsPossibles(volcan_i, volcan_j, tile1_i, tile1_j, tile2_i, tile2_j);
     }
 
