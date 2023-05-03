@@ -147,22 +147,22 @@ public class ImageLoader {
     }
 
     public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id) {
-        if (batiment_id == Hexagone.HUTTE) {
+        if (batiment_id == HUTTE) {
             return getMaison(id_player);
         }
-        if (batiment_id == Hexagone.TEMPLE_FORET) {
+        if (batiment_id == TEMPLE_FORET) {
             return getTempleJungle(id_player);
         }
-        if (batiment_id == Hexagone.TEMPLE_PIERRE) {
+        if (batiment_id == TEMPLE_PIERRE) {
             return getTemplePierre(id_player);
         }
-        if (batiment_id == Hexagone.TEMPLE_PRAIRIE) {
+        if (batiment_id == TEMPLE_PRAIRIE) {
             return getTemplePrairie(id_player);
         }
-        if (batiment_id == Hexagone.TEMPLE_SABLE) {
+        if (batiment_id == TEMPLE_SABLE) {
             return getTempleSable(id_player);
         }
-        if (batiment_id == Hexagone.TOUR) {
+        if (batiment_id == TOUR) {
             return getTour(id_player);
         }
         return null;
@@ -360,7 +360,7 @@ public class ImageLoader {
     }
 
     public static BufferedImage getTileImageFromId(int id, int numero_texture) {
-        if (id == Hexagone.VIDE) {
+        if (id == VIDE) {
             return voidTile;
         }
         if (id == GRASS) {
