@@ -382,6 +382,7 @@ public class Plateau implements Serializable {
                 if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
                 if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
                 if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
+                if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;
             } else if (coup.typePlacement == 3) {
                 batiment = Hexagone.TOUR;
             } else if (coup.typePlacement == 4){
@@ -431,7 +432,6 @@ public class Plateau implements Serializable {
 
 
     }
-
     public boolean notIn (ArrayList<Point2> lp, Point2 p){
         for (int i =0;i<lp.size();i++){
             if(lp.get(i).PionsEquals(p)){
@@ -442,7 +442,7 @@ public class Plateau implements Serializable {
 
     }
     public boolean check (int x, int y,int IDjoueurs) {
-        return estDansPlateau(x, y)&&getTuile(x,y).getBatiment()==(byte)10&&getTuile(x,y).getNumJoueur()==IDjoueurs;
+        return getTuile(x,y).getNumJoueur()==IDjoueurs;
     }
     public boolean check2 (int x, int y,byte TypeTerrain) {
         return estDansPlateau(x, y) && getTuile(x,y).getBatiment()==(byte)0&&getTuile(x,y).getBiomeTerrain()==TypeTerrain;

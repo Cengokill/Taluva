@@ -167,7 +167,7 @@ public class Jeu extends Observable {
         byte foret = FORET;
         byte prairie = GRASS;
         byte montagne = MONTAGNE;
-        byte lac = 5;
+        byte lac = LAC;
         pioche.add(new Tuile(desert, desert));
         pioche.add(new Tuile(prairie, prairie));
         pioche.add(new Tuile(foret, foret));
