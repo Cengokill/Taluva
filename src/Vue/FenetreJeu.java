@@ -93,19 +93,25 @@ public class FenetreJeu {
                 }
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
-
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 largeur = getWidth();
                 hauteur = getHeight();
                 double rapport = 492.0 / 847.0;
+                double rapport_fenetre_score = 700.0/539.0;
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 8, hauteur / 8), 100), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
+                largeur_fenetre_score = (int) (largeur_bouton * 2.2);
+                hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
+                posX_fenetre_score = 10;
                 posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
                 posY_save = 0;
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
-                posY_annuler = posY_save + 2 * hauteur_bouton + hauteur_bouton / 5;
+                posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
+                posY_fenetre_score = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
                 posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
-                posY_quitter = (int) Math.max(posY_refaire + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
+                posY_quitter = (int) Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
+                afficheFenetreScore(g2d);
                 afficheBoutonSave(g2d);
                 afficheBoutonLoad(g2d);
                 afficheBoutonAnnuler(g2d);
@@ -141,6 +147,7 @@ public class FenetreJeu {
         bouton_tuto_off = lisImageBuf("Tuto_off");
         bouton_quitter = lisImageBuf("Quitter");
         //bouton_quitter_select = lisImageBuf("Quitter_select");
+        fenetre_score = lisImageBuf("fenetre_score");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
