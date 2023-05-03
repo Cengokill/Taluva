@@ -264,7 +264,7 @@ public class AffichagePlateau extends JPanel {
         }
     }
 
-    // TODO optimiser colorFilters
+
     private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
         if (map[ligne][colonne].getBatiment() != CHOISIR_BATIMENT) {
@@ -648,23 +648,17 @@ public class AffichagePlateau extends JPanel {
 
         if (value == 1) { // place hut
             enSelection = false;
-            //Coup coup = new Coup(jeu.getNumJoueurCourant(),posBat_x,posBat_y,(byte) 1);
-            //jeu.getPlateau().joueCoup(coup);
             controleur.placeBatiment(i,j,(byte) 1);
         }
         else if (value == 2){ // place tour
             if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
                 enSelection = false;
-                //Coup coup = new Coup(jeu.getNumJoueurCourant(),posBat_x,posBat_y,(byte) 3);
-                //jeu.getPlateau().joueCoup(coup);
                 controleur.placeBatiment(i,j,(byte) 3);
             }
         }
         else if (value == 0){ // place temple
             if(aCiteAutour(i,j)){
                 enSelection = false;
-                //Coup coup = new Coup(jeu.getNumJoueurCourant(),posBat_x,posBat_y,(byte) 2);
-                //jeu.getPlateau().joueCoup(coup);
                 controleur.placeBatiment(i,j,(byte) 2);
             }
         }

@@ -109,8 +109,7 @@ public class Plateau implements Serializable {
         if (estEmplacementSurOcean(ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, ligneTile2, colonneTile2)) {
             if (estMemePositionTriplet(ligneTile1, colonneTile1, ligneVolcan, colonneVolcan, ligneTile2, colonneTile2, triplet))
                 return true;
-            if (estMemePositionTriplet(ligneTile2, colonneTile2, ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, triplet))
-                return true;
+            return estMemePositionTriplet(ligneTile2, colonneTile2, ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, triplet);
         }
         return false;
     }
@@ -122,9 +121,7 @@ public class Plateau implements Serializable {
     private boolean estMemePositionTriplet(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2, TripletDePosition triplet) {
         if (triplet.getVolcan().ligne() == ligneVolcan && triplet.getVolcan().colonne() == colonneVolcan && triplet.getTile1().ligne() == ligneTile1 && triplet.getTile1().colonne() == colonneTile1 && triplet.getTile2().ligne() == ligneTile2 && triplet.getTile2().colonne() == colonneTile2)
             return true;
-        if (triplet.getVolcan().ligne() == ligneVolcan && triplet.getVolcan().colonne() == colonneVolcan && triplet.getTile1().ligne() == ligneTile2 && triplet.getTile1().colonne() == colonneTile2 && triplet.getTile2().ligne() == ligneTile1 && triplet.getTile2().colonne() == colonneTile1)
-            return true;
-        return false;
+        return triplet.getVolcan().ligne() == ligneVolcan && triplet.getVolcan().colonne() == colonneVolcan && triplet.getTile1().ligne() == ligneTile2 && triplet.getTile1().colonne() == colonneTile2 && triplet.getTile2().ligne() == ligneTile1 && triplet.getTile2().colonne() == colonneTile1;
     }
 
     public int[] getNbBatEcrase(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j){
@@ -592,17 +589,14 @@ public class Plateau implements Serializable {
                 if (check(a.x - 1, a.y - 1, IDjoueurs)) {
                     i++;
                 }
-                if (check(a.x + 1, a.y - 1, IDjoueurs)) {
-                    i++;
-
-                }
             } else {
                 if (check(a.x - 1, a.y + 1, IDjoueurs)) {
                     i++;
                 }
-                if (check(a.x + 1, a.y - 1, IDjoueurs)) {
-                    i++;
-                }
+            }
+            if (check(a.x + 1, a.y - 1, IDjoueurs)) {
+                i++;
+
             }
         }
         if(getTuile(b.x,b.y).getBatiment()==10) {
@@ -622,25 +616,19 @@ public class Plateau implements Serializable {
                 if (check(b.x - 1, b.y - 1, IDjoueurs)) {
                     i++;
                 }
-                if (check(b.x + 1, b.y - 1, IDjoueurs)) {
-                    i++;
-
-                }
             } else {
                 if (check(b.x - 1, b.y + 1, IDjoueurs)) {
                     i++;
                 }
-                if (check(b.x + 1, b.y - 1, IDjoueurs)) {
-                    i++;
-                }
+            }
+            if (check(b.x + 1, b.y - 1, IDjoueurs)) {
+                i++;
+
             }
         }
         if(getTuile(a.x,a.y).getNumJoueur()==getTuile(b.x,b.y).getNumJoueur()&&getTuile(b.x,b.y).getBatiment()==10&&getTuile(a.x,a.y).getBatiment()==10)
             i--;
-        if(i>0)
-            return true;
-        else
-            return false;
+        return i > 0;
     }
 
     public int getBatiment(int i,int j){

@@ -144,15 +144,6 @@ public class Jeu extends Observable {
             else if(type_bat == 3) {
                 joueurs[jCourant].incrementeTour();
             }
-            /*System.out.println("//////////////////////// "+getNumJoueurCourant()+" //////////////////////");
-            System.out.println("score joueur 1 \n hut: "+joueurs[0].getNbHuttesPlacees());
-            System.out.println(" temples: "+joueurs[0].getNbTemplesPlaces());
-            System.out.println(" tour: "+joueurs[0].getNbToursPlacees());
-
-            System.out.println("score joueur 2 \n hut: "+joueurs[1].getNbHuttesPlacees());
-            System.out.println(" temples: "+joueurs[1].getNbTemplesPlaces());
-            System.out.println(" tour: "+joueurs[1].getNbToursPlacees());
-            System.out.println("//////////////////////////////////////////////////////");*/
             doit_placer_batiment = false;
             doit_placer_tuile = true;
             changeJoueur();

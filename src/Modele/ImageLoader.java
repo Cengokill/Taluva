@@ -348,17 +348,6 @@ public class ImageLoader {
         return reducedOpacityImage;
     }
 
-    public static Image lisImage(String nom) {
-        String CHEMIN = "ressources/";
-        Image img = null;
-        try{
-            img = ImageIO.read(new File(CHEMIN + nom + ".png"));
-        } catch (IOException e) {
-            System.err.println("Impossible de charger l'image " + nom);
-        }
-        return img;
-    }
-
     public static BufferedImage getTileImageFromId(int id, int numero_texture) {
         if (id == Hexagone.VIDE) {
             return voidTile;
