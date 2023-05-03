@@ -9,12 +9,10 @@ import java.util.ArrayList;
 public class Plateau implements Serializable {
     final int LIGNES = 40;
     final int COLONNES = 40;
+    public int quantiteBatimentJoueur1, quantiteBatimentJoueur2;
     protected Hexagone[][] plateau ;
     protected byte[] quantitePionJoueur1;
     protected byte[] quantitePionJoueur2;
-
-    public int quantiteBatimentJoueur1, quantiteBatimentJoueur2;
-
     private Historique historique;
     private ArrayList<Position> positions_libres;
 
@@ -268,10 +266,10 @@ public class Plateau implements Serializable {
 
     public void creerTriplets(ArrayList<Position> voisins){
         ArrayList<TripletDePosition> triplets = new ArrayList<>();
-        for(Position p : voisins){
+        for(Position voisin : voisins){
             ArrayList<Position> voisinsDeVoisins = new ArrayList<>();
-            voisinsDeVoisins = voisins(p.ligne(),p.colonne());
-            Position courant = new Position(p.ligne(),p.colonne()) ;
+            voisinsDeVoisins = voisins(voisin.ligne(),voisin.colonne());
+            Position courant = new Position(voisin.ligne(),voisin.colonne()) ;
             Position enHautDroite;
             Position enBasDroite;
             Position gauche;
@@ -454,110 +452,110 @@ public class Plateau implements Serializable {
     public boolean estDansPlateau (int x , int y ){
         return (x<COLONNES)&&(x>-1)&&(y>-1)&&(y<LIGNES);
     }
-    public ArrayList<Point2> propagation (int x, int y,byte joueurCourant ){
+    public ArrayList<Point2> propagation (int hutteX, int hutteY,byte joueurCourant ){
         ArrayList<Point2> listeDecases = new ArrayList<>();
-        byte IDjoueurs =joueurCourant;
-        byte TypeTerrain = getTuile(x,y).getBiomeTerrain();
-        ArrayList<Point2> listeDesHutesVoisine = new ArrayList<>();
-        Point2 p = new Point2(x,y);
-        listeDesHutesVoisine.add(p);
+        byte idJoueurs =joueurCourant;
+        byte biome = getTuile(hutteX,hutteY).getBiomeTerrain();
+        ArrayList<Point2> listeDesHutesVoisines = new ArrayList<>();
+        Point2 positionHutte = new Point2(hutteX,hutteY);
+        listeDesHutesVoisines.add(positionHutte);
         int i = 0;
-        while (listeDesHutesVoisine.size()!=i){
-            Point2 HuteCourant = listeDesHutesVoisine.get(i);
-            if(check (HuteCourant.x-1 ,HuteCourant.y,IDjoueurs)){
+        while (listeDesHutesVoisines.size()!=i){
+            Point2 HuteCourant = listeDesHutesVoisines.get(i);
+            if(check (HuteCourant.x-1 ,HuteCourant.y,idJoueurs)){
                 Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y);
-                if(notIn(listeDesHutesVoisine,p1))
-                    listeDesHutesVoisine.add(p1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
             }
-            if(check (HuteCourant.x+1 ,HuteCourant.y,IDjoueurs)){
+            if(check (HuteCourant.x+1 ,HuteCourant.y,idJoueurs)){
                 Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y);
-                if(notIn(listeDesHutesVoisine,p1))
-                    listeDesHutesVoisine.add(p1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
             }
-            if(check (HuteCourant.x ,HuteCourant.y-1,IDjoueurs)){
+            if(check (HuteCourant.x ,HuteCourant.y-1,idJoueurs)){
                 Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y-1);
-                if(notIn(listeDesHutesVoisine,p1))
-                    listeDesHutesVoisine.add(p1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
 
             }
-            if(check(HuteCourant.x ,HuteCourant.y+1,IDjoueurs)){
+            if(check(HuteCourant.x ,HuteCourant.y+1,idJoueurs)){
                 Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y+1);
-                if(notIn(listeDesHutesVoisine,p1))
-                    listeDesHutesVoisine.add(p1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
             }
             if(i%2==1){
-                if(check (HuteCourant.x-1 ,HuteCourant.y+1,IDjoueurs)){
+                if(check (HuteCourant.x-1 ,HuteCourant.y+1,idJoueurs)){
                     Point2 p1 = new Point2(HuteCourant.x-1,HuteCourant.y+1);
-                    if(notIn(listeDesHutesVoisine,p1))
-                        listeDesHutesVoisine.add(p1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
                 }
-                if(check (HuteCourant.x+1 ,HuteCourant.y+1,IDjoueurs)){
+                if(check (HuteCourant.x+1 ,HuteCourant.y+1,idJoueurs)){
                     Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y+1);
-                    if(notIn(listeDesHutesVoisine,p1))
-                        listeDesHutesVoisine.add(p1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
 
                 }
             }else{
-                if(check (HuteCourant.x-1 ,HuteCourant.y-1,IDjoueurs)){
+                if(check (HuteCourant.x-1 ,HuteCourant.y-1,idJoueurs)){
                     Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y-1);
-                    if(notIn(listeDesHutesVoisine,p1))
-                        listeDesHutesVoisine.add(p1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
 
                 }
-                if(check (HuteCourant.x+1 ,HuteCourant.y-1,IDjoueurs)){
+                if(check (HuteCourant.x+1 ,HuteCourant.y-1,idJoueurs)){
                     Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y-1);
-                    if(notIn(listeDesHutesVoisine,p1))
-                        listeDesHutesVoisine.add(p1);
+                    if(notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
                 }
             }
             i++;
         }
-        listeDesHutesVoisine.remove(0);
-        System.out.println("taille de liste de hute voisine : "+listeDesHutesVoisine.size());
+        listeDesHutesVoisines.remove(0);
+        System.out.println("taille de liste de hute voisine : "+listeDesHutesVoisines.size());
         i=0;
-        while (listeDesHutesVoisine.size()!=i){
-            Point2 HuteCourant = listeDesHutesVoisine.get(i);
-            if(check2 (HuteCourant.x-1 ,HuteCourant.y,TypeTerrain)){
+        while (listeDesHutesVoisines.size()!=i){
+            Point2 HuteCourant = listeDesHutesVoisines.get(i);
+            if(check2 (HuteCourant.x-1 ,HuteCourant.y,biome)){
                 Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y);
                 if(notIn(listeDecases,p1))
                     listeDecases.add(p1);
             }
-            if(check2 (HuteCourant.x ,HuteCourant.y+1,TypeTerrain)){
+            if(check2 (HuteCourant.x ,HuteCourant.y+1,biome)){
                 Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y+1);
                 if(notIn(listeDecases,p1))
                     listeDecases.add(p1);
             }
-            if(check2 (HuteCourant.x+1 ,HuteCourant.y,TypeTerrain)){
+            if(check2 (HuteCourant.x+1 ,HuteCourant.y,biome)){
                 Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y);
                 if(notIn(listeDecases,p1))
                     listeDecases.add(p1);
 
             }
-            if(check2(HuteCourant.x ,HuteCourant.y-1,TypeTerrain)){
+            if(check2(HuteCourant.x ,HuteCourant.y-1,biome)){
                 Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y-1);
                 if(notIn(listeDecases,p1))
                     listeDecases.add(p1);
             }
             if(i%2==1){
-                if(check2 (HuteCourant.x-1 ,HuteCourant.y+1,TypeTerrain)){
+                if(check2 (HuteCourant.x-1 ,HuteCourant.y+1,biome)){
                     Point2 p1 = new Point2(HuteCourant.x-1,HuteCourant.y+1);
                     if(notIn(listeDecases,p1))
                         listeDecases.add(p1);
                 }
-                if(check2 (HuteCourant.x+1 ,HuteCourant.y+1,TypeTerrain)){
+                if(check2 (HuteCourant.x+1 ,HuteCourant.y+1,biome)){
                     Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y+1);
                     if(notIn(listeDecases,p1))
                         listeDecases.add(p1);
 
                 }
             }else{
-                if(check2 (HuteCourant.x-1 ,HuteCourant.y-1,TypeTerrain)){
+                if(check2 (HuteCourant.x-1 ,HuteCourant.y-1,biome)){
                     Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y-1);
                     if(notIn(listeDecases,p1))
                         listeDecases.add(p1);
 
                 }
-                if(check2 (HuteCourant.x+1 ,HuteCourant.y-1,TypeTerrain)){
+                if(check2 (HuteCourant.x+1 ,HuteCourant.y-1,biome)){
                     Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y-1);
                     if(notIn(listeDecases,p1))
                         listeDecases.add(p1);

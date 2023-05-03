@@ -186,8 +186,8 @@ public class Jeu extends Observable {
 
     public void pioche() {
         Tuile tuile_courante = pioche.removeFirst();
-        tuile_a_poser[0] = tuile_courante.terrain0;
-        tuile_a_poser[1] = tuile_courante.terrain1;
+        tuile_a_poser[0] = tuile_courante.biome0;
+        tuile_a_poser[1] = tuile_courante.biome1;
         tuile_a_poser[2] = (byte) tuile_courante.numero0;
         tuile_a_poser[3] = (byte) tuile_courante.numero1;
         tuile_a_poser[4] = (byte) tuile_courante.numero2;
