@@ -96,21 +96,21 @@ public class FenetreJeu {
 
                 largeur = getWidth();
                 hauteur = getHeight();
-                double rapport = 207.0 / 603.0;
-                largeur_bouton = Math.min(Math.max(Math.min(largeur / 6, hauteur / 6), 100), 190);
+                double rapport = 492.0 / 847.0;
+                largeur_bouton = Math.min(Math.max(Math.min(largeur / 8, hauteur / 8), 100), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
-                posX_boutons = (int) (largeur * 0.95 - largeur_bouton);
+                posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
                 posY_save = 0;
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
                 posY_annuler = posY_save + 2 * hauteur_bouton + hauteur_bouton / 5;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
-                posY_reset = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
-                posY_quitter = (int) Math.max(posY_refaire + hauteur_bouton + hauteur_bouton / 5, hauteur - 1.5 * hauteur_bouton);
+                posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
+                posY_quitter = (int) Math.max(posY_refaire + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
                 afficheBoutonSave(g2d);
                 afficheBoutonLoad(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
-                afficheBoutonReset(g2d);
+                afficheBoutonTuto(g2d);
                 afficheBoutonQuitter(g2d);
             }
         };
@@ -137,8 +137,8 @@ public class FenetreJeu {
         //bouton_annuler_select = lisImageBuf("Annuler_select");
         bouton_refaire = lisImageBuf("Refaire");
         //bouton_refaire_select = lisImageBuf("Refaire_select");
-        bouton_reset = lisImageBuf("Reinitialiser");
-        //bouton_reset_select = lisImageBuf("Reinitialiser_select");
+        bouton_tuto_on = lisImageBuf("Tuto_on");
+        bouton_tuto_off = lisImageBuf("Tuto_off");
         bouton_quitter = lisImageBuf("Quitter");
         //bouton_quitter_select = lisImageBuf("Quitter_select");
         return new JFrame() {

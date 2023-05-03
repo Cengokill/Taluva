@@ -6,26 +6,26 @@ import java.awt.*;
 import java.awt.event.*;
 import static Modele.Camera.*;
 import static Modele.GameState.*;
-
+import static Modele.ImageLoader.*;
 
 
 public class FenetreListener extends MouseAdapter implements MouseWheelListener {
-    private final FenetreJeu tengine;
+    private final FenetreJeu fenetreJeu;
 
     public FenetreListener(FenetreJeu t) {
         super();
-        tengine = t;
+        fenetreJeu = t;
 
 
 
-        tengine.affichagePlateau.handler = new MouseHandler();
-        tengine.affichagePlateau.addMouseListener(tengine.affichagePlateau.handler);
-        tengine.affichagePlateau.addMouseMotionListener(tengine.affichagePlateau.handler);
-        tengine.affichagePlateau.addMouseWheelListener(tengine.affichagePlateau.handler);
+        fenetreJeu.affichagePlateau.handler = new MouseHandler();
+        fenetreJeu.affichagePlateau.addMouseListener(fenetreJeu.affichagePlateau.handler);
+        fenetreJeu.affichagePlateau.addMouseMotionListener(fenetreJeu.affichagePlateau.handler);
+        fenetreJeu.affichagePlateau.addMouseWheelListener(fenetreJeu.affichagePlateau.handler);
 
-        tengine.affichagePlateau.keyboardlisten = new KeyboardListener();
-        tengine.affichagePlateau.setFocusable(true);
-        tengine.affichagePlateau.addKeyListener(tengine.affichagePlateau.keyboardlisten);
+        fenetreJeu.affichagePlateau.keyboardlisten = new KeyboardListener();
+        fenetreJeu.affichagePlateau.setFocusable(true);
+        fenetreJeu.affichagePlateau.addKeyListener(fenetreJeu.affichagePlateau.keyboardlisten);
     }
 
      public class KeyboardListener implements KeyListener {
@@ -48,10 +48,10 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 shake();
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.repaint();
             }
             if (e.getKeyCode() == KeyEvent.VK_N) {
-                tengine.affichagePlateau.affichetripletpossible();
+                fenetreJeu.affichagePlateau.affichetripletpossible();
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 scrollValue++;
@@ -60,7 +60,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.repaint();
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 scrollValue--;
@@ -69,7 +69,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.repaint();
             }
         }
 
@@ -91,10 +91,23 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
     ////////////////////////////
     public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
+
+        public boolean estSurTuto(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_tuto + hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur){
+                return true;
+            }
+            return false;
+        }
         @Override
         public void mouseClicked(MouseEvent e) {
-            tengine.affichagePlateau.addToCursor(e);
-            tengine.affichagePlateau.annuleConstruction(e);
+            if(estSurTuto(e)) {
+                //si tuto_on, alors mettre tuto_on = false,
+                //sinon mettre tuto_on = true
+            }
+            fenetreJeu.affichagePlateau.addToCursor(e);
+            fenetreJeu.affichagePlateau.annuleConstruction(e);
         }
 
         @Override
@@ -117,9 +130,9 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 int dy = e.getY() - lastMousePosition.y;
 
                 // Ajouter les bornes pour les déplacements de la caméra
-                int minX = -2500 - ((int)(10*zoomFactor) - 2)*(tengine.affichagePlateau.getWidth());
+                int minX = -2500 - ((int)(10*zoomFactor) - 2)*(fenetreJeu.affichagePlateau.getWidth());
                 int maxX = 10000;
-                int minY = -2000 - ((int)(10*zoomFactor) - 2)*(tengine.affichagePlateau.getHeight());
+                int minY = -2000 - ((int)(10*zoomFactor) - 2)*(fenetreJeu.affichagePlateau.getHeight());
                 int maxY = 10000;
 
 
@@ -138,14 +151,14 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             } else {
                 hoverTilePosition = e.getPoint();
             }
-            tengine.affichagePlateau.miseAJour();
+            fenetreJeu.affichagePlateau.miseAJour();
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
             hoverTilePosition = e.getPoint();
-            tengine.affichagePlateau.updateCursorPosOnTiles(e);
-            tengine.affichagePlateau.miseAJour();
+            fenetreJeu.affichagePlateau.updateCursorPosOnTiles(e);
+            fenetreJeu.affichagePlateau.miseAJour();
             if (!SwingUtilities.isRightMouseButton(e)) {
                 clicDroiteEnfonce = false;
             }
@@ -161,7 +174,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.repaint();
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;
@@ -183,7 +196,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 if (cameraOffset.y > -64) {
                     cameraOffset.y = -64;
                 }
-                tengine.affichagePlateau.miseAJour();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
         }
 

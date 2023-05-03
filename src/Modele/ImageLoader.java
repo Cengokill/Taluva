@@ -46,10 +46,10 @@ public class ImageLoader {
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select,
-            bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_reset, bouton_reset_select;
-    public static int posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_reset;
+            bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on;
+    public static int posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto;
     public static int largeur, hauteur, largeur_bouton, hauteur_bouton;
-    public static boolean select_save, select_load, select_annuler, select_refaire, select_reset, select_quitter;
+    public static boolean select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter;
 
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
     public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;
@@ -81,7 +81,6 @@ public class ImageLoader {
 
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
-
         readTilesImages();
         readPlayableTilesImages();
         readHeightImages(lisImageBuf("Wrong_height_1_hex"), lisImageBuf("Wrong_height_2_hex"), lisImageBuf("Wrong_height_3_hex"));
@@ -91,8 +90,6 @@ public class ImageLoader {
         readSelectionBatimentImage();
         readAndFilterContoursImages();
         filterTiles();
-
-
         loaded = true;
     }
 
@@ -515,11 +512,11 @@ public class ImageLoader {
             g.drawImage(bouton_refaire, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
     }
 
-    public static void afficheBoutonReset(Graphics g) {
-        if(select_reset)
-            g.drawImage(bouton_reset_select, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton,null);
+    public static void afficheBoutonTuto(Graphics g) {
+        if(tuto_on)
+            g.drawImage(bouton_tuto_on, posX_boutons, posY_tuto, largeur_bouton, hauteur_bouton,null);
         else
-            g.drawImage(bouton_reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton,null);
+            g.drawImage(bouton_tuto_off, posX_boutons, posY_tuto, largeur_bouton, hauteur_bouton,null);
     }
 
     public static void afficheBoutonQuitter(Graphics g) {
