@@ -33,7 +33,7 @@ public class ImageLoader {
             tourColor2;
     public static BufferedImage constructionMode;
     public static final BufferedImage[] choisirBat = new BufferedImage[8];
-    public static BufferedImage waterTile, fenetre_score, background;
+    public static BufferedImage waterTile, fenetre_score, background, joueur_courant;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2;
@@ -47,8 +47,10 @@ public class ImageLoader {
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select,
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on;
-    public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto;
-    public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton;
+    public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto,
+    posX_joueur_courant, posY_joueur_courant;
+    public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_joueur_courant,
+            hauteur_joueur_courant;
     public static boolean select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter;
 
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
@@ -529,6 +531,13 @@ public class ImageLoader {
             g.drawImage(bouton_quitter_select, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
         else
             g.drawImage(bouton_quitter, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheJoueurCourant(Graphics g) {
+        Font font = new Font("Roboto", Font.BOLD, 20);
+        g.setFont(font);
+        g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
+        g.drawString("Joueur ", posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
     }
 
 }

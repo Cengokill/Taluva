@@ -98,19 +98,24 @@ public class FenetreJeu {
                 hauteur = getHeight();
                 double rapport = 492.0 / 847.0;
                 double rapport_fenetre_score = 700.0/539.0;
+                double rapport_joueur_courant = 131.0/603.0;
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 8, hauteur / 8), 100), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
                 largeur_fenetre_score = (int) (largeur_bouton * 2.2);
                 hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
+                largeur_joueur_courant = (int) (largeur_bouton * 1.8);
+                hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
                 posX_fenetre_score = 10;
                 posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
                 posY_save = 0;
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
                 posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
                 posY_fenetre_score = posY_annuler;
+                posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
+                posY_joueur_courant = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
                 posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
-                posY_quitter = (int) Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
+                posY_quitter = Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
                 afficheFenetreScore(g2d);
                 afficheBoutonSave(g2d);
                 afficheBoutonLoad(g2d);
@@ -118,6 +123,7 @@ public class FenetreJeu {
                 afficheBoutonRefaire(g2d);
                 afficheBoutonTuto(g2d);
                 afficheBoutonQuitter(g2d);
+                afficheJoueurCourant(g2d);
             }
         };
     }
@@ -148,6 +154,7 @@ public class FenetreJeu {
         bouton_quitter = lisImageBuf("Quitter");
         //bouton_quitter_select = lisImageBuf("Quitter_select");
         fenetre_score = lisImageBuf("fenetre_score");
+        joueur_courant = lisImageBuf("Joueur_courant");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
