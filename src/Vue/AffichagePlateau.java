@@ -62,9 +62,6 @@ public class AffichagePlateau extends JPanel {
 
         if(poseTile) displayHoverTile(g);
         else displayHoverMaison(g);
-
-        //affichage des boutons et des encadrés
-        //afficheJoueurCourant(g);
     }
 
 

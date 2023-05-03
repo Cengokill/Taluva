@@ -33,7 +33,7 @@ public class ImageLoader {
             tourColor2;
     public static BufferedImage constructionMode;
     public static final BufferedImage[] choisirBat = new BufferedImage[8];
-    public static BufferedImage waterTile, fenetre_score;
+    public static BufferedImage waterTile, fenetre_score, background;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2;
@@ -81,6 +81,7 @@ public class ImageLoader {
 
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
+        background = lisImageBuf("background_2");
         readTilesImages();
         readPlayableTilesImages();
         readHeightImages(lisImageBuf("Wrong_height_1_hex"), lisImageBuf("Wrong_height_2_hex"), lisImageBuf("Wrong_height_3_hex"));
