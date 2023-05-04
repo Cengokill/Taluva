@@ -28,7 +28,7 @@ public class MenuGraphique extends JPanel {
 
     public MenuGraphique(JFrame f) throws IOException {
         //Chargement des images
-        background = ImageIO.read(new File("Ressources/Menu/background.jpg"));
+        background = lisImage("ocean");
         bouton_Local = lisImage("bouton_local");
         bouton_Reseau = lisImage("bouton_reseau");
         bouton_Options = lisImage("bouton_options");
@@ -74,7 +74,11 @@ public class MenuGraphique extends JPanel {
 
     private BufferedImage lisImage(String nom) throws IOException {
         String CHEMIN = "ressources/Menu/";
-        return ImageIO.read(new File(CHEMIN + nom + ".png"));
+        BufferedImage image = ImageIO.read(new File(CHEMIN + nom + ".png"));
+        if(image == null) {
+            System.err.println("L'image " + CHEMIN + nom + ".png" + " n'a pas été trouvée");
+        }
+        return image;
     }
 
     public void afficheBackground(Graphics g) {
