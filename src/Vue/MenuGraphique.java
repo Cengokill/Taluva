@@ -78,8 +78,6 @@ public class MenuGraphique extends JPanel {
         try {
             image = ImageIO.read(new File(CHEMIN + nom + ".png"));
 
-        } catch (Exception e) {
-        }
         } catch (IOException e) {
             System.err.println("Impossible de charger l'image " + nom);
         }

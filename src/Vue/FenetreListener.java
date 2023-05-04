@@ -187,8 +187,6 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                     cameraOffset.y = -1100;
                 }
 
-                System.out.println(cameraOffset.x);
-                System.out.println(cameraOffset.y);
 
                 lastMousePosition = e.getPoint();
             } else {
