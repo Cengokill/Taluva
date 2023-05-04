@@ -74,9 +74,11 @@ public class MenuGraphique extends JPanel {
 
     private BufferedImage lisImage(String nom) throws IOException {
         String CHEMIN = "ressources/Menu/";
-        BufferedImage image = ImageIO.read(new File(CHEMIN + nom + ".png"));
-        if(image == null) {
-            System.err.println("L'image " + CHEMIN + nom + ".png" + " n'a pas été trouvée");
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File(CHEMIN + nom + ".png"));
+        } catch (IOException e) {
+            System.err.println("Impossible de charger l'image " + nom);
         }
         return image;
     }
