@@ -13,6 +13,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.BufferOverflowException;
 
 import static Modele.ImageLoader.applyRedFilter;
 
@@ -25,17 +26,20 @@ public class MenuGraphique extends JPanel {
     Jeu jeu;
     ControleurMediateur controleur;
 
-    BufferedImage[] sliders = new BufferedImage[5];
+    BufferedImage[] sliders = new BufferedImage[6];
+
     BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Reseau_hover,bouton_Options_hover,bouton_Quitter_hover,
-            options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui;
+            options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover;
     Dimension tailleEcran, tailleFenetre;
-    int screenWidth, screenHeight, frameWidth, frameHeight,largeur_background,largeur_bouton,largeur_menu_options,hauteur_background,hauteur_bouton,hauteur_menu_options;
+    int screenWidth, screenHeight, frameWidth, frameHeight,largeur_background,largeur_bouton,largeur_menu_options,hauteur_background,hauteur_bouton,hauteur_menu_options,index_son,index_musique;
 
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
-            posY_Quitter, posX_menu_options;
+            posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
+            posX_btnAnnuler,posX_btnValider,posY_btnChoix;
 
     private JTextField field_joueur1;
-    boolean select_local,select_reseau,select_options,select_quitter,clicOptions;
+    boolean select_local,select_reseau,select_options,select_quitter,clicOptions,select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
+            select_Daltonien,select_Extension,pleinEcran,Daltonien,Extension, select_valider,select_annuler;
 
     public MenuGraphique(JFrame f, JLayeredPane layeredPane,Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
@@ -55,18 +59,33 @@ public class MenuGraphique extends JPanel {
         coche_non = lisImage("/Options/boutons/coche_non");
         coche_oui = lisImage("/Options/boutons/coche_oui");
 
+        // hover
         bouton_Local_hover = applyRedFilter(bouton_Local);
         bouton_Reseau_hover = applyRedFilter(bouton_Reseau);
         bouton_Options_hover = applyRedFilter(bouton_Options);
         bouton_Quitter_hover = applyRedFilter(bouton_Quitter);
+        bouton_droit_hover = applyRedFilter(bouton_droit);
+        bouton_gauche_hover = applyRedFilter(bouton_gauche);
+        btn_valider_hover = applyRedFilter(btn_valider);
+        btn_annuler_hover = applyRedFilter(btn_annuler);
+        coche_non_hover = applyRedFilter(coche_non);
+        coche_oui_hover = applyRedFilter(coche_oui);
+
 
         //Parametres p = new Parametres();
-
+        //entier
+        index_son = 3;
+        index_musique = 3;
         //booléens
         select_local = false;
         select_options = false;
         select_quitter = false;
         select_reseau = false;
+        select_Extension = false;
+        select_Daltonien = false;
+        select_PleinEcran = false;
+        select_valider = false;
+        select_annuler = false;
         clicOptions = false;
 
         // Eléments de l'interface
@@ -153,18 +172,28 @@ public class MenuGraphique extends JPanel {
         int taille_slider_x = (int) (Math.min(getWidth(),getHeight())*0.8);
         int taille_slider_y = (int) taille_slider_x/10;
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.08);
-
+        this.taille_btn = taille_btn;
 
         int x = (frameWidth - taille_slider_x)/2;
         int y=(int) (taille_slider_y*4.25);
 
-        g.drawImage(bouton_gauche,x,y,taille_btn,taille_btn,null);
-        g.drawImage(sliders[4],x,y,taille_slider_x,taille_slider_y,null);
-        g.drawImage(bouton_droit,x+taille_slider_x-(taille_slider_x/11),y,taille_btn,taille_btn,null);
+        posX_gauche1 = x;
+        posX_droit1 = x+taille_slider_x-(taille_slider_x/11);
+        posY_slider1 = y;
+        if(select_gauche1) g.drawImage(bouton_gauche_hover,posX_gauche1,posY_slider1,taille_btn,taille_btn,null);
+        else g.drawImage(bouton_gauche,posX_gauche1,posY_slider1,taille_btn,taille_btn,null);
+        g.drawImage(sliders[index_son],posX_gauche1,posY_slider1,taille_slider_x,taille_slider_y,null);
+        if(select_droit1) g.drawImage(bouton_droit_hover,posX_droit1,posY_slider1,taille_btn,taille_btn,null);
+        else g.drawImage(bouton_droit,posX_droit1,posY_slider1,taille_btn,taille_btn,null);
 
-        g.drawImage(bouton_gauche,x,y+taille_slider_y*2,taille_btn,taille_btn,null);
-        g.drawImage(sliders[2],x,y+taille_slider_y*2,taille_slider_x,taille_slider_y,null);
-        g.drawImage(bouton_droit,x+taille_slider_x-(taille_slider_x/11),y+taille_slider_y*2,taille_btn,taille_btn,null);
+        posX_gauche2 = x;
+        posX_droit2 = x+taille_slider_x-(taille_slider_x/11);
+        posY_slider2 = y+taille_slider_y*2;
+        if(select_gauche2) g.drawImage(bouton_gauche_hover,posX_gauche2,posY_slider2,taille_btn,taille_btn,null);
+        else g.drawImage(bouton_gauche,posX_gauche2,posY_slider2,taille_btn,taille_btn,null);
+        g.drawImage(sliders[index_musique],x,posY_slider2,taille_slider_x,taille_slider_y,null);
+        if(select_droit2) g.drawImage(bouton_droit_hover,posX_droit2,posY_slider2,taille_btn,taille_btn,null);
+        else g.drawImage(bouton_droit,posX_droit2,posY_slider2,taille_btn,taille_btn,null);
     }
 
     private void afficheCochable(Graphics g){
@@ -176,9 +205,32 @@ public class MenuGraphique extends JPanel {
         int x = (frameWidth - taille_slider_x)/2;
         int y=(int) (taille_slider_y*4.25);
 
-        g.drawImage(coche_non,(int)(x+taille_slider_x*0.72),(int) (y+taille_slider_y*3.4),taille_btn,taille_btn,null);
-        g.drawImage(coche_oui,(int)(x+taille_slider_x*0.72),(int) (y+taille_slider_y*4.4),taille_btn,taille_btn,null);
-        g.drawImage(coche_non,(int)(x+taille_slider_x*0.72),(int) (y+taille_slider_y*5.4),taille_btn,taille_btn,null);
+        posX_coches = (int)(x+taille_slider_x*0.72);
+        posY_coche1 = (int) (y+taille_slider_y*3.4);
+        posY_coche2 = (int) (y+taille_slider_y*4.4);
+        posY_coche3 = (int) (y+taille_slider_y*5.4);
+        if(pleinEcran){
+            if(select_PleinEcran) g.drawImage(coche_oui_hover,posX_coches,posY_coche1,taille_btn,taille_btn,null);
+            else g.drawImage(coche_oui,posX_coches,posY_coche1,taille_btn,taille_btn,null);
+        }else{
+            if(select_PleinEcran) g.drawImage(coche_non_hover,posX_coches,posY_coche1,taille_btn,taille_btn,null);
+            else g.drawImage(coche_non,posX_coches,posY_coche1,taille_btn,taille_btn,null);
+        }
+
+        if(Daltonien){
+            if(select_Daltonien) g.drawImage(coche_oui_hover,posX_coches,posY_coche2,taille_btn,taille_btn,null);
+            else g.drawImage(coche_oui,posX_coches,posY_coche2,taille_btn,taille_btn,null);
+        }else{
+            if(select_Daltonien) g.drawImage(coche_non_hover,posX_coches,posY_coche2,taille_btn,taille_btn,null);
+            else g.drawImage(coche_non,posX_coches,posY_coche2,taille_btn,taille_btn,null);
+        }
+        if(Extension){
+            if(select_Extension) g.drawImage(coche_oui_hover,posX_coches,posY_coche3,taille_btn,taille_btn,null);
+            else g.drawImage(coche_oui,posX_coches,posY_coche3,taille_btn,taille_btn,null);
+        }else{
+            if(select_Extension) g.drawImage(coche_non_hover,posX_coches,posY_coche3,taille_btn,taille_btn,null);
+            else g.drawImage(coche_non,posX_coches,posY_coche3,taille_btn,taille_btn,null);
+        }
     }
 
     private void afficheChoix(Graphics g){
@@ -190,8 +242,14 @@ public class MenuGraphique extends JPanel {
         int x = (frameWidth - taille_slider_x)/2;
         int y=(int) (taille_slider_y*4.25);
 
-        g.drawImage(btn_valider,(int)(x+taille_slider_x*1.05),(int) (y+taille_slider_y*4.75),taille_btn,taille_btn,null);
-        g.drawImage(btn_annuler,(int)(x-(taille_slider_x)/6),(int) (y+taille_slider_y*4.75),taille_btn,taille_btn,null);
+        posX_btnValider = (int)(x+taille_slider_x*1.05);
+        posY_btnChoix = (int) (y+taille_slider_y*4.75);
+        posX_btnAnnuler = (int)(x-(taille_slider_x)/6);
+
+        if(select_annuler) g.drawImage(btn_annuler_hover,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);
+        else g.drawImage(btn_annuler,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);
+        if(select_valider) g.drawImage(btn_valider_hover,posX_btnValider,posY_btnChoix,taille_btn,taille_btn,null);
+        else g.drawImage(btn_valider,posX_btnValider,posY_btnChoix,taille_btn,taille_btn,null);
     }
 
     public void afficheParametre(Graphics g){
