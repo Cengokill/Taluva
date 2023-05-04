@@ -24,54 +24,32 @@ public class FenetreJeu extends Container {
 
     public static Point LastPosition;
     final Jeu jeu;
-    final JFrame f;
+    JFrame f;
 
-    public FenetreJeu(Jeu jeu, ControleurMediateur controleur,int menu) throws IOException {
-        if(menu==0){
-            this.controleur = controleur;
-            this.controleur.setEngine(this);
-            this.jeu = jeu;
-            this.f = getF();
-            initFrame();
+    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
+        this.controleur = controleur;
+        this.controleur.setEngine(this);
+        this.jeu = jeu;
+        this.f = getFMenu();
+        initFrame();
+        initMultiLayerPanel();
+        initMenu();
+        initPanels(controleur);
+        initKeyBoardAndMouseListener();
+        setBackgroundColor();
+        f.setVisible(true);
+    }
 
-            initPanels(controleur);
-
-            initKeyBoardAndMouseListener();
-
-            setBackgroundColor();
-
-            f.setVisible(true);
-        }else{
-            this.controleur = controleur;
-            this.controleur.setEngine(this);
-            this.jeu = jeu;
-            this.f = getF();
-            initFrame();
-
-            initPanels(controleur);
-
-            initKeyBoardAndMouseListener();
-
-            setBackgroundColor();
-
-            f.setVisible(true);
-        }
-        /*else {
-            this.controleur = controleur;
-            this.controleur.setEngine(this);
-            this.jeu = jeu;
-            this.f = getFMenu();
-            initMenu();
-            menuGraphique = new MenuGraphique(f);
-
-            f.setVisible(true);
-            System.out.println("menu");
-        }*/
+    public void initRenduJeu(){
+        initFrame();
+        initPanels(controleur);
+        initKeyBoardAndMouseListener();
+        setBackgroundColor();
     }
 
     private void initMenu() throws IOException {
         // Ajouter les tuiles hexagonales
-        menuGraphique = new MenuGraphique(f);
+        menuGraphique = new MenuGraphique(f,layeredPane,jeu,controleur);
         menuGraphique.setBounds(0, 0, 1400, 1000);
         layeredPane.add(menuGraphique, JLayeredPane.DEFAULT_LAYER);
     }
@@ -86,7 +64,7 @@ public class FenetreJeu extends Container {
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        initMultiLayerPanel();
+        //initMultiLayerPanel();
         initHexagonsPanel(controleur);
         initVignettePanel();
         initButtonPanel();
@@ -115,7 +93,7 @@ public class FenetreJeu extends Container {
 
     private void initButtonPanel() {
         createButtonPanel();
-        buttonPanel.setBackground(new Color(0,0,0,0));
+        buttonPanel.setBackground(new Color(0, 0, 0, 0));
         buttonPanel.setBounds(0, 0, 1400, 1000);
         buttonPanel.setOpaque(false);
         layeredPane.add(buttonPanel, JLayeredPane.POPUP_LAYER);
@@ -178,11 +156,28 @@ public class FenetreJeu extends Container {
     }
 
     private JFrame getFMenu(){
+        bouton_save = lisImageBuf("Sauvegarder");
+        //bouton_save_select = lisImageBuf("Sauvegarder_select");
+        bouton_load = lisImageBuf("Charger");
+        //bouton_load_select = lisImageBuf("Charger_select");
+        bouton_annuler = lisImageBuf("Annuler");
+        //bouton_annuler_select = lisImageBuf("Annuler_select");
+        bouton_refaire = lisImageBuf("Refaire");
+        //bouton_refaire_select = lisImageBuf("Refaire_select");
+        bouton_tuto_on = lisImageBuf("Tuto_on");
+        bouton_tuto_off = lisImageBuf("Tuto_off");
+        bouton_quitter = lisImageBuf("Quitter");
+        //bouton_quitter_select = lisImageBuf("Quitter_select");
+        fenetre_score = lisImageBuf("fenetre_score");
+        joueur_courant = lisImageBuf("Joueur_courant");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
                 menuGraphique.setBounds(0, 0, getWidth(), getHeight());
+                if(affichagePlateau!=null) affichagePlateau.setBounds(0, 0, getWidth(), getHeight());   // tu rentres dedans que quand je modifie la taille VOILA POURQUOI
+                if(vignettePanel!=null) vignettePanel.setBounds(0, 0, getWidth(), getHeight());
+                if(buttonPanel!=null) buttonPanel.setBounds(0, 0, getWidth(), getHeight());
             }
         };
     }

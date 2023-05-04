@@ -81,18 +81,18 @@ public class MenuGraphiqueListener implements MouseListener  {
         return false;
     }
 
-
     public void verif(MouseEvent e) throws IOException {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
             //efface tout le contenu de la frame
-            m.frame.getContentPane().removeAll();
-            //ajoute une FenetreJeu à la frame
-            Jeu jeu = new Jeu(null);
-            ControleurMediateur controler = new ControleurMediateur(jeu);
-            FenetreJeu fenetre = new FenetreJeu(jeu, controler,0);
+            m.layeredPane.removeAll();
+
+            // On passe du menu au jeu
             ImageLoader.loadImages();
-            fenetre.affichagePlateau.repaint();
-            m.frame.setContentPane(fenetre);
+            m.fenetre.initRenduJeu();
+            m.fenetre.affichagePlateau.setBounds(0, 0, m.getWidth(), m.getHeight());
+            m.fenetre.vignettePanel.setBounds(0, 0, m.getWidth(), m.getHeight());
+            m.fenetre.buttonPanel.setBounds(0, 0, m.getWidth(), m.getHeight());
+
         }
     /*if(estCurseurSurBouton_Options(e)){
         if(m.clicOptions) {

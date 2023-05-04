@@ -1,5 +1,7 @@
 package Vue;
 
+import Controleur.ControleurMediateur;
+import Modele.Jeu;
 import Modele.Parametres;
 
 import javax.imageio.ImageIO;
@@ -16,6 +18,12 @@ import static Modele.ImageLoader.applyRedFilter;
 public class MenuGraphique extends JPanel {
 
     JFrame frame;
+    JLayeredPane layeredPane;
+
+    FenetreJeu fenetre;
+    Jeu jeu;
+    ControleurMediateur controleur;
+
     BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Reseau_hover,bouton_Options_hover,bouton_Quitter_hover;
     Dimension tailleEcran, tailleFenetre;
     int screenWidth, screenHeight, frameWidth, frameHeight,largeur_background,largeur_bouton,largeur_menu_options,hauteur_background,hauteur_bouton,hauteur_menu_options;
@@ -26,7 +34,7 @@ public class MenuGraphique extends JPanel {
     private JTextField field_joueur1;
     boolean select_local,select_reseau,select_options,select_quitter;
 
-    public MenuGraphique(JFrame f) throws IOException {
+    public MenuGraphique(JFrame f, JLayeredPane layeredPane,Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
         background = lisImage("ocean");
         bouton_Local = lisImage("bouton_local");
@@ -49,14 +57,14 @@ public class MenuGraphique extends JPanel {
 
         // Eléments de l'interface
         frame = f;
+        this.layeredPane = layeredPane;
+        this.jeu = jeu;
+        this.controleur = controleur;
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1280, 720);
+        /*frame.setSize(1280, 720);
         //centrer la fenetre
         frame.setLocationRelativeTo(null);
-        //ajout des éléments à la frame
-        field_joueur1 = new JTextField("j'aime la bite");
-        //frame.add(field_joueur1);
-        frame.setVisible(true);
+        frame.setVisible(true);*/
         //Définition des dimensions de la fenêtre
         tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
         screenWidth=tailleEcran.width;
@@ -70,6 +78,10 @@ public class MenuGraphique extends JPanel {
         addMouseListener(new MenuGraphiqueListener(this));
 
         boucle();
+    }
+
+    public void setFenetre(FenetreJeu fenetre) {
+        this.fenetre = fenetre;
     }
 
     private BufferedImage lisImage(String nom) throws IOException {
