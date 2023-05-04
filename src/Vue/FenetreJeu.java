@@ -181,29 +181,4 @@ public class FenetreJeu extends Container {
             }
         };
     }
-    private JFrame getF() {
-        bouton_save = lisImageBuf("Sauvegarder");
-        //bouton_save_select = lisImageBuf("Sauvegarder_select");
-        bouton_load = lisImageBuf("Charger");
-        //bouton_load_select = lisImageBuf("Charger_select");
-        bouton_annuler = lisImageBuf("Annuler");
-        //bouton_annuler_select = lisImageBuf("Annuler_select");
-        bouton_refaire = lisImageBuf("Refaire");
-        //bouton_refaire_select = lisImageBuf("Refaire_select");
-        bouton_tuto_on = lisImageBuf("Tuto_on");
-        bouton_tuto_off = lisImageBuf("Tuto_off");
-        bouton_quitter = lisImageBuf("Quitter");
-        //bouton_quitter_select = lisImageBuf("Quitter_select");
-        fenetre_score = lisImageBuf("fenetre_score");
-        joueur_courant = lisImageBuf("Joueur_courant");
-        return new JFrame() {
-            @Override
-            public void paint(Graphics g) {
-                super.paint(g);
-                affichagePlateau.setBounds(0, 0, getWidth(), getHeight());
-                vignettePanel.setBounds(0, 0, getWidth(), getHeight());
-                buttonPanel.setBounds(0, 0, getWidth(), getHeight());
-            }
-        };
-    }
 }
