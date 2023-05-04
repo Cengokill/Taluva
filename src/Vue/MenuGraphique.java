@@ -97,6 +97,7 @@ public class MenuGraphique extends JPanel {
     }
 
     public void afficheBackground(Graphics g) {
+        Image scaledImage = background.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
         g.setColor(new Color(64, 164, 223));
         g.fillRect(0, 0, frameWidth, frameHeight);
         double rapport = 0.5625;// rapport de 2160/3840
@@ -113,7 +114,7 @@ public class MenuGraphique extends JPanel {
             posX_background=(frameWidth-largeur_background)/2;
             posY_background=0;
         }
-        g.drawImage(background, posX_background, posY_background, largeur_background, hauteur_background, null);
+        g.drawImage(scaledImage, 0, 0, null);
     }
 
     public void afficheBoutonLocal(Graphics g) {
