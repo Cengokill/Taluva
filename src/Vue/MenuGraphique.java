@@ -80,8 +80,8 @@ public class MenuGraphique extends JPanel {
 
         } catch (Exception e) {
         }
-        if(image == null) {
-            System.err.println("L'image " + CHEMIN + nom + ".png" + " n'a pas été trouvée");
+        } catch (IOException e) {
+            System.err.println("Impossible de charger l'image " + nom);
         }
         return image;
     }
