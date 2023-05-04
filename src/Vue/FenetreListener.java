@@ -209,7 +209,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             } else {
                 hoverTilePosition = e.getPoint();
             }
-            fenetreJeu.affichagePlateau.miseAJour();
+            //fenetreJeu.affichagePlateau.miseAJour();
         }
 
         @Override
@@ -222,7 +222,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             hoverTilePosition = e.getPoint();
             fenetreJeu.affichagePlateau.updateCursorPosOnTiles(e);
-            fenetreJeu.affichagePlateau.miseAJour();
+            //fenetreJeu.affichagePlateau.miseAJour();
             if (!SwingUtilities.isRightMouseButton(e)) {
                 clicDroiteEnfonce = false;
             }
@@ -260,7 +260,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 if (cameraOffset.y > -64) {
                     cameraOffset.y = -64;
                 }
-                fenetreJeu.affichagePlateau.miseAJour();
+                //fenetreJeu.affichagePlateau.miseAJour();
             }
         }
 

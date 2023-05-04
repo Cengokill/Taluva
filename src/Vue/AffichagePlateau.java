@@ -9,6 +9,8 @@ import Structures.TripletDePosition;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class AffichagePlateau extends JPanel {
     public final FenetreJeu fenetreJeu;
     public final Jeu jeu;
 
+    private int index_water=0;
+
     public final int HAUTEUR_ETAGE = 80;
     public final int HAUTEUR_OCEAN = 50;
 
@@ -44,8 +48,8 @@ public class AffichagePlateau extends JPanel {
         initCouleursJoueurs();
 
         poseTile = true;
+        boucle();
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -122,6 +126,9 @@ public class AffichagePlateau extends JPanel {
 
     public void miseAJour() {
         repaint();
+        if(index_water==3){
+            index_water=0;
+        }else index_water++;
         if(jeu.estJoueurCourantUneIA()){  // Faire jouer l'AbstractIA
             if(unefoisIA){
                 jeu.joueIA();
@@ -650,7 +657,7 @@ public class AffichagePlateau extends JPanel {
             placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified);
         }
 
-        miseAJour();
+        //miseAJour();
     }
 
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
@@ -794,7 +801,7 @@ public class AffichagePlateau extends JPanel {
             placeBatiment(i, j);
         }
         unefoisIA=true;
-        miseAJour();
+        //miseAJour();
     }
 
     private void placeBatiment(int i, int j) {
@@ -827,4 +834,15 @@ public class AffichagePlateau extends JPanel {
         jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
         enSelection=false;
     }
+
+    public void boucle(){
+        Timer timer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                miseAJour();
+            }
+        });
+        timer.start();
+    }
+
 }

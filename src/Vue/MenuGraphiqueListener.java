@@ -38,7 +38,7 @@ public class MenuGraphiqueListener implements MouseListener  {
     public boolean estCurseurSurBouton_Local(MouseEvent e){
         int startx = m.posX_boutons-(m.largeur_background/9) ;
         int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
             m.select_local = true;
             this.type_jeu = "local";
             return true;
@@ -50,7 +50,7 @@ public class MenuGraphiqueListener implements MouseListener  {
     public boolean estCurseurSurBouton_Reseau(MouseEvent e){
         int startx = m.posX_boutons+(m.largeur_background/9);
         int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
             m.select_reseau = true;
             this.type_jeu = "reseau";
             return true;
@@ -62,7 +62,7 @@ public class MenuGraphiqueListener implements MouseListener  {
     public boolean estCurseurSurBouton_Options(MouseEvent e){
         int startx = m.posX_boutons;
         int starty = m.posY_Options;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
             m.select_options = true;
             return true;
         }
@@ -73,7 +73,7 @@ public class MenuGraphiqueListener implements MouseListener  {
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
         int startx = m.posX_boutons;
         int starty = m.posY_Quitter;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
             m.select_quitter = true;
             return true;
         }
@@ -94,13 +94,13 @@ public class MenuGraphiqueListener implements MouseListener  {
             m.fenetre.buttonPanel.setBounds(0, 0, m.getWidth(), m.getHeight());
 
         }
-    /*if(estCurseurSurBouton_Options(e)){
-        if(m.clicOptions) {
-            m.clicOptions = false;
-        }else {
-            m.clicOptions = true;
+        if(estCurseurSurBouton_Options(e)){
+            if(m.clicOptions) {
+                m.clicOptions = false;
+            }else {
+                m.clicOptions = true;
+            }
         }
-    }*/
         if(estCurseurSurBouton_Quitter(e)){
             System.exit(0);
         }
