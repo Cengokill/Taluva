@@ -1,9 +1,13 @@
 package Vue;
 
+import Modele.ImageLoader;
+
 import javax.swing.*;
 import java.awt.*;
 
 import java.awt.event.*;
+import java.io.IOException;
+
 import static Modele.Camera.*;
 import static Modele.GameState.*;
 import static Modele.ImageLoader.*;
@@ -123,7 +127,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
 
         public boolean estSurQuitter(MouseEvent e) {
             int largeur = posX_boutons + largeur_bouton;
-            int hauteur = posY_quitter+ hauteur_bouton;
+            int hauteur = posY_quitter + hauteur_bouton;
             if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
                 select_quitter = true;
                 return true;
@@ -145,6 +149,19 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             if(estSurRefaire(e)) {
                 fenetreJeu.affichagePlateau.controleur.refaire();
+            }
+            if(estSurQuitter(e)){
+                fenetreJeu.layeredPane.removeAll();
+                // On passe du menu au jeu
+                try {
+                    fenetreJeu.initMenuJeu();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                fenetreJeu.revalidate();
+                //fenetreJeu.menuGraphique.setBounds();
+                fenetreJeu.menuGraphique.repaint();
+
             }
             fenetreJeu.affichagePlateau.addToCursor(e);
             fenetreJeu.affichagePlateau.annuleConstruction(e);

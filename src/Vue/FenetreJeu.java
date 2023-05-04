@@ -15,6 +15,7 @@ public class FenetreJeu extends Container {
     FenetreListener listener;
     public AffichagePlateau affichagePlateau;
 
+    Graphics g1;
     public MenuGraphique menuGraphique;
     public VignettePanel vignettePanel;
     public JPanel buttonPanel;
@@ -38,6 +39,24 @@ public class FenetreJeu extends Container {
         initKeyBoardAndMouseListener();
         setBackgroundColor();
         f.setVisible(true);
+    }
+
+    public void initMenuJeu() throws IOException {
+        layeredPane.removeAll();
+        initFrame();
+        initMenu();
+
+        buttonPanel.removeAll();
+        affichagePlateau.removeAll();
+
+        menuGraphique.setFenetre(this);
+        menuGraphique.setBounds(0, 0, getWidth(), getHeight());
+        initVignettePanel();
+
+        layeredPane.revalidate();
+        layeredPane.repaint();
+        f.revalidate();
+        f.repaint();
     }
 
     public void initRenduJeu(){
@@ -155,7 +174,7 @@ public class FenetreJeu extends Container {
         f.setLocationRelativeTo(null);
     }
 
-    private JFrame getFMenu(){
+    public JFrame getFMenu(){
         bouton_save = lisImageBuf("Sauvegarder");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");
         bouton_load = lisImageBuf("Charger");
