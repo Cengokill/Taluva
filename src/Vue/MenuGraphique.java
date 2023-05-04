@@ -2,18 +2,15 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.Jeu;
-import Modele.Parametres;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.BufferOverflowException;
 
 import static Modele.ImageLoader.applyRedFilter;
 
@@ -168,7 +165,7 @@ public class MenuGraphique extends JPanel {
         else g.drawImage(bouton_Quitter, posX_boutons, posY_Quitter, largeur_bouton, hauteur_bouton,null);
     }
 
-    private void afficheliders(Graphics g){
+    private void afficheSliders(Graphics g){
         int taille_slider_x = (int) (Math.min(getWidth(),getHeight())*0.8);
         int taille_slider_y = (int) taille_slider_x/10;
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.08);
@@ -258,7 +255,7 @@ public class MenuGraphique extends JPanel {
         int x = (frameWidth - taille_x)/2;
         int y=0-(taille_y/45);
         g.drawImage(options_background, x, y, taille_x,taille_y,null);
-        afficheliders(g);
+        afficheSliders(g);
         afficheCochable(g);
         afficheChoix(g);
     }
