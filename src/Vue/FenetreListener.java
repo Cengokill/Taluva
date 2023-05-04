@@ -180,12 +180,15 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 cameraOffset.y = Math.min(Math.max(cameraOffset.y + dy, minY), maxY);
 
                 // Empêcher la caméra de voir des cases dans le négatif
-                if (cameraOffset.x > 0) {
-                    cameraOffset.x = 0;
+                if (cameraOffset.x > -1100) {
+                    cameraOffset.x = -1100;
                 }
-                if (cameraOffset.y > -64) {
-                    cameraOffset.y = -64;
+                if (cameraOffset.y > -1100) {
+                    cameraOffset.y = -1100;
                 }
+
+                System.out.println(cameraOffset.x);
+                System.out.println(cameraOffset.y);
 
                 lastMousePosition = e.getPoint();
             } else {
