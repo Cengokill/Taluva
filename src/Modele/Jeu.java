@@ -86,7 +86,7 @@ public class Jeu extends Observable {
 
     public void calculScore(){
         for(int i = 0; i<joueurs.length; i++){
-            score[i] = joueurs[i].getNbTemplesPlaces()*9 + joueurs[i].getNbToursPlacees()*3 + joueurs[i].getNbHuttesPlacees();
+            score[i] = joueurs[i].getNbTemplesPlaces()*1000 + joueurs[i].getNbToursPlacees()*100 + joueurs[i].getNbHuttesPlacees();
         }
     }
 
@@ -151,6 +151,7 @@ public class Jeu extends Observable {
     }
 
     public void changeJoueur() {
+        System.out.println(estFinPartie());
         if (jCourant == (byte) 0) {
             jCourant = (byte) 1;
         } else {

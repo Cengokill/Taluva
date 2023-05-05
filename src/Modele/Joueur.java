@@ -29,8 +29,8 @@ public class Joueur {
         nbTemplesPlaces = 0;
         nbVillages = 0;
         nbHuttes = 20;
-        nbTours = 3;
-        nbTemples = 2;
+        nbTours = 2;
+        nbTemples = 3;
     }
 
     public void setImage(String image_nom){
