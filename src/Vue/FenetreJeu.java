@@ -92,7 +92,7 @@ public class FenetreJeu extends Container {
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        //initBackgroundPanel();
+        initBackgroundPanel();
         initHexagonsPanel(controleur);
         initVignettePanel();
         initButtonPanel();
@@ -131,7 +131,7 @@ public class FenetreJeu extends Container {
         createBackgroundPanel();
         backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         backgroundPanel.setOpaque(false);
-        layeredPane.add(backgroundPanel, 0);
+        layeredPane.add(backgroundPanel, JLayeredPane.FRAME_CONTENT_LAYER);
     }
 
     private void createBackgroundPanel() {
