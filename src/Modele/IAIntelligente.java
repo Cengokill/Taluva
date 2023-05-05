@@ -6,17 +6,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 import static Modele.Hexagone.*;
 
 public class IAIntelligente extends AbstractIA {
 
     public ArrayList<Tuile> tuilesPioche;
-    public HashMap<Byte, Integer> instances;
+    Map<String, byte[]> instances = new HashMap<>();
 
     public IAIntelligente() {
         super();
@@ -57,19 +54,27 @@ public class IAIntelligente extends AbstractIA {
     }
 
     public void ajouterInstance(Plateau plateau, ArrayList<Tuile> tuilesPiocheCourante) {
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream ();
+        ByteArrayOutputStream byteOut2 = new ByteArrayOutputStream ();
         try {
-            ByteArrayOutputStream byteOut = new ByteArrayOutputStream ();
             ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            ObjectOutputStream out2 = new ObjectOutputStream(byteOut);
             out.writeObject(plateau);
+            out2.writeObject(tuilesPiocheCourante);
             out.close();
+            out2.close();
             byte[] bytes = byteOut.toByteArray();
-            System.out.println("Objet PlateauDeJeu sérialisé en " + bytes.length + " octets");
+            byte[] bytes2 = byteOut2.toByteArray();
+            int cle = Arrays.hashCode(byteOut.toByteArray());
+            int cle2 = Arrays.hashCode(byteOut2.toByteArray());
+            String cleString = Integer.toString(cle)+Integer.toString(cle2);
+            instances.put(cleString, bytes);
         } catch(IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void estInstance(Plateau plateau, ArrayList<Tuile> tuilesPiocheCourante){
+    public void estInstance(int cle, ArrayList<Tuile> tuilesPiocheCourante){
 
     }
 

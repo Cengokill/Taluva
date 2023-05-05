@@ -1,6 +1,8 @@
 package Structures;
 
-public class TripletDePosition {
+import java.io.Serializable;
+
+public class TripletDePosition implements Serializable {
     private Position volcan;
     private Position tile1;
     private Position tile2;
