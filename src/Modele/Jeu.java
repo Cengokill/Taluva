@@ -5,6 +5,7 @@ import Patterns.Observable;
 import javax.swing.*;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 import static Modele.Hexagone.*;
 
@@ -194,7 +195,6 @@ public class Jeu extends Observable {
         for(int i=0; i<11; i++){
             pioche.add(new Tuile(prairie, foret));
         }
-        Collections.shuffle(pioche);
     }
 
     public byte[] getTuilesAPoser() {
@@ -206,7 +206,10 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        Tuile tuile_courante = pioche.removeFirst();
+        Random r = new Random();
+        int index = r.nextInt(pioche.size()-1);
+        Tuile tuile_courante = pioche.get(index);
+        pioche.remove(index);
         tuile_a_poser[0] = tuile_courante.biome0;
         tuile_a_poser[1] = tuile_courante.biome1;
         tuile_a_poser[2] = (byte) tuile_courante.numero0;
