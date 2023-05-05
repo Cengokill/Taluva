@@ -161,12 +161,13 @@ public class FenetreJeu extends Container {
                 largeur_joueur_courant = (int) (largeur_bouton * 1.8);
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
                 posX_fenetre_score = 10;
-                posX_huttes_j0 = posX_fenetre_score + largeur_fenetre_score + largeur_bouton / 10;
                 posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
                 posY_save = 0;
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
                 posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
                 posY_fenetre_score = posY_annuler;
+                posX_huttes_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.16);
+                posY_huttes_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.32);
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
@@ -224,7 +225,7 @@ public class FenetreJeu extends Container {
         int nb_huttes = jeu.joueurs[0].getNbHuttes();
         //convertit le nombre de huttes en string
         String nb_huttes_str = Integer.toString(nb_huttes);
-        g.drawString(nb_huttes_str, posX_huttes_j0, posY_fenetre_score);
+        g.drawString(nb_huttes_str, posX_huttes_j0, posY_huttes_j0);
     }
 
     public static void afficheBoutonLoad(Graphics g) {

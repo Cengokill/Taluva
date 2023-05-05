@@ -49,7 +49,7 @@ public class ImageLoader {
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto,
     posX_joueur_courant, posY_joueur_courant, posX_huttes_j0, posX_huttes_j1, posX_tours_j0, posX_tours_j1, posX_temples_j0, posX_temples_j1,
-    poxY_huttes_j0, posY_huttes_j1, posY_tours_j0, posY_tours_j1, posY_temples_j0, posY_temples_j1;
+    posY_huttes_j0, posY_huttes_j1, posY_tours_j0, posY_tours_j1, posY_temples_j0, posY_temples_j1;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_joueur_courant,
             hauteur_joueur_courant;
     public static boolean select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter;
