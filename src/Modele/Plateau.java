@@ -10,8 +10,8 @@ import static Modele.Hexagone.*;
 import static Modele.Hexagone.TEMPLE_SABLE;
 
 public class Plateau implements Serializable {
-    final int LIGNES = 40;
-    final int COLONNES = 40;
+    final int LIGNES = 60;
+    final int COLONNES = 60;
     public int quantiteBatimentJoueur1, quantiteBatimentJoueur2;
     protected Hexagone[][] plateau ;
     protected byte[] quantitePionJoueur1;
@@ -30,7 +30,7 @@ public class Plateau implements Serializable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
-        placeEtage((byte) 0,17,17,17,18,(byte) 1,18,17,(byte) 2);
+        placeEtage((byte) 0,19,19,19,20,(byte) 1,20,19,(byte) 2);
     }
 
     private void initHistorique() {

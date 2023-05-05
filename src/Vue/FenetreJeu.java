@@ -18,7 +18,7 @@ public class FenetreJeu extends Container {
     Graphics g1;
     public MenuGraphique menuGraphique;
     public VignettePanel vignettePanel;
-    public JPanel buttonPanel;
+    public JPanel backgroundPanel, buttonPanel;
     public JLayeredPane layeredPane;
 
     final ControleurMediateur controleur;
@@ -78,7 +78,7 @@ public class FenetreJeu extends Container {
     private void initMenu() throws IOException {
         // Ajouter les tuiles hexagonales
         menuGraphique = new MenuGraphique(frame,layeredPane,jeu,controleur);
-        menuGraphique.setBounds(0, 0, 1400, 1000);
+        menuGraphique.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         layeredPane.add(menuGraphique, JLayeredPane.DEFAULT_LAYER);
     }
 
@@ -92,7 +92,7 @@ public class FenetreJeu extends Container {
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        //initMultiLayerPanel();
+        //initBackgroundPanel();
         initHexagonsPanel(controleur);
         initVignettePanel();
         initButtonPanel();
@@ -101,15 +101,15 @@ public class FenetreJeu extends Container {
     private void initVignettePanel() {
         // Ajouter la vignette
         vignettePanel = new VignettePanel();
-        vignettePanel.setBounds(0, 0, 1400, 1000);
+        vignettePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
     }
 
     private void initHexagonsPanel(ControleurMediateur controleur) {
         // Ajouter les tuiles hexagonales
         affichagePlateau = new AffichagePlateau(this, controleur, this.jeu);
-        affichagePlateau.setBounds(0, 0, 1400, 1000);
-        layeredPane.add(affichagePlateau, JLayeredPane.DEFAULT_LAYER);
+        affichagePlateau.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        layeredPane.add(affichagePlateau, 50);
     }
 
     private void initMultiLayerPanel() {
@@ -122,9 +122,26 @@ public class FenetreJeu extends Container {
     private void initButtonPanel() {
         createButtonPanel();
         buttonPanel.setBackground(new Color(0, 0, 0, 0));
-        buttonPanel.setBounds(0, 0, 1400, 1000);
+        buttonPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         buttonPanel.setOpaque(false);
         layeredPane.add(buttonPanel, JLayeredPane.POPUP_LAYER);
+    }
+
+    private void initBackgroundPanel(){
+        createBackgroundPanel();
+        backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        backgroundPanel.setOpaque(false);
+        layeredPane.add(backgroundPanel, 0);
+    }
+
+    private void createBackgroundPanel() {
+        backgroundPanel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                afficheBackground(g);
+            }
+        };
     }
 
     private void createButtonPanel() {
@@ -134,9 +151,9 @@ public class FenetreJeu extends Container {
                 if (!ImageLoader.loaded) {
                     return;
                 }
-                super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                super.paint(g2d);
                 calculeRapports();
                 afficheFenetreScore(g2d);
                 afficheBoutonSave(g2d);
@@ -255,6 +272,10 @@ public class FenetreJeu extends Container {
         g.setFont(font);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
         g.drawString(nb_tuiles_pioche, posX_pioche, posY_pioche);
+    }
+
+    public static void afficheBackground(Graphics g) {
+        g.drawImage(background, 0, 0, largeur, hauteur, null);
     }
 
     public static void afficheBoutonLoad(Graphics g) {
