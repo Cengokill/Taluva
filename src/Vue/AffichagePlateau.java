@@ -60,7 +60,7 @@ public class AffichagePlateau extends JPanel {
         changerPoseTile();
 
         super.paintComponent(g);
-        afficheBackground(cameraOffset.x/10, cameraOffset.y/10, g);
+        afficheBackground(cameraOffset.x, cameraOffset.y+800, g);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate(cameraOffset.x, cameraOffset.y);
@@ -72,7 +72,7 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
-        g.drawImage(background, x, y, largeur, hauteur, null);
+        g.drawImage(background, x, y, largeur*4, hauteur*4, null);
     }
 
 
