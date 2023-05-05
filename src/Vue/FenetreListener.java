@@ -50,7 +50,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 shake();
-                fenetreJeu.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
             if (e.getKeyCode() == KeyEvent.VK_N) {
                 fenetreJeu.affichagePlateau.affichetripletpossible();

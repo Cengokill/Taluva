@@ -54,8 +54,8 @@ public class IAIntelligente extends AbstractIA {
     }
 
     public void ajouterInstance(Plateau plateau, ArrayList<Tuile> tuilesPiocheCourante) {
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream ();
-        ByteArrayOutputStream byteOut2 = new ByteArrayOutputStream ();
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteOut2 = new ByteArrayOutputStream();
         try {
             ObjectOutputStream out = new ObjectOutputStream(byteOut);
             ObjectOutputStream out2 = new ObjectOutputStream(byteOut);

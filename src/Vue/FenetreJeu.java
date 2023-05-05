@@ -260,4 +260,8 @@ public class FenetreJeu extends Container {
         g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
         g.drawString("Joueur ", posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
     }
+
+    public void metAjour(){
+        repaint();
+    }
 }
