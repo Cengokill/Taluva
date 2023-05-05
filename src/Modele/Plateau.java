@@ -235,14 +235,7 @@ public class Plateau implements Serializable {
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
         // TODO faire en sort que 2 villages s?par?s aient pas le meme ID
-
         if(estVide()) return true;
-
-
-        if (plateau[ligneTile1][colonneTile1].getColonneVolcan() == colonneVolcan && plateau[ligneTile2][colonneTile2].getLigneVolcan() == ligneVolcan) {
-            return false;
-        }
-
 
         // Hauteur max
         int hauteur = plateau[ligneVolcan][colonneVolcan].getHauteur();
@@ -253,10 +246,19 @@ public class Plateau implements Serializable {
         if (plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VOLCAN && plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE) {
             return false;
         }
+        // Vérifie qu'on ne place pas pile poil par dessus une autre tuile
+        if(plateau[ligneTile1][colonneTile1].getLigneVolcan()==ligneVolcan && plateau[ligneTile1][colonneTile1].getColonneVolcan()==colonneVolcan
+                && plateau[ligneTile2][colonneTile2].getLigneVolcan()==ligneVolcan && plateau[ligneTile2][colonneTile2].getColonneVolcan()==colonneVolcan){
+            return false;
+        }
 
-        // V?rifie qu'on detruit pas tous les batiments des joueurs
-        if (plateau[ligneVolcan][colonneVolcan].getNumJoueur()==0 && quantiteBatimentJoueur1 !=0 && getNbBatEcrase(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)[0] >= quantiteBatimentJoueur1) return false; // joueur 0
-        if (plateau[ligneVolcan][colonneVolcan].getNumJoueur()==0 && quantiteBatimentJoueur2 !=0 && getNbBatEcrase(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)[1] >= quantiteBatimentJoueur2) return false; // joueur 1
+
+        // On ne place pas sur un temple
+        if(estTemple(ligneVolcan,colonneVolcan)||estTemple(ligneTile1,colonneTile1)||estTemple(ligneTile2,colonneTile2)) return false;
+        // On ne place pas sur une tour
+        if(estTour(ligneVolcan,colonneVolcan)||estTour(ligneTile1,colonneTile1)||estTour(ligneTile2,colonneTile2)) return false;
+        // On efface un village entier
+        if(effaceUnVillageEntier(ligneTile1,colonneTile1,ligneTile2,colonneTile2)||effaceUnVillageEntier(ligneTile2,colonneTile2,ligneTile1,colonneTile1)) return false;
 
         // V?rifie la hauteur de toutes les cases
         if (plateau[ligneVolcan][colonneVolcan].getHauteur() != hauteur) {
