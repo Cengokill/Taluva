@@ -5,13 +5,14 @@ import Patterns.Observable;
 import javax.swing.*;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 import static Modele.Hexagone.*;
 
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
-    final AbstractIA IA1=null;
+    AbstractIA IA1=null;
     AbstractIA IA2;
     byte jCourant;
     byte jVainqueur;
@@ -25,15 +26,15 @@ public class Jeu extends Observable {
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
 
-    final LinkedList<Tuile> pioche;
+    public LinkedList<Tuile> pioche;
     private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
-        jCourant = (byte) ((int)(Math.random() * 2));
-        /*jCourant = 1;
+        //jCourant = (byte) ((int)(Math.random() * 2));
+        jCourant = 1;
         IA1 = AbstractIA.nouvelle(this,this.p);
         joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;*/
+        joueursObjet[1] = IA1;
 
         pioche = new LinkedList<>();
         lancePartie();
@@ -52,10 +53,14 @@ public class Jeu extends Observable {
             // Attendez un certain temps avant d'ex�cuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> joueIA());
-            timer.setRepeats(false); // Ne r�p�tez pas l'action finale, ex�cutez-l� une seule fois
-            timer.start(); // D�marrez le timer
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+            timer.start(); // Démarrez le timer
         }
 
+    }
+
+    public LinkedList<Tuile> getPioche(){
+        return pioche;
     }
 
     public boolean estJoueurCourantUneIA() {
@@ -88,7 +93,7 @@ public class Jeu extends Observable {
 
     public void calculScore(){
         for(int i = 0; i<joueurs.length; i++){
-            score[i] = joueurs[i].getNbTemplesPlaces()*9 + joueurs[i].getNbToursPlacees()*3 + joueurs[i].getNbHuttesPlacees();
+            score[i] = joueurs[i].getNbTemplesPlaces()*1000 + joueurs[i].getNbToursPlacees()*100 + joueurs[i].getNbHuttesPlacees();
         }
     }
 
@@ -153,6 +158,7 @@ public class Jeu extends Observable {
     }
 
     public void changeJoueur() {
+        System.out.println(estFinPartie());
         if (jCourant == (byte) 0) {
             jCourant = (byte) 1;
         } else {
@@ -195,7 +201,6 @@ public class Jeu extends Observable {
         for(int i=0; i<11; i++){
             pioche.add(new Tuile(prairie, foret));
         }
-        Collections.shuffle(pioche);
     }
 
     public byte[] getTuilesAPoser() {
@@ -207,7 +212,10 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        Tuile tuile_courante = pioche.removeFirst();
+        Random r = new Random();
+        int index = r.nextInt(pioche.size()-1);
+        Tuile tuile_courante = pioche.get(index);
+        pioche.remove(index);
         tuile_a_poser[0] = tuile_courante.biome0;
         tuile_a_poser[1] = tuile_courante.biome1;
         tuile_a_poser[2] = (byte) tuile_courante.numero0;
