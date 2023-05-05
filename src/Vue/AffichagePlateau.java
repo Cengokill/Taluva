@@ -60,10 +60,11 @@ public class AffichagePlateau extends JPanel {
         changerPoseTile();
 
         super.paintComponent(g);
+        afficheBackground(cameraOffset.x/10, cameraOffset.y/10, g);
+
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate(cameraOffset.x, cameraOffset.y);
         g2d.scale(zoomFactor, zoomFactor);
-        afficheBackground(0, 0, g);
         displayHexagonMap(g);
 
         if(poseTile) displayHoverTile(g);
