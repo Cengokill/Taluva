@@ -92,7 +92,7 @@ public class FenetreJeu extends Container {
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        initBackgroundPanel();
+        //initBackgroundPanel();
         initHexagonsPanel(controleur);
         initVignettePanel();
         initButtonPanel();

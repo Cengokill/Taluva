@@ -63,11 +63,15 @@ public class AffichagePlateau extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate(cameraOffset.x, cameraOffset.y);
         g2d.scale(zoomFactor, zoomFactor);
-
+        afficheBackground(0, 0, g);
         displayHexagonMap(g);
 
         if(poseTile) displayHoverTile(g);
         else displayHoverMaison(g);
+    }
+
+    private void afficheBackground(int x, int y, Graphics g) {
+        g.drawImage(background, x, y, largeur, hauteur, null);
     }
 
 
