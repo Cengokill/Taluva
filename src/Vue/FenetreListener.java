@@ -62,7 +62,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                fenetreJeu.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 scrollValue--;
@@ -71,7 +71,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                fenetreJeu.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
         }
 
@@ -160,7 +160,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 }
                 fenetreJeu.revalidate();
                 //fenetreJeu.menuGraphique.setBounds();
-                fenetreJeu.menuGraphique.repaint();
+                fenetreJeu.menuGraphique.metAJour();
 
             }
             fenetreJeu.affichagePlateau.addToCursor(e);
@@ -215,10 +215,9 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void mouseMoved(MouseEvent e) {
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e)) {
-                System.out.println("Cursor.HAND_CURSOR");
-                fenetreJeu.affichagePlateau.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                fenetreJeu.setHandCursor();
             }else{
-                fenetreJeu.affichagePlateau.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                fenetreJeu.setStandardCursor();
             }
             hoverTilePosition = e.getPoint();
             fenetreJeu.affichagePlateau.updateCursorPosOnTiles(e);

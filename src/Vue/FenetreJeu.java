@@ -67,6 +67,14 @@ public class FenetreJeu extends Container {
         setBackgroundColor();
     }
 
+    public void setHandCursor(){
+        f.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    public void setStandardCursor(){
+        f.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
     private void initMenu() throws IOException {
         // Ajouter les tuiles hexagonales
         menuGraphique = new MenuGraphique(f,layeredPane,jeu,controleur);
