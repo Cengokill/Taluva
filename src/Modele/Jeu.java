@@ -12,7 +12,7 @@ import static Modele.Hexagone.*;
 public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
-    final AbstractIA IA1=null;
+    AbstractIA IA1=null;
     AbstractIA IA2;
     byte jCourant;
     byte jVainqueur;
@@ -30,11 +30,11 @@ public class Jeu extends Observable {
     private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
-        jCourant = (byte) ((int)(Math.random() * 2));
-        /*jCourant = 1;
+        //jCourant = (byte) ((int)(Math.random() * 2));
+        jCourant = 1;
         IA1 = AbstractIA.nouvelle(this,this.p);
         joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;*/
+        joueursObjet[1] = IA1;
 
         pioche = new LinkedList<>();
         lancePartie();
