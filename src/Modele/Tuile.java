@@ -1,6 +1,8 @@
 package Modele;
 
-public class Tuile {
+import java.io.Serializable;
+
+public class Tuile implements Serializable {
     final byte biome0;
     final byte biome1;
     final byte biomeVolcan;
