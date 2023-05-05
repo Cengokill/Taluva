@@ -59,6 +59,10 @@ public class Jeu extends Observable {
 
     }
 
+    public LinkedList<Tuile> getPioche(){
+        return pioche;
+    }
+
     public boolean estJoueurCourantUneIA() {
         return joueursObjet[jCourant] instanceof AbstractIA;
     }

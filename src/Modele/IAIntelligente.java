@@ -12,6 +12,10 @@ public class IAIntelligente extends AbstractIA {
 
 
 
+    public Coup joue() {
+        return null;
+    }
+
 
 
 }
