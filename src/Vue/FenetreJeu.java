@@ -24,7 +24,7 @@ public class FenetreJeu extends Container {
     final ControleurMediateur controleur;
 
     public static Point LastPosition;
-    final Jeu jeu;
+    public static Jeu jeu;
     JFrame frame;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
@@ -161,6 +161,7 @@ public class FenetreJeu extends Container {
                 largeur_joueur_courant = (int) (largeur_bouton * 1.8);
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
                 posX_fenetre_score = 10;
+                posX_huttes_j0 = posX_fenetre_score + largeur_fenetre_score + largeur_bouton / 10;
                 posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
                 posY_save = 0;
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
@@ -218,6 +219,12 @@ public class FenetreJeu extends Container {
 
     public static void afficheFenetreScore(Graphics g) {
         g.drawImage(fenetre_score, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
+        Font font = new Font("Roboto", Font.BOLD, 20);
+        g.setFont(font);
+        int nb_huttes = jeu.joueurs[0].getNbHuttes();
+        //convertit le nombre de huttes en string
+        String nb_huttes_str = Integer.toString(nb_huttes);
+        g.drawString(nb_huttes_str, posX_huttes_j0, posY_fenetre_score);
     }
 
     public static void afficheBoutonLoad(Graphics g) {
@@ -266,7 +273,7 @@ public class FenetreJeu extends Container {
         Font font = new Font("Roboto", Font.BOLD, 20);
         g.setFont(font);
         g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
-        g.drawString("Joueur ", posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
+        g.drawString(jeu.getJoueurCourant(), posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
     }
 
     public void metAjour(){

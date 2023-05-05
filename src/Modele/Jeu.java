@@ -14,9 +14,9 @@ public class Jeu extends Observable {
     Joueur joueur1, joueur2;
     AbstractIA IA1=null;
     AbstractIA IA2;
-    byte jCourant;
+    public byte jCourant;
     byte jVainqueur;
-    final Joueur[] joueurs = new Joueur[2];
+    public final Joueur[] joueurs = new Joueur[2];
 
     final Object[] joueursObjet = new Object[2];
     Parametres p;
