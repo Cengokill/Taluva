@@ -102,7 +102,7 @@ public class Jeu extends Observable {
     }
 
     public void initJoueurs(){
-        joueurs[0] = new Joueur((byte)0,"Killian");
+        joueurs[0] = new Joueur((byte)0,"Jean-Sebastien");
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
     public boolean estFinPartie() {

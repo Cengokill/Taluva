@@ -166,7 +166,7 @@ public class FenetreJeu extends Container {
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
                 posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
                 posY_fenetre_score = posY_annuler;
-                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.28);
+                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.02);
                 posX_prenom_j1 = posX_prenom_j0;
                 posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.10);
                 posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.45);
@@ -228,12 +228,15 @@ public class FenetreJeu extends Container {
 
     public static void afficheFenetreScore(Graphics g) {
         g.drawImage(fenetre_score, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
-        Font font = new Font("Times New Roman", Font.ITALIC, 29);
+        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
         g.setFont(font);
+        g.setColor(Color.RED);
         String joueur_0 = jeu.joueurs[0].getPrenom();
         g.drawString(joueur_0, posX_prenom_j0, posY_prenom_j0);
+        g.setColor(new Color(0, 128, 255));
         String joueur_1 = jeu.joueurs[1].getPrenom();
         g.drawString(joueur_1, posX_prenom_j1, posY_prenom_j1);
+        g.setColor(Color.BLACK);
         font = new Font("Roboto", Font.BOLD, 20);
         g.setFont(font);
         String huttes_j0 = Integer.toString(jeu.joueurs[0].getNbHuttes());
