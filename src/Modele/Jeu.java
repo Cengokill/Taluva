@@ -34,10 +34,11 @@ public class Jeu extends Observable {
     }
 
     public void initPartie(){
-        jCourant = 1;
+        jCourant = (byte) new Random().nextInt(1);
+        /*jCourant = 1;
         IA1 = AbstractIA.nouvelle(this,this.p);
         joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;
+        joueursObjet[1] = IA1;*/
 
         pioche = new LinkedList<>();
         lancePartie();

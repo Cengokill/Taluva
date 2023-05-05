@@ -2,10 +2,7 @@ package Modele;
 
 import Structures.TripletDePosition;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 import static Modele.Hexagone.*;
@@ -47,23 +44,29 @@ public class IAIntelligente extends AbstractIA {
                 TripletDePosition posCourante = posPossibles.get(j);
             }
         }
-        //test
-        System.out.println("ON RENTRE DANS COUP");
         ajouterInstance(jeu.getPlateau(), tuilesPioche);
         return null;
     }
 
     public void ajouterInstance(Plateau plateau, ArrayList<Tuile> tuilesPiocheCourante) {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream ();
+
         ByteArrayOutputStream byteOut2 = new ByteArrayOutputStream ();
         try {
             ObjectOutputStream out = new ObjectOutputStream(byteOut);
             ObjectOutputStream out2 = new ObjectOutputStream(byteOut);
+
             out.writeObject(plateau);
             out2.writeObject(tuilesPiocheCourante);
             out.close();
             out2.close();
             byte[] bytes = byteOut.toByteArray();
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(bytes);
+            ObjectInputStream in = new ObjectInputStream(byteIn);
+            byte[] bytes_test =  byteIn.readAllBytes();
+
+            in.close();
+
             byte[] bytes2 = byteOut2.toByteArray();
             int cle = Arrays.hashCode(byteOut.toByteArray());
             int cle2 = Arrays.hashCode(byteOut2.toByteArray());
@@ -74,8 +77,8 @@ public class IAIntelligente extends AbstractIA {
         }
     }
 
-    public void estInstance(int cle, ArrayList<Tuile> tuilesPiocheCourante){
-
+    public boolean estInstance(Plateau plateau, ArrayList<Tuile> tuilesPiocheCourante){
+        return false;
     }
 
 }
