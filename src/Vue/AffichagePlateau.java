@@ -4,12 +4,16 @@ import Controleur.ControleurMediateur;
 import Modele.Hexagone;
 import Modele.ImageLoader;
 import Modele.Jeu;
+import Modele.Point2;
 import Structures.TripletDePosition;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import static Modele.Camera.*;
 import static Modele.GameState.*;
@@ -27,6 +31,8 @@ public class AffichagePlateau extends JPanel {
     public final FenetreJeu fenetreJeu;
     public final Jeu jeu;
 
+    private int index_water=0;
+
     public final int HAUTEUR_ETAGE = 80;
     public final int HAUTEUR_OCEAN = 50;
 
@@ -42,8 +48,8 @@ public class AffichagePlateau extends JPanel {
         initCouleursJoueurs();
 
         poseTile = true;
+        boucle();
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -62,9 +68,6 @@ public class AffichagePlateau extends JPanel {
 
         if(poseTile) displayHoverTile(g);
         else displayHoverMaison(g);
-
-        //affichage des boutons et des encadrés
-        //afficheJoueurCourant(g);
     }
 
 
@@ -123,6 +126,9 @@ public class AffichagePlateau extends JPanel {
 
     public void miseAJour() {
         repaint();
+        if(index_water==3){
+            index_water=0;
+        }else index_water++;
         if(jeu.estJoueurCourantUneIA()){  // Faire jouer l'AbstractIA
             if(unefoisIA){
                 jeu.joueIA();
@@ -289,6 +295,7 @@ public class AffichagePlateau extends JPanel {
             int[] coups = coupJouable(ligne, colonne);
 
             value = updateScrollValue(value, coups);
+            if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
             choixBatiment(g, pos_x, pos_y, value, coups);
         }
     }
@@ -419,11 +426,52 @@ public class AffichagePlateau extends JPanel {
         }
     }
 
+    private boolean estTemple(int i,int j){
+        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_PRAIRIE) return true;
+        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_FORET) return true;
+        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_PIERRE) return true;
+        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_SABLE) return true;
+        return false;
+    }
+
+    private boolean estTour(int i,int j){
+        if(jeu.getPlateau().getBatiment(i,j)==TOUR) return true;
+        return false;
+    }
+
+    private ArrayList<Point2> copyPoints(ArrayList<Point2> tab1) {
+        ArrayList<Point2> tab2 = new ArrayList<>();
+        for(Point2 p : tab1){
+            tab2.add(p);
+        }
+        return tab2;
+    }
+
+    private boolean peutPoserTemple(int i,int j){
+        ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
+        if(pointsVillage.size()<=3) return false;
+        for(Point2 p : pointsVillage){
+            System.out.println("x: "+p.getPointX()+" y: "+p.getPointY());
+            if(estTemple(p.getPointX(),p.getPointY())) return false;
+        }
+        return true;
+    }
+
+    private boolean peutPoserTour(int i,int j){
+        ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
+        if(jeu.getPlateau().getHauteurTuile(i,j)<3) return false;       // On verifie que la hauteur est d'au moins 3
+        for(Point2 p : pointsVillage){                                  // On verifie que la cité ne possède pas déjà une tour
+            if(estTour(p.getPointX(),p.getPointY())) return false;
+        }
+        return true;
+    }
+
     public int[] coupJouable(int i,int j){
         int[] coups = new int[3];
         coups[0] = 1;
-        if(jeu.getPlateau().getHauteurTuile(i,j)==3) coups[2] = 1;
-        if(aCiteAutour(i,j)) coups[1] = 1;
+        if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) coups[0] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté
+        if(peutPoserTour(i,j)) coups[2] = 1;
+        if(peutPoserTemple(i,j)) coups[1] = 1;
         return coups;
     }
 
@@ -579,21 +627,13 @@ public class AffichagePlateau extends JPanel {
             heightoffset1 *= 30;
 
             if(!enSelection){
-                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VOLCAN){
-                        /*if(jeu.getPlateau().getHauteurTuile(i,j)==1) g.drawImage(maisonTile, x , y - heightoffset1, null);
-                        else if(jeu.getPlateau().getHauteurTuile(i,j)==2){
-                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.DESERT) g.drawImage(templeSable, x , y - heightoffset1, null);
-                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.MONTAGNE) g.drawImage(templePierre, x , y - heightoffset1, null);
-                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.GRASS) g.drawImage(templePrairie, x , y - heightoffset1, null);
-                            if (jeu.getPlateau().getTuile(i,j).getTerrain() == Hexagone.FORET) g.drawImage(templeJungle, x , y - heightoffset1, null);
-                        }else if(jeu.getPlateau().getHauteurTuile(i,j)==3){
-                            g.drawImage(tour, x , y - heightoffset1, null);*/
+                if(coupJouable(i,j)[0]==0 && coupJouable(i,j)[1]==0 && coupJouable(i,j)[2]==0) return;
+                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VOLCAN && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VIDE){
                     g.drawImage(constructionMode, x+50 , y - heightoffset1+50, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
                 }
             }
         }
     }
-
 
     public void placerTuiles(int i, int j) {
         int j_modified = convertionTileMapToHexagonal(i, j);
@@ -617,7 +657,7 @@ public class AffichagePlateau extends JPanel {
             placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified);
         }
 
-        miseAJour();
+        //miseAJour();
     }
 
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
@@ -630,6 +670,64 @@ public class AffichagePlateau extends JPanel {
         return (jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==TEMPLE_FORET
                 ||jeu.getPlateau().getBatiment(i,j)==TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
     }
+
+    private ArrayList<Point2> positionsBatsVillage(int x,int y){
+        ArrayList<Point2> listeDesHutesVoisines = new ArrayList<>();
+        Point2 positionHutte = new Point2(x,y);
+        listeDesHutesVoisines.add(positionHutte);
+        int i = 0;
+        while (listeDesHutesVoisines.size()!=i){
+            Point2 HuteCourant = listeDesHutesVoisines.get(i);
+            if(jeu.getPlateau().check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY(),jeu.getNumJoueurCourant())){
+                Point2 p1 = new Point2(HuteCourant.getPointX()-1 ,HuteCourant.getPointY());
+                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(jeu.getPlateau().check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY(),jeu.getNumJoueurCourant())){
+                Point2 p1 = new Point2(HuteCourant.getPointX()+1 ,HuteCourant.getPointY());
+                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(jeu.getPlateau().check(HuteCourant.getPointX() ,HuteCourant.getPointY()-1,jeu.getNumJoueurCourant())){
+                Point2 p1 = new Point2(HuteCourant.getPointX() ,HuteCourant.getPointY()-1);
+                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(jeu.getPlateau().check(HuteCourant.getPointX() ,HuteCourant.getPointY()+1,jeu.getNumJoueurCourant())){
+                Point2 p1 = new Point2(HuteCourant.getPointX() ,HuteCourant.getPointY()+1);
+                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(HuteCourant.getPointX()%2==1){
+                if(jeu.getPlateau().check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1,jeu.getNumJoueurCourant())){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1);
+                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+                if(jeu.getPlateau().check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1,jeu.getNumJoueurCourant())){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1);
+                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+            }else{
+                if(jeu.getPlateau().check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1,jeu.getNumJoueurCourant())){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1);
+                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+                if(jeu.getPlateau().check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1,jeu.getNumJoueurCourant())){
+                    Point2 p1 = new Point2(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1);
+                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
+                        listeDesHutesVoisines.add(p1);
+                }
+            }
+            //listeDesHutesVoisines.remove(i);
+            i++;
+        }
+        //System.out.println("liste: "+listeDesHutesVoisines.size()+" id: "+jeu.getNumJoueurCourant());
+        return listeDesHutesVoisines;
+    }
+
 
     private boolean aCiteAutour(int i,int j){
         boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
@@ -657,17 +755,18 @@ public class AffichagePlateau extends JPanel {
         value = updateScrollValue(value, coupsJouable);
 
         if (value == 1) { // place hut
+            if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;
             enSelection = false;
             controleur.placeBatiment(i,j,(byte) 1);
         }
         else if (value == 2){ // place tour
-            if(jeu.getPlateau().getHauteurTuile(i,j)==3){ // on verifie la condition pour poser une tour
+            if(peutPoserTour(i,j)){ // on verifie la condition pour poser une tour
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 3);
             }
         }
         else if (value == 0){ // place temple
-            if(aCiteAutour(i,j)){
+            if(peutPoserTemple(i,j)){
                 enSelection = false;
                 controleur.placeBatiment(i,j,(byte) 2);
             }
@@ -693,13 +792,16 @@ public class AffichagePlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+        //System.out.println("position souris x: "+i+" y: "+j);
 
+
+        int[] coups = coupJouable(i,j);
         if(poseTile) placerTuiles(i,j);
-        else{
+        else if(coups[0]!=0 || coups[1]!=0 ||coups[2]!=0){
             placeBatiment(i, j);
         }
         unefoisIA=true;
-        miseAJour();
+        //miseAJour();
     }
 
     private void placeBatiment(int i, int j) {
@@ -732,4 +834,15 @@ public class AffichagePlateau extends JPanel {
         jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
         enSelection=false;
     }
+
+    public void boucle(){
+        Timer timer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                miseAJour();
+            }
+        });
+        timer.start();
+    }
+
 }

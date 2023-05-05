@@ -4,9 +4,14 @@ import Modele.Serveur;
 import Modele.ImageLoader;
 import Modele.Jeu;
 import Vue.FenetreJeu;
+import Vue.MenuGraphique;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 public class TaluvaMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Jeu jeu = new Jeu(null);
         ControleurMediateur controler = new ControleurMediateur(jeu);
@@ -16,8 +21,10 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
 
+
         FenetreJeu fenetre = new FenetreJeu(jeu, controler);
-        ImageLoader.loadImages();
-        fenetre.affichagePlateau.repaint();
+        fenetre.menuGraphique.repaint();
+        fenetre.menuGraphique.setFenetre(fenetre);
+
     }
 }

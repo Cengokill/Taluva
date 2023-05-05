@@ -1,6 +1,8 @@
 package Modele;
 
-public class Hexagone {
+import java.io.Serializable;
+
+public class Hexagone implements Serializable {
 
     public static final byte VOLCAN = 32;
     public static final byte WATER = 16;

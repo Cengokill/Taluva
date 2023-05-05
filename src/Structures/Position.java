@@ -1,6 +1,8 @@
 package Structures;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
     final int ligne;
     final int colonne;
 

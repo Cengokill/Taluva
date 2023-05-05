@@ -1,31 +1,33 @@
 package Vue;
 
+import Modele.ImageLoader;
+
 import javax.swing.*;
 import java.awt.*;
 
 import java.awt.event.*;
+import java.io.IOException;
+
 import static Modele.Camera.*;
 import static Modele.GameState.*;
-
+import static Modele.ImageLoader.*;
 
 
 public class FenetreListener extends MouseAdapter implements MouseWheelListener {
-    private final FenetreJeu tengine;
+    private final FenetreJeu fenetreJeu;
 
     public FenetreListener(FenetreJeu t) {
         super();
-        tengine = t;
+        fenetreJeu = t;
 
+        fenetreJeu.affichagePlateau.handler = new MouseHandler();
+        fenetreJeu.affichagePlateau.addMouseListener(fenetreJeu.affichagePlateau.handler);
+        fenetreJeu.affichagePlateau.addMouseMotionListener(fenetreJeu.affichagePlateau.handler);
+        fenetreJeu.affichagePlateau.addMouseWheelListener(fenetreJeu.affichagePlateau.handler);
 
-
-        tengine.affichagePlateau.handler = new MouseHandler();
-        tengine.affichagePlateau.addMouseListener(tengine.affichagePlateau.handler);
-        tengine.affichagePlateau.addMouseMotionListener(tengine.affichagePlateau.handler);
-        tengine.affichagePlateau.addMouseWheelListener(tengine.affichagePlateau.handler);
-
-        tengine.affichagePlateau.keyboardlisten = new KeyboardListener();
-        tengine.affichagePlateau.setFocusable(true);
-        tengine.affichagePlateau.addKeyListener(tengine.affichagePlateau.keyboardlisten);
+        fenetreJeu.affichagePlateau.keyboardlisten = new KeyboardListener();
+        fenetreJeu.affichagePlateau.setFocusable(true);
+        fenetreJeu.affichagePlateau.addKeyListener(fenetreJeu.affichagePlateau.keyboardlisten);
     }
 
      public class KeyboardListener implements KeyListener {
@@ -48,10 +50,10 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 shake();
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
             if (e.getKeyCode() == KeyEvent.VK_N) {
-                tengine.affichagePlateau.affichetripletpossible();
+                fenetreJeu.affichagePlateau.affichetripletpossible();
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 scrollValue++;
@@ -60,7 +62,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 scrollValue--;
@@ -69,7 +71,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.miseAJour();
             }
         }
 
@@ -91,10 +93,79 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
     ////////////////////////////
     public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
+
+        public boolean estSurTuto(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_tuto + hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur){
+                return true;
+            }
+            return false;
+        }
+
+        public boolean estSurAnnuler(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_annuler+ hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur){
+                select_annuler = true;
+                return true;
+            }
+            select_annuler = false;
+            return false;
+        }
+
+        public boolean estSurRefaire(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_refaire+ hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur){
+                select_refaire = true;
+                return true;
+            }
+            select_refaire = false;
+            return false;
+        }
+
+        public boolean estSurQuitter(MouseEvent e) {
+            int largeur = posX_boutons + largeur_bouton;
+            int hauteur = posY_quitter + hauteur_bouton;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
+                select_quitter = true;
+                return true;
+            }
+            select_quitter = false;
+            return false;
+        }
         @Override
         public void mouseClicked(MouseEvent e) {
-            tengine.affichagePlateau.addToCursor(e);
-            tengine.affichagePlateau.annuleConstruction(e);
+            if(estSurTuto(e)) {
+                if(tuto_on) {
+                    tuto_on = false;
+                } else {
+                    tuto_on = true;
+                }
+            }
+            if(estSurAnnuler(e)) {
+                System.out.println("Annuler");
+                fenetreJeu.affichagePlateau.controleur.annuler();
+            }
+            if(estSurRefaire(e)) {
+                fenetreJeu.affichagePlateau.controleur.refaire();
+            }
+            if(estSurQuitter(e)){
+                fenetreJeu.layeredPane.removeAll();
+                // On passe du menu au jeu
+                try {
+                    fenetreJeu.initMenuJeu();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                fenetreJeu.revalidate();
+                //fenetreJeu.menuGraphique.setBounds();
+                fenetreJeu.menuGraphique.metAJour();
+
+            }
+            fenetreJeu.affichagePlateau.addToCursor(e);
+            fenetreJeu.affichagePlateau.annuleConstruction(e);
         }
 
         @Override
@@ -117,9 +188,9 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 int dy = e.getY() - lastMousePosition.y;
 
                 // Ajouter les bornes pour les déplacements de la caméra
-                int minX = -2500 - ((int)(10*zoomFactor) - 2)*(tengine.affichagePlateau.getWidth());
+                int minX = -2500 - ((int)(10*zoomFactor) - 2)*(fenetreJeu.affichagePlateau.getWidth());
                 int maxX = 10000;
-                int minY = -2000 - ((int)(10*zoomFactor) - 2)*(tengine.affichagePlateau.getHeight());
+                int minY = -2000 - ((int)(10*zoomFactor) - 2)*(fenetreJeu.affichagePlateau.getHeight());
                 int maxY = 10000;
 
 
@@ -127,25 +198,29 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 cameraOffset.y = Math.min(Math.max(cameraOffset.y + dy, minY), maxY);
 
                 // Empêcher la caméra de voir des cases dans le négatif
-                if (cameraOffset.x > 0) {
-                    cameraOffset.x = 0;
+                if (cameraOffset.x > -1100) {
+                    cameraOffset.x = -1100;
                 }
-                if (cameraOffset.y > -64) {
-                    cameraOffset.y = -64;
+                if (cameraOffset.y > -1100) {
+                    cameraOffset.y = -1100;
                 }
-
                 lastMousePosition = e.getPoint();
             } else {
                 hoverTilePosition = e.getPoint();
             }
-            tengine.affichagePlateau.miseAJour();
+            //fenetreJeu.affichagePlateau.miseAJour();
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e)) {
+                fenetreJeu.setHandCursor();
+            }else{
+                fenetreJeu.setStandardCursor();
+            }
             hoverTilePosition = e.getPoint();
-            tengine.affichagePlateau.updateCursorPosOnTiles(e);
-            tengine.affichagePlateau.miseAJour();
+            fenetreJeu.affichagePlateau.updateCursorPosOnTiles(e);
+            //fenetreJeu.affichagePlateau.miseAJour();
             if (!SwingUtilities.isRightMouseButton(e)) {
                 clicDroiteEnfonce = false;
             }
@@ -161,7 +236,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 } else if (scrollValue > 6) {
                     scrollValue = 1;
                 }
-                tengine.affichagePlateau.repaint();
+                fenetreJeu.affichagePlateau.repaint();
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;
@@ -183,7 +258,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 if (cameraOffset.y > -64) {
                     cameraOffset.y = -64;
                 }
-                tengine.affichagePlateau.miseAJour();
+                //fenetreJeu.affichagePlateau.miseAJour();
             }
         }
 

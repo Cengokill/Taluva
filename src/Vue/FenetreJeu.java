@@ -6,13 +6,17 @@ import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 import static Modele.ImageLoader.*;
 
 
-public class FenetreJeu {
+public class FenetreJeu extends Container {
     FenetreListener listener;
     public AffichagePlateau affichagePlateau;
+
+    Graphics g1;
+    public MenuGraphique menuGraphique;
     public VignettePanel vignettePanel;
     public JPanel buttonPanel;
     public JLayeredPane layeredPane;
@@ -21,22 +25,61 @@ public class FenetreJeu {
 
     public static Point LastPosition;
     final Jeu jeu;
-    final JFrame f;
+    JFrame frame;
 
-    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) {
+    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         this.jeu = jeu;
-        this.f = getF();
+        this.frame = getFMenu();
         initFrame();
-
+        initMultiLayerPanel();
+        initMenu();
         initPanels(controleur);
-
         initKeyBoardAndMouseListener();
-
         setBackgroundColor();
+        frame.setVisible(true);
+    }
 
-        f.setVisible(true);
+    public void initMenuJeu() throws IOException {
+        layeredPane.removeAll();
+        initFrame();
+        initMenu();
+
+        buttonPanel.removeAll();
+        affichagePlateau.removeAll();
+
+        menuGraphique.setFenetre(this);
+        menuGraphique.setBounds(0, 0, getWidth(), getHeight());
+        initVignettePanel();
+
+        layeredPane.revalidate();
+        layeredPane.repaint();
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public void initRenduJeu(){
+        jeu.initPartie();
+        initFrame();
+        initPanels(controleur);
+        initKeyBoardAndMouseListener();
+        setBackgroundColor();
+    }
+
+    public void setHandCursor(){
+        frame.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    public void setStandardCursor(){
+        frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    private void initMenu() throws IOException {
+        // Ajouter les tuiles hexagonales
+        menuGraphique = new MenuGraphique(frame,layeredPane,jeu,controleur);
+        menuGraphique.setBounds(0, 0, 1400, 1000);
+        layeredPane.add(menuGraphique, JLayeredPane.DEFAULT_LAYER);
     }
 
     private void initKeyBoardAndMouseListener() {
@@ -45,11 +88,11 @@ public class FenetreJeu {
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        f.getContentPane().setBackground(new Color(64, 164, 223));
+        frame.getContentPane().setBackground(new Color(64, 164, 223));
     }
 
     private void initPanels(ControleurMediateur controleur) {
-        initMultiLayerPanel();
+        //initMultiLayerPanel();
         initHexagonsPanel(controleur);
         initVignettePanel();
         initButtonPanel();
@@ -72,13 +115,13 @@ public class FenetreJeu {
     private void initMultiLayerPanel() {
         // Créer un JLayeredPane pour superposer les éléments
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(f.getWidth(), f.getHeight()));
-        f.getContentPane().add(layeredPane);
+        layeredPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
+        frame.getContentPane().add(layeredPane);
     }
 
     private void initButtonPanel() {
         createButtonPanel();
-        buttonPanel.setBackground(new Color(0,0,0,0));
+        buttonPanel.setBackground(new Color(0, 0, 0, 0));
         buttonPanel.setBounds(0, 0, 1400, 1000);
         buttonPanel.setOpaque(false);
         layeredPane.add(buttonPanel, JLayeredPane.POPUP_LAYER);
@@ -93,62 +136,140 @@ public class FenetreJeu {
                 }
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
-
-                largeur = getWidth();
-                hauteur = getHeight();
-                double rapport = 207.0 / 603.0;
-                largeur_bouton = Math.min(Math.max(Math.min(largeur / 6, hauteur / 6), 100), 190);
-                hauteur_bouton = (int) (largeur_bouton * rapport);
-                posX_boutons = (int) (largeur * 0.95 - largeur_bouton);
-                posY_save = 0;
-                posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
-                posY_annuler = posY_save + 2 * hauteur_bouton + hauteur_bouton / 5;
-                posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
-                posY_reset = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
-                posY_quitter = (int) Math.max(posY_refaire + hauteur_bouton + hauteur_bouton / 5, hauteur - 1.5 * hauteur_bouton);
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                calculeRapports();
+                afficheFenetreScore(g2d);
                 afficheBoutonSave(g2d);
                 afficheBoutonLoad(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
-                afficheBoutonReset(g2d);
+                afficheBoutonTuto(g2d);
                 afficheBoutonQuitter(g2d);
+                afficheJoueurCourant(g2d);
+            }
+
+            private void calculeRapports() {
+                largeur = getWidth();
+                hauteur = getHeight();
+                double rapport = 492.0 / 847.0;
+                double rapport_fenetre_score = 700.0/539.0;
+                double rapport_joueur_courant = 131.0/603.0;
+                largeur_bouton = Math.min(Math.max(Math.min(largeur / 8, hauteur / 8), 100), 190);
+                hauteur_bouton = (int) (largeur_bouton * rapport);
+                largeur_fenetre_score = (int) (largeur_bouton * 2.2);
+                hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
+                largeur_joueur_courant = (int) (largeur_bouton * 1.8);
+                hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
+                posX_fenetre_score = 10;
+                posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
+                posY_save = 0;
+                posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
+                posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
+                posY_fenetre_score = posY_annuler;
+                posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
+                posY_joueur_courant = posY_annuler;
+                posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
+                posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
+                posY_quitter = Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
             }
         };
     }
 
     private void initFrame() {
-        f.setTitle("Taluva");
+        frame.setTitle("Taluva");
         ImageIcon icon = new ImageIcon("ressources/icon.png");
-        f.setIconImage(icon.getImage());
+        frame.setIconImage(icon.getImage());
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        f.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setLocationRelativeTo(null);
+        frame.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
     }
 
-    private JFrame getF() {
-        bouton_save = lisImageBuf("save");
+    public JFrame getFMenu(){
+        bouton_save = lisImageBuf("Sauvegarder");
         //bouton_save_select = lisImageBuf("Sauvegarder_select");
-        bouton_load = lisImageBuf("load");
+        bouton_load = lisImageBuf("Charger");
         //bouton_load_select = lisImageBuf("Charger_select");
         bouton_annuler = lisImageBuf("Annuler");
         //bouton_annuler_select = lisImageBuf("Annuler_select");
         bouton_refaire = lisImageBuf("Refaire");
         //bouton_refaire_select = lisImageBuf("Refaire_select");
-        bouton_reset = lisImageBuf("Reinitialiser");
-        //bouton_reset_select = lisImageBuf("Reinitialiser_select");
+        bouton_tuto_on = lisImageBuf("Tuto_on");
+        bouton_tuto_off = lisImageBuf("Tuto_off");
         bouton_quitter = lisImageBuf("Quitter");
         //bouton_quitter_select = lisImageBuf("Quitter_select");
+        fenetre_score = lisImageBuf("fenetre_score");
+        joueur_courant = lisImageBuf("Joueur_courant");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                affichagePlateau.setBounds(0, 0, getWidth(), getHeight());
-                vignettePanel.setBounds(0, 0, getWidth(), getHeight());
-                buttonPanel.setBounds(0, 0, getWidth(), getHeight());
+                menuGraphique.setBounds(0, 0, getWidth(), getHeight());
+                if(affichagePlateau!=null) affichagePlateau.setBounds(0, 0, getWidth(), getHeight());
+                if(vignettePanel!=null) vignettePanel.setBounds(0, 0, getWidth(), getHeight());
+                if(buttonPanel!=null) buttonPanel.setBounds(0, 0, getWidth(), getHeight());
             }
         };
+    }
+
+
+
+    public static void afficheFenetreScore(Graphics g) {
+        g.drawImage(fenetre_score, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
+    }
+
+    public static void afficheBoutonLoad(Graphics g) {
+        if(select_load)
+            g.drawImage(bouton_load_select, posX_boutons, posY_save, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_load, posX_boutons, posY_save, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonSave(Graphics g) {
+        if(select_save)
+            g.drawImage(bouton_save_select, posX_save, posY_save, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_save, posX_save, posY_save, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonAnnuler(Graphics g) {
+        if(select_annuler)
+            g.drawImage(bouton_annuler_select, posX_boutons, posY_annuler, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_annuler, posX_boutons, posY_annuler, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonRefaire(Graphics g) {
+        if(select_refaire)
+            g.drawImage(bouton_refaire_select, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_refaire, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonTuto(Graphics g) {
+        if(tuto_on)
+            g.drawImage(bouton_tuto_on, posX_boutons, posY_tuto, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_tuto_off, posX_boutons, posY_tuto, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonQuitter(Graphics g) {
+        if(select_quitter)
+            g.drawImage(bouton_quitter_select, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_quitter, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheJoueurCourant(Graphics g) {
+        Font font = new Font("Roboto", Font.BOLD, 20);
+        g.setFont(font);
+        g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
+        g.drawString("Joueur ", posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
+    }
+
+    public void metAjour(){
+        repaint();
     }
 }
