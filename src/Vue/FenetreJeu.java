@@ -128,6 +128,18 @@ public class FenetreJeu extends Container {
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                calculeRapports();
+                afficheFenetreScore(g2d);
+                afficheBoutonSave(g2d);
+                afficheBoutonLoad(g2d);
+                afficheBoutonAnnuler(g2d);
+                afficheBoutonRefaire(g2d);
+                afficheBoutonTuto(g2d);
+                afficheBoutonQuitter(g2d);
+                afficheJoueurCourant(g2d);
+            }
+
+            private void calculeRapports() {
                 largeur = getWidth();
                 hauteur = getHeight();
                 double rapport = 492.0 / 847.0;
@@ -150,14 +162,6 @@ public class FenetreJeu extends Container {
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
                 posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
                 posY_quitter = Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
-                afficheFenetreScore(g2d);
-                afficheBoutonSave(g2d);
-                afficheBoutonLoad(g2d);
-                afficheBoutonAnnuler(g2d);
-                afficheBoutonRefaire(g2d);
-                afficheBoutonTuto(g2d);
-                afficheBoutonQuitter(g2d);
-                afficheJoueurCourant(g2d);
             }
         };
     }
@@ -194,10 +198,65 @@ public class FenetreJeu extends Container {
             public void paint(Graphics g) {
                 super.paint(g);
                 menuGraphique.setBounds(0, 0, getWidth(), getHeight());
-                if(affichagePlateau!=null) affichagePlateau.setBounds(0, 0, getWidth(), getHeight());   // tu rentres dedans que quand je modifie la taille VOILA POURQUOI
+                if(affichagePlateau!=null) affichagePlateau.setBounds(0, 0, getWidth(), getHeight());
                 if(vignettePanel!=null) vignettePanel.setBounds(0, 0, getWidth(), getHeight());
                 if(buttonPanel!=null) buttonPanel.setBounds(0, 0, getWidth(), getHeight());
             }
         };
+    }
+
+
+
+    public static void afficheFenetreScore(Graphics g) {
+        g.drawImage(fenetre_score, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
+    }
+
+    public static void afficheBoutonLoad(Graphics g) {
+        if(select_load)
+            g.drawImage(bouton_load_select, posX_boutons, posY_save, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_load, posX_boutons, posY_save, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonSave(Graphics g) {
+        if(select_save)
+            g.drawImage(bouton_save_select, posX_save, posY_save, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_save, posX_save, posY_save, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonAnnuler(Graphics g) {
+        if(select_annuler)
+            g.drawImage(bouton_annuler_select, posX_boutons, posY_annuler, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_annuler, posX_boutons, posY_annuler, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonRefaire(Graphics g) {
+        if(select_refaire)
+            g.drawImage(bouton_refaire_select, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_refaire, posX_boutons, posY_refaire, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonTuto(Graphics g) {
+        if(tuto_on)
+            g.drawImage(bouton_tuto_on, posX_boutons, posY_tuto, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_tuto_off, posX_boutons, posY_tuto, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheBoutonQuitter(Graphics g) {
+        if(select_quitter)
+            g.drawImage(bouton_quitter_select, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_quitter, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
+    }
+
+    public static void afficheJoueurCourant(Graphics g) {
+        Font font = new Font("Roboto", Font.BOLD, 20);
+        g.setFont(font);
+        g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
+        g.drawString("Joueur ", posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
     }
 }

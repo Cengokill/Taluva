@@ -66,11 +66,13 @@ public class Jeu extends Observable {
         if (!estJoueurCourantUneIA()) {
             return;
         }
+
         Coup c = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estHexagoneLibre(c.volcanX,c.volcanY)) {
             System.out.println("pas libre A DEBUGGER");
             return;
         }
+
         getPlateau().joueCoup(c);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;

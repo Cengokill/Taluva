@@ -139,6 +139,15 @@ public class MenuGraphique extends JPanel {
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        calculeRapportsEtPositions();
+        afficheBackground(g2d);
+        afficheBoutonLocal(g2d);
+        afficheBoutonReseau(g2d);
+        afficheBoutonOptions(g2d);
+        afficheBoutonQuitter(g2d);
+    }
+
+    private void calculeRapportsEtPositions() {
         frameWidth=frame.getWidth();
         frameHeight=frame.getHeight();
         double rapport_bouton=1;//rapport de 86/522
@@ -151,11 +160,6 @@ public class MenuGraphique extends JPanel {
         double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
         largeur_menu_options = hauteur_background/2;
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
-        afficheBackground(g2d);
-        afficheBoutonLocal(g2d);
-        afficheBoutonReseau(g2d);
-        afficheBoutonOptions(g2d);
-        afficheBoutonQuitter(g2d);
     }
 
     public void boucle(){
