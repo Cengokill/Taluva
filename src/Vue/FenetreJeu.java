@@ -60,6 +60,7 @@ public class FenetreJeu extends Container {
     }
 
     public void initRenduJeu(){
+        jeu.initPartie();
         initFrame();
         initPanels(controleur);
         initKeyBoardAndMouseListener();

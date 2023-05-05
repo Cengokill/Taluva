@@ -30,7 +30,10 @@ public class Jeu extends Observable {
     private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
-        //jCourant = (byte) ((int)(Math.random() * 2));
+
+    }
+
+    public void initPartie(){
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this,this.p);
         joueursObjet[0] = joueur1;
