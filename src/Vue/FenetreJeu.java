@@ -25,20 +25,20 @@ public class FenetreJeu extends Container {
 
     public static Point LastPosition;
     final Jeu jeu;
-    JFrame f;
+    JFrame frame;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         this.jeu = jeu;
-        this.f = getFMenu();
+        this.frame = getFMenu();
         initFrame();
         initMultiLayerPanel();
         initMenu();
         initPanels(controleur);
         initKeyBoardAndMouseListener();
         setBackgroundColor();
-        f.setVisible(true);
+        frame.setVisible(true);
     }
 
     public void initMenuJeu() throws IOException {
@@ -55,8 +55,8 @@ public class FenetreJeu extends Container {
 
         layeredPane.revalidate();
         layeredPane.repaint();
-        f.revalidate();
-        f.repaint();
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void initRenduJeu(){
@@ -68,16 +68,16 @@ public class FenetreJeu extends Container {
     }
 
     public void setHandCursor(){
-        f.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        frame.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public void setStandardCursor(){
-        f.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     private void initMenu() throws IOException {
         // Ajouter les tuiles hexagonales
-        menuGraphique = new MenuGraphique(f,layeredPane,jeu,controleur);
+        menuGraphique = new MenuGraphique(frame,layeredPane,jeu,controleur);
         menuGraphique.setBounds(0, 0, 1400, 1000);
         layeredPane.add(menuGraphique, JLayeredPane.DEFAULT_LAYER);
     }
@@ -88,7 +88,7 @@ public class FenetreJeu extends Container {
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        f.getContentPane().setBackground(new Color(64, 164, 223));
+        frame.getContentPane().setBackground(new Color(64, 164, 223));
     }
 
     private void initPanels(ControleurMediateur controleur) {
@@ -115,8 +115,8 @@ public class FenetreJeu extends Container {
     private void initMultiLayerPanel() {
         // Créer un JLayeredPane pour superposer les éléments
         layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(f.getWidth(), f.getHeight()));
-        f.getContentPane().add(layeredPane);
+        layeredPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
+        frame.getContentPane().add(layeredPane);
     }
 
     private void initButtonPanel() {
@@ -176,15 +176,15 @@ public class FenetreJeu extends Container {
     }
 
     private void initFrame() {
-        f.setTitle("Taluva");
+        frame.setTitle("Taluva");
         ImageIcon icon = new ImageIcon("ressources/icon.png");
-        f.setIconImage(icon.getImage());
+        frame.setIconImage(icon.getImage());
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        f.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setLocationRelativeTo(null);
+        frame.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
     }
 
     public JFrame getFMenu(){
