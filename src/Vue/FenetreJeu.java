@@ -166,8 +166,17 @@ public class FenetreJeu extends Container {
                 posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
                 posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
                 posY_fenetre_score = posY_annuler;
-                posX_huttes_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.16);
-                posY_huttes_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.32);
+                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.28);
+                posX_prenom_j1 = posX_prenom_j0;
+                posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.10);
+                posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.45);
+                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.19);
+                posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.53);
+                posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.88);
+                posY_scores_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.31);
+                posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.66);
+                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.67);
+                posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.92);
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
@@ -217,15 +226,32 @@ public class FenetreJeu extends Container {
     }
 
 
-
     public static void afficheFenetreScore(Graphics g) {
         g.drawImage(fenetre_score, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
-        Font font = new Font("Roboto", Font.BOLD, 20);
+        Font font = new Font("Times New Roman", Font.ITALIC, 29);
         g.setFont(font);
-        int nb_huttes = jeu.joueurs[0].getNbHuttes();
-        //convertit le nombre de huttes en string
-        String nb_huttes_str = Integer.toString(nb_huttes);
-        g.drawString(nb_huttes_str, posX_huttes_j0, posY_huttes_j0);
+        String joueur_0 = jeu.joueurs[0].getPrenom();
+        g.drawString(joueur_0, posX_prenom_j0, posY_prenom_j0);
+        String joueur_1 = jeu.joueurs[1].getPrenom();
+        g.drawString(joueur_1, posX_prenom_j1, posY_prenom_j1);
+        font = new Font("Roboto", Font.BOLD, 20);
+        g.setFont(font);
+        String huttes_j0 = Integer.toString(jeu.joueurs[0].getNbHuttes());
+        g.drawString(huttes_j0, posX_huttes, posY_scores_j0);
+        String huttes_j1 = Integer.toString(jeu.joueurs[1].getNbHuttes());
+        g.drawString(huttes_j1, posX_huttes, posY_scores_j1);
+        String tours_j0 = Integer.toString(jeu.joueurs[0].getNbTours());
+        g.drawString(tours_j0, posX_tours, posY_scores_j0);
+        String tours_j1 = Integer.toString(jeu.joueurs[1].getNbTours());
+        g.drawString(tours_j1, posX_tours, posY_scores_j1);
+        String temples_j0 = Integer.toString(jeu.joueurs[0].getNbTemples());
+        g.drawString(temples_j0, posX_temples, posY_scores_j0);
+        String temples_j1 = Integer.toString(jeu.joueurs[1].getNbTemples());
+        g.drawString(temples_j1, posX_temples, posY_scores_j1);
+        font = new Font("Roboto", Font.BOLD, 25);
+        g.setFont(font);
+        String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
+        g.drawString(nb_tuiles_pioche, posX_pioche, posY_pioche);
     }
 
     public static void afficheBoutonLoad(Graphics g) {
