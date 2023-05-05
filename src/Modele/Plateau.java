@@ -234,7 +234,7 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
-        // TODO V?rifier que ?a tue pas un village et faire en sort que 2 villages s?par?s aient pas le meme ID
+        // TODO faire en sort que 2 villages s?par?s aient pas le meme ID
 
         if(estVide()) return true;
 
