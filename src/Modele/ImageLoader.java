@@ -306,6 +306,14 @@ public class ImageLoader {
     }
 
     private static void filtreCouleursContoursEtages() {
+        plateau_hautGauche = getReducedOpacityImage(plateau_hautGauche, 0.5f);
+        plateau_hautDroite = getReducedOpacityImage(plateau_hautDroite, 0.5f);
+        plateau_Gauche = getReducedOpacityImage(plateau_Gauche, 0.5f);
+        plateau_Droite = getReducedOpacityImage(plateau_Droite, 0.5f);
+        plateau_basGauche = getReducedOpacityImage(plateau_basGauche, 0.5f);
+        plateau_basDroite = getReducedOpacityImage(plateau_basDroite, 0.5f);
+
+
         plateau_hautGauche_etage1 = applyBlueFilter(plateau_hautGauche);
         plateau_hautDroite_etage1 = applyBlueFilter(plateau_hautDroite);
         plateau_Gauche_etage1 = applyBlueFilter(plateau_Gauche);
