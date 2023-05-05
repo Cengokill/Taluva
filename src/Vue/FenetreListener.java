@@ -145,6 +145,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 }
             }
             if(estSurAnnuler(e)) {
+                System.out.println("Annuler");
                 fenetreJeu.affichagePlateau.controleur.annuler();
             }
             if(estSurRefaire(e)) {
@@ -203,8 +204,6 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 if (cameraOffset.y > -1100) {
                     cameraOffset.y = -1100;
                 }
-
-
                 lastMousePosition = e.getPoint();
             } else {
                 hoverTilePosition = e.getPoint();

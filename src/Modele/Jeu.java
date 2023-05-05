@@ -228,18 +228,19 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
+        System.out.println("Annuler non implémenté");
     }
 
     public void refaire() {
+        System.out.println("Refaire non implémenté");
     }
 
     public void sauvegarder() {
+        System.out.println("Sauvegarder non implémenté");
     }
 
     public void charger() {
-    }
-
-    public void reinitialise() {
+        System.out.println("Charger non implémenté");
     }
 
     public byte getNumJoueurCourant(){
