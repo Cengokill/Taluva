@@ -25,7 +25,7 @@ public class Jeu extends Observable {
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
 
-    final LinkedList<Tuile> pioche;
+    public LinkedList<Tuile> pioche;
     private static final int TAILLE_PIOCHE = 24;
 
     public Jeu(Parametres p){
@@ -52,8 +52,8 @@ public class Jeu extends Observable {
             // Attendez un certain temps avant d'ex�cuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> joueIA());
-            timer.setRepeats(false); // Ne r�p�tez pas l'action finale, ex�cutez-l� une seule fois
-            timer.start(); // D�marrez le timer
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+            timer.start(); // Démarrez le timer
         }
 
     }
