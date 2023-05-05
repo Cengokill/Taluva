@@ -162,11 +162,13 @@ public class Jeu extends Observable {
     }
 
     public void changeJoueur() {
-        System.out.println(estFinPartie());
-        if (jCourant == (byte) 0) {
-            jCourant = (byte) 1;
-        } else {
-            jCourant = (byte) 0;
+        if(estFinPartie()) System.out.println("FIN DE LA PARTIE");
+        else{
+            if (jCourant == (byte) 0) {
+                jCourant = (byte) 1;
+            } else {
+                jCourant = (byte) 0;
+            }
         }
     }
 
