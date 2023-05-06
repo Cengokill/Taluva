@@ -61,7 +61,10 @@ public class IAIntelligente extends AbstractIA {
             arbreCheminsTete = queue.poll();
             //récupère l'instance courante qui contient le plateau et les tuiles
             Instance instanceCourante = arbreCheminsTete.getCourant();
-            //calcule tous les placements possibles de la tuile de la pioche sur le plateau du jeu
+            //si c'est à l'IA de jouer
+                //calcule tous les placements possibles de la tuile de la pioche sur le plateau du jeu
+            //sinon
+                //même chose mais on calcule les placements possibles du joueur adverse
             SequenceListe<Coup> coupsPossibles = null;
             //TODO: calculer les placements
 
