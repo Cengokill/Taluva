@@ -1,8 +1,10 @@
-package Modele;
+package Modele.IA;
 
+import Modele.*;
+import Structures.SequenceListe;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
-
-import static Modele.Hexagone.*;
 
 public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e par un nouveau thread
     protected Jeu jeu;
@@ -35,7 +37,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         pioche = jeu.getPioche();
     }
 
-    public Coup joue() {
+    public ArrayList<Coup> joue() {
         return null;
     }
 

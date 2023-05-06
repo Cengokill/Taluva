@@ -3,8 +3,8 @@ package Modele;
 import java.io.Serializable;
 
 public class Tuile implements Serializable {
-    final byte biome0;
-    final byte biome1;
+    public final byte biome0;
+    public final byte biome1;
     final byte biomeVolcan;
     final int numero0;
     final int numero1;

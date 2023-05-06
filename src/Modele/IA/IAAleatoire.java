@@ -1,14 +1,16 @@
-package Modele;
+package Modele.IA;
 
+import Modele.Coup;
+import Modele.IA.AbstractIA;
 import Structures.Position;
 import Structures.TripletDePosition;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-class IAIntelligenteV1 extends AbstractIA {
+class IAAleatoire extends AbstractIA {
 
-    public IAIntelligenteV1() {
+    public IAAleatoire() {
     }
 
     private int modified(int i,int j){
@@ -35,7 +37,7 @@ class IAIntelligenteV1 extends AbstractIA {
             triplet[1][0] = tuiles[0]; // tile 1
             triplet[2][0] = tuiles[1]; // tile 2
             triplet[0][0] = tuiles[2];
-            if(jeu.getPlateau().estVide()){ // l'AbstractIA est le premier à jouer donc on place au centres
+            if(jeu.getPlateau().estVide()){ // l'AbstractIA est le premier � jouer donc on place au centres
                 i = taille_x/2;
                 j = taille_y/2;
 
@@ -66,7 +68,7 @@ class IAIntelligenteV1 extends AbstractIA {
             }
         }
         else if(jeu.doit_placer_batiment()){
-            // Trouver un emplaçement pour le batiment
+            // Trouver un empla�ement pour le batiment
             ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
             //System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
             Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
@@ -78,7 +80,7 @@ class IAIntelligenteV1 extends AbstractIA {
             jeu.getPlateau().supprimeLibreBatiments(positionrandom);
 
 
-            // Choisir un batiment à placer
+            // Choisir un batiment � placer
             byte batiment;
             int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.ligne(),positionrandom.colonne(),numIA);
             if(batimensPlacable[1]==0&&batimensPlacable[2]==0) batiment=1;

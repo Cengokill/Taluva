@@ -171,7 +171,7 @@ public class FenetreJeu extends Container {
                 double rapport = 492.0 / 847.0;
                 double rapport_fenetre_score = 700.0/539.0;
                 double rapport_joueur_courant = 131.0/603.0;
-                largeur_bouton = Math.min(Math.max(Math.min(largeur / 8, hauteur / 8), 100), 190);
+                largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
                 largeur_fenetre_score = (int) (largeur_bouton * 2.2);
                 hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
