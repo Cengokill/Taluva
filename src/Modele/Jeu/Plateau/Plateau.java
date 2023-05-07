@@ -4,6 +4,7 @@ import Modele.Jeu.Coup;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
+import Vue.PanelPlateau;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,10 +14,11 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class Plateau implements Serializable {
     final int LIGNES = 60;
     final int COLONNES = 60;
-    public int quantiteBatimentJoueur1, quantiteBatimentJoueur2;
     protected Hexagone[][] carte;
     protected byte[] quantitePionJoueur1;
     protected byte[] quantitePionJoueur2;
+
+    public int nbHutteDisponibleJoueurCourant=0; // Pour eviter d'aller dans le negatif lors de la propagation
     private Historique historique;
     private ArrayList<Position> positions_libres;
 
@@ -27,7 +29,6 @@ public class Plateau implements Serializable {
         initPlateau();
         initHistorique();
         initQuantitePions();
-        initQuantiteBatiment();
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
@@ -45,11 +46,6 @@ public class Plateau implements Serializable {
     private void initPositionsLibres() {
         positions_libres = new ArrayList<>();
         positions_libres_batiments = new ArrayList<>();
-    }
-
-    private void initQuantiteBatiment() {
-        quantiteBatimentJoueur1 = 0;
-        quantiteBatimentJoueur2 = 0;
     }
 
     private void initQuantitePions() {
@@ -532,8 +528,11 @@ public class Plateau implements Serializable {
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-                historique.ajoute(Coup_propagation);
-                joueCoup(Coup_propagation);
+                if(nbHutteDisponibleJoueurCourant>1){
+                    historique.ajoute(Coup_propagation);
+                    joueCoup(Coup_propagation);
+                    nbHutteDisponibleJoueurCourant--;
+                }
             }
         }
     }
@@ -737,11 +736,32 @@ public class Plateau implements Serializable {
         return carte[i][j].getBatiment();
     }
 
-    public int[] getBatimentPlacable(int i,int j, int numJoueur){
+
+    private boolean peutPoserTemple(int i,int j,byte numJoueur){
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,numJoueur);
+        if(pointsVillage.size()<=3) return false;
+        for(Point2D p : pointsVillage){
+            if(estTemple(p.getPointX(),p.getPointY())) return false;
+        }
+        return true;
+    }
+
+    private boolean peutPoserTour(int i,int j,byte numJoueur){
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,numJoueur);
+        if(getHauteurTuile(i,j)<3) return false;                            // On verifie que la hauteur est d'au moins 3
+        for(Point2D p : pointsVillage){                                  // On verifie que la cité ne possède pas déjà une tour
+            if(estTour(p.getPointX(),p.getPointY())) return false;
+        }
+        return true;
+    }
+
+    // TOUJOURS verifier qu'il reste le batiment dans l'inventaire du joueur avant de la poser
+    public int[] getBatimentPlacable(int i,int j, byte numJoueur){
         int[] coups = new int[3];
-        coups[0] = 1;
-        if(getHauteurTuile(i,j)==3) coups[2] = 1;
-        if(aCiteAutour(i,j,numJoueur)) coups[1] = 1;
+        coups[1] = 1;
+        if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,numJoueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
+        if(peutPoserTour(i,j,numJoueur)) coups[2] = 1;
+        if(peutPoserTemple(i,j,numJoueur)) coups[0] = 1;
         return coups;
     }
 

@@ -367,7 +367,6 @@ public class ImageLoader {
     }
 
     public static BufferedImage getTileImageFromId(int id, int numero_texture) {
-        System.out.println(numero_texture);
         if (id == VIDE) {
             return voidTile;
         }

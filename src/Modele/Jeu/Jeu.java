@@ -27,6 +27,7 @@ public class Jeu extends Observable {
 
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
+    boolean estFinPartie;
 
     public LinkedList<Tuile> pioche;
     private static final int TAILLE_PIOCHE = 24;
@@ -46,6 +47,7 @@ public class Jeu extends Observable {
         initPioche();
         initJoueurs();
         plateau = new Plateau();
+        estFinPartie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
         pioche();
@@ -104,6 +106,7 @@ public class Jeu extends Observable {
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
     public boolean estFinPartie() {
+        if(estFinPartie) return true; // Pour pouvoir detecter quand un joueur ne peut plus passer aucun batiment
         int nb_temples_j = joueurs[jCourant].getNbTemples();
         int nb_tours_j = joueurs[jCourant].getNbTours();
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
@@ -112,6 +115,13 @@ public class Jeu extends Observable {
             return true;
         }
         return pioche.isEmpty();
+    }
+
+    public Joueur getJoueurCourantClasse(){
+        return joueurs[jCourant];
+    }
+    public void setFinPartie(){
+        estFinPartie = true;
     }
 
     public boolean doit_placer_tuile() {
@@ -139,9 +149,6 @@ public class Jeu extends Observable {
         }
         plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
         if(type_bat!=4){
-            if(getNumJoueurCourant()==0) plateau.quantiteBatimentJoueur1++;
-            if(getNumJoueurCourant()==1) plateau.quantiteBatimentJoueur2++;
-
             if(type_bat == 1) {
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
                 if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
@@ -159,6 +166,13 @@ public class Jeu extends Observable {
         }
     }
 
+    public void incrementePropagation(int ligne, int colonne){
+        if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
+        if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
+        joueurs[jCourant].incrementeHutte();
+
+    }
+
     public void changeJoueur() {
         if(estFinPartie()) System.out.println("FIN DE LA PARTIE");
         else{
@@ -167,6 +181,7 @@ public class Jeu extends Observable {
             } else {
                 jCourant = (byte) 0;
             }
+            getPlateau().nbHutteDisponibleJoueurCourant=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
         }
     }
 

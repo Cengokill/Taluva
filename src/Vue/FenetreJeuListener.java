@@ -199,11 +199,17 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             } else {
                 hoverTilePosition = e.getPoint();
             }
-            //fenetreJeu.panelPlateau.miseAJour();
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            // On verifie si le joueur a perdu
+            int joueurDejaVerifiePerdu = fenetreJeu.panelPlateau.getJoueurDejaVerifiePerdu();
+            if(joueurDejaVerifiePerdu!=fenetreJeu.panelPlateau.jeu.getNumJoueurCourant()){
+                fenetreJeu.panelPlateau.detectionPlusAucunCoupAJouer();
+                fenetreJeu.panelPlateau.setJoueurDejaVerifiePerdu(fenetreJeu.panelPlateau.jeu.getNumJoueurCourant());
+            }
+
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e)) {
                 fenetreJeu.setHandCursor();
             }else{
@@ -215,6 +221,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (!SwingUtilities.isRightMouseButton(e)) {
                 clicDroiteEnfonce = false;
             }
+
         }
 
         @Override
