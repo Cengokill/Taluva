@@ -1,4 +1,4 @@
-package Modele.Affichage;
+package Modele.Jeu.Plateau.Affichage;
 
 
 import javax.imageio.ImageIO;
@@ -84,10 +84,10 @@ public class ImageLoader {
 
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
-        background = lisImageBuf("background_2");
+        background = lisImageBuf("/Plateau/background");
         readTilesImages();
         readPlayableTilesImages();
-        readHeightImages(lisImageBuf("Wrong_height_1_hex"), lisImageBuf("Wrong_height_2_hex"), lisImageBuf("Wrong_height_3_hex"));
+        readHeightImages(lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_1_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_2_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_3_hex"));
         readHeightImages(getReducedOpacityImage(wrongTile1, 0.5f), getReducedOpacityImage(wrongTile2, 0.5f), getReducedOpacityImage(wrongTile3, 0.5f));
         readTileOrientationImages();
         readBatimentsImages();
@@ -98,15 +98,17 @@ public class ImageLoader {
     }
 
     private static void readSelectionBatimentImage() {
+        String imageFolder = "Plateau/Batiments/Selecteur/";
+
         for(int i=0;i<3;i++){
-            choisirBat[i] = lisImageBuf("Batiments/Selecteur/choisir_bat_"+(i+1));
+            choisirBat[i] = lisImageBuf(imageFolder + "choisir_bat_" +(i+1));
         }
-        choisirBat[3] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_2");
-        choisirBat[4] = lisImageBuf("Batiments/Selecteur/choisir_bat_1_sans_3");
-        choisirBat[5] = lisImageBuf("Batiments/Selecteur/choisir_bat_2_sans_3");
-        choisirBat[6] = lisImageBuf("Batiments/Selecteur/choisir_bat_3_sans_2");
-        choisirBat[7] = lisImageBuf("Batiments/Selecteur/choisir_bat_sans_23");
-        constructionMode = lisImageBuf("Batiments/Selecteur/construction");
+        choisirBat[3] = lisImageBuf(imageFolder + "choisir_bat_1_sans_2");
+        choisirBat[4] = lisImageBuf(imageFolder + "choisir_bat_1_sans_3");
+        choisirBat[5] = lisImageBuf(imageFolder + "choisir_bat_2_sans_3");
+        choisirBat[6] = lisImageBuf(imageFolder + "choisir_bat_3_sans_2");
+        choisirBat[7] = lisImageBuf(imageFolder + "choisir_bat_sans_23");
+        constructionMode = lisImageBuf(imageFolder + "construction");
     }
 
     private static void filterTiles() {
@@ -140,11 +142,13 @@ public class ImageLoader {
     }
 
     private static void readTilesImages() {
-        waterTile = lisImageBuf("Water_Tile");
-        voidTile = lisImageBuf("Void_Tile");
-        whiteTile = lisImageBuf("White_Tile");
-        voidTileOld = lisImageBuf("Void_Tile_old");
-        hoverTile = lisImageBuf("Hover_Tile");
+        String imageFolder = "/Plateau/Hexagones/Textures/";
+
+        waterTile = lisImageBuf(imageFolder + "Water_Tile");
+        voidTile = lisImageBuf(imageFolder + "Void_Tile");
+        whiteTile = lisImageBuf(imageFolder + "White_Tile");
+        voidTileOld = lisImageBuf(imageFolder + "Void_Tile_old");
+        hoverTile = lisImageBuf(imageFolder + "Hover_Tile");
     }
 
     public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id) {
@@ -218,33 +222,37 @@ public class ImageLoader {
     }
 
     private static void readPlayableTilesImages() {
-        grassTile_0 = lisImageBuf("Grass_0_Tile");
-        grassTile_1 = lisImageBuf("Grass_1_Tile");
-        grassTile_2 = lisImageBuf("Grass_2_Tile");
-        volcanTile_0 = lisImageBuf("Volcan_0_Tile");
-        volcanTile_1 = lisImageBuf("Volcan_1_Tile");
-        volcanTile_2 = lisImageBuf("Volcan_2_Tile");
-        foretTile_0 = lisImageBuf("Foret_0_Tile");
-        foretTile_1 = lisImageBuf("Foret_1_Tile");
-        foretTile_2 = lisImageBuf("Foret_2_Tile");
-        desertTile_0 = lisImageBuf("Desert_0_Tile");
-        desertTile_1 = lisImageBuf("Desert_1_Tile");
-        desertTile_2 = lisImageBuf("Desert_2_Tile");
-        montagneTile_0 = lisImageBuf("Montagne_0_Tile");
-        montagneTile_1 = lisImageBuf("Montagne_1_Tile");
-        montagneTile_2 = lisImageBuf("Montagne_2_Tile");
-        lacTile_0 = lisImageBuf("Lac_0_Tile");
-        lacTile_1 = lisImageBuf("Lac_1_Tile");
-        lacTile_2 = lisImageBuf("Lac_2_Tile");
+        String imageFolder = "/Plateau/Hexagones/Textures/";
+
+        grassTile_0 = lisImageBuf(imageFolder + "Grass_0_Tile");
+        grassTile_1 = lisImageBuf(imageFolder + "Grass_1_Tile");
+        grassTile_2 = lisImageBuf(imageFolder + "Grass_2_Tile");
+        volcanTile_0 = lisImageBuf(imageFolder + "Volcan_0_Tile");
+        volcanTile_1 = lisImageBuf(imageFolder + "Volcan_1_Tile");
+        volcanTile_2 = lisImageBuf(imageFolder + "Volcan_2_Tile");
+        foretTile_0 = lisImageBuf(imageFolder + "Foret_0_Tile");
+        foretTile_1 = lisImageBuf(imageFolder + "Foret_1_Tile");
+        foretTile_2 = lisImageBuf(imageFolder + "Foret_2_Tile");
+        desertTile_0 = lisImageBuf(imageFolder + "Desert_0_Tile");
+        desertTile_1 = lisImageBuf(imageFolder + "Desert_1_Tile");
+        desertTile_2 = lisImageBuf(imageFolder + "Desert_2_Tile");
+        montagneTile_0 = lisImageBuf(imageFolder + "Montagne_0_Tile");
+        montagneTile_1 = lisImageBuf(imageFolder + "Montagne_1_Tile");
+        montagneTile_2 = lisImageBuf(imageFolder + "Montagne_2_Tile");
+        lacTile_0 = lisImageBuf(imageFolder + "Lac_0_Tile");
+        lacTile_1 = lisImageBuf(imageFolder + "Lac_1_Tile");
+        lacTile_2 = lisImageBuf(imageFolder + "Lac_2_Tile");
     }
 
     private static void readBatimentsImages() {
-        hutteTile = lisImageBuf("Batiments/hutte");
-        templeJungle = lisImageBuf("Batiments/Temple_jungle");
-        templePierre = lisImageBuf("Batiments/Temple_pierre");
-        templePrairie = lisImageBuf("Batiments/Temple_prairie");
-        templeSable = lisImageBuf("Batiments/Temple_sable");
-        tour = lisImageBuf("Batiments/tour");
+        String imageFolder = "/Plateau/Batiments/";
+
+        hutteTile = lisImageBuf(imageFolder + "hutte");
+        templeJungle = lisImageBuf(imageFolder + "Temple_jungle");
+        templePierre = lisImageBuf(imageFolder + "Temple_pierre");
+        templePrairie = lisImageBuf(imageFolder + "Temple_prairie");
+        templeSable = lisImageBuf(imageFolder + "Temple_sable");
+        tour = lisImageBuf(imageFolder + "tour");
         filtreCouleurBatiments();
     }
 
@@ -269,13 +277,14 @@ public class ImageLoader {
     }
 
     private static void readTileOrientationImages() {
-        beacons = lisImageBuf("Beacons");
-        beacon_1 = lisImageBuf("Beacon_1");
-        beacon_2 = lisImageBuf("Beacon_2");
-        beacon_3 = lisImageBuf("Beacon_3");
-        beacon_4 = lisImageBuf("Beacon_4");
-        beacon_5 = lisImageBuf("Beacon_5");
-        beacon_6 = lisImageBuf("Beacon_6");
+        String sourceFolder = "/Plateau/Hexagones/DirectionsPlacables/";
+        beacons = lisImageBuf(sourceFolder + "Beacons");
+        beacon_1 = lisImageBuf(sourceFolder + "Beacon_1");
+        beacon_2 = lisImageBuf(sourceFolder + "Beacon_2");
+        beacon_3 = lisImageBuf(sourceFolder + "Beacon_3");
+        beacon_4 = lisImageBuf(sourceFolder + "Beacon_4");
+        beacon_5 = lisImageBuf(sourceFolder + "Beacon_5");
+        beacon_6 = lisImageBuf(sourceFolder + "Beacon_6");
     }
 
     private static void readHeightImages(BufferedImage wrong_height_1_hex, BufferedImage wrong_height_2_hex, BufferedImage wrong_height_3_hex) {
@@ -290,19 +299,21 @@ public class ImageLoader {
     }
 
     private static void readContoursImages() {
-        plateau_hautGauche = lisImageBuf("plateau_hautGauche");
-        plateau_hautDroite = lisImageBuf("plateau_hautDroite");
-        plateau_Gauche = lisImageBuf("plateau_Gauche");
-        plateau_Droite = lisImageBuf("plateau_Droite");
-        plateau_basGauche = lisImageBuf("plateau_basGauche");
-        plateau_basDroite = lisImageBuf("plateau_basDroite");
+        String imageFolder = "Plateau/Hexagones/HauteurHexagone/";
+        plateau_hautGauche = lisImageBuf(imageFolder + "plateau_hautGauche");
+        plateau_hautDroite = lisImageBuf(imageFolder + "plateau_hautDroite");
+        plateau_Gauche = lisImageBuf(imageFolder + "plateau_Gauche");
+        plateau_Droite = lisImageBuf(imageFolder + "plateau_Droite");
+        plateau_basGauche = lisImageBuf(imageFolder + "plateau_basGauche");
+        plateau_basDroite = lisImageBuf(imageFolder + "plateau_basDroite");
 
-        tuile_hautGauche = lisImageBuf("tuile_hautGauche");
-        tuile_hautDroite = lisImageBuf("tuile_hautDroite");
-        tuile_Gauche = lisImageBuf("tuile_Gauche");
-        tuile_Droite = lisImageBuf("tuile_Droite");
-        tuile_basGauche = lisImageBuf("tuile_basGauche");
-        tuile_basDroite = lisImageBuf("tuile_basDroite");
+        imageFolder = "Plateau/Hexagones/ContourTuile/";
+        tuile_hautGauche = lisImageBuf(imageFolder + "tuile_hautGauche");
+        tuile_hautDroite = lisImageBuf(imageFolder + "tuile_hautDroite");
+        tuile_Gauche = lisImageBuf(imageFolder + "tuile_Gauche");
+        tuile_Droite = lisImageBuf(imageFolder + "tuile_Droite");
+        tuile_basGauche = lisImageBuf(imageFolder + "tuile_basGauche");
+        tuile_basDroite = lisImageBuf(imageFolder + "tuile_basDroite");
     }
 
     private static void filtreCouleursContoursEtages() {

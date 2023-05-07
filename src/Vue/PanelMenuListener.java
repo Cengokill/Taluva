@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Affichage.ImageLoader;
+import Modele.Jeu.Plateau.Affichage.ImageLoader;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Modele.Affichage.ImageLoader.applyRedFilter;
+import static Modele.Jeu.Plateau.Affichage.ImageLoader.applyRedFilter;
 
 public class PanelMenu extends JPanel {
 

@@ -1,4 +1,4 @@
-package Modele.Affichage;
+package Modele.Jeu.Plateau.Affichage;
 
 import javax.swing.*;
 import java.awt.*;

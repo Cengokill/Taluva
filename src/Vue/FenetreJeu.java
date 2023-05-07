@@ -1,14 +1,14 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
-import Modele.Affichage.ImageLoader;
+import Modele.Jeu.Plateau.Affichage.ImageLoader;
 import Modele.Jeu.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import static Modele.Affichage.ImageLoader.*;
+import static Modele.Jeu.Plateau.Affichage.ImageLoader.*;
 
 
 public class FenetreJeu extends Container {
