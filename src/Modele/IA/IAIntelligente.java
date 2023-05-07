@@ -10,7 +10,7 @@ import java.util.*;
 public class IAIntelligente extends AbstractIA {
 
     public ArrayList<Tuile> tuilesPioche;
-    Map<String, byte[]> instances = new HashMap<>();
+    HashMap<String, byte[]> instances = new HashMap<>();
     public int num_joueur;
 
     public IAIntelligente() {
@@ -18,7 +18,7 @@ public class IAIntelligente extends AbstractIA {
         ajoutTuilesPioche();
     }
 
-    public void ajoutTuilesPioche(){//15 tuiles différentes
+    public void ajoutTuilesPioche(){//15 tuiles diffÃ©rentes
         tuilesPioche = new ArrayList<>();
         //calcule tous les coups avec chaque tuile de la pioche
         for(int i = 0; i<pioche.size(); i++){
@@ -59,29 +59,29 @@ public class IAIntelligente extends AbstractIA {
             chemin = new ArrayList<>();
             ArbreChemins arbreCheminsAvant = arbreCheminsTete;
             arbreCheminsTete = queue.poll();
-            //récupère l'instance courante qui contient le plateau et les tuiles
+            //rÃ©cupÃ¨re l'instance courante qui contient le plateau et les tuiles
             Instance instanceCourante = arbreCheminsTete.getCourant();
-            //si c'est à l'IA de jouer
+            //si c'est Ã  l'IA de jouer
                 //calcule tous les placements possibles de la tuile de la pioche sur le plateau du jeu
             //sinon
-                //même chose mais on calcule les placements possibles du joueur adverse
+                //mÃªme chose mais on calcule les placements possibles du joueur adverse
             SequenceListe<Coup> coupsPossibles = null;
             //TODO: calculer les placements
 
             //pour chaque coup possible
             while (!coupsPossibles.estVide()) {
                 //on joue le coup
-                //on enregistre le plateau et le pioche après avoir joué le coup dans une nouvelle Instance
+                //on enregistre le plateau et le pioche aprÃ¨s avoir jouï¿½ le coup dans une nouvelle Instance
                 //si l'Instance n'est pas dans la Hashmap
                 //on calcule la valeur de l'instance
                 //si l'instance est une victoire de l'IA
-                //on crée un nouvel arbre avec l'instance et la valeur
-                //tant que l'instance courante n'est pas l'instance de départ
+                //on crÃ©e un nouvel arbre avec l'instance et la valeur
+                //tant que l'instance courante n'est pas l'instance de dÃ©part
                 //on fait comme dans le Sokoban
-                //on renvoie le chemin de Coups inversé
+                //on renvoie le chemin de Coups inversÃ©
 
                 //si ce n'est pas une victoire de l'IA
-                // on ajoute l'instance à la Hashmap avec son poids calculé (heuristique)
+                // on ajoute l'instance Ã  la Hashmap avec son poids calculÃ© (heuristique)
 
                 //sinon on ne fait rien
             }
@@ -89,11 +89,12 @@ public class IAIntelligente extends AbstractIA {
         return chemin;
     }
 
-    /*public ArrayList<Coup> joue() {
+    public ArrayList<Coup> joueSequence() {
         return calculCoups();
-    }*/
+    }
 
-    public Coup joue(){
+    @Override
+    public Coup joue() {
         return null;
     }
 
