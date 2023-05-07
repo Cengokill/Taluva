@@ -75,7 +75,7 @@ public class Jeu extends Observable {
         }
 
         Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
-        if (!getPlateau().estHexagoneLibre(coup.volcanX,coup.volcanY)) {
+        if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
             System.out.println("pas libre A DEBUGGER");
             return;
         }
@@ -86,7 +86,7 @@ public class Jeu extends Observable {
 
         coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // batiment
         //getPlateau().joueCoup(coup);
-        joueurPlaceBatiment(coup.batimentX,coup.batimentY,coup.typePlacement);
+        joueurPlaceBatiment(coup.batimentLigne,coup.batimentColonne,coup.typePlacement);
         doit_placer_batiment = false;
         doit_placer_tuile = true;
         //changeJoueur();
