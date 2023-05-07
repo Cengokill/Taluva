@@ -5,6 +5,7 @@ import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Plateau.Affichage.ImageLoader;
 import Modele.Jeu.Jeu;
 import Structures.Position.Point2D;
+import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
 import javax.swing.*;
@@ -312,9 +313,9 @@ public class PanelPlateau extends JPanel {
             if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
             if(value==1 && (index_bat_precedent!=1||posX_bat_precedent!=ligne||posY_bat_precedent!=colonne)){
                 emplacementPropagation = new ArrayList<>();
-                ArrayList<Point2> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
+                ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
                 while(aPropager.size()!=0) {
-                    Point2 PosCourante = aPropager.remove(0);
+                    Point2D PosCourante = aPropager.remove(0);
                     int tileWidth = voidTile.getWidth();
                     int tileHeight = voidTile.getWidth();
                     int verticalOffset = (int) (tileHeight * 0.75);

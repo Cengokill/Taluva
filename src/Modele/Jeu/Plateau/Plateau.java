@@ -508,8 +508,8 @@ public class Plateau implements Serializable {
         }
     }
 
-    public ArrayList<Point2> previsualisePropagation(int hutteX, int hutteY,byte joueurCourant){
-        ArrayList<Point2> nlh ;
+    public ArrayList<Point2D> previsualisePropagation(int hutteX, int hutteY,byte joueurCourant){
+        ArrayList<Point2D> nlh ;
         return propagation(hutteX,hutteY,joueurCourant);
         /*while(nlh.size()!=0) {
             Point2 a = nlh.remove(0);
