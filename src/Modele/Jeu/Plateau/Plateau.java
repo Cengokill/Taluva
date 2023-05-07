@@ -249,7 +249,7 @@ public class Plateau implements Serializable {
         }
 
         // Premiere tuile posée
-        if(estVide() && (ligneVolcan>=carte.length/2-2) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2+1)) return true;
+        if(estVide() && (ligneVolcan>=carte.length/2-1) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2)) return true;
 
         // Hauteur max
         int hauteur = carte[ligneVolcan][colonneVolcan].getHauteur();

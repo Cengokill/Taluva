@@ -62,20 +62,24 @@ public class PanelPlateau extends JPanel {
         if (!ImageLoader.loaded) {
             return;
         }
-        changerTuileAPoser();
-        changerPoseTile();
+        if(!jeu.estFinPartie()){
+            changerTuileAPoser();
+            changerPoseTile();
 
-        super.paintComponent(g);
-        afficheBackground(cameraOffset.x, cameraOffset.y, g);
+            super.paintComponent(g);
+            afficheBackground(cameraOffset.x, cameraOffset.y, g);
 
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(cameraOffset.x, cameraOffset.y);
-        g2d.scale(zoomFactor, zoomFactor);
-        displayHexagonMap(g);
-        affichePrevisualisationPropogation(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.translate(cameraOffset.x, cameraOffset.y);
+            g2d.scale(zoomFactor, zoomFactor);
+            displayHexagonMap(g);
+            affichePrevisualisationPropogation(g);
 
-        if(poseTile) displayHoverTile(g);
-        else displayHoverMaison(g);
+            if(poseTile) displayHoverTile(g);
+            else displayHoverMaison(g);
+        }else{
+            // TODO Affiche fin de la partie
+        }
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
