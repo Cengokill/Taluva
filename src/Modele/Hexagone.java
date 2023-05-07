@@ -29,7 +29,7 @@ public class Hexagone implements Serializable {
     private final byte numero ;
     private final byte volcan_j;
     private final byte volcan_i;
-    private byte num_joueur;
+    private final byte num_joueur;
 
     public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j) {
         this.num_joueur = -1;

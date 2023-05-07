@@ -25,12 +25,12 @@ public class FenetreJeu extends Container {
 
     public static Point LastPosition;
     public static Jeu jeu;
-    JFrame frame;
+    final JFrame frame;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
-        this.jeu = jeu;
+        FenetreJeu.jeu = jeu;
         this.frame = getFMenu();
         initFrame();
         initMultiLayerPanel();
@@ -109,7 +109,7 @@ public class FenetreJeu extends Container {
 
     private void initHexagonsPanel(ControleurMediateur controleur) {
         // Ajouter les tuiles hexagonales
-        affichagePlateau = new AffichagePlateau(this, controleur, this.jeu);
+        affichagePlateau = new AffichagePlateau(this, controleur, jeu);
         affichagePlateau.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         layeredPane.add(affichagePlateau, 50);
     }

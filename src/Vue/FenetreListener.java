@@ -1,7 +1,5 @@
 package Vue;
 
-import Modele.ImageLoader;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -97,10 +95,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
         public boolean estSurTuto(MouseEvent e) {
             int largeur = posX_boutons + largeur_bouton;
             int hauteur = posY_tuto + hauteur_bouton;
-            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur){
-                return true;
-            }
-            return false;
+            return e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur;
         }
 
         public boolean estSurAnnuler(MouseEvent e) {
@@ -138,11 +133,7 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
         @Override
         public void mouseClicked(MouseEvent e) {
             if(estSurTuto(e)) {
-                if(tuto_on) {
-                    tuto_on = false;
-                } else {
-                    tuto_on = true;
-                }
+                tuto_on = !tuto_on;
             }
             if(estSurAnnuler(e)) {
                 System.out.println("Annuler");

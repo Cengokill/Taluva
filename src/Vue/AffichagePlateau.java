@@ -446,20 +446,16 @@ public class AffichagePlateau extends JPanel {
         if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_PRAIRIE) return true;
         if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_FORET) return true;
         if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_PIERRE) return true;
-        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_SABLE) return true;
-        return false;
+        return jeu.getPlateau().getBatiment(i, j) == TEMPLE_SABLE;
     }
 
     private boolean estTour(int i,int j){
-        if(jeu.getPlateau().getBatiment(i,j)==TOUR) return true;
-        return false;
+        return jeu.getPlateau().getBatiment(i, j) == TOUR;
     }
 
     private ArrayList<Point2> copyPoints(ArrayList<Point2> tab1) {
         ArrayList<Point2> tab2 = new ArrayList<>();
-        for(Point2 p : tab1){
-            tab2.add(p);
-        }
+        tab2.addAll(tab1);
         return tab2;
     }
 

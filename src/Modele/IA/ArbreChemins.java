@@ -4,10 +4,10 @@ import Modele.Coup;
 import Structures.SequenceListe;
 
 public class ArbreChemins implements Comparable<ArbreChemins>{
-    private Instance courant;
-    private ArbreChemins pere;
-    private SequenceListe<Coup> chemin;
-    private int poids;
+    private final Instance courant;
+    private final ArbreChemins pere;
+    private final SequenceListe<Coup> chemin;
+    private final int poids;
 
     public ArbreChemins(Instance courant, SequenceListe<Coup> chemin, ArbreChemins pere, int p){
         this.courant = courant;

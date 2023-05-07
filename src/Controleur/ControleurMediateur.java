@@ -42,12 +42,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public boolean clicSouris(int l, int c) {
+    public boolean clicSouris() {
         return true;
     }
 
     @Override
-    public void toucheClavier(String t) {
+    public void toucheClavier() {
     }
 
     public void annuler(){

@@ -1,221 +1,213 @@
 package Vue;
 
-import Controleur.ControleurMediateur;
 import Modele.ImageLoader;
-import Modele.Jeu;
-import Modele.Parametres;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class MenuGraphiqueListener implements MouseListener  {
 
-    Cursor idle_cursor;
-    Cursor click_cursor;
-    public MenuGraphique m;
+    final Cursor idle_cursor;
+    final Cursor click_cursor;
+    public MenuGraphique menuGraphique;
     public String type_jeu = "local";
 
     public MenuGraphiqueListener(MenuGraphique menu) {
         super();
-        m = menu;
+        menuGraphique = menu;
         DetectionSurvol survol = new DetectionSurvol();
-        m.addMouseMotionListener(survol);
+        menuGraphique.addMouseMotionListener(survol);
         //m.metAJour();
 
         Image cursorImage = Toolkit.getDefaultToolkit().getImage("ressources/Menu/normal_cursor.png");
         Image cursorImage2 = Toolkit.getDefaultToolkit().getImage("ressources/Menu/click_cursor.png");
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Point hotspot = new Point(0, 0); // Définissez les coordonnées du point d'ancrage du curseur si nécessaire
+        Point hotspot = new Point(0, 0); // Dï¿½finissez les coordonnï¿½es du point d'ancrage du curseur si nï¿½cessaire
         idle_cursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom Cursor");
         click_cursor = toolkit.createCustomCursor(cursorImage2, hotspot, "Custom Cursor");
     }
 
     public boolean estCurseurSurBouton_Local(MouseEvent e){
-        int startx = m.posX_boutons-(m.largeur_background/9) ;
+        int startx = menuGraphique.posX_boutons-(menuGraphique.largeur_background/9) ;
         int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
-            m.select_local = true;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ menuGraphique.hauteur_bouton && !menuGraphique.clicOptions) {
+            menuGraphique.select_local = true;
             this.type_jeu = "local";
             return true;
         }
-        m.select_local = false;
+        menuGraphique.select_local = false;
         return false;
     }
 
     public boolean estCurseurSurBouton_Reseau(MouseEvent e){
-        int startx = m.posX_boutons+(m.largeur_background/9);
+        int startx = menuGraphique.posX_boutons+(menuGraphique.largeur_background/9);
         int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
-            m.select_reseau = true;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ menuGraphique.hauteur_bouton && !menuGraphique.clicOptions) {
+            menuGraphique.select_reseau = true;
             this.type_jeu = "reseau";
             return true;
         }
-        m.select_reseau = false;
+        menuGraphique.select_reseau = false;
         return false;
     }
 
     public boolean estCurseurSurBouton_Options(MouseEvent e){
-        int startx = m.posX_boutons;
-        int starty = m.posY_Options;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
-            m.select_options = true;
+        int startx = menuGraphique.posX_boutons;
+        int starty = menuGraphique.posY_Options;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ menuGraphique.hauteur_bouton && !menuGraphique.clicOptions) {
+            menuGraphique.select_options = true;
             return true;
         }
-        m.select_options = false;
+        menuGraphique.select_options = false;
         return false;
     }
 
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
-        int startx = m.posX_boutons;
-        int starty = m.posY_Quitter;
-        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton && !m.clicOptions) {
-            m.select_quitter = true;
+        int startx = menuGraphique.posX_boutons;
+        int starty = menuGraphique.posY_Quitter;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ menuGraphique.hauteur_bouton && !menuGraphique.clicOptions) {
+            menuGraphique.select_quitter = true;
             return true;
         }
-        m.select_quitter = false;
+        menuGraphique.select_quitter = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonGauche_1(MouseEvent e){
-        int startx = m.posX_gauche1;
-        int starty = m.posY_slider1;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_gauche1 = true;
+        int startx = menuGraphique.posX_gauche1;
+        int starty = menuGraphique.posY_slider1;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_gauche1 = true;
             return true;
         }
-        m.select_gauche1 = false;
+        menuGraphique.select_gauche1 = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonGauche_2(MouseEvent e){
-        int startx = m.posX_gauche2;
-        int starty = m.posY_slider2;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_gauche2 = true;
+        int startx = menuGraphique.posX_gauche2;
+        int starty = menuGraphique.posY_slider2;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_gauche2 = true;
             return true;
         }
-        m.select_gauche2 = false;
+        menuGraphique.select_gauche2 = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonDroit_1(MouseEvent e){
-        int startx = m.posX_droit1;
-        int starty = m.posY_slider1;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_droit1 = true;
+        int startx = menuGraphique.posX_droit1;
+        int starty = menuGraphique.posY_slider1;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_droit1 = true;
             return true;
         }
-        m.select_droit1 = false;
+        menuGraphique.select_droit1 = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonDroit_2(MouseEvent e){
-        int startx = m.posX_droit2;
-        int starty = m.posY_slider2;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_droit2 = true;
+        int startx = menuGraphique.posX_droit2;
+        int starty = menuGraphique.posY_slider2;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_droit2 = true;
             return true;
         }
-        m.select_droit2 = false;
+        menuGraphique.select_droit2 = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonPleinEcran(MouseEvent e){
-        int startx = m.posX_coches;
-        int starty = m.posY_coche1;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_PleinEcran = true;
+        int startx = menuGraphique.posX_coches;
+        int starty = menuGraphique.posY_coche1;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_PleinEcran = true;
             return true;
         }
-        m.select_PleinEcran = false;
+        menuGraphique.select_PleinEcran = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonDaltonien(MouseEvent e){
-        int startx = m.posX_coches;
-        int starty = m.posY_coche2;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_Daltonien = true;
+        int startx = menuGraphique.posX_coches;
+        int starty = menuGraphique.posY_coche2;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_Daltonien = true;
             return true;
         }
-        m.select_Daltonien = false;
+        menuGraphique.select_Daltonien = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonExtension(MouseEvent e){
-        int startx = m.posX_coches;
-        int starty = m.posY_coche3;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_Extension = true;
+        int startx = menuGraphique.posX_coches;
+        int starty = menuGraphique.posY_coche3;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_Extension = true;
             return true;
         }
-        m.select_Extension = false;
+        menuGraphique.select_Extension = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonAnnuler(MouseEvent e){
-        int startx = m.posX_btnAnnuler;
-        int starty = m.posY_btnChoix;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_annuler = true;
+        int startx = menuGraphique.posX_btnAnnuler;
+        int starty = menuGraphique.posY_btnChoix;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_annuler = true;
             return true;
         }
-        m.select_annuler = false;
+        menuGraphique.select_annuler = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonValider(MouseEvent e){
-        int startx = m.posX_btnValider;
-        int starty = m.posY_btnChoix;
-        if(e.getX() >= startx && e.getX() <= startx+m.taille_btn && e.getY() >= starty && e.getY() <= starty+m.taille_btn && m.clicOptions) {
-            m.select_valider = true;
+        int startx = menuGraphique.posX_btnValider;
+        int starty = menuGraphique.posY_btnChoix;
+        if(e.getX() >= startx && e.getX() <= startx+ menuGraphique.taille_btn && e.getY() >= starty && e.getY() <= starty+ menuGraphique.taille_btn && menuGraphique.clicOptions) {
+            menuGraphique.select_valider = true;
             return true;
         }
-        m.select_valider = false;
+        menuGraphique.select_valider = false;
         return false;
     }
 
     public void verif(MouseEvent e) throws IOException {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
             //efface tout le contenu de la frame
-            m.layeredPane.removeAll();
+            menuGraphique.layeredPane.removeAll();
 
             // On passe du menu au jeu
             ImageLoader.loadImages();
-            m.fenetre.initRenduJeu();
-            m.fenetre.affichagePlateau.setBounds(0, 0, m.getWidth(), m.getHeight());
-            m.fenetre.vignettePanel.setBounds(0, 0, m.getWidth(), m.getHeight());
-            m.fenetre.buttonPanel.setBounds(0, 0, m.getWidth(), m.getHeight());
+            menuGraphique.fenetre.initRenduJeu();
+            menuGraphique.fenetre.affichagePlateau.setBounds(0, 0, menuGraphique.getWidth(), menuGraphique.getHeight());
+            menuGraphique.fenetre.vignettePanel.setBounds(0, 0, menuGraphique.getWidth(), menuGraphique.getHeight());
+            menuGraphique.fenetre.buttonPanel.setBounds(0, 0, menuGraphique.getWidth(), menuGraphique.getHeight());
 
         }
         if(estCurseurSurBouton_Options(e)){
-            if(m.clicOptions) {
-                m.clicOptions = false;
-            }else {
-                m.clicOptions = true;
-            }
+            menuGraphique.clicOptions = !menuGraphique.clicOptions;
         }
         if(estCurseurSurBouton_Quitter(e)){
             System.exit(0);
         }
         // Options cochables
-        if(estCurseurSurBoutonPleinEcran(e)) m.pleinEcran = m.pleinEcran==false;
-        if(estCurseurSurBoutonDaltonien(e)) m.Daltonien = m.Daltonien==false;
-        if(estCurseurSurBoutonExtension(e)) m.Extension = m.Extension==false;
-        // Options réglables
-        if(estCurseurSurBoutonDroit_1(e) && !(m.index_son==5)) m.index_son++;
-        if(estCurseurSurBoutonGauche_1(e) && !(m.index_son==0)) m.index_son--;
-        if(estCurseurSurBoutonDroit_2(e) && !(m.index_musique==5)) m.index_musique++;
-        if(estCurseurSurBoutonGauche_2(e) && !(m.index_musique==0)) m.index_musique--;
+        if(estCurseurSurBoutonPleinEcran(e)) menuGraphique.estPleinEcran = !menuGraphique.estPleinEcran;
+        if(estCurseurSurBoutonDaltonien(e)) menuGraphique.Daltonien = !menuGraphique.Daltonien;
+        if(estCurseurSurBoutonExtension(e)) menuGraphique.Extension = !menuGraphique.Extension;
+        // Options rï¿½glables
+        if(estCurseurSurBoutonDroit_1(e) && !(menuGraphique.index_son==5)) menuGraphique.index_son++;
+        if(estCurseurSurBoutonGauche_1(e) && !(menuGraphique.index_son==0)) menuGraphique.index_son--;
+        if(estCurseurSurBoutonDroit_2(e) && !(menuGraphique.index_musique==5)) menuGraphique.index_musique++;
+        if(estCurseurSurBoutonGauche_2(e) && !(menuGraphique.index_musique==0)) menuGraphique.index_musique--;
         // Choix Confirmer/Annuler
-        if(estCurseurSurBoutonAnnuler(e)) m.clicOptions=false;
+        if(estCurseurSurBoutonAnnuler(e)) menuGraphique.clicOptions=false;
         // TODO SAUVEGARDER LES PARAMETRES
-        if(estCurseurSurBoutonValider(e)) m.clicOptions=false;
+        if(estCurseurSurBoutonValider(e)) menuGraphique.clicOptions=false;
     }
 
     @Override
@@ -254,10 +246,10 @@ public class MenuGraphiqueListener implements MouseListener  {
             if (estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
                     estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
                     estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
-                m.setCursor((new Cursor(Cursor.HAND_CURSOR)));
+                menuGraphique.setCursor((new Cursor(Cursor.HAND_CURSOR)));
                 //m.metAJour();
             }else{
-                m.setCursor(idle_cursor);
+                menuGraphique.setCursor(idle_cursor);
             }
         }
     }

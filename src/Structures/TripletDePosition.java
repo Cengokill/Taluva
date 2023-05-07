@@ -39,7 +39,6 @@ public class TripletDePosition implements Serializable {
 
 
     public TripletDePosition copy() {
-        TripletDePosition tripletDePosition = new TripletDePosition(this.volcan, this.tile1, this.tile2);
-        return tripletDePosition;
+        return new TripletDePosition(this.volcan, this.tile1, this.tile2);
     }
 }

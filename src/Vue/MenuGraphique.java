@@ -2,7 +2,6 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.Jeu;
-import Modele.Parametres;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,7 +23,7 @@ public class MenuGraphique extends JPanel {
     Jeu jeu;
     ControleurMediateur controleur;
 
-    BufferedImage[] sliders = new BufferedImage[6];
+    final BufferedImage[] sliders = new BufferedImage[6];
 
     BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Reseau_hover,bouton_Options_hover,bouton_Quitter_hover,
             options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
@@ -38,7 +37,7 @@ public class MenuGraphique extends JPanel {
 
     private JTextField field_joueur1;
     boolean select_local,select_reseau,select_options,select_quitter,clicOptions,select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
-            select_Daltonien,select_Extension,pleinEcran,Daltonien,Extension, select_valider,select_annuler;
+            select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler;
 
     public MenuGraphique(JFrame f, JLayeredPane layeredPane,Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
@@ -80,7 +79,7 @@ public class MenuGraphique extends JPanel {
         //entier
         index_son = 3;
         index_musique = 3;
-        //booléens
+        //boolï¿½ens
         select_local = false;
         select_options = false;
         select_quitter = false;
@@ -92,17 +91,13 @@ public class MenuGraphique extends JPanel {
         select_annuler = false;
         clicOptions = false;
 
-        // Eléments de l'interface
+        // Elï¿½ments de l'interface
         frame = f;
         this.layeredPane = layeredPane;
         this.jeu = jeu;
         this.controleur = controleur;
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        /*frame.setSize(1280, 720);
-        //centrer la fenetre
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);*/
-        //Définition des dimensions de la fenêtre
+        //Dï¿½finition des dimensions de la fenï¿½tre
         tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
         screenWidth=tailleEcran.width;
         screenHeight=tailleEcran.height;
@@ -139,7 +134,7 @@ public class MenuGraphique extends JPanel {
         g.fillRect(0, 0, frameWidth, frameHeight);
         double rapport = 0.5625;// rapport de 2160/3840
         double rapport_actuel = (double)frameHeight/(double)frameWidth;
-        if(rapport_actuel>rapport) {// si la fenêtre est plus haute que large
+        if(rapport_actuel>rapport) {// si la fenï¿½tre est plus haute que large
             largeur_background=frameWidth;
             hauteur_background=(int)(largeur_background*rapport);
             posX_background=0;
@@ -174,7 +169,7 @@ public class MenuGraphique extends JPanel {
 
     private void afficheSliders(Graphics g){
         int taille_slider_x = (int) (Math.min(getWidth(),getHeight())*0.8);
-        int taille_slider_y = (int) taille_slider_x/10;
+        int taille_slider_y = taille_slider_x /10;
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.08);
         this.taille_btn = taille_btn;
         int taille_sons = (int) (Math.min(getWidth(),getHeight())*0.1);
@@ -206,7 +201,7 @@ public class MenuGraphique extends JPanel {
 
     private void afficheCochable(Graphics g){
         int taille_slider_x = (int) (Math.min(getWidth(),getHeight())*0.8);
-        int taille_slider_y = (int) taille_slider_x/10;
+        int taille_slider_y = taille_slider_x /10;
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.08);
         int taille_pleinecran = (int) (Math.min(getWidth(),getHeight())*0.25);
 
@@ -219,7 +214,7 @@ public class MenuGraphique extends JPanel {
         posY_coche3 = (int) (y+taille_slider_y*5.4);
 
         g.drawImage(ecriture_PleinEcran,(int) (posX_coches-taille_pleinecran*1.2),posY_coche1,taille_pleinecran,(int)(taille_pleinecran/4.2),null);
-        if(pleinEcran){
+        if(estPleinEcran){
             if(select_PleinEcran) g.drawImage(coche_oui_hover,posX_coches,posY_coche1,taille_btn,taille_btn,null);
             else g.drawImage(coche_oui,posX_coches,posY_coche1,taille_btn,taille_btn,null);
         }else{
@@ -247,7 +242,7 @@ public class MenuGraphique extends JPanel {
 
     private void afficheChoix(Graphics g){
         int taille_slider_x = (int) (Math.min(getWidth(),getHeight())*0.8);
-        int taille_slider_y = (int) taille_slider_x/10;
+        int taille_slider_y = taille_slider_x /10;
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.12);
 
 
@@ -256,7 +251,7 @@ public class MenuGraphique extends JPanel {
 
         posX_btnValider = (int)(x+taille_slider_x*1.05);
         posY_btnChoix = (int) (y+taille_slider_y*4.75);
-        posX_btnAnnuler = (int)(x-(taille_slider_x)/6);
+        posX_btnAnnuler = x-(taille_slider_x)/6;
 
         if(select_annuler) g.drawImage(btn_annuler_hover,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);
         else g.drawImage(btn_annuler,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);

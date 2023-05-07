@@ -122,7 +122,7 @@ public class SequenceListe<E> implements Sequence<E> {
         return new IterateurSequenceListe<>(this);
     }
 
-    public int compareTo(SequenceListe<E> o) {
+    public int compareTo() {
         return 0;//à redéfinir
     }
 }

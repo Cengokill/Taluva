@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import static Modele.Hexagone.*;
-import static Modele.Hexagone.TEMPLE_SABLE;
 
 public class Plateau implements Serializable {
     final int LIGNES = 60;
@@ -110,13 +109,11 @@ public class Plateau implements Serializable {
         if(getBatiment(i,j)==TEMPLE_PRAIRIE) return true;
         if(getBatiment(i,j)==TEMPLE_FORET) return true;
         if(getBatiment(i,j)==TEMPLE_PIERRE) return true;
-        if(getBatiment(i,j)==TEMPLE_SABLE) return true;
-        return false;
+        return getBatiment(i, j) == TEMPLE_SABLE;
     }
 
     private boolean estTour(int i,int j){
-        if(getBatiment(i,j)==TOUR) return true;
-        return false;
+        return getBatiment(i, j) == TOUR;
     }
     private ArrayList<Point2> positionsBatsVillage(int x,int y,byte idjoueur){
         ArrayList<Point2> listeDesHutesVoisines = new ArrayList<>();
@@ -179,13 +176,13 @@ public class Plateau implements Serializable {
             if(getBatiment(ligneTile2,colonneTile2)==HUTTE){                        // sur la deuxieme aussi
                 byte idBat_2 = getCarte()[ligneTile2][colonneTile2].getNumJoueur();
                 if(idBat_1==idBat_2){                                               // les 2 appartiennent au même joueur
-                    if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=2 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village qui contient 2 huttes
+                    return positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() <= 2 && positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() > 0; // on efface tout le village qui contient 2 huttes
                 }else{                                                              // les 2 appartiennet à des joueurs differents
                     if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village de idBat_1 qui contient 1 hutte
-                    if(positionsBatsVillage(ligneTile2,colonneTile2,idBat_2).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_2).size()>0) return true; // on efface tout le village de idBat_2 qui contient 1 hutte
+                    return positionsBatsVillage(ligneTile2, colonneTile2, idBat_2).size() <= 1 && positionsBatsVillage(ligneTile1, colonneTile1, idBat_2).size() > 0; // on efface tout le village de idBat_2 qui contient 1 hutte
                 }
             }else{ // il n'y a pas de batiment sur la deuxieme hutte
-                if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village qui contient 1 hutte
+                return positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() <= 1 && positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() > 0; // on efface tout le village qui contient 1 hutte
             }
         }
         return false;
@@ -559,7 +556,6 @@ public class Plateau implements Serializable {
     }
     public ArrayList<Point2> propagation (int hutteX, int hutteY,byte joueurCourant ){
         ArrayList<Point2> listeDecases = new ArrayList<>();
-        byte idJoueurs =joueurCourant;
         byte biome = getTuile(hutteX,hutteY).getBiomeTerrain();
         ArrayList<Point2> listeDesHutesVoisines = new ArrayList<>();
         Point2 positionHutte = new Point2(hutteX,hutteY);
@@ -567,47 +563,47 @@ public class Plateau implements Serializable {
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
             Point2 HuteCourant = listeDesHutesVoisines.get(i);
-            if(check (HuteCourant.x-1 ,HuteCourant.y,idJoueurs)){
+            if(check (HuteCourant.x-1 ,HuteCourant.y, joueurCourant)){
                 Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
-            if(check (HuteCourant.x+1 ,HuteCourant.y,idJoueurs)){
+            if(check (HuteCourant.x+1 ,HuteCourant.y, joueurCourant)){
                 Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
-            if(check (HuteCourant.x ,HuteCourant.y-1,idJoueurs)){
+            if(check (HuteCourant.x ,HuteCourant.y-1, joueurCourant)){
                 Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y-1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
 
             }
-            if(check(HuteCourant.x ,HuteCourant.y+1,idJoueurs)){
+            if(check(HuteCourant.x ,HuteCourant.y+1, joueurCourant)){
                 Point2 p1 = new Point2(HuteCourant.x ,HuteCourant.y+1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
             if(HuteCourant.x%2==1){
-                if(check (HuteCourant.x-1 ,HuteCourant.y-1,idJoueurs)){
+                if(check (HuteCourant.x-1 ,HuteCourant.y-1, joueurCourant)){
                     Point2 p1 = new Point2(HuteCourant.x-1,HuteCourant.y-1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
                 }
-                if(check (HuteCourant.x+1 ,HuteCourant.y-1,idJoueurs)){
+                if(check (HuteCourant.x+1 ,HuteCourant.y-1, joueurCourant)){
                     Point2 p1 = new Point2(HuteCourant.x+1 ,HuteCourant.y-1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
 
                 }
             }else{
-                if(check (HuteCourant.x-1 ,HuteCourant.y+1,idJoueurs)){
+                if(check (HuteCourant.x-1 ,HuteCourant.y+1, joueurCourant)){
                     Point2 p1 = new Point2(HuteCourant.x-1 ,HuteCourant.y+1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
 
                 }
-                if(check (HuteCourant.x+1 ,HuteCourant.y+1,idJoueurs)){
+                if(check (HuteCourant.x+1 ,HuteCourant.y+1, joueurCourant)){
                     Point2 p1 = new Point2(HuteCourant.x+1,HuteCourant.y+1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
@@ -782,7 +778,7 @@ public class Plateau implements Serializable {
     public Hexagone getTuile(int i, int j){
         return carte[i][j];
     }
-    public void joueHexagone(int x, int y){}
+    public void joueHexagone(){}
 
     public void resetHistorique(){
         initHistorique();

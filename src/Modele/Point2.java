@@ -1,8 +1,8 @@
 package Modele;
 
 public class Point2 {
-    int x ;
-    int y ;
+    final int x ;
+    final int y ;
 
     public Point2(int x, int y){
         this.x= x;

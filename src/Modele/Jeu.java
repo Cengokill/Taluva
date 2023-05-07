@@ -29,16 +29,12 @@ public class Jeu extends Observable {
     public LinkedList<Tuile> pioche;
     private static final int TAILLE_PIOCHE = 24;
 
-    public Jeu(Parametres p){
+    public Jeu(){
 
     }
 
     public void initPartie(){
         jCourant = (byte) new Random().nextInt(1);
-        /*jCourant = 1;
-        IA1 = AbstractIA.nouvelle(this,this.p);
-        joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;*/
 
         pioche = new LinkedList<>();
         lancePartie();
