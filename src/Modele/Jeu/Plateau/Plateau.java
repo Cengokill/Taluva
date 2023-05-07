@@ -237,7 +237,6 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
-        // TODO faire en sort que 2 villages s?par?s aient pas le meme ID
 
         if (ligneVolcan < 2 || colonneVolcan < 2 || ligneVolcan >= 58 || colonneVolcan >= 58) {
             return false;
@@ -513,6 +512,11 @@ public class Plateau implements Serializable {
         }
     }
 
+    public ArrayList<Point2D> previsualisePropagation(int hutteX, int hutteY,byte joueurCourant){
+        ArrayList<Point2D> nlh ;
+        return propagation(hutteX,hutteY,joueurCourant);
+    }
+
 
     // N?cessite un appel ? peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
@@ -534,13 +538,10 @@ public class Plateau implements Serializable {
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-
                 historique.ajoute(Coup_propagation);
                 joueCoup(Coup_propagation);
             }
         }
-
-
     }
 
     public boolean notIn (ArrayList<Point2D> lp, Point2D p){
@@ -669,10 +670,8 @@ public class Plateau implements Serializable {
             }
             i++;
         }
-        //System.out.println("taille de liste de casses :"+listeDecases.size());
         i=0;
         while(i<listeDecases.size()){
-            System.out.println(listeDecases.get(i).x+ " "+listeDecases.get(i).y);
             i++;
         }
         return listeDecases;

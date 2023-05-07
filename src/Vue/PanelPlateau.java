@@ -5,6 +5,7 @@ import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Plateau.Affichage.ImageLoader;
 import Modele.Jeu.Jeu;
 import Structures.Position.Point2D;
+import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
 import javax.swing.*;
@@ -31,7 +32,9 @@ public class PanelPlateau extends JPanel {
     public final FenetreJeu fenetreJeu;
     public final Jeu jeu;
 
-    private int index_water=0;
+    private int index_water=0, index_bat_precedent=-1,posX_bat_precedent=-1,posY_bat_precedent=-1;
+
+    private ArrayList<Position> emplacementPropagation;
 
     public final int HAUTEUR_ETAGE = 80;
     public final int HAUTEUR_OCEAN = 50;
@@ -69,6 +72,7 @@ public class PanelPlateau extends JPanel {
         g2d.translate(cameraOffset.x, cameraOffset.y);
         g2d.scale(zoomFactor, zoomFactor);
         displayHexagonMap(g);
+        affichePrevisualisationPropogation(g);
 
         if(poseTile) displayHoverTile(g);
         else displayHoverMaison(g);
@@ -307,7 +311,30 @@ public class PanelPlateau extends JPanel {
 
             value = updateScrollValue(value, coups);
             if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
+            if(value==1 && (index_bat_precedent!=1||posX_bat_precedent!=ligne||posY_bat_precedent!=colonne)){
+                emplacementPropagation = new ArrayList<>();
+                ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
+                while(aPropager.size()!=0) {
+                    Point2D PosCourante = aPropager.remove(0);
+                    int posPrevX = PosCourante.getPointY() * voidTile.getWidth() - (PosCourante.getPointX() % 2 == 1 ? voidTile.getWidth() / 2 : 0);
+                    int posPrevY = PosCourante.getPointX() * (int) (voidTile.getWidth() * 0.75);
+                    emplacementPropagation.add(new Position(posPrevX,posPrevY - heightoffset));
+                }
+            }else if(index_bat_precedent!=value){
+                emplacementPropagation = new ArrayList<>();
+            }
+            posX_bat_precedent = ligne;
+            posY_bat_precedent = colonne;
+            index_bat_precedent = value;
             choixBatiment(g, pos_x, pos_y, value, coups);
+        }
+    }
+
+    private void affichePrevisualisationPropogation(Graphics g){
+        if(emplacementPropagation==null) return;
+        for(int i=0;i<emplacementPropagation.size();i++){
+            Position posCourante = emplacementPropagation.get(i);
+            g.drawImage(constructionMode, posCourante.ligne(), posCourante.colonne(), null);
         }
     }
 
@@ -827,6 +854,7 @@ public class PanelPlateau extends JPanel {
             }
         }else{
             placerMaison(posBat_x,posBat_y);
+            resetPrevisualisationPropagation();
         }
     }
 
@@ -838,6 +866,13 @@ public class PanelPlateau extends JPanel {
         }
     }
 
+    private void resetPrevisualisationPropagation(){
+        emplacementPropagation = new ArrayList<>();
+        posX_bat_precedent=-1;
+        posY_bat_precedent=-1;
+        index_bat_precedent=-1;
+    }
+
     private void annulationConstruction() {
         byte numJoueur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getNumJoueur();
         byte hauteur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getHauteur();
@@ -845,6 +880,7 @@ public class PanelPlateau extends JPanel {
         int volcan_i = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getLigneVolcan();
         int volcan_j = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getColonneVolcan();
         jeu.getPlateau().getCarte()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
+        resetPrevisualisationPropagation();
         enSelection=false;
     }
 
