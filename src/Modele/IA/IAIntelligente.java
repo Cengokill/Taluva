@@ -21,14 +21,14 @@ public class IAIntelligente extends AbstractIA {
     public void ajoutTuilesPioche(){//15 tuiles différentes
         tuilesPioche = new ArrayList<>();
         //calcule tous les coups avec chaque tuile de la pioche
-        for(int i = 0; i<pioche.size(); i++){
-            if(!contientTuile(tuilesPioche,pioche.get(i))) tuilesPioche.add(pioche.get(i));
+        for(int tuileIndex = 0; tuileIndex<pioche.size(); tuileIndex++){
+            if(!contientTuile(tuilesPioche,pioche.get(tuileIndex))) tuilesPioche.add(pioche.get(tuileIndex));
         }
     }
 
     public boolean contientTuile(ArrayList<Tuile> listeTuiles, Tuile t){
-        for(int i = 0; i<listeTuiles.size(); i++){
-            if(listeTuiles.get(i).biome0 == t.biome0 && listeTuiles.get(i).biome1 == t.biome1){
+        for(int tuileIndex = 0; tuileIndex < listeTuiles.size(); tuileIndex++){
+            if(listeTuiles.get(tuileIndex).biome0 == t.biome0 && listeTuiles.get(tuileIndex).biome1 == t.biome1){
                 return true;
             }
         }

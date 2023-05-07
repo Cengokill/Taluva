@@ -12,12 +12,12 @@ class IAAleatoire extends AbstractIA {
     public IAAleatoire() {
     }
 
-    private int ajusterColonne(int i, int j){
+    private int ajusterColonne(int ligne, int colonne){
         int j_modified;
-        if (i % 2 == 1) {
-            j_modified = j - 1;
+        if (ligne % 2 == 1) {
+            j_modified = colonne - 1;
         } else {
-            j_modified = j;
+            j_modified = colonne;
         }
         return j_modified;
     }

@@ -70,9 +70,9 @@ public class Plateau implements Serializable {
     }
 
     private void remplirPlateau() {
-        for (int i = 0; i < carte.length; i++) {
-            for (int j = 0; j < carte[0].length; j++) {
-                carte[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
+        for (int ligne = 0; ligne < carte.length; ligne++) {
+            for (int colonne = 0; colonne < carte[0].length; colonne++) {
+                carte[ligne][colonne] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
     }
@@ -107,15 +107,15 @@ public class Plateau implements Serializable {
         return false;
     }
 
-    private boolean estTemple(int i,int j){
-        if(getBatiment(i,j)==TEMPLE_PRAIRIE) return true;
-        if(getBatiment(i,j)==TEMPLE_FORET) return true;
-        if(getBatiment(i,j)==TEMPLE_PIERRE) return true;
-        return getBatiment(i, j) == TEMPLE_SABLE;
+    private boolean estTemple(int ligne,int colonne){
+        if(getBatiment(ligne,colonne)==TEMPLE_PRAIRIE) return true;
+        if(getBatiment(ligne,colonne)==TEMPLE_FORET) return true;
+        if(getBatiment(ligne,colonne)==TEMPLE_PIERRE) return true;
+        return getBatiment(ligne, colonne) == TEMPLE_SABLE;
     }
 
-    private boolean estTour(int i,int j){
-        return getBatiment(i, j) == TOUR;
+    private boolean estTour(int ligne,int colonne){
+        return getBatiment(ligne, colonne) == TOUR;
     }
     private ArrayList<Point2D> positionsBatsVillage(int x, int y, byte idjoueur){
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
@@ -124,52 +124,56 @@ public class Plateau implements Serializable {
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
             Point2D HuteCourant = listeDesHutesVoisines.get(i);
-            if(check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY(),idjoueur)){
-                Point2D p1 = new Point2D(HuteCourant.getPointX()-1 ,HuteCourant.getPointY());
-                if(notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY(),idjoueur)){
-                Point2D p1 = new Point2D(HuteCourant.getPointX()+1 ,HuteCourant.getPointY());
-                if(notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(check(HuteCourant.getPointX() ,HuteCourant.getPointY()-1,idjoueur)){
-                Point2D p1 = new Point2D(HuteCourant.getPointX() ,HuteCourant.getPointY()-1);
-                if(notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(check(HuteCourant.getPointX() ,HuteCourant.getPointY()+1,idjoueur)){
-                Point2D p1 = new Point2D(HuteCourant.getPointX() ,HuteCourant.getPointY()+1);
-                if(notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(HuteCourant.getPointX()%2==1){
-                if(check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1,idjoueur)){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1);
-                    if(notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-                if(check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1,idjoueur)){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1);
-                    if(notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-            }else{
-                if(check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1,idjoueur)){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1);
-                    if(notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-                if(check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1,idjoueur)){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1);
-                    if(notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-            }
+            ajouterHuttesVoisines(idjoueur, listeDesHutesVoisines, HuteCourant);
             i++;
         }
         return listeDesHutesVoisines;
+    }
+
+    private void ajouterHuttesVoisines(byte idjoueur, ArrayList<Point2D> listeDesHutesVoisines, Point2D HuteCourant) {
+        if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY(), idjoueur)){
+            Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY());
+            if(notIn(listeDesHutesVoisines,p1))
+                listeDesHutesVoisines.add(p1);
+        }
+        if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY(), idjoueur)){
+            Point2D p1 = new Point2D(HuteCourant.getPointX()+1 , HuteCourant.getPointY());
+            if(notIn(listeDesHutesVoisines,p1))
+                listeDesHutesVoisines.add(p1);
+        }
+        if(check(HuteCourant.getPointX() , HuteCourant.getPointY()-1, idjoueur)){
+            Point2D p1 = new Point2D(HuteCourant.getPointX() , HuteCourant.getPointY()-1);
+            if(notIn(listeDesHutesVoisines,p1))
+                listeDesHutesVoisines.add(p1);
+        }
+        if(check(HuteCourant.getPointX() , HuteCourant.getPointY()+1, idjoueur)){
+            Point2D p1 = new Point2D(HuteCourant.getPointX() , HuteCourant.getPointY()+1);
+            if(notIn(listeDesHutesVoisines,p1))
+                listeDesHutesVoisines.add(p1);
+        }
+        if(HuteCourant.getPointX()%2==1){
+            if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY()-1, idjoueur)){
+                Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY()-1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY()-1, idjoueur)){
+                Point2D p1 = new Point2D(HuteCourant.getPointX()+1 , HuteCourant.getPointY()-1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+        }else{
+            if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY()+1, idjoueur)){
+                Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY()+1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+            if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY()+1, idjoueur)){
+                Point2D p1 = new Point2D(HuteCourant.getPointX()+1 , HuteCourant.getPointY()+1);
+                if(notIn(listeDesHutesVoisines,p1))
+                    listeDesHutesVoisines.add(p1);
+            }
+        }
     }
 
     private boolean effaceUnVillageEntier(int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2){
@@ -517,16 +521,16 @@ public class Plateau implements Serializable {
         joueCoup(coup);
     }
 
-    public boolean peutPlacerMaison(int i,int j){
-        return (carte[i][j].getBiomeTerrain()!=Hexagone.VOLCAN && carte[i][j].getBatiment()==VIDE && carte[i][j].getBiomeTerrain()!=Hexagone.VIDE);
+    public boolean peutPlacerMaison(int ligne,int colonne){
+        return (carte[ligne][colonne].getBiomeTerrain()!=Hexagone.VOLCAN && carte[ligne][colonne].getBatiment()==VIDE && carte[ligne][colonne].getBiomeTerrain()!=Hexagone.VIDE);
     }
-    public void placeBatiment(byte joueurCourant, int i, int j, byte type_bat){
-        Coup coup = new Coup(joueurCourant, i,j,type_bat);
+    public void placeBatiment(byte joueurCourant, int ligne, int colonne, byte type_bat){
+        Coup coup = new Coup(joueurCourant, ligne,colonne,type_bat);
         historique.ajoute(coup);
         joueCoup(coup);
         if (type_bat == (byte)1){
             ArrayList<Point2D> nlh ;
-            nlh = propagation(i,j,joueurCourant);
+            nlh = propagation(ligne,colonne,joueurCourant);
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);

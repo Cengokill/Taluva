@@ -26,12 +26,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.pioche();
         }
     }
-    public boolean peutPlacerBatiment(int i, int j){
-        return jeu.getPlateau().peutPlacerMaison(i,j);
+    public boolean peutPlacerBatiment(int ligne, int colonne){
+        return jeu.getPlateau().peutPlacerMaison(ligne,colonne);
     }
 
-    public void placeBatiment(int i, int j, byte type_bat) {
-        jeu.joueurPlaceBatiment(i, j, type_bat);
+    public void placeBatiment(int ligne, int colonne, byte type_bat) {
+        jeu.joueurPlaceBatiment(ligne, colonne, type_bat);
     }
 
     public Hexagone[][] getPlateau() {

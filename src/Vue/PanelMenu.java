@@ -47,7 +47,7 @@ public class PanelMenu extends JPanel {
         bouton_Options = lisImage("bouton_options");
         bouton_Quitter = lisImage("bouton_quitter");
         options_background = lisImage("/Options/Options_background");
-        for(int i=0; i<sliders.length;i++){
+        for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
         bouton_droit = lisImage("/Options/boutons/btn_droit");

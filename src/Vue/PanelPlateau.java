@@ -150,39 +150,39 @@ public class PanelPlateau extends JPanel {
     }
 
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0 - 2; j < map[0].length; j++) {
-                affiche(g, map, tileWidth, verticalOffset, i, j);
+        for (int ligne = 0; ligne < map.length; ligne++) {
+            for (int colonne = 0 - 2; colonne < map[0].length; colonne++) {
+                affiche(g, map, tileWidth, verticalOffset, ligne, colonne);
             }
         }
     }
 
-    private void affiche(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int i, int j) {
-        if (i < 2 || j < 2 || i >= 58 || j >= 58) {
+    private void affiche(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int ligne, int colonne) {
+        if (ligne < 2 || colonne < 2 || ligne >= 58 || colonne >= 58) {
             return;
         }
-        int tileId = map[i][j].getBiomeTerrain();
+        int tileId = map[ligne][colonne].getBiomeTerrain();
         if (tileId != VIDE) {
-            afficheHexagone(g, map, tileWidth, verticalOffset, i, j, tileId);
+            afficheHexagone(g, map, tileWidth, verticalOffset, ligne, colonne, tileId);
         }
     }
 
-    private void afficheHexagone(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int i, int j, int tileId) {
-        int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
-        int y = i * verticalOffset;
+    private void afficheHexagone(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int ligne, int colonne, int tileId) {
+        int x = colonne * tileWidth - (ligne % 2 == 1 ? tileWidth / 2 : 0);
+        int y = ligne * verticalOffset;
 
 
-        int heightoffset = calculHauteurAffichageHexagone(map, i, j);
+        int heightoffset = calculHauteurAffichageHexagone(map, ligne, colonne);
 
-        BufferedImage tile = getTileImageFromId(tileId, map[i][j].getNum());
+        BufferedImage tile = getTileImageFromId(tileId, map[ligne][colonne].getNum());
         g.drawImage(tile, x , y - heightoffset, null);
 
 
         // TODO optimiser l'affichage, ces fonctions font lag
-        afficheFiltresTileMode(g, map, i, j, x, y, heightoffset);
-        afficheNumerosNiveaux(g, map, i, j, x, y, heightoffset);
-        afficheBatiments(g, map, i, j, x, y, heightoffset);
-        afficheContourParNiveau(g, map, i, j, x, y, heightoffset);
+        afficheFiltresTileMode(g, map, ligne, colonne, x, y, heightoffset);
+        afficheNumerosNiveaux(g, map, ligne, colonne, x, y, heightoffset);
+        afficheBatiments(g, map, ligne, colonne, x, y, heightoffset);
+        afficheContourParNiveau(g, map, ligne, colonne, x, y, heightoffset);
     }
 
     private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset) {
@@ -209,7 +209,7 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    private void contour(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset, int colonneDirection, Hexagone[] hexagones, String direction) {
+    private void contour(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset, int colonneDirection, Hexagone[] ligneHexagones, String direction) {
         BufferedImage contourEtage1;
         BufferedImage contourEtage2;
         BufferedImage contourEtage3;
@@ -260,12 +260,12 @@ public class PanelPlateau extends JPanel {
         }
 
 
-        if (estCoteTuile(colonneDirection, map[ligne], hexagones[colonne])) {
+        if (estCoteTuile(colonneDirection, map[ligne], ligneHexagones[colonne])) {
                 g.drawImage(contourTuile, xDrawPosition, yDrawPosition - heightoffset + 55, null);
         }
 
-        if (estBordureHauteur(colonneDirection, map[ligne], hexagones[colonne])) {
-            drawContourEtages(g, colonne, xDrawPosition, yDrawPosition, heightoffset, hexagones, contourEtage1, contourEtage2, contourEtage3);
+        if (estBordureHauteur(colonneDirection, map[ligne], ligneHexagones[colonne])) {
+            drawContourEtages(g, colonne, xDrawPosition, yDrawPosition, heightoffset, ligneHexagones, contourEtage1, contourEtage2, contourEtage3);
         }
     }
 
@@ -281,13 +281,13 @@ public class PanelPlateau extends JPanel {
         return hexagoneCourant.getBiomeTerrain() != Hexagone.VIDE && !aMemeVolcan;
     }
 
-    private void drawContourEtages(Graphics g, int j, int x, int y, int heightoffset, Hexagone[] hexagones, BufferedImage contourEtage1, BufferedImage contourEtage2, BufferedImage contourEtage3) {
-        if (hexagones[j].getHauteur() == 1) {
-            g.drawImage(contourEtage1, x, y - heightoffset + 55, null);
-        } else if (hexagones[j].getHauteur() == 2) {
-            g.drawImage(contourEtage2, x, y - heightoffset + 55, null);
-        } else if (hexagones[j].getHauteur() == 3) {
-            g.drawImage(contourEtage3, x, y - heightoffset + 55, null);
+    private void drawContourEtages(Graphics g, int colonne, int drawX, int drawY, int heightoffset, Hexagone[] ligneHexagone, BufferedImage contourEtage1, BufferedImage contourEtage2, BufferedImage contourEtage3) {
+        if (ligneHexagone[colonne].getHauteur() == 1) {
+            g.drawImage(contourEtage1, drawX, drawY - heightoffset + 55, null);
+        } else if (ligneHexagone[colonne].getHauteur() == 2) {
+            g.drawImage(contourEtage2, drawX, drawY - heightoffset + 55, null);
+        } else if (ligneHexagone[colonne].getHauteur() == 3) {
+            g.drawImage(contourEtage3, drawX, drawY - heightoffset + 55, null);
         }
     }
 
@@ -341,114 +341,114 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    private int calculHauteurAffichageHexagone(Hexagone[][] map, int i, int j) {
-        int heightoffset = map[i][j].getHauteur();
+    private int calculHauteurAffichageHexagone(Hexagone[][] map, int ligne, int colonne) {
+        int heightoffset = map[ligne][colonne].getHauteur();
         heightoffset *= HAUTEUR_ETAGE;
 
-        if (map[i][j].getBiomeTerrain() == VIDE) {
+        if (map[ligne][colonne].getBiomeTerrain() == VIDE) {
             heightoffset -= HAUTEUR_OCEAN;
         }
         return heightoffset;
     }
 
-    private void afficheNumerosNiveaux(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+    private void afficheNumerosNiveaux(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         if (mode_numero) {
-            if (map[i][j].getHauteur() == 1) {
-                g.drawImage(wrongTile1, x, y - heightoffset + 5, null);
+            if (map[ligne][colonne].getHauteur() == 1) {
+                g.drawImage(wrongTile1, drawX, drawY - heightoffset + 5, null);
             }
-            if (map[i][j].getHauteur() == 2) {
-                g.drawImage(wrongTile2, x, y - heightoffset + 5, null);
+            if (map[ligne][colonne].getHauteur() == 2) {
+                g.drawImage(wrongTile2, drawX, drawY - heightoffset + 5, null);
             }
-            if (map[i][j].getHauteur() == 3) {
-                g.drawImage(wrongTile3, x, y - heightoffset + 5, null);
+            if (map[ligne][colonne].getHauteur() == 3) {
+                g.drawImage(wrongTile3, drawX, drawY - heightoffset + 5, null);
             }
         }
     }
 
-    private void afficheFiltresTileMode(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+    private void afficheFiltresTileMode(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         if (poseTile) {
-            afficherFiltreSombre(g, map, i, j, x, y, heightoffset);
-            afficherFiltreVolcan(g, map, i, j, x, y, heightoffset);
+            afficherFiltreSombre(g, map, ligne, colonne, drawX, drawY, heightoffset);
+            afficherFiltreVolcan(g, map, ligne, colonne, drawX, drawY, heightoffset);
         }
     }
 
-    private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
-        if (map[i][j].getBiomeTerrain() == VOLCAN) {
-            int j2 = convertionTileMapToHexagonal(i, j);
-            illumineVolcanLibre(g, i, j, x, y, heightoffset, j2);
-            afficheDirectionsLibres(g, i, j, x, y, heightoffset, j2);
+    private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
+        if (map[ligne][colonne].getBiomeTerrain() == VOLCAN) {
+            int j2 = convertionTileMapToHexagonal(ligne, colonne);
+            illumineVolcanLibre(g, ligne, colonne, drawX, drawY, heightoffset, j2);
+            afficheDirectionsLibres(g, ligne, colonne, drawX, drawY, heightoffset, j2);
         }
     }
 
-    private void afficherFiltreSombre(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+    private void afficherFiltreSombre(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         if (hoveredTile_y < 2 || hoveredTile_x < 2 || hoveredTile_y >= 58 || hoveredTile_x >= 58) {
             return;
         }
         if (mode_plateau) {
-            if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
+            if (map[ligne][colonne].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
                 if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
-                    g.drawImage(voidTile_transparent, x, y - heightoffset + 5, null);
+                    g.drawImage(voidTile_transparent, drawX, drawY - heightoffset + 5, null);
                 }
             }
         }
     }
 
-    private int convertionTileMapToHexagonal(int i, int j) {
-        int j2;
-        if (i % 2 == 1) {
-            j2 = j - 1;
+    private int convertionTileMapToHexagonal(int ligne, int colonne) {
+        int colonneAjustee;
+        if (ligne % 2 == 1) {
+            colonneAjustee = colonne - 1;
         } else {
-            j2 = j;
+            colonneAjustee = colonne;
         }
-        return j2;
+        return colonneAjustee;
     }
 
-    private void afficheDirectionsLibres(Graphics g, int i, int j, int x, int y, int heightoffset, int j2) {
-        if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
-            g.drawImage(beacon_1, x, y - heightoffset + 5, null);
+    private void afficheDirectionsLibres(Graphics g, int colonne, int ligne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
+        if (controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee, colonne - 1, colonneAjustee + 1)) {
+            g.drawImage(beacon_1, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
-            g.drawImage(beacon_2, x, y - heightoffset + 5, null);
+        if (controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee + 1, colonne, ligne + 1)) {
+            g.drawImage(beacon_2, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
-            g.drawImage(beacon_3, x, y - heightoffset + 5, null);
+        if (controleur.peutPlacerTuile(colonne, ligne, colonne, ligne + 1, colonne + 1, colonneAjustee + 1)) {
+            g.drawImage(beacon_3, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
-            g.drawImage(beacon_4, x, y - heightoffset + 5, null);
+        if (controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee + 1, colonne + 1, colonneAjustee)) {
+            g.drawImage(beacon_4, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
-            g.drawImage(beacon_5, x, y - heightoffset + 5, null);
+        if (controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee, colonne, ligne - 1)) {
+            g.drawImage(beacon_5, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
-            g.drawImage(beacon_6, x, y - heightoffset + 5, null);
-        }
-    }
-
-    private void illumineVolcanLibre(Graphics g, int i, int j, int x, int y, int heightoffset, int j2) {
-        if (controleur.peutPlacerTuile(i, j, i - 1, j2, i - 1, j2 + 1)) {
-            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(i, j, i - 1, j2 + 1, i, j + 1)) {
-            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(i, j, i, j + 1, i + 1, j2 + 1)) {
-            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(i, j, i + 1, j2 + 1, i + 1, j2)) {
-            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(i, j, i + 1, j2, i, j - 1)) {
-            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(i, j, i, j - 1, i - 1, j2)) {
-            g.drawImage(whiteTile, x, y - heightoffset + 5, null);
+        if (controleur.peutPlacerTuile(colonne, ligne, colonne, ligne - 1, colonne - 1, colonneAjustee)) {
+            g.drawImage(beacon_6, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
     }
 
-    private boolean estTemple(int i,int j){
-        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_PRAIRIE) return true;
-        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_FORET) return true;
-        if(jeu.getPlateau().getBatiment(i,j)==TEMPLE_PIERRE) return true;
-        return jeu.getPlateau().getBatiment(i, j) == TEMPLE_SABLE;
+    private void illumineVolcanLibre(Graphics g, int ligne, int colonne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
+        if (controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee, ligne - 1, colonneAjustee + 1)) {
+            g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee + 1, ligne, colonne + 1)) {
+            g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne, colonne + 1, ligne + 1, colonneAjustee + 1)) {
+            g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee + 1, ligne + 1, colonneAjustee)) {
+            g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee, ligne, colonne - 1)) {
+            g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne, colonne - 1, ligne - 1, colonneAjustee)) {
+            g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        }
     }
 
-    private boolean estTour(int i,int j){
-        return jeu.getPlateau().getBatiment(i, j) == TOUR;
+    private boolean estTemple(int ligne,int colonne){
+        return (jeu.getPlateau().getBatiment(ligne, colonne) == TEMPLE_SABLE   ||
+                jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE_PRAIRIE ||
+                jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE_FORET   ||
+                jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE_PIERRE);
+    }
+
+    private boolean estTour(int ligne,int colonne){
+        return jeu.getPlateau().getBatiment(ligne, colonne) == TOUR;
     }
 
     private ArrayList<Point2D> copyPoints(ArrayList<Point2D> tab1) {
@@ -548,7 +548,7 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int x, int y, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3) {
+    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int drawX, int drawY, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3) {
         int heightoffset1 = 1;
         int heightoffset2 = 1;
         int heightoffset3 = 1;
@@ -557,56 +557,56 @@ public class PanelPlateau extends JPanel {
         heightoffset3 *= 30;
 
         if (scrollValue == 1) {
-            g.drawImage(tile2, x - tileWidth /2, y - verticalOffset -  heightoffset2, null);
-            g.drawImage(tile3, x + tileWidth /2, y - verticalOffset - heightoffset3, null);
-            g.drawImage(tile1, x, y - heightoffset1, null);
+            g.drawImage(tile2, drawX - tileWidth /2, drawY - verticalOffset -  heightoffset2, null);
+            g.drawImage(tile3, drawX + tileWidth /2, drawY - verticalOffset - heightoffset3, null);
+            g.drawImage(tile1, drawX, drawY - heightoffset1, null);
         }
         else if (scrollValue == 2){
-            g.drawImage(tile2, x + tileWidth /2, y - verticalOffset -  heightoffset2, null);
-            g.drawImage(tile3, x + tileWidth, y - heightoffset3, null);
-            g.drawImage(tile1, x, y - heightoffset1, null);
+            g.drawImage(tile2, drawX + tileWidth /2, drawY - verticalOffset -  heightoffset2, null);
+            g.drawImage(tile3, drawX + tileWidth, drawY - heightoffset3, null);
+            g.drawImage(tile1, drawX, drawY - heightoffset1, null);
 
         }
         else if (scrollValue == 3){
-            g.drawImage(tile1, x, y - heightoffset1, null);
-            g.drawImage(tile2, x + tileWidth, y -  heightoffset2, null);
-            g.drawImage(tile3, x +  tileWidth /2, y + verticalOffset - heightoffset3, null);
+            g.drawImage(tile1, drawX, drawY - heightoffset1, null);
+            g.drawImage(tile2, drawX + tileWidth, drawY -  heightoffset2, null);
+            g.drawImage(tile3, drawX +  tileWidth /2, drawY + verticalOffset - heightoffset3, null);
         }
         else if (scrollValue == 4){
-            g.drawImage(tile1, x, y - heightoffset1, null);
-            g.drawImage(tile2, x + tileWidth /2, y + verticalOffset -  heightoffset2, null);
-            g.drawImage(tile3, x - tileWidth /2, y + verticalOffset - heightoffset3, null);
+            g.drawImage(tile1, drawX, drawY - heightoffset1, null);
+            g.drawImage(tile2, drawX + tileWidth /2, drawY + verticalOffset -  heightoffset2, null);
+            g.drawImage(tile3, drawX - tileWidth /2, drawY + verticalOffset - heightoffset3, null);
         }
         else if (scrollValue == 5){
-            g.drawImage(tile1, x, y - heightoffset1, null);
-            g.drawImage(tile3, x - tileWidth, y - heightoffset3, null);
-            g.drawImage(tile2, x - tileWidth /2, y + verticalOffset -  heightoffset2, null);
+            g.drawImage(tile1, drawX, drawY - heightoffset1, null);
+            g.drawImage(tile3, drawX - tileWidth, drawY - heightoffset3, null);
+            g.drawImage(tile2, drawX - tileWidth /2, drawY + verticalOffset -  heightoffset2, null);
         }
         else if (scrollValue == 6){
-            g.drawImage(tile3, x - tileWidth /2, y - verticalOffset - heightoffset3, null);
-            g.drawImage(tile2, x - tileWidth, y -  heightoffset2, null);
-            g.drawImage(tile1, x, y - heightoffset1, null);
+            g.drawImage(tile3, drawX - tileWidth /2, drawY - verticalOffset - heightoffset3, null);
+            g.drawImage(tile2, drawX - tileWidth, drawY -  heightoffset2, null);
+            g.drawImage(tile1, drawX, drawY - heightoffset1, null);
         }
     }
 
-    private float updateOpacite(int i, int j, int j2, float opacity) {
+    private float updateOpacite(int ligne, int colonne, int colonneAjustee, float opacity) {
         if (scrollValue == 1) {
-            opacity = changeOpacitePeutPasplacerTuile(i, j, j2, opacity, i - 1, i - 1, j2 + 1);
+            opacity = changeOpacitePeutPasplacerTuile(ligne, colonne, colonneAjustee, opacity, ligne - 1, ligne - 1, colonneAjustee + 1);
         }
         else if (scrollValue == 2){
-            opacity = changeOpacitePeutPasplacerTuile(i, j, j2 + 1, opacity, i - 1, i, j + 1);
+            opacity = changeOpacitePeutPasplacerTuile(ligne, colonne, colonneAjustee + 1, opacity, ligne - 1, ligne, colonne + 1);
         }
         else if (scrollValue == 3){
-            opacity = changeOpacitePeutPasplacerTuile(i, j, j + 1, opacity, i, i + 1, j2 + 1);
+            opacity = changeOpacitePeutPasplacerTuile(ligne, colonne, colonne + 1, opacity, ligne, ligne + 1, colonneAjustee + 1);
         }
         else if (scrollValue == 4){
-            opacity = changeOpacitePeutPasplacerTuile(i, j, j2 + 1, opacity, i + 1, i + 1, j2);
+            opacity = changeOpacitePeutPasplacerTuile(ligne, colonne, colonneAjustee + 1, opacity, ligne + 1, ligne + 1, colonneAjustee);
         }
         else if (scrollValue == 5){
-            opacity = changeOpacitePeutPasplacerTuile(i, j, j2, opacity, i + 1, i, j - 1);
+            opacity = changeOpacitePeutPasplacerTuile(ligne, colonne, colonneAjustee, opacity, ligne + 1, ligne, colonne - 1);
         }
         else if (scrollValue == 6){
-            opacity = changeOpacitePeutPasplacerTuile(i, j, j - 1, opacity, i, i - 1, j2);
+            opacity = changeOpacitePeutPasplacerTuile(ligne, colonne, colonne - 1, opacity, ligne, ligne - 1, colonneAjustee);
         }
         return opacity;
     }

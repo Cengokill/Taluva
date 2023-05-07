@@ -94,8 +94,8 @@ public class Jeu extends Observable {
     }
 
     public void calculScore(){
-        for(int i = 0; i<joueurs.length; i++){
-            score[i] = joueurs[i].getNbTemplesPlaces()*1000 + joueurs[i].getNbToursPlacees()*100 + joueurs[i].getNbHuttesPlacees();
+        for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
+            score[joueurIndex] = joueurs[joueurIndex].getNbTemplesPlaces()*1000 + joueurs[joueurIndex].getNbToursPlacees()*100 + joueurs[joueurIndex].getNbHuttesPlacees();
         }
     }
 
@@ -133,18 +133,18 @@ public class Jeu extends Observable {
         return true;
     }
 
-    public void joueurPlaceBatiment(int i, int j, byte type_bat){
+    public void joueurPlaceBatiment(int ligne, int colonne, byte type_bat){
         if (doit_placer_tuile) {
             return;
         }
-        plateau.placeBatiment(jCourant, i,j, type_bat);
+        plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
         if(type_bat!=4){
             if(getNumJoueurCourant()==0) plateau.quantiteBatimentJoueur1++;
             if(getNumJoueurCourant()==1) plateau.quantiteBatimentJoueur2++;
 
             if(type_bat == 1) {
-                if(plateau.getHauteurTuile(i,j)==2) joueurs[jCourant].incrementeHutte();
-                if(plateau.getHauteurTuile(i,j)==3) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
             else if(type_bat == 2) {

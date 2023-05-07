@@ -12,21 +12,22 @@ class IAIntelligenteV1 extends AbstractIA {
     public IAIntelligenteV1() {
     }
 
-    private int modified(int i,int j){
-        int j_modified;
-        if (i % 2 == 1) {
-            j_modified = j - 1;
+    private int ajusterColonne(int ligne, int colonne){
+        int colonneAjustee;
+        if (ligne % 2 == 1) {
+            colonneAjustee = colonne - 1;
         } else {
-            j_modified = j;
+            colonneAjustee = colonne;
         }
-        return j_modified;
+        return colonneAjustee;
     }
     public Coup joue() {
 
         Random r = new Random();
-        int i=0, j=0;
-        int taille_x = jeu.getPlateau().getCarte().length;
-        int taille_y = jeu.getPlateau().getCarte()[0].length;
+        int ligne, colonne;
+        int taille_ligne = jeu.getPlateau().getCarte().length;
+        int taille_colonne = jeu.getPlateau().getCarte()[0].length;
+
         byte numIA = jeu.getNumJoueurCourant();
 
         if(jeu.doit_placer_tuile()){
@@ -37,13 +38,13 @@ class IAIntelligenteV1 extends AbstractIA {
             triplet[2][0] = tuiles[1]; // tile 2
             triplet[0][0] = tuiles[2];
             if(jeu.getPlateau().estVide()){ // l'AbstractIA est le premier à jouer donc on place au centres
-                i = taille_x/2;
-                j = taille_y/2;
+                ligne = taille_ligne/2;
+                colonne = taille_colonne/2;
 
-                int j_modified = modified(i,j);
+                int colonneAjustee = ajusterColonne(ligne,colonne);
 
-                // controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
-                return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified+1,triplet[2][0]);
+                // controleur.placeEtage(ligne, colonne, ligne - 1, colonneAjustee, triplet[1][0], ligne - 1, colonneAjustee + 1, triplet[2][0]);
+                return new Coup(numIA,ligne,colonne,ligne-1,colonneAjustee,triplet[1][0],ligne-1,colonneAjustee+1,triplet[2][0]);
             }else{
                 // Trouver un emplacement pour les hexagones
                 ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
