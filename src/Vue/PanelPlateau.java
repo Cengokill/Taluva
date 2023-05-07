@@ -53,8 +53,8 @@ public class PanelPlateau extends JPanel {
         poseTile = true;
         boucle();
 
-        cameraOffset.x += fenetreJeu.frame.getWidth()/2;
-        cameraOffset.y += fenetreJeu.frame.getHeight()/2;
+        cameraOffset.x -= fenetreJeu.frame.getWidth()/2;
+        cameraOffset.y -= fenetreJeu.frame.getHeight()/2 + 150;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
-        g.drawImage(background, x + 50, y - 50, 5300 + 800, (int)(5300*0.75) + 800, null);
+        g.drawImage(background, x + 70, y - 10, 5300 + 800, (int)(5300*0.75) + 800, null);
     }
 
 
