@@ -316,13 +316,12 @@ public class PanelPlateau extends JPanel {
                 ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
                 while(aPropager.size()!=0) {
                     Point2D PosCourante = aPropager.remove(0);
-                    int tileWidth = voidTile.getWidth();
-                    int tileHeight = voidTile.getWidth();
-                    int verticalOffset = (int) (tileHeight * 0.75);
-                    int posPrevX = PosCourante.getPointY() * tileWidth - (PosCourante.getPointX() % 2 == 1 ? tileWidth / 2 : 0);
-                    int posPrevY = PosCourante.getPointX() * verticalOffset;
+                    int posPrevX = PosCourante.getPointY() * voidTile.getWidth() - (PosCourante.getPointX() % 2 == 1 ? voidTile.getWidth() / 2 : 0);
+                    int posPrevY = PosCourante.getPointX() * (int) (voidTile.getWidth() * 0.75);
                     emplacementPropagation.add(new Position(posPrevX,posPrevY - heightoffset));
                 }
+            }else if(index_bat_precedent!=value){
+                emplacementPropagation = new ArrayList<>();
             }
             posX_bat_precedent = ligne;
             posY_bat_precedent = colonne;
