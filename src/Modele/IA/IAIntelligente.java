@@ -71,7 +71,7 @@ public class IAIntelligente extends AbstractIA {
             //pour chaque coup possible
             while (!coupsPossibles.estVide()) {
                 //on joue le coup
-                //on enregistre le plateau et le pioche après avoir jou� le coup dans une nouvelle Instance
+                //on enregistre le plateau et le pioche après avoir joué le coup dans une nouvelle Instance
                 //si l'Instance n'est pas dans la Hashmap
                 //on calcule la valeur de l'instance
                 //si l'instance est une victoire de l'IA
