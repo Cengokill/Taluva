@@ -31,7 +31,7 @@ public class Plateau implements Serializable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
-        placeEtage((byte) 0,31,29,31,30,(byte) 1,32,29,(byte) 2);
+        //placeEtage((byte) 0,31,29,31,30,(byte) 1,32,29,(byte) 2);
     }
 
     private void initHistorique() {
@@ -237,18 +237,19 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
+        // Vérifie qu'on ne pose pas au bord du plateau
+        if (ligneVolcan < 2 || colonneVolcan < 2 || ligneVolcan >= carte.length-2 || colonneVolcan >= carte.length-2) {
+            return false;
+        }
+        if (ligneTile1 < 2 || colonneTile1 < 2 || ligneTile1 >= carte.length-2 || colonneTile1 >= carte.length-2) {
+            return false;
+        }
+        if (ligneTile2 < 2 || colonneTile2 < 2 || ligneTile2 >= carte.length-2 || colonneTile2 >= carte.length-2) {
+            return false;
+        }
 
-        if (ligneVolcan < 2 || colonneVolcan < 2 || ligneVolcan >= 58 || colonneVolcan >= 58) {
-            return false;
-        }
-        if (ligneTile1 < 2 || colonneTile1 < 2 || ligneTile1 >= 58 || colonneTile1 >= 58) {
-            return false;
-        }
-        if (ligneTile2 < 2 || colonneTile2 < 2 || ligneTile2 >= 58 || colonneTile2 >= 58) {
-            return false;
-        }
-
-        if(estVide()) return true;
+        // Premiere tuile posée
+        if(estVide() && (ligneVolcan>=carte.length/2-2) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2+1)) return true;
 
         // Hauteur max
         int hauteur = carte[ligneVolcan][colonneVolcan].getHauteur();
@@ -264,14 +265,7 @@ public class Plateau implements Serializable {
                 && carte[ligneTile2][colonneTile2].getLigneVolcan()==ligneVolcan && carte[ligneTile2][colonneTile2].getColonneVolcan()==colonneVolcan){
             return false;
         }
-
-        // Vérifie qu'on ne pose pas au bord du plateau
-        if(ligneVolcan<=10 || colonneVolcan<=8 || ligneTile1<=10 || colonneTile1 <=8 || ligneTile2<=10 || colonneTile2<=8
-                || ligneVolcan>=carte.length-20 || colonneVolcan>=carte[0].length-18 || ligneTile1>=carte.length-18 || colonneTile1>=carte[0].length-18 || ligneTile2>=carte.length-18 || colonneTile2>=carte[0].length-18 ){
-            return  false;
-        }
-
-
+        
         // On ne place pas sur un temple
         if(estTemple(ligneVolcan,colonneVolcan)||estTemple(ligneTile1,colonneTile1)||estTemple(ligneTile2,colonneTile2)) return false;
         // On ne place pas sur une tour
@@ -279,7 +273,7 @@ public class Plateau implements Serializable {
         // On efface un village entier
         if(effaceUnVillageEntier(ligneTile1,colonneTile1,ligneTile2,colonneTile2)||effaceUnVillageEntier(ligneTile2,colonneTile2,ligneTile1,colonneTile1)) return false;
 
-        // V?rifie la hauteur de toutes les cases
+        // Vérifie la hauteur de toutes les cases
         if (carte[ligneVolcan][colonneVolcan].getHauteur() != hauteur) {
             return false;
         }
