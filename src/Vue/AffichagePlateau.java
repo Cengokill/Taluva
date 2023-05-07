@@ -52,8 +52,8 @@ public class AffichagePlateau extends JPanel {
 
         System.out.println(fenetreJeu.frame.getWidth());
         System.out.println(fenetreJeu.frame.getHeight());
-        cameraOffset.x += fenetreJeu.frame.getWidth();
-        cameraOffset.y += 0;
+        cameraOffset.x += fenetreJeu.frame.getWidth()/2;
+        cameraOffset.y += fenetreJeu.frame.getHeight()/2;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
-        g.drawImage(background, x, y, largeur*4, hauteur*4, null);
+        g.drawImage(background, x, y, largeur*6, hauteur*6, null);
     }
 
 
