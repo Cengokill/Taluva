@@ -356,10 +356,18 @@ public class PanelPlateau extends JPanel {
 
     private int updateScrollValue(int value, int[] coups) {
         if (coups[0] == 0 && coups[2] == 0) value = 1; // si on ne peut pas placer de temple ni de tour
+        else if(coups[1]==0){       // On ne peut pas placer de hutte
+            if(coups[0]==0) value=2;
+            else if(coups[2]==0) value=0;
+            else{
+                value = scrollValue % 2;
+                if(value==1) value=2;
+            }
+        }
         else if (coups[0] == 0) {   // on ne peut pas placer de temple
             value = scrollValue % 2;
             if (value == 0) value = 2;
-        } else if (coups[2] == 0) {
+        } else if (coups[2] == 0) { // On ne peut pas placer de tour
             value = scrollValue % 2;
             if (value == 1) value = 0;
             else if (value == 0) value = 1;
@@ -369,8 +377,12 @@ public class PanelPlateau extends JPanel {
 
     private void choixBatiment(Graphics g, int pos_x, int pos_y, int value, int[] coups) {
         if(coups[1]==0){
-            // TODO les images sans les huttes
-            g.drawImage(bouton_load, pos_x, pos_y,bouton_load.getWidth()*2,bouton_load.getWidth()*2, null);
+            if(coups[0]==0) g.drawImage(choisirBat[11], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+            else if(coups[2]==0) g.drawImage(choisirBat[9], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+            else{
+               if(value==0) g.drawImage(choisirBat[8], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+               else g.drawImage(choisirBat[10], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+            }
         }
         else if(coups[0]==0){
             if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
@@ -854,6 +866,7 @@ public class PanelPlateau extends JPanel {
         int value = scrollValue%3;
         int[] coupsJouable = coupJouable(i,j);
         value = updateScrollValue(value, coupsJouable);
+        System.out.println("value: "+value);
 
         if (value == 1) { // place hut
             if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;

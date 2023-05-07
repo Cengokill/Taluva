@@ -32,7 +32,7 @@ public class ImageLoader {
             tourColor1,
             tourColor2;
     public static BufferedImage constructionMode;
-    public static final BufferedImage[] choisirBat = new BufferedImage[8];
+    public static final BufferedImage[] choisirBat = new BufferedImage[12];
     public static BufferedImage waterTile, fenetre_score, background, joueur_courant;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
@@ -108,6 +108,11 @@ public class ImageLoader {
         choisirBat[5] = lisImageBuf(imageFolder + "choisir_bat_2_sans_3");
         choisirBat[6] = lisImageBuf(imageFolder + "choisir_bat_3_sans_2");
         choisirBat[7] = lisImageBuf(imageFolder + "choisir_bat_sans_23");
+        choisirBat[8] = lisImageBuf(imageFolder + "choisir_bat_2_sans_1");
+        choisirBat[9] = lisImageBuf(imageFolder + "choisir_bat_2_sans_1_3");
+        choisirBat[10] = lisImageBuf(imageFolder + "choisir_bat_3_sans_1");
+        choisirBat[11] = lisImageBuf(imageFolder + "choisir_bat_3_sans_1_2");
+
         constructionMode = lisImageBuf(imageFolder + "construction");
     }
 
