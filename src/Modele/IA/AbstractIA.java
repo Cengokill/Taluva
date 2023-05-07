@@ -37,7 +37,11 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         pioche = jeu.getPioche();
     }
 
-    public ArrayList<Coup> joue() {
+    /*public ArrayList<Coup> joue() {
+        return null;
+    }*/
+
+    public Coup joue(){
         return null;
     }
 

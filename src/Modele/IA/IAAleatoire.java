@@ -26,8 +26,8 @@ class IAAleatoire extends AbstractIA {
 
         Random r = new Random();
         int i=0, j=0;
-        int taille_x = jeu.getPlateau().plateau.length;
-        int taille_y = jeu.getPlateau().plateau[0].length;
+        int taille_x = jeu.getPlateau().getPlateau().length;
+        int taille_y = jeu.getPlateau().getPlateau()[0].length;
         byte numIA = jeu.getNumJoueurCourant();
 
         if(jeu.doit_placer_tuile()){

@@ -89,8 +89,12 @@ public class IAIntelligente extends AbstractIA {
         return chemin;
     }
 
-    public ArrayList<Coup> joue() {
+    /*public ArrayList<Coup> joue() {
         return calculCoups();
+    }*/
+
+    public Coup joue(){
+        return null;
     }
 
 }
