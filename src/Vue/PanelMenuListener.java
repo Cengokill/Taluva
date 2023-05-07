@@ -35,6 +35,9 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_boutons-(panelMenu.largeur_background/9) ;
         int starty = 0;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
+            panelMenu.select_options = false;
+            panelMenu.select_quitter = false;
+            panelMenu.select_reseau = false;
             panelMenu.select_local = true;
             this.type_jeu = "local";
             return true;
@@ -47,6 +50,9 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_boutons+(panelMenu.largeur_background/9);
         int starty = 0;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
+            panelMenu.select_options = false;
+            panelMenu.select_quitter = false;
+            panelMenu.select_local = false;
             panelMenu.select_reseau = true;
             this.type_jeu = "reseau";
             return true;
@@ -59,6 +65,9 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_boutons;
         int starty = panelMenu.posY_Options;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
+            panelMenu.select_local = false;
+            panelMenu.select_reseau = false;
+            panelMenu.select_quitter = false;
             panelMenu.select_options = true;
             return true;
         }
@@ -70,6 +79,9 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_boutons;
         int starty = panelMenu.posY_Quitter;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
+            panelMenu.select_options = false;
+            panelMenu.select_local = false;
+            panelMenu.select_reseau = false;
             panelMenu.select_quitter = true;
             return true;
         }

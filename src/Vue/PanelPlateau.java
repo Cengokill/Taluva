@@ -500,7 +500,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private boolean estTemple(int ligne,int colonne){
-        return jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE;
+        return jeu.getPlateau().getBatiment(ligne,colonne) == TEMPLE;
     }
 
     private boolean estTour(int ligne,int colonne){

@@ -168,14 +168,6 @@ public class ImageLoader {
         return null;
     }
 
-    private static BufferedImage getTempleSable(byte id_player) {
-        if (id_player == 0) {
-            return templeSableColor1;
-        } else {
-            return templeSableColor2;
-        }
-    }
-
     private static BufferedImage getTour(byte id_player) {
         if (id_player == 0) {
             return tourColor1;
