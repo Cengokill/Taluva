@@ -34,7 +34,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public Hexagone[][] getPlateau() {
-        return jeu.getPlateau().getPlateau();
+        return jeu.getPlateau().getCarte();
     }
 
     public byte[] getTuileAPoser() {

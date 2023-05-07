@@ -13,7 +13,7 @@ public class Plateau implements Serializable {
     final int LIGNES = 60;
     final int COLONNES = 60;
     public int quantiteBatimentJoueur1, quantiteBatimentJoueur2;
-    protected Hexagone[][] plateau ;
+    protected Hexagone[][] carte;
     protected byte[] quantitePionJoueur1;
     protected byte[] quantitePionJoueur2;
     private Historique historique;
@@ -64,20 +64,20 @@ public class Plateau implements Serializable {
 
 
     private void initPlateau() {
-        plateau = new Hexagone[LIGNES][COLONNES];
+        carte = new Hexagone[LIGNES][COLONNES];
         remplirPlateau();
     }
 
     private void remplirPlateau() {
-        for (int i = 0; i < plateau.length; i++) {
-            for (int j = 0; j < plateau[0].length; j++) {
-                plateau[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
+        for (int i = 0; i < carte.length; i++) {
+            for (int j = 0; j < carte[0].length; j++) {
+                carte[i][j] = new Hexagone((byte)0, Hexagone.VIDE, (byte)19, (byte)20);
             }
         }
     }
 
-    public Hexagone[][] getPlateau() {
-        return plateau;
+    public Hexagone[][] getCarte() {
+        return carte;
     }
 
     // check si la condition de victoire du nb de pi?ces est bonne
@@ -90,11 +90,11 @@ public class Plateau implements Serializable {
         return nb_pion_vite_J1 >= 2;
     }
     public boolean tousLesMeme(int x1 , int y1 , int x2 ,int y2 ,int x3 ,int y3){
-        return plateau[x1][y1].getHauteur() == plateau[x2][y2].getHauteur() && plateau[x1][y1].getHauteur() == plateau[x3][y3].getHauteur();
+        return carte[x1][y1].getHauteur() == carte[x2][y2].getHauteur() && carte[x1][y1].getHauteur() == carte[x3][y3].getHauteur();
     }
 
     public boolean estHexagoneLibre(int ligne, int colonne){
-        return plateau[ligne][colonne].getBiomeTerrain() <= 1;
+        return carte[ligne][colonne].getBiomeTerrain() <= 1;
     }
 
     public boolean estDansTripletsPossibles(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
@@ -175,9 +175,9 @@ public class Plateau implements Serializable {
 
     private boolean effaceUnVillageEntier(int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2){
         if(getBatiment(ligneTile1,colonneTile1)==HUTTE){                            // une hutte sur la premiere tuile
-            byte idBat_1 = getPlateau()[ligneTile1][colonneTile1].getNumJoueur();
+            byte idBat_1 = getCarte()[ligneTile1][colonneTile1].getNumJoueur();
             if(getBatiment(ligneTile2,colonneTile2)==HUTTE){                        // sur la deuxieme aussi
-                byte idBat_2 = getPlateau()[ligneTile2][colonneTile2].getNumJoueur();
+                byte idBat_2 = getCarte()[ligneTile2][colonneTile2].getNumJoueur();
                 if(idBat_1==idBat_2){                                               // les 2 appartiennent au même joueur
                     if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=2 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village qui contient 2 huttes
                 }else{                                                              // les 2 appartiennet à des joueurs differents
@@ -219,13 +219,13 @@ public class Plateau implements Serializable {
 
     public int[] getNbBatEcrase(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j){
         int nb_bat_1 = 0,nb_bat_2 = 0;
-        if(plateau[volcan_i][volcan_j].getBatiment()!=0 && plateau[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
-        if(plateau[tile1_i][tile1_j].getBatiment()!=0 && plateau[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
-        if(plateau[tile2_i][tile2_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+        if(carte[volcan_i][volcan_j].getBatiment()!=0 && carte[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+        if(carte[tile1_i][tile1_j].getBatiment()!=0 && carte[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+        if(carte[tile2_i][tile2_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
 
-        if(plateau[volcan_i][volcan_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
-        if(plateau[tile1_i][tile1_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
-        if(plateau[tile2_i][tile2_j].getBatiment()!=0  && plateau[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+        if(carte[volcan_i][volcan_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+        if(carte[tile1_i][tile1_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+        if(carte[tile2_i][tile2_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
 
         int[] tab =  new int[2];
         tab[0] = nb_bat_1;
@@ -249,18 +249,24 @@ public class Plateau implements Serializable {
         if(estVide()) return true;
 
         // Hauteur max
-        int hauteur = plateau[ligneVolcan][colonneVolcan].getHauteur();
+        int hauteur = carte[ligneVolcan][colonneVolcan].getHauteur();
         if (hauteur == 4) {
             return false;
         }
-        // V?rifie si on place un volcan sur un volcan
-        if (plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VOLCAN && plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE) {
+        // Vérifie si on place un volcan sur un volcan
+        if (carte[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VOLCAN && carte[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE) {
             return false;
         }
         // Vérifie qu'on ne place pas pile poil par dessus une autre tuile
-        if(plateau[ligneTile1][colonneTile1].getLigneVolcan()==ligneVolcan && plateau[ligneTile1][colonneTile1].getColonneVolcan()==colonneVolcan
-                && plateau[ligneTile2][colonneTile2].getLigneVolcan()==ligneVolcan && plateau[ligneTile2][colonneTile2].getColonneVolcan()==colonneVolcan){
+        if(carte[ligneTile1][colonneTile1].getLigneVolcan()==ligneVolcan && carte[ligneTile1][colonneTile1].getColonneVolcan()==colonneVolcan
+                && carte[ligneTile2][colonneTile2].getLigneVolcan()==ligneVolcan && carte[ligneTile2][colonneTile2].getColonneVolcan()==colonneVolcan){
             return false;
+        }
+
+        // Vérifie qu'on ne pose pas au bord du plateau
+        if(ligneVolcan<=10 || colonneVolcan<=8 || ligneTile1<=10 || colonneTile1 <=8 || ligneTile2<=10 || colonneTile2<=8
+                || ligneVolcan>=carte.length-20 || colonneVolcan>=carte[0].length-18 || ligneTile1>=carte.length-18 || colonneTile1>=carte[0].length-18 || ligneTile2>=carte.length-18 || colonneTile2>=carte[0].length-18 ){
+            return  false;
         }
 
 
@@ -272,28 +278,28 @@ public class Plateau implements Serializable {
         if(effaceUnVillageEntier(ligneTile1,colonneTile1,ligneTile2,colonneTile2)||effaceUnVillageEntier(ligneTile2,colonneTile2,ligneTile1,colonneTile1)) return false;
 
         // V?rifie la hauteur de toutes les cases
-        if (plateau[ligneVolcan][colonneVolcan].getHauteur() != hauteur) {
+        if (carte[ligneVolcan][colonneVolcan].getHauteur() != hauteur) {
             return false;
         }
-        if (plateau[ligneTile1][colonneTile1].getHauteur() != hauteur) {
+        if (carte[ligneTile1][colonneTile1].getHauteur() != hauteur) {
             return false;
         }
-        if (plateau[ligneTile2][colonneTile2].getHauteur() != hauteur) {
+        if (carte[ligneTile2][colonneTile2].getHauteur() != hauteur) {
             return false;
         }
 
 
-        if (plateau[ligneVolcan][colonneVolcan].getBiomeTerrain() == Hexagone.VIDE && plateau[ligneTile1][colonneTile1].getBiomeTerrain() == Hexagone.VIDE && plateau[ligneTile2][colonneTile2].getBiomeTerrain() == Hexagone.VIDE) {
+        if (carte[ligneVolcan][colonneVolcan].getBiomeTerrain() == Hexagone.VIDE && carte[ligneTile1][colonneTile1].getBiomeTerrain() == Hexagone.VIDE && carte[ligneTile2][colonneTile2].getBiomeTerrain() == Hexagone.VIDE) {
 
 
             if (!(
                     // Gauche droite
-                    plateau[ligneVolcan][colonneVolcan - 1].getBiomeTerrain() != Hexagone.VIDE ||
-                            plateau[ligneVolcan][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                            plateau[ligneTile1][colonneTile1 - 1].getBiomeTerrain() != Hexagone.VIDE ||
-                            plateau[ligneTile1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                            plateau[ligneTile2][colonneTile2 - 1].getBiomeTerrain() != Hexagone.VIDE ||
-                            plateau[ligneTile2][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE)) {
+                    carte[ligneVolcan][colonneVolcan - 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            carte[ligneVolcan][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            carte[ligneTile1][colonneTile1 - 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            carte[ligneTile1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            carte[ligneTile2][colonneTile2 - 1].getBiomeTerrain() != Hexagone.VIDE ||
+                            carte[ligneTile2][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE)) {
 
                 if (ligneVolcan % 2 == 1) {
                     colonneVolcan -= 1;
@@ -305,31 +311,31 @@ public class Plateau implements Serializable {
                     colonneTile2 -= 1;
                 }
 
-                return plateau[ligneVolcan - 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneVolcan - 1][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneVolcan + 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneVolcan + 1][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE ||
+                return carte[ligneVolcan - 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneVolcan - 1][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneVolcan + 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneVolcan + 1][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE ||
 
-                        plateau[ligneTile1 - 1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneTile1 - 1][colonneTile1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneTile1 + 1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneTile1 + 1][colonneTile1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile1 - 1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile1 - 1][colonneTile1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile1 + 1][colonneTile1 + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile1 + 1][colonneTile1].getBiomeTerrain() != Hexagone.VIDE ||
 
-                        plateau[ligneTile2 - 1][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneTile2 - 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneTile2 + 1][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        plateau[ligneTile2 + 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE;
+                        carte[ligneTile2 - 1][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile2 - 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile2 + 1][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                        carte[ligneTile2 + 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE;
             }
         }
 
         return true;
     }
     public boolean peutPlacerVillage(int x ,int y){
-        return plateau[x][y].getBiomeTerrain() != Hexagone.VOLCAN || plateau[x][y].getBatiment() == Hexagone.VIDE;
+        return carte[x][y].getBiomeTerrain() != Hexagone.VOLCAN || carte[x][y].getBatiment() == Hexagone.VIDE;
 
     }
     public boolean VillageQuestionMarK(int x , int y){
-        return plateau[x][y].getBatiment() == Hexagone.HUTTE;
+        return carte[x][y].getBatiment() == Hexagone.HUTTE;
 
     }
 
@@ -445,26 +451,26 @@ public class Plateau implements Serializable {
         if(estCaseHorsPlateau(l,c)){
             return false;
         }
-        if(plateau[l][c].getBiomeTerrain()==Hexagone.VIDE){
+        if(carte[l][c].getBiomeTerrain()==Hexagone.VIDE){
             return true;
         }
-        return plateau[l][c].getBiomeTerrain() == Hexagone.WATER;
+        return carte[l][c].getBiomeTerrain() == Hexagone.WATER;
     }
     public boolean estVolcan(int l, int c){
-        return plateau[l][c].getBiomeTerrain() == Hexagone.VOLCAN;
+        return carte[l][c].getBiomeTerrain() == Hexagone.VOLCAN;
     }
 
     public boolean aPourVolcan(int hexagone_c, int hexagon_l, int volcan_c, int volcan_l) {
-        return plateau[hexagone_c][hexagon_l].getColonneVolcan() == volcan_c &&  plateau[hexagone_c][hexagon_l].getLigneVolcan() == volcan_l;
+        return carte[hexagone_c][hexagon_l].getColonneVolcan() == volcan_c &&  carte[hexagone_c][hexagon_l].getLigneVolcan() == volcan_l;
     }
 
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
-        int hauteur = plateau[coup.volcanX][coup.volcanY].getHauteur();
+        int hauteur = carte[coup.volcanX][coup.volcanY].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
-            plateau[coup.volcanX][coup.volcanY] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanX, (byte)coup.volcanY);
-            plateau[coup.tile1X][coup.tile1Y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcanX, (byte)coup.volcanY);
-            plateau[coup.tile2X][coup.tile2Y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcanX, (byte)coup.volcanY);
+            carte[coup.volcanX][coup.volcanY] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanX, (byte)coup.volcanY);
+            carte[coup.tile1X][coup.tile1Y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcanX, (byte)coup.volcanY);
+            carte[coup.tile2X][coup.tile2Y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcanX, (byte)coup.volcanY);
             // On ajoute les emplacements libres des batiments
             positions_libres_batiments.add(new Position(coup.tile1X,coup.tile1Y));
             positions_libres_batiments.add(new Position(coup.tile2X,coup.tile2Y));
@@ -479,16 +485,16 @@ public class Plateau implements Serializable {
             historique.ajoute(coup);
 
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
-            hauteur = plateau[coup.batimentX][coup.batimentY].getHauteur();
+            hauteur = carte[coup.batimentX][coup.batimentY].getHauteur();
             byte batiment = 0;
             if (coup.typePlacement == 1) {
                 batiment = Hexagone.HUTTE;
             } else if (coup.typePlacement == 2) {
-                if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
-                if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
-                if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
-                if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
-                if(plateau[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;
+                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
+                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
+                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
+                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
+                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;
             } else if (coup.typePlacement == 3) {
                 batiment = Hexagone.TOUR;
             } else if (coup.typePlacement == 4){
@@ -499,7 +505,7 @@ public class Plateau implements Serializable {
                 positions_libres_batiments.remove(aSupprimer);
             }
 
-            plateau[coup.batimentX][coup.batimentY] = new Hexagone(num_joueur, (byte) hauteur, plateau[coup.batimentX][coup.batimentY].getBiomeTerrain(), batiment, (byte)plateau[coup.batimentX][coup.batimentY].getLigneVolcan(), (byte)plateau[coup.batimentX][coup.batimentY].getColonneVolcan());
+            carte[coup.batimentX][coup.batimentY] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentX][coup.batimentY].getBiomeTerrain(), batiment, (byte) carte[coup.batimentX][coup.batimentY].getLigneVolcan(), (byte) carte[coup.batimentX][coup.batimentY].getColonneVolcan());
             historique.ajoute(coup);
         }
     }
@@ -513,7 +519,7 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerMaison(int i,int j){
-        return (plateau[i][j].getBiomeTerrain()!=Hexagone.VOLCAN && plateau[i][j].getBatiment()==VIDE && plateau[i][j].getBiomeTerrain()!=Hexagone.VIDE);
+        return (carte[i][j].getBiomeTerrain()!=Hexagone.VOLCAN && carte[i][j].getBatiment()==VIDE && carte[i][j].getBiomeTerrain()!=Hexagone.VIDE);
     }
     public void placeBatiment(byte joueurCourant, int i, int j, byte type_bat){
         Coup coup = new Coup(joueurCourant, i,j,type_bat);
@@ -524,15 +530,10 @@ public class Plateau implements Serializable {
             nlh = propagation(i,j,joueurCourant);
             while(nlh.size()!=0) {
                 Point2 a = nlh.remove(0);
-                Coup ah ;
-                if (joueurCourant==(byte)1){
-                    ah=  new Coup(joueurCourant,a.x,a.y,(byte)0);
-                }else {
-                    ah= new Coup(joueurCourant,a.x,a.y,(byte)1);
-                }
-                System.out.println(a.x+" "+a.y);
-                //historique.ajoute(ah);
-                //joueCoup(ah);
+                Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
+
+                historique.ajoute(Coup_propagation);
+                joueCoup(Coup_propagation);
             }
         }
 
@@ -738,7 +739,7 @@ public class Plateau implements Serializable {
     }
 
     public int getBatiment(int i,int j){
-        return plateau[i][j].getBatiment();
+        return carte[i][j].getBatiment();
     }
 
     public int[] getBatimentPlacable(int i,int j, int numJoueur){
@@ -775,11 +776,11 @@ public class Plateau implements Serializable {
 
 
     public int getHauteurTuile(int i,int j){
-        return plateau[i][j].getHauteur();
+        return carte[i][j].getHauteur();
     }
 
     public Hexagone getTuile(int i, int j){
-        return plateau[i][j];
+        return carte[i][j];
     }
     public void joueHexagone(int x, int y){}
 
@@ -796,8 +797,8 @@ public class Plateau implements Serializable {
     }
 
     public boolean estVide(){
-        for (Hexagone[] hexagones : plateau) {
-            for (int j = 0; j < plateau[0].length; j++) {
+        for (Hexagone[] hexagones : carte) {
+            for (int j = 0; j < carte[0].length; j++) {
                 if (hexagones[j].getBiomeTerrain() != Hexagone.VIDE && hexagones[j].getBiomeTerrain() != Hexagone.WATER)
                     return false;
             }

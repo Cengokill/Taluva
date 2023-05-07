@@ -467,7 +467,6 @@ public class AffichagePlateau extends JPanel {
         ArrayList<Point2> pointsVillage = positionsBatsVillage(i,j);
         if(pointsVillage.size()<=3) return false;
         for(Point2 p : pointsVillage){
-            System.out.println("x: "+p.getPointX()+" y: "+p.getPointY());
             if(estTemple(p.getPointX(),p.getPointY())) return false;
         }
         return true;
@@ -509,7 +508,6 @@ public class AffichagePlateau extends JPanel {
 
         hoveredTile_x = i;
         hoveredTile_y = j;
-
     }
 
     private void displayHoverTile(Graphics g) {
@@ -528,7 +526,6 @@ public class AffichagePlateau extends JPanel {
             if (i < 2 || j < 2 || i >= 58 || j >= 58) {
                 return;
             }
-
 
             // Convertir les coordonnées du système de grille en coordonnées du système de pixels
             int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
@@ -552,7 +549,7 @@ public class AffichagePlateau extends JPanel {
             }
 
 
-            y -= jeu.getPlateau().getPlateau()[i][j].getHauteur() * HAUTEUR_ETAGE;
+            y -= jeu.getPlateau().getCarte()[i][j].getHauteur() * HAUTEUR_ETAGE;
             afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
         }
     }
@@ -848,12 +845,12 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void annulationConstruction() {
-        byte numJoueur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getNumJoueur();
-        byte hauteur = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getHauteur();
-        byte terrain = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getBiomeTerrain();
-        int volcan_i = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getLigneVolcan();
-        int volcan_j = jeu.getPlateau().getPlateau()[posBat_x][posBat_y].getColonneVolcan();
-        jeu.getPlateau().getPlateau()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
+        byte numJoueur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getNumJoueur();
+        byte hauteur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getHauteur();
+        byte terrain = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getBiomeTerrain();
+        int volcan_i = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getLigneVolcan();
+        int volcan_j = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getColonneVolcan();
+        jeu.getPlateau().getCarte()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
         enSelection=false;
     }
 
