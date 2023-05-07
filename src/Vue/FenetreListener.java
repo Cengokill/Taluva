@@ -188,9 +188,9 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 int dy = e.getY() - lastMousePosition.y;
 
                 // Ajouter les bornes pour les déplacements de la caméra
-                int minX = -4400;
+                int minX = -5300;
                 int maxX = 10000;
-                int minY = -3600;
+                int minY = -4100;
                 int maxY = 10000;
 
 
@@ -198,11 +198,11 @@ public class FenetreListener extends MouseAdapter implements MouseWheelListener 
                 cameraOffset.y = Math.min(Math.max(cameraOffset.y + dy, minY), maxY);
 
                 // Empêcher la caméra de voir des cases dans le négatif
-                if (cameraOffset.x > -1100) {
-                    cameraOffset.x = -1100;
+                if (cameraOffset.x > 100) {
+                    cameraOffset.x = 100;
                 }
-                if (cameraOffset.y > -1100) {
-                    cameraOffset.y = -1100;
+                if (cameraOffset.y > 100) {
+                    cameraOffset.y = 100;
                 }
                 lastMousePosition = e.getPoint();
             } else {

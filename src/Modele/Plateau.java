@@ -235,6 +235,17 @@ public class Plateau implements Serializable {
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
         // TODO faire en sort que 2 villages s?par?s aient pas le meme ID
+
+        if (ligneVolcan < 2 || colonneVolcan < 2 || ligneVolcan >= 58 || colonneVolcan >= 58) {
+            return false;
+        }
+        if (ligneTile1 < 2 || colonneTile1 < 2 || ligneTile1 >= 58 || colonneTile1 >= 58) {
+            return false;
+        }
+        if (ligneTile2 < 2 || colonneTile2 < 2 || ligneTile2 >= 58 || colonneTile2 >= 58) {
+            return false;
+        }
+
         if(estVide()) return true;
 
         // Hauteur max

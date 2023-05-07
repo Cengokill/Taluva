@@ -152,14 +152,17 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void parcoursPlateau(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset) {
-        for (int i = Math.abs(cameraOffset.y/tileWidth) - 2; i < map.length; i++) {
-            for (int j = Math.abs(cameraOffset.x/tileWidth) - 2; j < map[0].length; j++) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0 - 2; j < map[0].length; j++) {
                 affiche(g, map, tileWidth, verticalOffset, i, j);
             }
         }
     }
 
     private void affiche(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int i, int j) {
+        if (i < 2 || j < 2 || i >= 58 || j >= 58) {
+            return;
+        }
         int tileId = map[i][j].getBiomeTerrain();
         if (tileId != VIDE) {
             afficheHexagone(g, map, tileWidth, verticalOffset, i, j, tileId);
@@ -380,6 +383,9 @@ public class AffichagePlateau extends JPanel {
     }
 
     private void afficherFiltreSombre(Graphics g, Hexagone[][] map, int i, int j, int x, int y, int heightoffset) {
+        if (hoveredTile_y < 2 || hoveredTile_x < 2 || hoveredTile_y >= 58 || hoveredTile_x >= 58) {
+            return;
+        }
         if (mode_plateau) {
             if (map[i][j].getHauteur() != map[hoveredTile_x][hoveredTile_y].getHauteur()) {
                 if (map[hoveredTile_x][hoveredTile_y].getHauteur() != 0) {
@@ -503,6 +509,7 @@ public class AffichagePlateau extends JPanel {
 
         hoveredTile_x = i;
         hoveredTile_y = j;
+
     }
 
     private void displayHoverTile(Graphics g) {
@@ -517,6 +524,11 @@ public class AffichagePlateau extends JPanel {
             // Convertir les coordonnées du système de pixels en coordonnées du système de grille
             int i = hoverTilePositionAdjusted.y / verticalOffset;
             int j = (hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+
+            if (i < 2 || j < 2 || i >= 58 || j >= 58) {
+                return;
+            }
+
 
             // Convertir les coordonnées du système de grille en coordonnées du système de pixels
             int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);

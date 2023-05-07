@@ -90,7 +90,7 @@ public class FenetreJeu extends Container {
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        frame.getContentPane().setBackground(new Color(64, 164, 223));
+        frame.getContentPane().setBackground(new Color(4, 13, 19));
     }
 
     private void initPanels(ControleurMediateur controleur) {
