@@ -234,7 +234,6 @@ public class Plateau implements Serializable {
     }
 
     public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
-        // TODO faire en sort que 2 villages s?par?s aient pas le meme ID
 
         if (ligneVolcan < 2 || colonneVolcan < 2 || ligneVolcan >= 58 || colonneVolcan >= 58) {
             return false;
@@ -510,6 +509,18 @@ public class Plateau implements Serializable {
         }
     }
 
+    public ArrayList<Point2> previsualisePropagation(int hutteX, int hutteY,byte joueurCourant){
+        ArrayList<Point2> nlh ;
+        return propagation(hutteX,hutteY,joueurCourant);
+        /*while(nlh.size()!=0) {
+            Point2 a = nlh.remove(0);
+            /*Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
+            historique.ajoute(Coup_propagation);
+            joueCoup(Coup_propagation);
+            System.out.println("a.x: "+a.x+" a.y: "+a.y);
+        }*/
+    }
+
 
     // N?cessite un appel ? peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
@@ -531,13 +542,10 @@ public class Plateau implements Serializable {
             while(nlh.size()!=0) {
                 Point2 a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-
                 historique.ajoute(Coup_propagation);
                 joueCoup(Coup_propagation);
             }
         }
-
-
     }
 
     public boolean notIn (ArrayList<Point2> lp, Point2 p){
@@ -667,10 +675,8 @@ public class Plateau implements Serializable {
             }
             i++;
         }
-        //System.out.println("taille de liste de casses :"+listeDecases.size());
         i=0;
         while(i<listeDecases.size()){
-            System.out.println(listeDecases.get(i).x+ " "+listeDecases.get(i).y);
             i++;
         }
         return listeDecases;
