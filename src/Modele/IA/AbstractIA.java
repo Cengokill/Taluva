@@ -1,6 +1,8 @@
 package Modele.IA;
 
-import Modele.*;
+import Modele.Jeu.Coup;
+import Modele.Jeu.Jeu;
+import Modele.Jeu.Plateau.Tuile;
 
 import java.util.LinkedList;
 

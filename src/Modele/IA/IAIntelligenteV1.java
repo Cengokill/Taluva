@@ -1,8 +1,8 @@
 package Modele.IA;
 
-import Modele.Coup;
-import Structures.Position;
-import Structures.TripletDePosition;
+import Modele.Jeu.Coup;
+import Structures.Position.Position;
+import Structures.Position.TripletDePosition;
 
 import java.util.ArrayList;
 import java.util.Random;

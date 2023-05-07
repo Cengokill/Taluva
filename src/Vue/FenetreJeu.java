@@ -1,23 +1,23 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
-import Modele.ImageLoader;
-import Modele.Jeu;
+import Modele.Affichage.ImageLoader;
+import Modele.Jeu.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import static Modele.ImageLoader.*;
+import static Modele.Affichage.ImageLoader.*;
 
 
 public class FenetreJeu extends Container {
-    FenetreListener listener;
-    public AffichagePlateau affichagePlateau;
+    FenetreJeuListener listener;
+    public PanelPlateau panelPlateau;
 
     Graphics g1;
-    public MenuGraphique menuGraphique;
-    public VignettePanel vignettePanel;
+    public PanelMenu panelMenu;
+    public PanelVignette panelVignette;
     public JPanel backgroundPanel, buttonPanel;
     public JLayeredPane layeredPane;
 
@@ -49,10 +49,10 @@ public class FenetreJeu extends Container {
         initMenu();
 
         buttonPanel.removeAll();
-        affichagePlateau.removeAll();
+        panelPlateau.removeAll();
 
-        menuGraphique.setFenetre(this);
-        menuGraphique.setBounds(0, 0, getWidth(), getHeight());
+        panelMenu.setFenetre(this);
+        panelMenu.setBounds(0, 0, getWidth(), getHeight());
         initVignettePanel();
 
         layeredPane.revalidate();
@@ -79,13 +79,13 @@ public class FenetreJeu extends Container {
 
     private void initMenu() throws IOException {
         // Ajouter les tuiles hexagonales
-        menuGraphique = new MenuGraphique(frame,layeredPane,jeu,controleur);
-        menuGraphique.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        layeredPane.add(menuGraphique, JLayeredPane.DEFAULT_LAYER);
+        panelMenu = new PanelMenu(frame,layeredPane,jeu,controleur);
+        panelMenu.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        layeredPane.add(panelMenu, JLayeredPane.DEFAULT_LAYER);
     }
 
     private void initKeyBoardAndMouseListener() {
-        listener = new FenetreListener(this);
+        listener = new FenetreJeuListener(this);
     }
 
     private void setBackgroundColor() {
@@ -102,16 +102,16 @@ public class FenetreJeu extends Container {
 
     private void initVignettePanel() {
         // Ajouter la vignette
-        vignettePanel = new VignettePanel();
-        vignettePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        layeredPane.add(vignettePanel, JLayeredPane.PALETTE_LAYER);
+        panelVignette = new PanelVignette();
+        panelVignette.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        layeredPane.add(panelVignette, JLayeredPane.PALETTE_LAYER);
     }
 
     private void initHexagonsPanel(ControleurMediateur controleur) {
         // Ajouter les tuiles hexagonales
-        affichagePlateau = new AffichagePlateau(this, controleur, jeu);
-        affichagePlateau.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        layeredPane.add(affichagePlateau, 50);
+        panelPlateau = new PanelPlateau(this, controleur, jeu);
+        panelPlateau.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        layeredPane.add(panelPlateau, 50);
     }
 
     private void initMultiLayerPanel() {
@@ -236,9 +236,9 @@ public class FenetreJeu extends Container {
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
-                menuGraphique.setBounds(0, 0, getWidth(), getHeight());
-                if(affichagePlateau!=null) affichagePlateau.setBounds(0, 0, getWidth(), getHeight());
-                if(vignettePanel!=null) vignettePanel.setBounds(0, 0, getWidth(), getHeight());
+                panelMenu.setBounds(0, 0, getWidth(), getHeight());
+                if(panelPlateau !=null) panelPlateau.setBounds(0, 0, getWidth(), getHeight());
+                if(panelVignette !=null) panelVignette.setBounds(0, 0, getWidth(), getHeight());
                 if(buttonPanel!=null) buttonPanel.setBounds(0, 0, getWidth(), getHeight());
             }
         };

@@ -1,26 +1,26 @@
 package Modele.IA;
 
-import Modele.Coup;
-import Structures.SequenceListe;
+import Modele.Jeu.Coup;
+import Structures.Sequence.SequenceListe;
 
 public class ArbreChemins implements Comparable<ArbreChemins>{
-    private final Instance courant;
+    private final InstancePlateau courant;
     private final ArbreChemins pere;
     private final SequenceListe<Coup> chemin;
     private final int poids;
 
-    public ArbreChemins(Instance courant, SequenceListe<Coup> chemin, ArbreChemins pere, int p){
+    public ArbreChemins(InstancePlateau courant, SequenceListe<Coup> chemin, ArbreChemins pere, int poid){
         this.courant = courant;
         this.chemin = chemin;
         this.pere = pere;
-        this.poids = p;
+        this.poids = poid;
     }
 
     public int getPoids(){
         return poids;
     }
 
-    public Instance getCourant(){
+    public InstancePlateau getCourant(){
         return courant;
     }
 

@@ -1,7 +1,7 @@
 import Controleur.ControleurMediateur;
-import Modele.Client;
-import Modele.Serveur;
-import Modele.Jeu;
+import Modele.Reseau.Client;
+import Modele.Reseau.Serveur;
+import Modele.Jeu.Jeu;
 import Vue.FenetreJeu;
 
 import java.io.IOException;
@@ -19,8 +19,8 @@ public class TaluvaMain {
 
 
         FenetreJeu fenetre = new FenetreJeu(jeu, controler);
-        fenetre.menuGraphique.repaint();
-        fenetre.menuGraphique.setFenetre(fenetre);
+        fenetre.panelMenu.repaint();
+        fenetre.panelMenu.setFenetre(fenetre);
 
     }
 }

@@ -1,7 +1,8 @@
 package Controleur;
 
-import Modele.*;
-import Vue.CollecteurEvenements;
+import Modele.Jeu.Plateau.Hexagone;
+import Modele.Jeu.Jeu;
+import Patterns.CollecteurEvenements;
 import Vue.FenetreJeu;
 
 public class ControleurMediateur implements CollecteurEvenements {
