@@ -10,10 +10,10 @@ public class Camera {
     private static final int SHAKE_DISTANCE = 10; // Distance maximale de déplacement en pixels
 
     public static final int tile_size = 148;
-    public static double zoomFactor = 0.3;
+    public static double zoomFactor = 0.2;
     public static final double zoomIncrement = 0.1;
     public static Point hoverTilePosition = new Point(-tile_size, -tile_size);
-    public static final Point cameraOffset = new Point(0, 0);
+    public static final Point cameraOffset = new Point(-4400/2, -3600/2);
     public static Point lastMousePosition;
 
     public static void shake() {

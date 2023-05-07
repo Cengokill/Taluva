@@ -49,6 +49,11 @@ public class AffichagePlateau extends JPanel {
 
         poseTile = true;
         boucle();
+
+        System.out.println(fenetreJeu.frame.getWidth());
+        System.out.println(fenetreJeu.frame.getHeight());
+        cameraOffset.x += fenetreJeu.frame.getWidth();
+        cameraOffset.y += 0;
     }
 
     @Override
