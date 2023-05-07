@@ -289,7 +289,7 @@ public class PanelMenu extends JPanel {
         frameWidth=frame.getWidth();
         frameHeight=frame.getHeight();
         double rapport_bouton=1;//rapport de 86/522
-        largeur_bouton=Math.min(largeur_background/5, frameWidth/5);
+        largeur_bouton=Math.min(largeur_background/7, frameWidth/7);
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
         posY_Local=0;
