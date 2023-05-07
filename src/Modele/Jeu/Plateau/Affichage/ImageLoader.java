@@ -155,21 +155,12 @@ public class ImageLoader {
         hoverTile = lisImageBuf(imageFolder + "Hover_Tile");
     }
 
-    public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id) {
+    public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id,int typeTerrain) {
         if (batiment_id == HUTTE) {
             return getMaison(id_player);
         }
-        if (batiment_id == TEMPLE_FORET) {
-            return getTempleJungle(id_player);
-        }
-        if (batiment_id == TEMPLE_PIERRE) {
-            return getTemplePierre(id_player);
-        }
-        if (batiment_id == TEMPLE_PRAIRIE) {
-            return getTemplePrairie(id_player);
-        }
-        if (batiment_id == TEMPLE_SABLE) {
-            return getTempleSable(id_player);
+        if (batiment_id == TEMPLE) {
+            return getTemple(id_player,typeTerrain);
         }
         if (batiment_id == TOUR) {
             return getTour(id_player);
@@ -193,26 +184,16 @@ public class ImageLoader {
         }
     }
 
-    private static BufferedImage getTemplePrairie(byte id_player) {
+    private static BufferedImage getTemple(byte id_player,int typeTerrain) {
         if (id_player == 0) {
-            return templePrairieColor1;
-        } else {
-            return templePierreColor2;
-        }
-    }
-
-    private static BufferedImage getTemplePierre(byte id_player) {
-        if (id_player == 0) {
-            return templePrairieColor1;
-        } else {
-            return templePierre;
-        }
-    }
-
-    private static BufferedImage getTempleJungle(byte id_player) {
-        if (id_player == 0) {
+            if(typeTerrain==GRASS) return templePrairieColor1;
+            if(typeTerrain==MONTAGNE) return templePierreColor1;
+            if(typeTerrain==DESERT) return templeSableColor1;
             return templeJungleColor1;
         } else {
+            if(typeTerrain==GRASS) return templePrairieColor2;
+            if(typeTerrain==MONTAGNE) return templePierreColor2;
+            if(typeTerrain==DESERT) return templeSableColor2;
             return templeJungleColor2;
         }
     }

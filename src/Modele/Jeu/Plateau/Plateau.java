@@ -104,10 +104,7 @@ public class Plateau implements Serializable {
     }
 
     private boolean estTemple(int ligne,int colonne){
-        if(getBatiment(ligne,colonne)==TEMPLE_PRAIRIE) return true;
-        if(getBatiment(ligne,colonne)==TEMPLE_FORET) return true;
-        if(getBatiment(ligne,colonne)==TEMPLE_PIERRE) return true;
-        return getBatiment(ligne, colonne) == TEMPLE_SABLE;
+        return getBatiment(ligne,colonne)==TEMPLE;
     }
 
     private boolean estTour(int ligne,int colonne){
@@ -482,11 +479,13 @@ public class Plateau implements Serializable {
             if (coup.typePlacement == 1) {
                 batiment = Hexagone.HUTTE;
             } else if (coup.typePlacement == 2) {
-                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
+                batiment = TEMPLE;
+
+                /*if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
                 if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
                 if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
                 if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
-                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;
+                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;*/
             } else if (coup.typePlacement == 3) {
                 batiment = Hexagone.TOUR;
             } else if (coup.typePlacement == 4){

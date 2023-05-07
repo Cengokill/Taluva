@@ -310,7 +310,7 @@ public class PanelPlateau extends JPanel {
     private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
         if (map[ligne][colonne].getBatiment() != CHOISIR_BATIMENT) {
-            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment()), x, y - heightoffset, null);
+            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment(),jeu.getPlateau().getTuile(ligne,colonne).getBiomeTerrain()), x, y - heightoffset, null);
 
         } else if (map[ligne][colonne].getBatiment() == CHOISIR_BATIMENT) {
             int pos_x = x -150;
@@ -500,10 +500,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private boolean estTemple(int ligne,int colonne){
-        return (jeu.getPlateau().getBatiment(ligne, colonne) == TEMPLE_SABLE   ||
-                jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE_PRAIRIE ||
-                jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE_FORET   ||
-                jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE_PIERRE);
+        return jeu.getPlateau().getBatiment(ligne,colonne)  == TEMPLE;
     }
 
     private boolean estTour(int ligne,int colonne){
@@ -780,8 +777,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private boolean possedeBatiment(int i,int j){
-        return (jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE_SABLE||jeu.getPlateau().getBatiment(i,j)==TEMPLE_FORET
-                ||jeu.getPlateau().getBatiment(i,j)==TEMPLE_PIERRE||jeu.getPlateau().getBatiment(i,j)==TEMPLE_PRAIRIE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant());
+        return ((jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant()));
     }
 
     private ArrayList<Point2D> positionsBatsVillage(int x, int y){

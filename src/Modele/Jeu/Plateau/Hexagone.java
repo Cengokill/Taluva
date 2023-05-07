@@ -15,10 +15,7 @@ public class Hexagone implements Serializable {
     public static final byte LAC = 5;
 
     public static final byte HUTTE = 10;
-    public static final byte TEMPLE_FORET = 11;
-    public static final byte TEMPLE_SABLE = 12;
-    public static final byte TEMPLE_PIERRE = 13;
-    public static final byte TEMPLE_PRAIRIE = 14;
+    public static final byte TEMPLE = 11;
     public static final byte TOUR = 15;
     public static final byte CHOISIR_BATIMENT = 16;
 
