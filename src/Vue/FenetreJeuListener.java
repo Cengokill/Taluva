@@ -181,7 +181,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 // Ajouter les bornes pour les déplacements de la caméra
                 int minX = -5300;
                 int maxX = 10000;
-                int minY = -4100;
+                int minY = -(int)(5300*0.75);
                 int maxY = 10000;
 
 

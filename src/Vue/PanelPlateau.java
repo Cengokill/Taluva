@@ -50,8 +50,6 @@ public class PanelPlateau extends JPanel {
         poseTile = true;
         boucle();
 
-        System.out.println(fenetreJeu.frame.getWidth());
-        System.out.println(fenetreJeu.frame.getHeight());
         cameraOffset.x += fenetreJeu.frame.getWidth()/2;
         cameraOffset.y += fenetreJeu.frame.getHeight()/2;
     }
@@ -65,7 +63,7 @@ public class PanelPlateau extends JPanel {
         changerPoseTile();
 
         super.paintComponent(g);
-        afficheBackground(cameraOffset.x, cameraOffset.y+800, g);
+        afficheBackground(cameraOffset.x, cameraOffset.y, g);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate(cameraOffset.x, cameraOffset.y);
@@ -77,7 +75,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
-        g.drawImage(background, x, y, largeur*6, hauteur*6, null);
+        g.drawImage(background, x, y, 5300 + 800, (int)(5300*0.75) + 800, null);
     }
 
 
