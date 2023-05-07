@@ -113,7 +113,6 @@ public class ImageLoader {
 
     private static void filterTiles() {
         voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
-        whiteTile = getReducedOpacityImage(whiteTile, 0.35f);
 
         filterTilesEnRouge();
     }

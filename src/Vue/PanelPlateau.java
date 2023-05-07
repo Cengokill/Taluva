@@ -402,7 +402,7 @@ public class PanelPlateau extends JPanel {
     private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         if (map[ligne][colonne].getBiomeTerrain() == VOLCAN) {
             int j2 = convertionTileMapToHexagonal(ligne, colonne);
-            illumineVolcanLibre(g, ligne, colonne, drawX, drawY, heightoffset, j2);
+            illumineVolcanLibre(g, ligne, colonne, drawX, drawY, heightoffset - 50, j2);
             afficheDirectionsLibres(g, ligne, colonne, drawX, drawY, heightoffset, j2);
         }
     }
