@@ -31,7 +31,7 @@ public class Plateau implements Serializable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
-        placeEtage((byte) 0,19,19,19,20,(byte) 1,20,19,(byte) 2);
+        placeEtage((byte) 0,31,29,31,30,(byte) 1,32,29,(byte) 2);
     }
 
     private void initHistorique() {
@@ -465,54 +465,54 @@ public class Plateau implements Serializable {
 
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
-        int hauteur = carte[coup.volcanX][coup.volcanY].getHauteur();
+        int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
-            carte[coup.volcanX][coup.volcanY] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanX, (byte)coup.volcanY);
-            carte[coup.tile1X][coup.tile1Y] = new Hexagone((byte) (hauteur + 1), coup.terrain1, (byte)coup.volcanX, (byte)coup.volcanY);
-            carte[coup.tile2X][coup.tile2Y] = new Hexagone((byte) (hauteur + 1), coup.terrain2, (byte)coup.volcanX, (byte)coup.volcanY);
+            carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne);
+            carte[coup.tile1Ligne][coup.tile1Colonne] = new Hexagone((byte) (hauteur + 1), coup.biome1, (byte)coup.volcanLigne, (byte)coup.volcanColonne);
+            carte[coup.tile2Ligne][coup.tile2Colonne] = new Hexagone((byte) (hauteur + 1), coup.biome2, (byte)coup.volcanLigne, (byte)coup.volcanColonne);
             // On ajoute les emplacements libres des batiments
-            positions_libres_batiments.add(new Position(coup.tile1X,coup.tile1Y));
-            positions_libres_batiments.add(new Position(coup.tile2X,coup.tile2Y));
+            positions_libres_batiments.add(new Position(coup.tile1Ligne,coup.tile1Colonne));
+            positions_libres_batiments.add(new Position(coup.tile2Ligne,coup.tile2Colonne));
             // On ajoute les emplacements libres des tuiles
-            ArrayList<Position> listeVoisins = voisins(coup.volcanX,coup.volcanY);
+            ArrayList<Position> listeVoisins = voisins(coup.volcanLigne,coup.volcanColonne);
             metAjourPositionsLibres(listeVoisins);
-            listeVoisins = voisins(coup.tile1X,coup.tile1Y);
+            listeVoisins = voisins(coup.tile1Ligne,coup.tile1Colonne);
             metAjourPositionsLibres(listeVoisins);
-            listeVoisins = voisins(coup.tile2X,coup.tile2Y);
+            listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(positions_libres);
             historique.ajoute(coup);
 
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
-            hauteur = carte[coup.batimentX][coup.batimentY].getHauteur();
+            hauteur = carte[coup.batimentLigne][coup.batimentColonne].getHauteur();
             byte batiment = 0;
             if (coup.typePlacement == 1) {
                 batiment = Hexagone.HUTTE;
             } else if (coup.typePlacement == 2) {
-                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
-                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
-                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
-                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
-                if(carte[coup.batimentX][coup.batimentY].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;
+                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.FORET) batiment = Hexagone.TEMPLE_FORET;
+                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.GRASS) batiment = Hexagone.TEMPLE_PRAIRIE;
+                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.MONTAGNE) batiment = Hexagone.TEMPLE_PIERRE;
+                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.DESERT) batiment = Hexagone.TEMPLE_SABLE;
+                if(carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain() == Hexagone.LAC) batiment = Hexagone.TEMPLE_FORET;
             } else if (coup.typePlacement == 3) {
                 batiment = Hexagone.TOUR;
             } else if (coup.typePlacement == 4){
                 batiment = Hexagone.CHOISIR_BATIMENT;
             }
             if(batiment!=Hexagone.CHOISIR_BATIMENT){
-                Position aSupprimer = new Position(coup.batimentX,coup.batimentY);
+                Position aSupprimer = new Position(coup.batimentLigne,coup.batimentColonne);
                 positions_libres_batiments.remove(aSupprimer);
             }
 
-            carte[coup.batimentX][coup.batimentY] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentX][coup.batimentY].getBiomeTerrain(), batiment, (byte) carte[coup.batimentX][coup.batimentY].getLigneVolcan(), (byte) carte[coup.batimentX][coup.batimentY].getColonneVolcan());
+            carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
             historique.ajoute(coup);
         }
     }
 
 
     // N?cessite un appel ? peutPlacerEtage
-    public void placeEtage(byte joueurCourant, int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
-        Coup coup = new Coup(joueurCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
+    public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
+        Coup coup = new Coup(joueurCourant, volcanLigne, volcanColonne, tile1Ligne, tile1Colonne, biome1, tile2Ligne, tile2Colonne, biome2);
         historique.ajoute(coup);
         joueCoup(coup);
     }

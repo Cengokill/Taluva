@@ -12,7 +12,7 @@ class IAAleatoire extends AbstractIA {
     public IAAleatoire() {
     }
 
-    private int modified(int i,int j){
+    private int ajusterColonne(int i, int j){
         int j_modified;
         if (i % 2 == 1) {
             j_modified = j - 1;
@@ -24,7 +24,7 @@ class IAAleatoire extends AbstractIA {
     public Coup joue() {
 
         Random r = new Random();
-        int i=0, j=0;
+        int ligne=0, colonne=0;
         int taille_x = jeu.getPlateau().getCarte().length;
         int taille_y = jeu.getPlateau().getCarte()[0].length;
         byte numIA = jeu.getNumJoueurCourant();
@@ -37,13 +37,13 @@ class IAAleatoire extends AbstractIA {
             triplet[2][0] = tuiles[1]; // tile 2
             triplet[0][0] = tuiles[2];
             if(jeu.getPlateau().estVide()){ // l'AbstractIA est le premier � jouer donc on place au centres
-                i = taille_x/2;
-                j = taille_y/2;
+                ligne = taille_x/2;
+                colonne = taille_y/2;
 
-                int j_modified = modified(i,j);
+                int colonne_ajustee = ajusterColonne(ligne,colonne);
 
-                // controleur.placeEtage(i, j, i - 1, j_modified, triplet[1][0], i - 1, j_modified + 1, triplet[2][0]);
-                return new Coup(numIA,i,j,i-1,j_modified,triplet[1][0],i-1,j_modified+1,triplet[2][0]);
+                // controleur.placeEtage(ligne, colonne, ligne - 1, colonne_ajustee, triplet[1][0], ligne - 1, colonne_ajustee + 1, triplet[2][0]);
+                return new Coup(numIA,ligne,colonne,ligne-1,colonne_ajustee,triplet[1][0],ligne-1,colonne_ajustee+1,triplet[2][0]);
             }else{
                 // Trouver un emplacement pour les hexagones
                 ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
@@ -55,15 +55,15 @@ class IAAleatoire extends AbstractIA {
                     bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
                 }
 
-                int x1 = positionsrandom.getVolcan().ligne();
-                int x2 = positionsrandom.getTile1().ligne();
-                int x3 = positionsrandom.getTile2().ligne();
+                int ligne1 = positionsrandom.getVolcan().ligne();
+                int ligne2 = positionsrandom.getTile1().ligne();
+                int ligne3 = positionsrandom.getTile2().ligne();
 
-                int y1 = positionsrandom.getVolcan().colonne();
-                int y2 = positionsrandom.getTile1().colonne();
-                int y3 = positionsrandom.getTile2().colonne();
+                int colonne1 = positionsrandom.getVolcan().colonne();
+                int colonne2 = positionsrandom.getTile1().colonne();
+                int colonne3 = positionsrandom.getTile2().colonne();
 
-                return new Coup(numIA,x1,y1,x2,y2,triplet[1][0],x3,y3,triplet[2][0]);
+                return new Coup(numIA,ligne1,colonne1,ligne2,colonne2,triplet[1][0],ligne3,colonne3,triplet[2][0]);
             }
         }
         else if(jeu.doit_placer_batiment()){
