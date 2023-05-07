@@ -1,9 +1,9 @@
 package Modele.IA;
 
-import Modele.Coup;
-import Modele.Tuile;
-import Structures.SequenceListe;
-import Structures.TripletDePosition;
+import Modele.Jeu.Coup;
+import Modele.Jeu.Plateau.Tuile;
+import Structures.Sequence.SequenceListe;
+import Structures.Position.TripletDePosition;
 
 import java.util.*;
 
@@ -51,8 +51,8 @@ public class IAIntelligente extends AbstractIA {
         int heuri_tours = jeu.joueurs[num_joueur].getNbTours() * 100;
         int heuri_temples = jeu.joueurs[num_joueur].getNbTemples() * 400;
         int valeur = heurist_huttes + heuri_tours + heuri_temples;
-        Instance instanceDepart = new Instance(tuilesPioche, jeu.getPlateau());
-        ArbreChemins arbreCheminsTete = new ArbreChemins(instanceDepart, null, null, 10000);
+        InstancePlateau instancePlateauDepart = new InstancePlateau(tuilesPioche, jeu.getPlateau());
+        ArbreChemins arbreCheminsTete = new ArbreChemins(instancePlateauDepart, null, null, 10000);
         queue.add(arbreCheminsTete);
 
         while (!queue.isEmpty()) {
@@ -60,7 +60,7 @@ public class IAIntelligente extends AbstractIA {
             ArbreChemins arbreCheminsAvant = arbreCheminsTete;
             arbreCheminsTete = queue.poll();
             //récupère l'instance courante qui contient le plateau et les tuiles
-            Instance instanceCourante = arbreCheminsTete.getCourant();
+            InstancePlateau instancePlateauCourante = arbreCheminsTete.getCourant();
             //si c'est à l'IA de jouer
                 //calcule tous les placements possibles de la tuile de la pioche sur le plateau du jeu
             //sinon
@@ -71,8 +71,8 @@ public class IAIntelligente extends AbstractIA {
             //pour chaque coup possible
             while (!coupsPossibles.estVide()) {
                 //on joue le coup
-                //on enregistre le plateau et le pioche après avoir joué le coup dans une nouvelle Instance
-                //si l'Instance n'est pas dans la Hashmap
+                //on enregistre le plateau et le pioche après avoir joué le coup dans une nouvelle InstancePlateau
+                //si l'InstancePlateau n'est pas dans la Hashmap
                 //on calcule la valeur de l'instance
                 //si l'instance est une victoire de l'IA
                 //on crée un nouvel arbre avec l'instance et la valeur

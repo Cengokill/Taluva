@@ -1,16 +1,16 @@
 package Modele.IA;
 
-import Modele.*;
-import Structures.SequenceListe;
+import Modele.Jeu.Coup;
+import Modele.Jeu.Jeu;
+import Modele.Jeu.Plateau.Tuile;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e par un nouveau thread
     protected Jeu jeu;
     public static LinkedList<Tuile> pioche;
 
-    public static AbstractIA nouvelle(Jeu j, Parametres p) {
+    public static AbstractIA nouvelle(Jeu j) {
         AbstractIA resultat = null;
         pioche = new LinkedList<>();
 

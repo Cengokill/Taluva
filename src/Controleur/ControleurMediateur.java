@@ -1,7 +1,8 @@
 package Controleur;
 
-import Modele.*;
-import Vue.CollecteurEvenements;
+import Modele.Jeu.Plateau.Hexagone;
+import Modele.Jeu.Jeu;
+import Patterns.CollecteurEvenements;
 import Vue.FenetreJeu;
 
 public class ControleurMediateur implements CollecteurEvenements {
@@ -42,12 +43,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public boolean clicSouris(int l, int c) {
+    public boolean clicSouris() {
         return true;
     }
 
     @Override
-    public void toucheClavier(String t) {
+    public void toucheClavier() {
     }
 
     public void annuler(){
