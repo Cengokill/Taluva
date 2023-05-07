@@ -50,6 +50,25 @@ public class Hexagone implements Serializable {
         this.volcan_j = volcan_j;
     }
 
+    public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j, byte numero) {
+        this.num_joueur = -1;
+        this.hauteur = hauteur;
+        this.biomeTerrain = biomeTerrain;
+        this.numero = numero;
+        this.volcan_i = volcan_i;
+        this.volcan_j = volcan_j;
+    }
+
+    public Hexagone(byte numero_joueur, byte hauteur, byte biomeTerrain, byte batiment, byte volcan_i, byte volcan_j, byte numero) {
+        this.num_joueur = numero_joueur;
+        this.hauteur = hauteur;
+        this.biomeTerrain = biomeTerrain;
+        this.batiment = batiment;
+        this.numero = numero;
+        this.volcan_i = volcan_i;
+        this.volcan_j = volcan_j;
+    }
+
     public byte getNumJoueur(){return num_joueur;}
 
     public byte getHauteur() {

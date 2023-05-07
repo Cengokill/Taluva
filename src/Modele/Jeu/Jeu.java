@@ -23,7 +23,7 @@ public class Jeu extends Observable {
     final Object[] joueursObjet = new Object[2];
     Parametres p;
     final int[]score = new int[2];
-    final byte[] tuile_a_poser = new byte[5];
+    final byte[] tuileAPoser = new byte[5];
 
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
@@ -208,7 +208,7 @@ public class Jeu extends Observable {
     }
 
     public byte[] getTuilesAPoser() {
-        return tuile_a_poser;
+        return tuileAPoser;
     }
 
     public void joueurPlaceEtage(Coup coup) {
@@ -220,11 +220,11 @@ public class Jeu extends Observable {
         int index = r.nextInt(pioche.size()-1);
         Tuile tuile_courante = pioche.get(index);
         pioche.remove(index);
-        tuile_a_poser[0] = tuile_courante.biome0;
-        tuile_a_poser[1] = tuile_courante.biome1;
-        tuile_a_poser[2] = (byte) tuile_courante.numero0;
-        tuile_a_poser[3] = (byte) tuile_courante.numero1;
-        tuile_a_poser[4] = (byte) tuile_courante.numero2;
+        tuileAPoser[0] = tuile_courante.biome0;
+        tuileAPoser[1] = tuile_courante.biome1;
+        tuileAPoser[2] = (byte) tuile_courante.numero0;
+        tuileAPoser[3] = (byte) tuile_courante.numero1;
+        tuileAPoser[4] = (byte) tuile_courante.numero2;
     }
 
     public void annuler() {

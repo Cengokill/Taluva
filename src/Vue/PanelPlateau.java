@@ -106,25 +106,25 @@ public class PanelPlateau extends JPanel {
     }
 
     private void initTripletHover() {
-        triplet[0][0] = VOLCAN;
-        triplet[1][0] = VIDE;
-        triplet[2][0] = VIDE;
-        triplet[0][1] = 0;
-        triplet[1][1] = 0;
-        triplet[2][1] = 0;
+        tuileAPoser[0][0] = VOLCAN;
+        tuileAPoser[1][0] = VIDE;
+        tuileAPoser[2][0] = VIDE;
+        tuileAPoser[0][1] = 0;
+        tuileAPoser[1][1] = 0;
+        tuileAPoser[2][1] = 0;
     }
 
 
     public void changerTuileAPoser() {
         byte[] tuiles;
         tuiles = controleur.getTuileAPoser();
-        triplet[1][0] = tuiles[0]; // tile 1
-        triplet[2][0] = tuiles[1]; // tile 2
+        tuileAPoser[1][0] = tuiles[0]; // tile 1
+        tuileAPoser[2][0] = tuiles[1]; // tile 2
 
 
-        triplet[0][1] = tuiles[2]; // volcan
-        triplet[1][1] = tuiles[3]; // tile 1
-        triplet[2][1] = tuiles[4]; // tile 2
+        tuileAPoser[0][1] = tuiles[2]; // volcan
+        tuileAPoser[1][1] = tuiles[3]; // tile 1
+        tuileAPoser[2][1] = tuiles[4]; // tile 2
     }
 
 
@@ -181,8 +181,6 @@ public class PanelPlateau extends JPanel {
         BufferedImage tile = getTileImageFromId(tileId, map[ligne][colonne].getNum());
         g.drawImage(tile, x , y - heightoffset, null);
 
-
-        // TODO optimiser l'affichage, ces fonctions font lag
         afficheFiltresTileMode(g, map, ligne, colonne, x, y, heightoffset);
         afficheNumerosNiveaux(g, map, ligne, colonne, x, y, heightoffset);
         afficheBatiments(g, map, ligne, colonne, x, y, heightoffset);
@@ -553,9 +551,40 @@ public class PanelPlateau extends JPanel {
             int y = i * verticalOffset;
 
             int j2 = convertionTileMapToHexagonal(i, j);
-            BufferedImage tile1 = getTileImageFromId(triplet[0][0],triplet[0][1]);
-            BufferedImage tile2 = getTileImageFromId(triplet[1][0],triplet[1][1]);
-            BufferedImage tile3 = getTileImageFromId(triplet[2][0],triplet[2][1]);
+            BufferedImage tile1 = null;
+            BufferedImage tile2 = null;
+            BufferedImage tile3 = null;
+
+            if (scrollValue == 1) {
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum());
+            }
+            else if (scrollValue == 2){
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum());
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
+            }
+            else if (scrollValue == 3){
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
+            }
+            else if (scrollValue == 4){
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
+            }
+            else if (scrollValue == 5){
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
+            }
+            else if (scrollValue == 6){
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
+            }
 
             float opacity = 1f;
 
@@ -663,7 +692,7 @@ public class PanelPlateau extends JPanel {
             int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
             int y = i * verticalOffset;
 
-            int heightoffset1 = triplet[0][1];
+            int heightoffset1 = tuileAPoser[0][1];
             heightoffset1 *= 30;
 
             if(!enSelection){
@@ -702,7 +731,7 @@ public class PanelPlateau extends JPanel {
 
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
         if (controleur.peutPlacerTuile(i, j, i2, j_modified, i3, i4)) {
-            controleur.placeEtage(i, j, i2, j_modified, triplet[1][0], i3, i4, triplet[2][0]);
+            controleur.placeEtage(i, j, i2, j_modified, tuileAPoser[1][0], i3, i4, tuileAPoser[2][0]);
         }
     }
 
