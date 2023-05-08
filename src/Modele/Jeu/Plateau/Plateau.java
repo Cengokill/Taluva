@@ -527,10 +527,10 @@ public class Plateau implements Serializable {
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-                if(nbHutteDisponibleJoueurCourant>1){
+                if(nbHutteDisponibleJoueurCourant>getHauteurTuile(a.x,a.y)){
                     historique.ajoute(Coup_propagation);
                     joueCoup(Coup_propagation);
-                    nbHutteDisponibleJoueurCourant--;
+                    nbHutteDisponibleJoueurCourant-=(getHauteurTuile(a.x,a.y));
                 }
             }
         }
@@ -757,7 +757,8 @@ public class Plateau implements Serializable {
     // TOUJOURS verifier qu'il reste le batiment dans l'inventaire du joueur avant de la poser
     public int[] getBatimentPlacable(int i,int j, byte numJoueur){
         int[] coups = new int[3];
-        coups[1] = 1;
+        if(getBatiment(i,j)!=0 && getBatiment(i,j)!=CHOISIR_BATIMENT) return coups; // S'il y a deja un batiment, ce n'est pas construisible
+        if(getHauteurTuile(i,j)>0) coups[1] = 1;
         if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,numJoueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
         if(peutPoserTour(i,j,numJoueur)) coups[2] = 1;
         if(peutPoserTemple(i,j,numJoueur)) coups[0] = 1;

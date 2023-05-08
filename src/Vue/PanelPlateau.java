@@ -324,6 +324,7 @@ public class PanelPlateau extends JPanel {
             if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
             if(value==1 && (index_bat_precedent!=1||posX_bat_precedent!=ligne||posY_bat_precedent!=colonne)){
                 emplacementPropagation = new ArrayList<>();
+                emplacementPropagation.add(new Position(ligne,colonne));
                 ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
                 while(aPropager.size()!=0) {
                     Point2D PosCourante = aPropager.remove(0);
@@ -342,15 +343,21 @@ public class PanelPlateau extends JPanel {
     }
 
     private void affichePrevisualisationPropogation(Graphics g){
-        int nbHuttesDispo = jeu.joueurs[jeu.jCourant].getNbHuttes()-1;
-        if(emplacementPropagation==null) return;
-        for(int i=0;i<emplacementPropagation.size();i++){
-            if(nbHuttesDispo>0){
-                Position posCourante = emplacementPropagation.get(i);
-                g.drawImage(constructionMode, posCourante.ligne(), posCourante.colonne(), null);
-                nbHuttesDispo--;
-            }
+        if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
+        Position posBasic = emplacementPropagation.get(0);
+        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponibleJoueurCourant-(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
 
+        for(int i=1;i<emplacementPropagation.size();i++){
+            Position posCourante = emplacementPropagation.get(i);
+            // Convertir les coordonnées du système de pixels en coordonnées du système de grille
+            int x = posCourante.colonne() / (int) (voidTile.getWidth() * 0.75);
+            int y = (posCourante.ligne() + (i % 2 == 1 ? voidTile.getWidth() / 2 : 0)) / voidTile.getWidth();
+
+            int hauteurCourante = jeu.getPlateau().getHauteurTuile(x,y);
+            if(nbHuttesDispo>=hauteurCourante){
+                g.drawImage(constructionMode, posCourante.ligne(), posCourante.colonne(), null);
+                nbHuttesDispo-=hauteurCourante;
+            }
         }
     }
 
@@ -534,9 +541,10 @@ public class PanelPlateau extends JPanel {
     public int[] coupJouable(int i,int j){
         int[] coups = jeu.getPlateau().getBatimentPlacable(i,j, jeu.getNumJoueurCourant());
 
+        int hauteurTuile = jeu.getPlateau().getHauteurTuile(i,j);
         if(jeu.getJoueurCourantClasse().getNbTemples()<=0) coups[0] = 0;
         if(jeu.getJoueurCourantClasse().getNbTours()<=0) coups[2] = 0;
-        if(jeu.getJoueurCourantClasse().getNbHuttes()<=0) coups[1] = 0;
+        if(jeu.getJoueurCourantClasse().getNbHuttes()<hauteurTuile) coups[1] = 0;
 
         return coups;
     }
@@ -773,6 +781,7 @@ public class PanelPlateau extends JPanel {
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
         if (controleur.peutPlacerTuile(i, j, i2, j_modified, i3, i4)) {
             controleur.placeEtage(i, j, i2, j_modified, tuileAPoser[1][0], i3, i4, tuileAPoser[2][0]);
+            detectionPlusAucunCoupAJouer();
         }
     }
 
@@ -862,17 +871,21 @@ public class PanelPlateau extends JPanel {
         int value = scrollValue%3;
         int[] coupsJouable = coupJouable(i,j);
         value = updateScrollValue(value, coupsJouable);
-        System.out.println("value: "+value);
 
         if (value == 1) { // place hut
             if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;
             enSelection = false;
             int nbHuttesDispo = jeu.joueurs[jeu.jCourant].getNbHuttes()-1;
+
             for (Position posCourante:emplacementPropagation) {
                 if(nbHuttesDispo>0){
-                    int posPrevX = posCourante.ligne() / (int) (voidTile.getWidth() * 0.75);
-                    int posPrevY = (posCourante.colonne() + (i % 2 == 1 ? voidTile.getWidth() / 2 : 0)) / voidTile.getWidth();
-                    jeu.incrementePropagation(posPrevX,posPrevY);
+                    int posX = posCourante.ligne();
+                    int posy = posCourante.colonne();
+                    if(posX>jeu.getPlateau().getCarte().length){
+                        posX = posCourante.colonne() / (int) (voidTile.getHeight() * 0.75);;
+                        posy = (posCourante.ligne() + (i % 2 == 1 ? voidTile.getWidth() / 2 : 0)) / voidTile.getWidth();
+                    }
+                    jeu.incrementePropagation(posX,posy);
                     nbHuttesDispo--;
                 }
             }
@@ -911,8 +924,7 @@ public class PanelPlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-        //System.out.println("position souris x: "+i+" y: "+j);
-
+        //System.out.println("SOURIS x: "+i+" y: "+j);
 
         int[] coups = coupJouable(i,j);
         if(poseTile) placerTuiles(i,j);
@@ -920,7 +932,6 @@ public class PanelPlateau extends JPanel {
             placeBatiment(i, j);
         }
         unefoisIA=true;
-        //miseAJour();
     }
 
     private void placeBatiment(int i, int j) {
