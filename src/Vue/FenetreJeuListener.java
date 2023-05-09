@@ -14,21 +14,24 @@ import static Modele.Jeu.Plateau.Affichage.ImageLoader.*;
 public class FenetreJeuListener extends MouseAdapter implements MouseWheelListener {
     private final FenetreJeu fenetreJeu;
 
-    public FenetreJeuListener(FenetreJeu t) {
+    // TODO enlever bug de KILLIAN qui fait qu'on peut plus bouger la pièce avec les flèches et z marche plus
+    public FenetreJeuListener(FenetreJeu fenetreJeu) {
         super();
-        fenetreJeu = t;
+        this.fenetreJeu = fenetreJeu;
 
-        fenetreJeu.panelPlateau.handler = new MouseHandler();
-        fenetreJeu.panelPlateau.addMouseListener(fenetreJeu.panelPlateau.handler);
-        fenetreJeu.panelPlateau.addMouseMotionListener(fenetreJeu.panelPlateau.handler);
-        fenetreJeu.panelPlateau.addMouseWheelListener(fenetreJeu.panelPlateau.handler);
+        this.fenetreJeu.panelPlateau.mouseHandler = new MouseHandler();
+        this.fenetreJeu.panelPlateau.addMouseListener(this.fenetreJeu.panelPlateau.mouseHandler);
+        this.fenetreJeu.panelPlateau.addMouseMotionListener(this.fenetreJeu.panelPlateau.mouseHandler);
+        this.fenetreJeu.panelPlateau.addMouseWheelListener(this.fenetreJeu.panelPlateau.mouseHandler);
 
-        fenetreJeu.panelPlateau.keyboardlisten = new KeyboardListener();
-        fenetreJeu.panelPlateau.setFocusable(true);
-        fenetreJeu.panelPlateau.addKeyListener(fenetreJeu.panelPlateau.keyboardlisten);
+        this.fenetreJeu.panelPlateau.keyboardListener = new KeyboardListener();
+        this.fenetreJeu.panelPlateau.setFocusable(true);
+        this.fenetreJeu.panelPlateau.addKeyListener(this.fenetreJeu.panelPlateau.keyboardListener);
+        fenetreJeu.panelPlateau.requestFocusInWindow();
+
     }
 
-     public class KeyboardListener implements KeyListener {
+     public class KeyboardListener extends KeyAdapter implements KeyListener {
 
         @Override
         public void keyPressed(KeyEvent e) {

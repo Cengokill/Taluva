@@ -39,8 +39,6 @@ public class FenetreJeu extends Container {
         initKeyBoardAndMouseListener();
         setBackgroundColor();
         frame.setVisible(true);
-
-
     }
 
     public void initMenuJeu() throws IOException {
