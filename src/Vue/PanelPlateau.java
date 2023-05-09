@@ -860,7 +860,8 @@ public class PanelPlateau extends JPanel {
 
     private void placeBatiment(int i, int j) {
         if(!enSelection){
-            if (controleur.peutPlacerBatiment(i, j)) {
+            int[] coups = coupJouable(i,j);
+            if (controleur.peutPlacerBatiment(i, j)&&(coups[0]!=0||coups[1]!=0||coups[2]!=0)) {
                 posBat_x = i;
                 posBat_y = j;
                 enSelection = true;

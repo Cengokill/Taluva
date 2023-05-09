@@ -142,17 +142,17 @@ public class Plateau implements Serializable {
         Point2D positionHutte_4 = null;
         Point2D positionHutte_5 = null;
         Point2D positionHutte_6 = null;
-        if(estBatiment(x-1,y)) positionHutte_1 = new Point2D(x-1,y);
-        if(estBatiment(x+1,y)) positionHutte_2 = new Point2D(x+1,y);
-        if(estBatiment(x,y-1)) positionHutte_3 = new Point2D(x,y-1);
-        if(estBatiment(x,y+1)) positionHutte_4 = new Point2D(x,y+1);
+        if(estBatiment(x-1,y) && carte[x-1][y].getNumJoueur()==idjoueur) positionHutte_1 = new Point2D(x-1,y);
+        if(estBatiment(x+1,y) && carte[x+1][y].getNumJoueur()==idjoueur) positionHutte_2 = new Point2D(x+1,y);
+        if(estBatiment(x,y-1) && carte[x][y-1].getNumJoueur()==idjoueur) positionHutte_3 = new Point2D(x,y-1);
+        if(estBatiment(x,y+1) && carte[x][y+1].getNumJoueur()==idjoueur) positionHutte_4 = new Point2D(x,y+1);
 
         if(x%2==1){
-            if(estBatiment(x-1,y-1)) positionHutte_5 = new Point2D(x-1,y-1);
-            if(estBatiment(x+1,y-1)) positionHutte_6 = new Point2D(x+1,y-1);
+            if(estBatiment(x-1,y-1) && carte[x-1][y-1].getNumJoueur()==idjoueur ) positionHutte_5 = new Point2D(x-1,y-1);
+            if(estBatiment(x+1,y-1) && carte[x+1][y-1].getNumJoueur()==idjoueur) positionHutte_6 = new Point2D(x+1,y-1);
         }else{
-            if(estBatiment(x-1,y+1)) positionHutte_5 = new Point2D(x-1,y+1);
-            if(estBatiment(x+1,y+1)) positionHutte_6 = new Point2D(x+1,y+1);
+            if(estBatiment(x-1,y+1) && carte[x-1][y+1].getNumJoueur()==idjoueur) positionHutte_5 = new Point2D(x-1,y+1);
+            if(estBatiment(x+1,y+1) && carte[x+1][y+1].getNumJoueur()==idjoueur) positionHutte_6 = new Point2D(x+1,y+1);
         }
 
         listeDesHutesVoisines_1.add(positionHutte_1);
