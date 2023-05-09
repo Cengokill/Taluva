@@ -13,9 +13,6 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class ImageLoader {
     public static boolean loaded = false;
     public static BufferedImage
-            hutteTile,
-            maisonTileColor1,
-            maisonTileColor2,
             templeJungle,
             templeJungleColor1,
             templeJungleColor2,
@@ -32,7 +29,7 @@ public class ImageLoader {
             tourColor1,
             tourColor2;
     public static BufferedImage constructionMode;
-    public static final BufferedImage[] choisirBat = new BufferedImage[12];
+    public static final BufferedImage[] choisirBat = new BufferedImage[12],hutteTile = new BufferedImage[3],maisonTileColor1 = new BufferedImage[3],maisonTileColor2 = new BufferedImage[3];
     public static BufferedImage waterTile, fenetre_score, background, joueur_courant;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
@@ -155,9 +152,9 @@ public class ImageLoader {
         hoverTile = lisImageBuf(imageFolder + "Hover_Tile");
     }
 
-    public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id,int typeTerrain) {
+    public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id,int typeTerrain, int hauteurTerrain) {
         if (batiment_id == HUTTE) {
-            return getMaison(id_player);
+            return getMaison(id_player,hauteurTerrain);
         }
         if (batiment_id == TEMPLE) {
             return getTemple(id_player,typeTerrain);
@@ -190,11 +187,11 @@ public class ImageLoader {
         }
     }
 
-    private static BufferedImage getMaison(byte id_player) {
+    private static BufferedImage getMaison(byte id_player, int hauteurTerrain) {
         if (id_player == 0) {
-            return maisonTileColor1;
+            return maisonTileColor1[hauteurTerrain-1];
         } else {
-            return maisonTileColor2;
+            return maisonTileColor2[hauteurTerrain-1];
         }
     }
 
@@ -224,7 +221,9 @@ public class ImageLoader {
     private static void readBatimentsImages() {
         String imageFolder = "/Plateau/Batiments/";
 
-        hutteTile = lisImageBuf(imageFolder + "hutte");
+        hutteTile[0] = lisImageBuf(imageFolder + "hutte_1");
+        hutteTile[1] = lisImageBuf(imageFolder + "hutte_2");
+        hutteTile[2] = lisImageBuf(imageFolder + "hutte_3");
         templeJungle = lisImageBuf(imageFolder + "Temple_jungle");
         templePierre = lisImageBuf(imageFolder + "Temple_pierre");
         templePrairie = lisImageBuf(imageFolder + "Temple_prairie");
@@ -234,8 +233,12 @@ public class ImageLoader {
     }
 
     private static void filtreCouleurBatiments() {
-        maisonTileColor1 = applyColorFilter(hutteTile, (byte) 0);
-        maisonTileColor2 = applyColorFilter(hutteTile, (byte) 1);
+        maisonTileColor1[0] = applyColorFilter(hutteTile[0], (byte) 0);
+        maisonTileColor1[1] = applyColorFilter(hutteTile[1], (byte) 0);
+        maisonTileColor1[2] = applyColorFilter(hutteTile[2], (byte) 0);
+        maisonTileColor2[0] = applyColorFilter(hutteTile[0], (byte) 1);
+        maisonTileColor2[1] = applyColorFilter(hutteTile[1], (byte) 1);
+        maisonTileColor2[2] = applyColorFilter(hutteTile[2], (byte) 1);
 
         templeJungleColor1 = applyColorFilter(templeJungle, (byte) 0);
         templeJungleColor2 = applyColorFilter(templeJungle, (byte) 1);
@@ -370,9 +373,9 @@ public class ImageLoader {
                 return volcanTile_2;
             }
         }
-        if (id == HUTTE) {
+        /*if (id == HUTTE) {
             return hutteTile;
-        }
+        }*/
         if (id == DESERT) {
             if (numero_texture == 0) {
                 return desertTile_0;

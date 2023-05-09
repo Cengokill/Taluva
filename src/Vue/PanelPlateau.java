@@ -313,7 +313,7 @@ public class PanelPlateau extends JPanel {
     private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
         if (map[ligne][colonne].getBatiment() != CHOISIR_BATIMENT) {
-            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment(),jeu.getPlateau().getTuile(ligne,colonne).getBiomeTerrain()), x, y - heightoffset, null);
+            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment(),jeu.getPlateau().getTuile(ligne,colonne).getBiomeTerrain(),jeu.getPlateau().getHauteurTuile(ligne,colonne)), x, y - heightoffset, null);
 
         } else if (map[ligne][colonne].getBatiment() == CHOISIR_BATIMENT) {
             int pos_x = x -150;
@@ -881,7 +881,7 @@ public class PanelPlateau extends JPanel {
             int nbHuttesDispo = jeu.joueurs[jeu.jCourant].getNbHuttes()-1;
 
             for (Position posCourante:emplacementPropagation) {
-                if(nbHuttesDispo>0){
+                if(nbHuttesDispo>=0){
                     int posX = posCourante.ligne();
                     int posy = posCourante.colonne();
                     if(posX>jeu.getPlateau().getCarte().length){
