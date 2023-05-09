@@ -851,13 +851,10 @@ public class PanelPlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-        //System.out.println("SOURIS x: "+i+" y: "+j);
 
-        int[] coups = coupJouable(i,j);
         if(poseTile) placerTuiles(i,j);
-        else if(coups[0]!=0 || coups[1]!=0 ||coups[2]!=0){
-            placeBatiment(i, j);
-        }
+        else placeBatiment(i, j);
+
         unefoisIA=true;
     }
 
