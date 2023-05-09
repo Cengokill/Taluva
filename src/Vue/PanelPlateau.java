@@ -169,14 +169,6 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    public int getJoueurDejaVerifiePerdu(){
-        return joueurDejaVerifiePerdu;
-    }
-
-    public void setJoueurDejaVerifiePerdu(int num_joueur){
-        joueurDejaVerifiePerdu = num_joueur;
-    }
-
     private void affiche(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int ligne, int colonne) {
         if (ligne < 2 || colonne < 2 || ligne >= 58 || colonne >= 58) {
             return;
@@ -524,21 +516,11 @@ public class PanelPlateau extends JPanel {
     }
 
     private boolean peutPoserTemple(int i,int j){
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j);
-        if(pointsVillage.size()<=3) return false;
-        for(Point2D p : pointsVillage){
-            if(estTemple(p.getPointX(),p.getPointY())) return false;
-        }
-        return true;
+        return jeu.getPlateau().peutPoserTemple(i,j,jeu.getNumJoueurCourant());
     }
 
     private boolean peutPoserTour(int i,int j){
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j);
-        if(jeu.getPlateau().getHauteurTuile(i,j)<3) return false;       // On verifie que la hauteur est d'au moins 3
-        for(Point2D p : pointsVillage){                                  // On verifie que la cité ne possède pas déjà une tour
-            if(estTour(p.getPointX(),p.getPointY())) return false;
-        }
-        return true;
+        return jeu.getPlateau().peutPoserTour(i,j, jeu.getNumJoueurCourant());
     }
 
     public int[] coupJouable(int i,int j){
@@ -791,64 +773,6 @@ public class PanelPlateau extends JPanel {
     private boolean possedeBatiment(int i,int j){
         return ((jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant()));
     }
-
-    private ArrayList<Point2D> positionsBatsVillage(int x, int y){
-        ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
-        Point2D positionHutte = new Point2D(x,y);
-        listeDesHutesVoisines.add(positionHutte);
-        int i = 0;
-        while (listeDesHutesVoisines.size()!=i){
-            Point2D HuteCourant = listeDesHutesVoisines.get(i);
-            if(jeu.getPlateau().check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY(),jeu.getNumJoueurCourant())){
-                Point2D p1 = new Point2D(HuteCourant.getPointX()-1 ,HuteCourant.getPointY());
-                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(jeu.getPlateau().check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY(),jeu.getNumJoueurCourant())){
-                Point2D p1 = new Point2D(HuteCourant.getPointX()+1 ,HuteCourant.getPointY());
-                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(jeu.getPlateau().check(HuteCourant.getPointX() ,HuteCourant.getPointY()-1,jeu.getNumJoueurCourant())){
-                Point2D p1 = new Point2D(HuteCourant.getPointX() ,HuteCourant.getPointY()-1);
-                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(jeu.getPlateau().check(HuteCourant.getPointX() ,HuteCourant.getPointY()+1,jeu.getNumJoueurCourant())){
-                Point2D p1 = new Point2D(HuteCourant.getPointX() ,HuteCourant.getPointY()+1);
-                if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                    listeDesHutesVoisines.add(p1);
-            }
-            if(HuteCourant.getPointX()%2==1){
-                if(jeu.getPlateau().check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1,jeu.getNumJoueurCourant())){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()-1);
-                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-                if(jeu.getPlateau().check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1,jeu.getNumJoueurCourant())){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()-1);
-                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-            }else{
-                if(jeu.getPlateau().check(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1,jeu.getNumJoueurCourant())){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()-1 ,HuteCourant.getPointY()+1);
-                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-                if(jeu.getPlateau().check(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1,jeu.getNumJoueurCourant())){
-                    Point2D p1 = new Point2D(HuteCourant.getPointX()+1 ,HuteCourant.getPointY()+1);
-                    if(jeu.getPlateau().notIn(listeDesHutesVoisines,p1))
-                        listeDesHutesVoisines.add(p1);
-                }
-            }
-            //listeDesHutesVoisines.remove(i);
-            i++;
-        }
-        //System.out.println("liste: "+listeDesHutesVoisines.size()+" id: "+jeu.getNumJoueurCourant());
-        return listeDesHutesVoisines;
-    }
-
 
     private boolean aCiteAutour(int i,int j){
         boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);

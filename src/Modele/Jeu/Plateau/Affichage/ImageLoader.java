@@ -6,30 +6,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.BufferOverflowException;
 
 import static Modele.Jeu.Plateau.EtatPlateau.couleurs_joueurs;
 import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class ImageLoader {
     public static boolean loaded = false;
-    public static BufferedImage
-            templeJungle,
-            templeJungleColor1,
-            templeJungleColor2,
-            templePierre,
-            templePierreColor1,
-            templePierreColor2,
-            templePrairie,
-            templePrairieColor1,
-            templePrairieColor2,
-            templeSable,
-            templeSableColor1,
-            templeSableColor2,
-            tour,
-            tourColor1,
-            tourColor2;
     public static BufferedImage constructionMode;
-    public static final BufferedImage[] choisirBat = new BufferedImage[12],hutteTile = new BufferedImage[3],maisonTileColor1 = new BufferedImage[3],maisonTileColor2 = new BufferedImage[3];
+    public static final BufferedImage[] choisirBat = new BufferedImage[12], temples = new BufferedImage[4],templesColor1 = new BufferedImage[4],templesColor2 = new BufferedImage[4],
+            tours = new BufferedImage[4],toursColor1 = new BufferedImage[4],toursColor2 = new BufferedImage[4];
+    public static final BufferedImage[][] hutteTile = new BufferedImage[3][4],maisonTileColor1 = new BufferedImage[3][4],maisonTileColor2 = new BufferedImage[3][4];
     public static BufferedImage waterTile, fenetre_score, background, joueur_courant;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
@@ -154,44 +141,56 @@ public class ImageLoader {
 
     public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id,int typeTerrain, int hauteurTerrain) {
         if (batiment_id == HUTTE) {
-            return getMaison(id_player,hauteurTerrain);
+            return getMaison(id_player,hauteurTerrain,typeTerrain);
         }
         if (batiment_id == TEMPLE) {
             return getTemple(id_player,typeTerrain);
         }
         if (batiment_id == TOUR) {
-            return getTour(id_player);
+            return getTour(id_player,typeTerrain);
         }
         return null;
     }
 
-    private static BufferedImage getTour(byte id_player) {
+    private static BufferedImage getTour(byte id_player,int typeTerrain) {
         if (id_player == 0) {
-            return tourColor1;
+            if(typeTerrain==GRASS) return toursColor1[2];
+            if(typeTerrain==MONTAGNE) return toursColor1[1];
+            if(typeTerrain==DESERT) return toursColor1[3];
+            return toursColor1[0];
         } else {
-            return tourColor2;
+            if(typeTerrain==GRASS) return toursColor2[2];
+            if(typeTerrain==MONTAGNE) return toursColor2[1];
+            if(typeTerrain==DESERT) return toursColor2[3];
+            return toursColor2[0];
         }
     }
 
     private static BufferedImage getTemple(byte id_player,int typeTerrain) {
         if (id_player == 0) {
-            if(typeTerrain==GRASS) return templePrairieColor1;
-            if(typeTerrain==MONTAGNE) return templePierreColor1;
-            if(typeTerrain==DESERT) return templeSableColor1;
-            return templeJungleColor1;
+            if(typeTerrain==GRASS) return templesColor1[2];
+            if(typeTerrain==MONTAGNE) return templesColor1[1];
+            if(typeTerrain==DESERT) return templesColor1[3];
+            return templesColor1[0];
         } else {
-            if(typeTerrain==GRASS) return templePrairieColor2;
-            if(typeTerrain==MONTAGNE) return templePierreColor2;
-            if(typeTerrain==DESERT) return templeSableColor2;
-            return templeJungleColor2;
+            if(typeTerrain==GRASS) return templesColor2[2];
+            if(typeTerrain==MONTAGNE) return templesColor2[1];
+            if(typeTerrain==DESERT) return templesColor2[3];
+            return templesColor2[0];
         }
     }
 
-    private static BufferedImage getMaison(byte id_player, int hauteurTerrain) {
+    private static BufferedImage getMaison(byte id_player, int hauteurTerrain,int typeTerrain) {
         if (id_player == 0) {
-            return maisonTileColor1[hauteurTerrain-1];
+            if(typeTerrain==GRASS) return maisonTileColor1[hauteurTerrain-1][0];
+            if(typeTerrain==MONTAGNE) return maisonTileColor1[hauteurTerrain-1][1];
+            if(typeTerrain==DESERT) return maisonTileColor1[hauteurTerrain-1][2];
+            return maisonTileColor1[hauteurTerrain-1][3];
         } else {
-            return maisonTileColor2[hauteurTerrain-1];
+            if(typeTerrain==GRASS) return maisonTileColor2[hauteurTerrain-1][0];
+            if(typeTerrain==MONTAGNE) return maisonTileColor2[hauteurTerrain-1][1];
+            if(typeTerrain==DESERT) return maisonTileColor2[hauteurTerrain-1][2];
+            return maisonTileColor2[hauteurTerrain-1][3];
         }
     }
 
@@ -221,39 +220,78 @@ public class ImageLoader {
     private static void readBatimentsImages() {
         String imageFolder = "/Plateau/Batiments/";
 
-        hutteTile[0] = lisImageBuf(imageFolder + "hutte_1");
-        hutteTile[1] = lisImageBuf(imageFolder + "hutte_2");
-        hutteTile[2] = lisImageBuf(imageFolder + "hutte_3");
-        templeJungle = lisImageBuf(imageFolder + "Temple_jungle");
-        templePierre = lisImageBuf(imageFolder + "Temple_pierre");
-        templePrairie = lisImageBuf(imageFolder + "Temple_prairie");
-        templeSable = lisImageBuf(imageFolder + "Temple_sable");
-        tour = lisImageBuf(imageFolder + "tour");
+        hutteTile[0][0] = lisImageBuf(imageFolder + "hutte_prairie_1");
+        hutteTile[1][0] = lisImageBuf(imageFolder + "hutte_prairie_2");
+        hutteTile[2][0] = lisImageBuf(imageFolder + "hutte_prairie_3");
+
+        hutteTile[0][1] = lisImageBuf(imageFolder + "hutte_pierre_1");
+        hutteTile[1][1] = lisImageBuf(imageFolder + "hutte_pierre_2");
+        hutteTile[2][1] = lisImageBuf(imageFolder + "hutte_pierre_3");
+
+        hutteTile[0][2] = lisImageBuf(imageFolder + "hutte_desert_1");
+        hutteTile[1][2] = lisImageBuf(imageFolder + "hutte_desert_2");
+        hutteTile[2][2] = lisImageBuf(imageFolder + "hutte_desert_3");
+
+        hutteTile[0][3] = lisImageBuf(imageFolder + "hutte_jungle_1");
+        hutteTile[1][3] = lisImageBuf(imageFolder + "hutte_jungle_2");
+        hutteTile[2][3] = lisImageBuf(imageFolder + "hutte_jungle_3");
+
+        temples[0] = lisImageBuf(imageFolder + "temple_jungle");
+        temples[1] = lisImageBuf(imageFolder + "temple_pierre");
+        temples[2] = lisImageBuf(imageFolder + "temple_prairie");
+        temples[3] = lisImageBuf(imageFolder + "temple_desert");
+
+        tours[0] = lisImageBuf(imageFolder + "tour_jungle");
+        tours[1] = lisImageBuf(imageFolder + "tour_pierre");
+        tours[2] = lisImageBuf(imageFolder + "tour_prairie");
+        tours[3] = lisImageBuf(imageFolder + "tour_desert");
+
         filtreCouleurBatiments();
     }
 
     private static void filtreCouleurBatiments() {
-        maisonTileColor1[0] = applyColorFilter(hutteTile[0], (byte) 0);
-        maisonTileColor1[1] = applyColorFilter(hutteTile[1], (byte) 0);
-        maisonTileColor1[2] = applyColorFilter(hutteTile[2], (byte) 0);
-        maisonTileColor2[0] = applyColorFilter(hutteTile[0], (byte) 1);
-        maisonTileColor2[1] = applyColorFilter(hutteTile[1], (byte) 1);
-        maisonTileColor2[2] = applyColorFilter(hutteTile[2], (byte) 1);
+        // Joueur 1
+            // Prairie
+            maisonTileColor1[0][0] = applyColorFilter(hutteTile[0][0], (byte) 0);
+            maisonTileColor1[1][0] = applyColorFilter(hutteTile[1][0], (byte) 0);
+            maisonTileColor1[2][0] = applyColorFilter(hutteTile[2][0], (byte) 0);
+            // Pierre
+            maisonTileColor1[0][1] = applyColorFilter(hutteTile[0][1], (byte) 0);
+            maisonTileColor1[1][1] = applyColorFilter(hutteTile[1][1], (byte) 0);
+            maisonTileColor1[2][1] = applyColorFilter(hutteTile[2][1], (byte) 0);
+            // Desert
+            maisonTileColor1[0][2] = applyColorFilter(hutteTile[0][2], (byte) 0);
+            maisonTileColor1[1][2] = applyColorFilter(hutteTile[1][2], (byte) 0);
+            maisonTileColor1[2][2] = applyColorFilter(hutteTile[2][2], (byte) 0);
+            // Jungle
+            maisonTileColor1[0][3] = applyColorFilter(hutteTile[0][3], (byte) 0);
+            maisonTileColor1[1][3] = applyColorFilter(hutteTile[1][3], (byte) 0);
+            maisonTileColor1[2][3] = applyColorFilter(hutteTile[2][3], (byte) 0);
 
-        templeJungleColor1 = applyColorFilter(templeJungle, (byte) 0);
-        templeJungleColor2 = applyColorFilter(templeJungle, (byte) 1);
+        // Joueur 2
+            // Prairie
+            maisonTileColor2[0][0] = applyColorFilter(hutteTile[0][0], (byte) 1);
+            maisonTileColor2[1][0] = applyColorFilter(hutteTile[1][0], (byte) 1);
+            maisonTileColor2[2][0] = applyColorFilter(hutteTile[2][0], (byte) 1);
+            // Pierre
+            maisonTileColor2[0][1] = applyColorFilter(hutteTile[0][1], (byte) 1);
+            maisonTileColor2[1][1] = applyColorFilter(hutteTile[1][1], (byte) 1);
+            maisonTileColor2[2][1] = applyColorFilter(hutteTile[2][1], (byte) 1);
+            // Desert
+            maisonTileColor2[0][2] = applyColorFilter(hutteTile[0][2], (byte) 1);
+            maisonTileColor2[1][2] = applyColorFilter(hutteTile[1][2], (byte) 1);
+            maisonTileColor2[2][2] = applyColorFilter(hutteTile[2][2], (byte) 1);
+            // Jungle
+            maisonTileColor2[0][3] = applyColorFilter(hutteTile[0][3], (byte) 1);
+            maisonTileColor2[1][3] = applyColorFilter(hutteTile[1][3], (byte) 1);
+            maisonTileColor2[2][3] = applyColorFilter(hutteTile[2][3], (byte) 1);
 
-        templePierreColor1 = applyColorFilter(templePierre, (byte) 0);
-        templePierreColor2 = applyColorFilter(templePierre, (byte) 1);
-
-        templePrairieColor1 = applyColorFilter(templePrairie, (byte) 0);
-        templePrairieColor2 = applyColorFilter(templePrairie, (byte) 1);
-
-        templeSableColor1 = applyColorFilter(templeSable, (byte) 0);
-        templeSableColor2 = applyColorFilter(templeSable, (byte) 1);
-
-        tourColor1 = applyColorFilter(tour, (byte) 0);
-        tourColor2 = applyColorFilter(tour, (byte) 1);
+            for(int i=0;i<temples.length;i++){
+                templesColor1[i] = applyColorFilter(temples[i], (byte) 0);
+                templesColor2[i] = applyColorFilter(temples[i], (byte) 1);
+                toursColor1[i] = applyColorFilter(tours[i], (byte) 0);
+                toursColor2[i] = applyColorFilter(tours[i], (byte) 1);
+            }
     }
 
     private static void readTileOrientationImages() {

@@ -28,7 +28,7 @@ public class Joueur {
         nbToursPlacees = 0;
         nbTemplesPlaces = 0;
         nbVillages = 0;
-        nbHuttes = 5;
+        nbHuttes = 20;
         nbTours = 2;
         nbTemples = 3;
     }

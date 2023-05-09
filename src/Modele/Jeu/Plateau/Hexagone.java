@@ -73,6 +73,9 @@ public class Hexagone implements Serializable {
         return volcan_i;
     }
 
+    public void resetBatHexagone(){
+        this.batiment = 0;
+    }
 
 
     public int getBatiment() {return batiment;}
