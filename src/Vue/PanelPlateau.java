@@ -78,6 +78,7 @@ public class PanelPlateau extends JPanel {
 
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
+            
         }else{
             // TODO Affiche fin de la partie
         }
@@ -882,7 +883,7 @@ public class PanelPlateau extends JPanel {
                     int posX = posCourante.ligne();
                     int posy = posCourante.colonne();
                     if(posX>jeu.getPlateau().getCarte().length){
-                        posX = posCourante.colonne() / (int) (voidTile.getHeight() * 0.75);;
+                        posX = posCourante.colonne() / (int) (voidTile.getHeight() * 0.75);
                         posy = (posCourante.ligne() + (i % 2 == 1 ? voidTile.getWidth() / 2 : 0)) / voidTile.getWidth();
                     }
                     jeu.incrementePropagation(posX,posy);

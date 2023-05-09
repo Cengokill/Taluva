@@ -73,13 +73,10 @@ public class Hexagone implements Serializable {
         return volcan_i;
     }
 
-    public boolean HexagoneLibre(){
-        return biomeTerrain == 0;
-    }
+
 
     public int getBatiment() {return batiment;}
 
-    public int getIDvillage (){return IDvillage;}
 
     public Hexagone copy() {
         return new Hexagone(num_joueur, hauteur, biomeTerrain, batiment, volcan_i, volcan_j);

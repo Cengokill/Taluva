@@ -28,9 +28,9 @@ public class IterateurSequenceListe<T> implements Iterateur<T> {
         if (aProchain()) {
             pprec = prec;
             prec = courant;
-            courant = ((Maillon<T>) courant).suivant;
+            courant = courant.suivant;
             last = true;
-            return ((Maillon<T>) prec).element;
+            return prec.element;
         } else {
             throw new NoSuchElementException();
         }

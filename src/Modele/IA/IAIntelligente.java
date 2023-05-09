@@ -37,7 +37,7 @@ public class IAIntelligente extends AbstractIA {
 
     public ArrayList<Coup> calculCoups() {
         ArrayList<Coup> chemin = new ArrayList<>();
-        LinkedList<ArbreChemins> queue = new LinkedList<>();
+        LinkedList<ArbrePossibilite> queue = new LinkedList<>();
         // Toutes les positions possibles pour poser une tuile
         ArrayList<TripletDePosition> posPossibles = jeu.getPlateau().getTripletsPossibles();
         for (int i = 0; i < tuilesPioche.size(); i++) {
@@ -52,15 +52,15 @@ public class IAIntelligente extends AbstractIA {
         int heuri_temples = jeu.joueurs[num_joueur].getNbTemples() * 400;
         int valeur = heurist_huttes + heuri_tours + heuri_temples;
         InstancePlateau instancePlateauDepart = new InstancePlateau(tuilesPioche, jeu.getPlateau());
-        ArbreChemins arbreCheminsTete = new ArbreChemins(instancePlateauDepart, null, null, 10000);
-        queue.add(arbreCheminsTete);
+        ArbrePossibilite arbrePossibiliteTete = new ArbrePossibilite(instancePlateauDepart, null, null, 10000);
+        queue.add(arbrePossibiliteTete);
 
         while (!queue.isEmpty()) {
             chemin = new ArrayList<>();
-            ArbreChemins arbreCheminsAvant = arbreCheminsTete;
-            arbreCheminsTete = queue.poll();
+            ArbrePossibilite arbrePossibiliteAvant = arbrePossibiliteTete;
+            arbrePossibiliteTete = queue.poll();
             //récupère l'instance courante qui contient le plateau et les tuiles
-            InstancePlateau instancePlateauCourante = arbreCheminsTete.getCourant();
+            InstancePlateau instancePlateauCourante = arbrePossibiliteTete.getCourant();
             //si c'est à l'IA de jouer
                 //calcule tous les placements possibles de la tuile de la pioche sur le plateau du jeu
             //sinon

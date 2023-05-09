@@ -33,14 +33,6 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         return resultat;
     }
 
-    public void getPioche(){//24 tuiles fixes définies
-        pioche = jeu.getPioche();
-    }
-
-    /*public ArrayList<Coup> joue() {
-        return null;
-    }*/
-
     public Coup joue(){
         return null;
     }
