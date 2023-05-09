@@ -23,7 +23,7 @@ public class Hexagone implements Serializable {
     private int IDvillage ;
     private final byte biomeTerrain;
     private byte batiment = 0;
-    private final byte numero ;
+    private final byte numeroTexture;
     private final byte volcan_j;
     private final byte volcan_i;
     private final byte num_joueur;
@@ -32,7 +32,7 @@ public class Hexagone implements Serializable {
         this.num_joueur = -1;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
-        this.numero = (byte) ((int)(Math.random() * 2) + 1);
+        this.numeroTexture = (byte) ((int)(Math.random() * 2) + 1);
         this.volcan_i = volcan_i;
         this.volcan_j = volcan_j;
     }
@@ -42,26 +42,16 @@ public class Hexagone implements Serializable {
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
         this.batiment = batiment;
-        this.numero = (byte) ((int)(Math.random() * 2) + 1);
+        this.numeroTexture = (byte) ((int)(Math.random() * 2) + 1);
         this.volcan_i = volcan_i;
         this.volcan_j = volcan_j;
     }
 
-    public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j, byte numero) {
+    public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j, byte numeroTexture) {
         this.num_joueur = -1;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
-        this.numero = numero;
-        this.volcan_i = volcan_i;
-        this.volcan_j = volcan_j;
-    }
-
-    public Hexagone(byte numero_joueur, byte hauteur, byte biomeTerrain, byte batiment, byte volcan_i, byte volcan_j, byte numero) {
-        this.num_joueur = numero_joueur;
-        this.hauteur = hauteur;
-        this.biomeTerrain = biomeTerrain;
-        this.batiment = batiment;
-        this.numero = numero;
+        this.numeroTexture = numeroTexture;
         this.volcan_i = volcan_i;
         this.volcan_j = volcan_j;
     }
@@ -74,7 +64,7 @@ public class Hexagone implements Serializable {
     public byte getBiomeTerrain() {
         return biomeTerrain;
     }
-    public byte getNum(){return numero;}
+    public byte getNum(){return numeroTexture;}
 
     public int getColonneVolcan(){
         return volcan_j;
