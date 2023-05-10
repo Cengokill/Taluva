@@ -19,9 +19,9 @@ public class InstancePlateau {
     public Plateau plateau;
     public ArrayList<Tuile> pioche;
 
-    public Joueur joueurs;
+    public Joueur[] joueurs;
 
-    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau, Joueur joueurs){
+    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs){
         this.pioche = pioche;
         this.plateau = plateau;
         this.joueurs = joueurs;
@@ -35,8 +35,8 @@ public class InstancePlateau {
         return pioche;
     }
 
-    public Joueur getJoueurs(){
-        return joueurs;
+    public Joueur getJoueur(int n){
+        return joueurs[n];
     }
 
     /*

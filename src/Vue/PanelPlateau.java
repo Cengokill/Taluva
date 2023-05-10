@@ -813,7 +813,7 @@ public class PanelPlateau extends JPanel {
         if (value == 1) { // place hut
             if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;
             enSelection = false;
-            int nbHuttesDispo = jeu.joueurs[jeu.jCourant].getNbHuttes()-1;
+            int nbHuttesDispo = jeu.getJoueurs()[jeu.jCourant].getNbHuttes()-1;
 
             for (Position posCourante:emplacementPropagation) {
                 if(nbHuttesDispo>=0){

@@ -21,7 +21,7 @@ public class Jeu extends Observable {
     AbstractIA IA2;
     public byte jCourant;
     byte jVainqueur;
-    public final Joueur[] joueurs = new Joueur[2];
+    private Joueur[] joueurs = new Joueur[2];
 
     final Object[] joueursObjet = new Object[2];
     Parametres p;

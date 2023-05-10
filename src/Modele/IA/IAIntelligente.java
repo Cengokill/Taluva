@@ -19,7 +19,7 @@ public class IAIntelligente extends AbstractIA {
     public IAIntelligente() {
         super();
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
-        InstancePlateau instance = new InstancePlateau(pioche, jeu.getPlateau());
+        InstancePlateau instance = new InstancePlateau(pioche, jeu.getPlateau(), jeu.getJoueurs());
     }
 
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -46,9 +46,9 @@ public class IAIntelligente extends AbstractIA {
     }
 
     public int calculCoups_joueur_A(InstancePlateau instance, int horizon) {
-        Joueur jCourant = jeu.getJoueurCourant();
+        int joueur_ia = 1;
         if(horizon==0){
-            return evaluation(instance, jCourant);
+            return evaluation_joueur(instance, joueur_ia);
         }else {
             int valeur = Integer.MIN_VALUE;
             //le joueur A doit jouer
@@ -73,7 +73,7 @@ public class IAIntelligente extends AbstractIA {
                         ArrayList<Tuile> nouvellePioche;
                         nouvellePioche = tuilesPioche;
                         nouvellePioche.remove(i);
-                        InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie);
+                        InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie, jeu.getJoueurs());
                         valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
                     }
                 }
@@ -83,9 +83,9 @@ public class IAIntelligente extends AbstractIA {
     }
 
     public int calculCoups_joueur_B(InstancePlateau instance, int horizon) {
-        Joueur jCourant = jeu.getJoueurCourant();
+        int joueur_ia = 1;
         if(horizon==0){
-            return evaluation(instance, jCourant);
+            return evaluation_joueur(instance, joueur_ia);
         }else {
             int valeur = Integer.MAX_VALUE;
             //le joueur B doit jouer
@@ -110,7 +110,7 @@ public class IAIntelligente extends AbstractIA {
                         ArrayList<Tuile> nouvellePioche;
                         nouvellePioche = tuilesPioche;
                         nouvellePioche.remove(i);
-                        InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie);
+                        InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie, jeu.getJoueurs());
                         valeur = Math.min(valeur, calculCoups_joueur_A(instanceCopie, horizon - 1));
                     }
                 }
