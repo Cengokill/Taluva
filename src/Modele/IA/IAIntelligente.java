@@ -1,6 +1,7 @@
 package Modele.IA;
 
 import Modele.Jeu.Coup;
+import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Tuile;
 import Structures.Sequence.SequenceListe;
 import Structures.Position.TripletDePosition;
@@ -35,67 +36,36 @@ public class IAIntelligente extends AbstractIA {
         return false;
     }
 
-    public ArrayList<Coup> calculCoups() {
-        ArrayList<Coup> chemin = new ArrayList<>();
-        LinkedList<ArbrePossibilite> queue = new LinkedList<>();
-        // Toutes les positions possibles pour poser une tuile
-        ArrayList<TripletDePosition> posPossibles = jeu.getPlateau().getTripletsPossibles();
-        for (int i = 0; i < tuilesPioche.size(); i++) {
-            Tuile tuile = tuilesPioche.get(i);
-            ajoutTuilesPioche();
-            for (int j = 0; j < posPossibles.size(); j++) {
-                TripletDePosition posCourante = posPossibles.get(j);
+    public int calculCoups_joueur_A(InstancePlateau instance, int horizon) {
+        Joueur jCourant = jeu.getJoueurCourant();
+        if(horizon==0){
+            return evaluation(instance, jCourant);
+        }else{
+            int valeur = Integer.MIN_VALUE;
+            //le joueur A doit jouer
+            // Toutes les positions possibles pour poser une tuile
+            ArrayList<TripletDePosition> posPossibles = jeu.getPlateau().getTripletsPossibles();
+            for (int i = 0; i < tuilesPioche.size(); i++) {
+                Tuile tuile = tuilesPioche.get(i);
+                ajoutTuilesPioche();
+                for (int j = 0; j < posPossibles.size(); j++) {
+                    TripletDePosition posCourante = posPossibles.get(j);
+                }
             }
         }
-        int heurist_huttes = jeu.joueurs[num_joueur].getNbHuttes() * 10;
-        int heuri_tours = jeu.joueurs[num_joueur].getNbTours() * 100;
-        int heuri_temples = jeu.joueurs[num_joueur].getNbTemples() * 400;
-        int valeur = heurist_huttes + heuri_tours + heuri_temples;
-        InstancePlateau instancePlateauDepart = new InstancePlateau(tuilesPioche, jeu.getPlateau());
-        ArbrePossibilite arbrePossibiliteTete = new ArbrePossibilite(instancePlateauDepart, null, null, 10000);
-        queue.add(arbrePossibiliteTete);
+        return 0;
 
-        while (!queue.isEmpty()) {
-            chemin = new ArrayList<>();
-            ArbrePossibilite arbrePossibiliteAvant = arbrePossibiliteTete;
-            arbrePossibiliteTete = queue.poll();
-            //récupère l'instance courante qui contient le plateau et les tuiles
-            InstancePlateau instancePlateauCourante = arbrePossibiliteTete.getCourant();
-            //si c'est à l'IA de jouer
-                //calcule tous les placements possibles de la tuile de la pioche sur le plateau du jeu
-            //sinon
-                //même chose mais on calcule les placements possibles du joueur adverse
-            SequenceListe<Coup> coupsPossibles = null;
-            //TODO: calculer les placements
-
-            //pour chaque coup possible
-            while (!coupsPossibles.estVide()) {
-                //on joue le coup
-                //on enregistre le plateau et le pioche après avoir joué le coup dans une nouvelle InstancePlateau
-                //si l'InstancePlateau n'est pas dans la Hashmap
-                //on calcule la valeur de l'instance
-                //si l'instance est une victoire de l'IA
-                //on crée un nouvel arbre avec l'instance et la valeur
-                //tant que l'instance courante n'est pas l'instance de départ
-                //on fait comme dans le Sokoban
-                //on renvoie le chemin de Coups inversé
-
-                //si ce n'est pas une victoire de l'IA
-                // on ajoute l'instance à la Hashmap avec son poids calculé (heuristique)
-
-                //sinon on ne fait rien
-            }
-        }
-        return chemin;
     }
 
-    public ArrayList<Coup> joueSequence() {
-        return calculCoups();
-    }
 
     @Override
     public Coup joue() {
         return null;
+    }
+
+
+    public int evaluation(InstancePlateau instance, Joueur j){
+        return 0;
     }
 
 }
