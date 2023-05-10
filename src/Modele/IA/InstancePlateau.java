@@ -10,8 +10,28 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class InstancePlateau {
+    /*
     public Integer pioche;
     public Integer plateau;
+     */
+
+    public Plateau plateau;
+    public ArrayList<Tuile> pioche;
+
+    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau){
+        this.pioche = pioche;
+        this.plateau = plateau;
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public ArrayList<Tuile> getPioche() {
+        return pioche;
+    }
+
+    /*
 
     public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau){
         // Récupère la pioche et le plateau sous forme Serializable
@@ -28,7 +48,6 @@ public class InstancePlateau {
         this.pioche = readFromByte(piocheByteData);
         this.plateau = readFromByte(plateauByteData);
     }
-
     private int readFromByte(byte[] objectData) {
         return ByteBuffer.wrap(objectData).getInt();
     }
@@ -59,5 +78,6 @@ public class InstancePlateau {
             throw new RuntimeException(e);
         }
     }
+     */
 }
 
