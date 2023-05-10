@@ -123,6 +123,7 @@ public class IAIntelligente extends AbstractIA {
         int score_joueur;
         score_joueur = 0;
         return score_joueur;
+
     }
 
 }
