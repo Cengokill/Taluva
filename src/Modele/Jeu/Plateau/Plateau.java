@@ -790,7 +790,7 @@ public class Plateau implements Serializable {
         for(Point2D p : pointsVillage){                                                 // On verifie que la cité ne possède pas déjà une tour
             if(estTemple(p.getPointX(),p.getPointY())) PeutClassique =  false;
         }
-        if(PeutClassique) return true;
+        if(PeutClassique && aCiteAutour(i,j,numJoueur)) return true;
 
         // CAS POUR GERER ISOLATION DE TEMPLE
         ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,numJoueur);
@@ -818,7 +818,7 @@ public class Plateau implements Serializable {
         for(Point2D p : pointsVillage){                                              // On verifie que la cité ne possède pas déjà une tour
             if(estTour(p.getPointX(),p.getPointY())) PeutClassique = false;
         }
-        if(PeutClassique) return true;
+        if(PeutClassique && aCiteAutour(i,j,numJoueur)) return true;
 
         // CAS POUR GERER ISOLATION DE TOUR
         ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,numJoueur);
@@ -829,7 +829,7 @@ public class Plateau implements Serializable {
             if(getHauteurTuile(i,j)<3) peut[k]=false;
             else{
                 for(Point2D p : pointsVillageCourant){
-                    if(p!=null) peut[k]=false;
+                    if(p==null) peut[k]=false;
                     else if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
                 }
             }
@@ -853,7 +853,7 @@ public class Plateau implements Serializable {
         return (getBatiment(i,j) != 0 && getTuile(i,j).getNumJoueur()==numJoueur);
     }
 
-    private boolean aCiteAutour(int i,int j,int numJoueur){
+    public boolean aCiteAutour(int i,int j,int numJoueur){
         boolean bool = possedeBatiment(i-1,j,numJoueur)||possedeBatiment(i+1,j,numJoueur)||possedeBatiment(i,j-1,numJoueur)||possedeBatiment(i,j+1,numJoueur);
         if(i%2==1){
             if(possedeBatiment(i-1,j-1,numJoueur)) {
