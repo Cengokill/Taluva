@@ -73,8 +73,29 @@ public class IAIntelligente extends AbstractIA {
                         ArrayList<Tuile> nouvellePioche;
                         nouvellePioche = tuilesPioche;
                         nouvellePioche.remove(i);
-                        InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie, jeu.getJoueurs());
-                        valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
+                        //On doit placer un batiment
+                        ArrayList<Position> positionBatsPossibles = plateauCopie.getPositions_libres_batiments();
+                        for (int posBat=0;posBat<positionBatsPossibles.size();posBat++){
+                            Position posCouranteBat = positionBatsPossibles.get(posBat);
+                            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(posCouranteBat.ligne(),posCouranteBat.colonne(),num_joueur_ia);
+                            // On parcours tous les choix de batiment possible
+                            for (int batChoisit=0;batChoisit<batimentsPlacable.length;batChoisit++){
+                                if(batimentsPlacable[batChoisit]==1){
+                                    Joueur JcourantCopie = jeu.getJoueurCourant();
+                                    Joueur[] JoueursCourant = instance.getJoueurs();
+
+                                    plateauCopie.placeBatiment(num_joueur_ia,posCouranteBat.ligne(),posCouranteBat.colonne(),(byte) (batimentsPlacable[batChoisit]+1));
+                                    if(batChoisit==0) JcourantCopie.incrementeTemple();
+                                    else if(batChoisit==1) JcourantCopie.incrementeHutte();
+                                    else if(batChoisit==2) JcourantCopie.incrementeTour();
+                                    plateauCopie.supprimeLibreBatiments(posCouranteBat);
+
+                                    JoueursCourant[jeu.getNumJoueurCourant()] = JcourantCopie;
+                                    InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie,JoueursCourant);
+                                    valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -110,8 +131,29 @@ public class IAIntelligente extends AbstractIA {
                         ArrayList<Tuile> nouvellePioche;
                         nouvellePioche = tuilesPioche;
                         nouvellePioche.remove(i);
-                        InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie, jeu.getJoueurs());
-                        valeur = Math.min(valeur, calculCoups_joueur_A(instanceCopie, horizon - 1));
+                        //On doit placer un batiment
+                        ArrayList<Position> positionBatsPossibles = plateauCopie.getPositions_libres_batiments();
+                        for (int posBat=0;posBat<positionBatsPossibles.size();posBat++){
+                            Position posCouranteBat = positionBatsPossibles.get(posBat);
+                            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(posCouranteBat.ligne(),posCouranteBat.colonne(),num_joueur_ia);
+                            // On parcours tous les choix de batiment possible
+                            for (int batChoisit=0;batChoisit<batimentsPlacable.length;batChoisit++){
+                                if(batimentsPlacable[batChoisit]==1){
+                                    Joueur JcourantCopie = jeu.getJoueurCourant();
+                                    Joueur[] JoueursCourant = instance.getJoueurs();
+
+                                    plateauCopie.placeBatiment(num_joueur_ia,posCouranteBat.ligne(),posCouranteBat.colonne(),(byte) (batimentsPlacable[batChoisit]+1));
+                                    if(batChoisit==0) JcourantCopie.incrementeTemple();
+                                    else if(batChoisit==1) JcourantCopie.incrementeHutte();
+                                    else if(batChoisit==2) JcourantCopie.incrementeTour();
+                                    plateauCopie.supprimeLibreBatiments(posCouranteBat);
+
+                                    JoueursCourant[jeu.getNumJoueurCourant()] = JcourantCopie;
+                                    InstancePlateau instanceCopie = new InstancePlateau(nouvellePioche, plateauCopie,JoueursCourant);
+                                    valeur = Math.min(valeur, calculCoups_joueur_A(instanceCopie, horizon - 1));
+                                }
+                            }
+                        }
                     }
                 }
             }
