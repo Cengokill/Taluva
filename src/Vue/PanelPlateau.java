@@ -34,8 +34,7 @@ public class PanelPlateau extends JPanel {
     final ControleurMediateur controleur;
     public final FenetreJeu fenetreJeu;
     public final Jeu jeu;
-
-    private int index_water=0, index_bat_precedent=-1,posX_bat_precedent=-1,posY_bat_precedent=-1,joueurDejaVerifiePerdu;
+    private int index_water=0, index_bat_precedent=-1,posX_bat_precedent=-1,posY_bat_precedent=-1,indexMessageErreur=0,timerValue=0;
 
     private ArrayList<Position> emplacementPropagation;
 
@@ -465,38 +464,38 @@ public class PanelPlateau extends JPanel {
     }
 
     private void afficheDirectionsLibres(Graphics g, int colonne, int ligne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
-        if (controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee, colonne - 1, colonneAjustee + 1)) {
+        if ((controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee, colonne - 1, colonneAjustee + 1))==0) {
             g.drawImage(beacon_1, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee + 1, colonne, ligne + 1)) {
+        if ((controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee + 1, colonne, ligne + 1))==0) {
             g.drawImage(beacon_2, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(colonne, ligne, colonne, ligne + 1, colonne + 1, colonneAjustee + 1)) {
+        if ((controleur.peutPlacerTuile(colonne, ligne, colonne, ligne + 1, colonne + 1, colonneAjustee + 1))==0) {
             g.drawImage(beacon_3, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee + 1, colonne + 1, colonneAjustee)) {
+        if ((controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee + 1, colonne + 1, colonneAjustee))==0) {
             g.drawImage(beacon_4, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee, colonne, ligne - 1)) {
+        if ((controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee, colonne, ligne - 1))==0) {
             g.drawImage(beacon_5, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
-        if (controleur.peutPlacerTuile(colonne, ligne, colonne, ligne - 1, colonne - 1, colonneAjustee)) {
+        if ((controleur.peutPlacerTuile(colonne, ligne, colonne, ligne - 1, colonne - 1, colonneAjustee))==0) {
             g.drawImage(beacon_6, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
     }
 
     private void illumineVolcanLibre(Graphics g, int ligne, int colonne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
-        if (controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee, ligne - 1, colonneAjustee + 1)) {
+        if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee, ligne - 1, colonneAjustee + 1))==0) {
             g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee + 1, ligne, colonne + 1)) {
+        } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee + 1, ligne, colonne + 1))==0) {
             g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne, colonne + 1, ligne + 1, colonneAjustee + 1)) {
+        } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne + 1, ligne + 1, colonneAjustee + 1))==0) {
             g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee + 1, ligne + 1, colonneAjustee)) {
+        } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee + 1, ligne + 1, colonneAjustee))==0) {
             g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee, ligne, colonne - 1)) {
+        } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee, ligne, colonne - 1))==0) {
             g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
-        } else if (controleur.peutPlacerTuile(ligne, colonne, ligne, colonne - 1, ligne - 1, colonneAjustee)) {
+        } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne - 1, ligne - 1, colonneAjustee))==0) {
             g.drawImage(whiteTile, volcanDrawX, volcanDrawY - heightoffset + 5, null);
         }
     }
@@ -632,7 +631,6 @@ public class PanelPlateau extends JPanel {
                 }
             }
 
-
             y -= jeu.getPlateau().getCarte()[i][j].getHauteur() * HAUTEUR_ETAGE;
             afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
         }
@@ -702,12 +700,19 @@ public class PanelPlateau extends JPanel {
     }
 
     private float changeOpacitePeutPasplacerTuile(int i, int j, int j2, float opacity, int i2, int i3, int i4) {
-        if (!controleur.peutPlacerTuile(i, j, i2, j2, i3, i4)) {
+        if (controleur.peutPlacerTuile(i, j, i2, j2, i3, i4)!=0){
             opacity = 0.4f;
         }
         return opacity;
     }
 
+    public int getIndexMessageErreur(){
+        return indexMessageErreur;
+    }
+
+    public void resetIndexMessageErreur(){
+        indexMessageErreur=0;
+    }
 
     private void displayHoverMaison(Graphics g) {
         if (hoverTile != null) {
@@ -764,10 +769,16 @@ public class PanelPlateau extends JPanel {
     }
 
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
-        if (controleur.peutPlacerTuile(i, j, i2, j_modified, i3, i4)) {
+        indexMessageErreur = controleur.peutPlacerTuile(i, j, i2, j_modified, i3, i4);
+        timerValue=0;
+        if (indexMessageErreur==0) {
             controleur.placeEtage(i, j, i2, j_modified, tuileAPoser[1][0], i3, i4, tuileAPoser[2][0]);
             detectionPlusAucunCoupAJouer();
         }
+    }
+
+    public int getTimerValue(){
+        return timerValue;
     }
 
     private boolean possedeBatiment(int i,int j){
@@ -904,6 +915,7 @@ public class PanelPlateau extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 miseAJour();
+                timerValue+=10;
             }
         });
         timer.start();

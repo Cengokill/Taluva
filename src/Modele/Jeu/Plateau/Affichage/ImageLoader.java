@@ -33,9 +33,9 @@ public class ImageLoader {
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto,
     posX_joueur_courant, posY_joueur_courant, posX_prenom_j0, posX_prenom_j1, posY_prenom_j0, posY_prenom_j1,
-            posX_huttes, posX_tours, posX_temples, posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche;
+            posX_huttes, posX_tours, posX_temples, posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_joueur_courant,
-            hauteur_joueur_courant;
+            hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur;
     public static boolean select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter;
 
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
@@ -473,15 +473,15 @@ public class ImageLoader {
     }
 
     public static BufferedImage applyColorFilter(BufferedImage image, byte num_joueur) {
-        if (num_joueur < 0 || num_joueur > 3 || image == null) {
+        if ((num_joueur < 0 || num_joueur > 3 || image == null)&&num_joueur!=9) {
             return image;
         }
-        //System.out.println(num_joueur);
         BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = outputImage.createGraphics();
         g2d.drawImage(image, 0, 0, null);
         g2d.setComposite(AlphaComposite.SrcAtop);
-        g2d.setColor(couleurs_joueurs[num_joueur]);
+        if(num_joueur==9) g2d.setColor(Color.GRAY);
+        else g2d.setColor(couleurs_joueurs[num_joueur]);
         g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
         g2d.dispose();
         return outputImage;

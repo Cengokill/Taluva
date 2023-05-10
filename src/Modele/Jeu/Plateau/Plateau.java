@@ -322,52 +322,54 @@ public class Plateau implements Serializable {
         return tab;
     }
 
-    public boolean peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
+    public int peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {    // renvoie 0 si OK
         // Vérifie qu'on ne pose pas au bord du plateau
         if (ligneVolcan < 2 || colonneVolcan < 2 || ligneVolcan >= carte.length-2 || colonneVolcan >= carte.length-2) {
-            return false;
+            return 1;
         }
         if (ligneTile1 < 2 || colonneTile1 < 2 || ligneTile1 >= carte.length-2 || colonneTile1 >= carte.length-2) {
-            return false;
+            return 1;
         }
         if (ligneTile2 < 2 || colonneTile2 < 2 || ligneTile2 >= carte.length-2 || colonneTile2 >= carte.length-2) {
-            return false;
+            return 1;
         }
 
         // Premiere tuile posée
-        if(estVide() && (ligneVolcan>=carte.length/2-1) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2)) return true;
+        if(estVide() && (ligneVolcan>=carte.length/2-1) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2)){
+            return 0;
+        }
 
         // Hauteur max
         int hauteur = carte[ligneVolcan][colonneVolcan].getHauteur();
         if (hauteur == 4) {
-            return false;
+            return 2;
         }
         // Vérifie si on place un volcan sur un volcan
         if (carte[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VOLCAN && carte[ligneVolcan][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE) {
-            return false;
+            return 3;
         }
         // Vérifie qu'on ne place pas pile poil par dessus une autre tuile
         if(carte[ligneTile1][colonneTile1].getLigneVolcan()==ligneVolcan && carte[ligneTile1][colonneTile1].getColonneVolcan()==colonneVolcan
                 && carte[ligneTile2][colonneTile2].getLigneVolcan()==ligneVolcan && carte[ligneTile2][colonneTile2].getColonneVolcan()==colonneVolcan){
-            return false;
+            return 4;
         }
         
         // On ne place pas sur un temple
-        if(estTemple(ligneVolcan,colonneVolcan)||estTemple(ligneTile1,colonneTile1)||estTemple(ligneTile2,colonneTile2)) return false;
+        if(estTemple(ligneVolcan,colonneVolcan)||estTemple(ligneTile1,colonneTile1)||estTemple(ligneTile2,colonneTile2)) return 5;
         // On ne place pas sur une tour
-        if(estTour(ligneVolcan,colonneVolcan)||estTour(ligneTile1,colonneTile1)||estTour(ligneTile2,colonneTile2)) return false;
+        if(estTour(ligneVolcan,colonneVolcan)||estTour(ligneTile1,colonneTile1)||estTour(ligneTile2,colonneTile2)) return 6;
         // On efface un village entier
-        if(effaceUnVillageEntier(ligneTile1,colonneTile1,ligneTile2,colonneTile2)||effaceUnVillageEntier(ligneTile2,colonneTile2,ligneTile1,colonneTile1)) return false;
+        if(effaceUnVillageEntier(ligneTile1,colonneTile1,ligneTile2,colonneTile2)||effaceUnVillageEntier(ligneTile2,colonneTile2,ligneTile1,colonneTile1)) return 7;
 
         // Vérifie la hauteur de toutes les cases
         if (carte[ligneVolcan][colonneVolcan].getHauteur() != hauteur) {
-            return false;
+            return 8;
         }
         if (carte[ligneTile1][colonneTile1].getHauteur() != hauteur) {
-            return false;
+            return 8;
         }
         if (carte[ligneTile2][colonneTile2].getHauteur() != hauteur) {
-            return false;
+            return 8;
         }
 
 
@@ -393,7 +395,7 @@ public class Plateau implements Serializable {
                     colonneTile2 -= 1;
                 }
 
-                return carte[ligneVolcan - 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
+                if (carte[ligneVolcan - 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
                         carte[ligneVolcan - 1][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE ||
                         carte[ligneVolcan + 1][colonneVolcan + 1].getBiomeTerrain() != Hexagone.VIDE ||
                         carte[ligneVolcan + 1][colonneVolcan].getBiomeTerrain() != Hexagone.VIDE ||
@@ -406,11 +408,13 @@ public class Plateau implements Serializable {
                         carte[ligneTile2 - 1][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE ||
                         carte[ligneTile2 - 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE ||
                         carte[ligneTile2 + 1][colonneTile2 + 1].getBiomeTerrain() != Hexagone.VIDE ||
-                        carte[ligneTile2 + 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE;
+                        carte[ligneTile2 + 1][colonneTile2].getBiomeTerrain() != Hexagone.VIDE) return 0;
+                else return 9;
             }
+
         }
 
-        return true;
+        return 0;
     }
     public boolean peutPlacerVillage(int x ,int y){
         return carte[x][y].getBiomeTerrain() != Hexagone.VOLCAN || carte[x][y].getBatiment() == Hexagone.VIDE;
@@ -474,22 +478,22 @@ public class Plateau implements Serializable {
             enHautGauche= voisinsDeVoisins.get(4);
             enHautDroite = voisinsDeVoisins.get(5);
 
-            if (peutPlacerTuile(courant.ligne(), courant.colonne(), enHautGauche.ligne(), enHautGauche.colonne(), enHautDroite.ligne(), enHautDroite.colonne())) {
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enHautGauche.ligne(), enHautGauche.colonne(), enHautDroite.ligne(), enHautDroite.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, enHautGauche, enHautDroite));
             }
-            if (peutPlacerTuile(courant.ligne(), courant.colonne(), enHautGauche.ligne(), enHautGauche.colonne(), gauche.ligne(), gauche.colonne())) {
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enHautGauche.ligne(), enHautGauche.colonne(), gauche.ligne(), gauche.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, enHautGauche, gauche));
             }
-            if (peutPlacerTuile(courant.ligne(), courant.colonne(), droite.ligne(), droite.colonne(), enHautDroite.ligne(), enHautDroite.colonne())) {
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), droite.ligne(), droite.colonne(), enHautDroite.ligne(), enHautDroite.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, droite, enHautDroite));
             }
-            if (peutPlacerTuile(courant.ligne(), courant.colonne(), gauche.ligne(), gauche.colonne(), enBasGauche.ligne(), enBasGauche.colonne())) {
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), gauche.ligne(), gauche.colonne(), enBasGauche.ligne(), enBasGauche.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, gauche, enBasGauche));
             }
-            if (peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasGauche.colonne(), enBasDroite.ligne(), enBasDroite.colonne())) {
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasGauche.colonne(), enBasDroite.ligne(), enBasDroite.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, enBasGauche, enBasDroite));
             }
-            if (peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasDroite.colonne(), droite.ligne(), droite.colonne())) {
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasDroite.colonne(), droite.ligne(), droite.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, enBasDroite, droite));
             }
         }

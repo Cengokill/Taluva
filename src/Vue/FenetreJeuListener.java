@@ -217,7 +217,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (!SwingUtilities.isRightMouseButton(e)) {
                 clicDroiteEnfonce = false;
             }
-
         }
 
         @Override

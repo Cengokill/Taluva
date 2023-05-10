@@ -156,6 +156,7 @@ public class FenetreJeu extends Container {
                 super.paint(g2d);
                 calculeRapports();
                 afficheFenetreScore(g2d);
+                afficheMessageErreur(g2d);
                 afficheBoutonSave(g2d);
                 afficheBoutonLoad(g2d);
                 afficheBoutonAnnuler(g2d);
@@ -199,6 +200,10 @@ public class FenetreJeu extends Container {
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
                 posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
                 posY_quitter = Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
+                posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
+                posY_messageErreur = (int) (hauteur*0.8);
+                hauteurMessageErreur = (int) (hauteur*0.05);
+                largeurMessageErreur = (int) (largeur*0.21);
             }
         };
     }
@@ -240,6 +245,33 @@ public class FenetreJeu extends Container {
                 if(buttonPanel!=null) buttonPanel.setBounds(0, 0, getWidth(), getHeight());
             }
         };
+    }
+
+    private void afficheMessageErreur(Graphics g) {
+        Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        String message=null;
+        int indexErreur = panelPlateau.getIndexMessageErreur();
+        if(indexErreur==1) message = "Vous avez atteint la limite du plateau";
+        if(indexErreur==2) message = "Vous avez atteint la hauteur maximale";
+        if(indexErreur==3) message = "Le volcan doit etre sur un autre volcan";
+        if(indexErreur==4) message = "Vous ne pouvez pas superposer 2 tuiles";
+        if(indexErreur==5) message = "Vous ne pouvez pas ecraser un temple";
+        if(indexErreur==6) message = "Vous ne pouvez pas ecraser une tour";
+        if(indexErreur==7) message = "Vous ne pouvez pas ecraser un village entier";
+        if(indexErreur==8) message = "Un bout de la tuile est dans le vide";
+        if(indexErreur==9) message = "Vous ne touchez pas l'ile principale";
+
+        if(message!=null){
+            largeurMessageErreur = (int)(message.length()*font.getSize()*0.55);
+            posX_messageErreur = posX_messageErreur-(int)(largeurMessageErreur*0.33);
+            g.drawImage(applyColorFilter(joueur_courant,(byte) 9),posX_messageErreur,posY_messageErreur,largeurMessageErreur,hauteurMessageErreur,null);
+            g.drawString(message,(int) (posX_messageErreur+(largeurMessageErreur/13)), posY_messageErreur+(int)(hauteurMessageErreur/1.5));
+            if(panelPlateau.getTimerValue()>=4000){
+                panelPlateau.resetIndexMessageErreur();
+            }
+        }
     }
 
 
