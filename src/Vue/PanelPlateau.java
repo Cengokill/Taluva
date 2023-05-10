@@ -862,6 +862,9 @@ public class PanelPlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
+        /*System.out.println("SOURIS i: "+i+" j: "+j);
+        System.out.println("aCiterAutour: "+jeu.getPlateau().aCiteAutour(i,j,jeu.getNumJoueurCourant()));*/
+
 
         if(poseTile) placerTuiles(i,j);
         else placeBatiment(i, j);
