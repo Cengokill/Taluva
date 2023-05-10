@@ -286,7 +286,7 @@ public class FenetreJeu extends Container {
         g.setColor(new Color(0, 128, 255));
         String joueur_1 = jeu.getJoueurs()[1].getPrenom();
         g.drawString(joueur_1, posX_prenom_j1, posY_prenom_j1);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         font = new Font("Roboto", Font.BOLD, 20);
         g.setFont(font);
         String huttes_j0 = Integer.toString(jeu.getJoueurs()[0].getNbHuttes());
@@ -303,6 +303,7 @@ public class FenetreJeu extends Container {
         g.drawString(temples_j1, posX_temples, posY_scores_j1);
         font = new Font("Roboto", Font.BOLD, 25);
         g.setFont(font);
+        g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
         g.drawString(nb_tuiles_pioche, posX_pioche, posY_pioche);
     }
