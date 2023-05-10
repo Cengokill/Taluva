@@ -179,12 +179,12 @@ public class Jeu extends Observable {
         }
     }
 
-    public String getPrenomJoueurCourant(){
-        return joueurs[jCourant].getPrenom();
-    }
-
     public Joueur getJoueurCourant(){
         return joueurs[jCourant];
+    }
+
+    public String getPrenomJoueurCourant(){
+        return joueurs[jCourant].getPrenom();
     }
 
     public void initPioche(){//24 tuiles fixes définies

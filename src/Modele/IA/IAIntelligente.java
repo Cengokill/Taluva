@@ -3,7 +3,6 @@ package Modele.IA;
 import Modele.Jeu.Coup;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Tuile;
-import Structures.Sequence.SequenceListe;
 import Structures.Position.TripletDePosition;
 
 import java.util.*;

@@ -356,7 +356,7 @@ public class FenetreJeu extends Container {
         Font font = new Font("Roboto", Font.BOLD, 20);
         g.setFont(font);
         g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
-        g.drawString(jeu.getJoueurCourant(), posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
+        g.drawString(jeu.getPrenomJoueurCourant(), posX_joueur_courant+10, posY_joueur_courant+hauteur_joueur_courant/2+3);
     }
 
     public void metAjour(){
