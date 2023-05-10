@@ -1,5 +1,6 @@
 package Modele.IA;
 
+import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 
@@ -18,9 +19,12 @@ public class InstancePlateau {
     public Plateau plateau;
     public ArrayList<Tuile> pioche;
 
-    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau){
+    public Joueur joueurs;
+
+    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau, Joueur joueurs){
         this.pioche = pioche;
         this.plateau = plateau;
+        this.joueurs = joueurs;
     }
 
     public Plateau getPlateau() {
@@ -29,6 +33,10 @@ public class InstancePlateau {
 
     public ArrayList<Tuile> getPioche() {
         return pioche;
+    }
+
+    public Joueur getJoueurs(){
+        return joueurs;
     }
 
     /*
