@@ -576,7 +576,6 @@ public class Plateau implements Serializable {
             creerTriplets(positions_libres);
             if(coup.typePlacement!=4) {
                 historique.ajoute(coup);
-                System.out.println("zzzzzzzzzzz");
             }
 
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
@@ -599,7 +598,6 @@ public class Plateau implements Serializable {
             carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
             if(coup.typePlacement!=4){
                 historique.ajoute(coup);
-                System.out.println("eeeeeeeeeeeeee");
             }
 
         }
@@ -972,5 +970,12 @@ public class Plateau implements Serializable {
             tripletsPossible.add(tripletDePosition.copy());
         }
         return tripletsPossible;
+    }
+
+    public int getLIGNES() {
+        return LIGNES;
+    }
+    public int getCOLONNES(){
+        return COLONNES;
     }
 }

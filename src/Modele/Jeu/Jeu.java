@@ -13,6 +13,8 @@ import java.util.Random;
 import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class Jeu extends Observable {
+
+
     Plateau plateau;
     Joueur joueur1, joueur2;
     AbstractIA IA1=null;
@@ -247,10 +249,12 @@ public class Jeu extends Observable {
 
     public void annuler() {
         plateau.annuler();
+        changePhase();
     }
 
     public void refaire() {
         plateau.refaire();
+        changePhase();
     }
 
     public void sauvegarder() {
@@ -267,5 +271,15 @@ public class Jeu extends Observable {
 
     public Plateau getPlateau() {
         return plateau;
+    }
+
+    public void changePhase(){
+        if(doit_placer_batiment){
+            doit_placer_batiment=false;
+            doit_placer_tuile=true;
+        }else {
+            doit_placer_tuile=false;
+            doit_placer_batiment=true;
+        }
     }
 }
