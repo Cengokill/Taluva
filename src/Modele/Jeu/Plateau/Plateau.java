@@ -336,7 +336,7 @@ public class Plateau implements Serializable {
 
         // Premiere tuile posée
         if(estVide() && (ligneVolcan>=carte.length/2-1) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2)){
-            return 10;
+            return 0;
         }
 
         // Hauteur max
@@ -815,7 +815,8 @@ public class Plateau implements Serializable {
             if(getHauteurTuile(i,j)<3) peut[k]=false;
             else{
                 for(Point2D p : pointsVillageCourant){
-                    if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
+                    if(p!=null) peut[k]=false;
+                    else if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
                 }
             }
             if(peut[k] && aCiteAutour(i,j,numJoueur)) return true;

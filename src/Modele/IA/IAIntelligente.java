@@ -53,7 +53,6 @@ public class IAIntelligente extends AbstractIA {
             }
         }
         return 0;
-
     }
 
 
