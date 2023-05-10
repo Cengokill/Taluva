@@ -11,8 +11,8 @@ public class TaluvaMain {
 
         Jeu jeu = new Jeu();
         ControleurMediateur controler = new ControleurMediateur(jeu);
-        Serveur serveur = new Serveur(6500);
-        Client client = new Client("localhost", 6500);
+        Serveur serveur = new Serveur(42113);
+        Client client = new Client("localhost", 42113);
         Thread t = new Thread(serveur);
         Thread t2 = new Thread(client);
         t.start();
