@@ -119,11 +119,22 @@ public class IAIntelligente extends AbstractIA {
         }
     }
 
-    public int evaluation(InstancePlateau instance, Joueur j){
-        int score_joueur;
-        score_joueur = 0;
-        return score_joueur;
+    public int evaluation_joueur(InstancePlateau instance, int num_joueur){
+        Joueur j = instance.getJoueur(num_joueur);
+        //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
+        if((j.getNbHuttes() == 0 && j.getNbTemples() == 0)||(j.getNbTemples() ==0 && j.getNbTours() ==0)||(j.getNbHuttes()==0 && j.getNbTours()==0)){
+            return Integer.MAX_VALUE;
+        }
+        //si le joueur ne peut plus construire de huttes, il a perdu
+        if(j.getNbHuttes() == 0){
+            return Integer.MIN_VALUE;
+        }
+        //sinon on calcule le score du joueur
+        int score_joueur = j.getNbHuttes() * poids_hutte;
+        score_joueur += j.getNbTours() * poids_tour;
+        score_joueur += j.getNbTemples() * poids_temple;
 
+        return score_joueur;
     }
 
 }
