@@ -262,6 +262,7 @@ public class FenetreJeu extends Container {
         if(indexErreur==7) message = "Vous ne pouvez pas ecraser un village entier";
         if(indexErreur==8) message = "Un bout de la tuile est dans le vide";
         if(indexErreur==9) message = "Vous ne touchez pas l'ile principale";
+        if(indexErreur==10) message = "Vous devez placer la tuile au centre";
 
         if(message!=null){
             largeurMessageErreur = (int)(message.length()*font.getSize()*0.55);
