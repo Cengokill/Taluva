@@ -25,12 +25,12 @@ public class Historique implements Serializable {
     }
 
     public static void annuler(Hexagone[][] carte) {
-        System.out.println("passé : "+passe.size() );
-        System.out.println("futur : "+futur.size());
+        //System.out.println("passé : "+passe.size() );
+        //System.out.println("futur : "+futur.size());
         if (peutAnnuler()) {
             Coup tete = passe.removeFirst();
             int hauteur = carte[tete.volcanLigne][tete.volcanColonne].getHauteur();
-            System.out.println(hauteur+": hauteur");
+            //System.out.println(hauteur+": hauteur");
             if (tete.typePlacement == Coup.TUILE) {
                 if (hauteur == 1) {
                     carte[tete.volcanLigne][tete.volcanColonne] = new Hexagone((byte) (hauteur-1), (byte) 0, (byte) tete.batimentLigne, (byte) tete.batimentColonne);
@@ -64,8 +64,8 @@ public class Historique implements Serializable {
             }
 
         }
-        System.out.println("taille du futur :" + futur.size());
-        System.out.println("taille du passé : " + passe.size());
+        //System.out.println("taille du futur :" + futur.size());
+        //System.out.println("taille du passé : " + passe.size());
     }
 
 
@@ -74,7 +74,6 @@ public class Historique implements Serializable {
             Coup tete = futur.removeFirst();
             int hauteur = carte[tete.volcanLigne][tete.volcanColonne].getHauteur();
             if (tete.typePlacement == Coup.TUILE) {
-                System.out.println("ici");
                 carte[tete.volcanLigne][tete.volcanColonne] = new Hexagone((byte) (hauteur+1), Hexagone.VOLCAN, (byte) tete.volcanLigne, (byte) tete.volcanColonne);
                 carte[tete.tile1Ligne][tete.tile1Colonne] = new Hexagone((byte) (hauteur+1), tete.biome1, (byte) tete.tile1Ligne, (byte) tete.tile1Colonne);
                 carte[tete.tile2Ligne][tete.tile2Colonne] = new Hexagone((byte) (hauteur+1), tete.biome2, (byte) tete.tile2Ligne, (byte) tete.tile2Colonne);
@@ -85,7 +84,6 @@ public class Historique implements Serializable {
                 int reprendHUtte = 0;
                 System.out.println(tete.typePlacement);
                 while(skip&&tete.typePlacement==Coup.BATIMENT) {
-                    System.out.println("ici2");
                     byte batiment = 0;
                     if (tete.typePlacement == 1) {
                         batiment = Hexagone.HUTTE;
@@ -116,8 +114,8 @@ public class Historique implements Serializable {
                 //TODO renprendre les huttes au joueurs
             }
         }
-        System.out.println("taille du futur 2 : "+futur.size());
-        System.out.println("taille du passe 2 : " + passe.size());
+        //System.out.println("taille du futur 2 : "+futur.size());
+        //System.out.println("taille du passe 2 : " + passe.size());
     }
     public static boolean peutAnnuler() {
         return !passe.isEmpty();
