@@ -336,7 +336,7 @@ public class Plateau implements Serializable {
 
         // Premiere tuile posée
         if(estVide() && (ligneVolcan>=carte.length/2-1) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2)){
-            return 10;
+            return 0;
         }
 
         // Hauteur max
@@ -554,6 +554,8 @@ public class Plateau implements Serializable {
         byte num_joueur = coup.getNumJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
+            coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
+            coup.oldTerrain2=carte[coup.tile2Ligne][coup.tile2Colonne].getBiomeTerrain();
             carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.volcanLigne][coup.volcanColonne].getNum());
             carte[coup.tile1Ligne][coup.tile1Colonne] = new Hexagone((byte) (hauteur + 1), coup.biome1, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.tile1Ligne][coup.tile1Colonne].getNum());
             carte[coup.tile2Ligne][coup.tile2Colonne] = new Hexagone((byte) (hauteur + 1), coup.biome2, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.tile2Ligne][coup.tile2Colonne].getNum());
@@ -572,7 +574,10 @@ public class Plateau implements Serializable {
             listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(positions_libres);
-            historique.ajoute(coup);
+            if(coup.typePlacement!=4) {
+                historique.ajoute(coup);
+                System.out.println("zzzzzzzzzzz");
+            }
 
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
             hauteur = carte[coup.batimentLigne][coup.batimentColonne].getHauteur();
@@ -592,7 +597,11 @@ public class Plateau implements Serializable {
             }
 
             carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
-            historique.ajoute(coup);
+            if(coup.typePlacement!=4){
+                historique.ajoute(coup);
+                System.out.println("eeeeeeeeeeeeee");
+            }
+
         }
     }
 
@@ -605,7 +614,8 @@ public class Plateau implements Serializable {
     // N?cessite un appel ? peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
         Coup coup = new Coup(joueurCourant, volcanLigne, volcanColonne, tile1Ligne, tile1Colonne, biome1, tile2Ligne, tile2Colonne, biome2);
-        historique.ajoute(coup);
+
+        //historique.ajoute(coup);
         joueCoup(coup);
     }
 
@@ -614,8 +624,11 @@ public class Plateau implements Serializable {
     }
     public void placeBatiment(byte joueurCourant, int ligne, int colonne, byte type_bat){
         Coup coup = new Coup(joueurCourant, ligne,colonne,type_bat);
-        historique.ajoute(coup);
+        //todo historique.ajoute(coup);
+
+
         joueCoup(coup);
+
         if (type_bat == (byte)1){
             ArrayList<Point2D> nlh ;
             nlh = propagation(ligne,colonne,joueurCourant);
@@ -623,7 +636,10 @@ public class Plateau implements Serializable {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
                 if(nbHutteDisponibleJoueurCourant>getHauteurTuile(a.x,a.y)){
-                    historique.ajoute(Coup_propagation);
+                    if(coup.typePlacement!=4) {
+                        historique.ajoute(Coup_propagation);
+                        System.out.println("rrrrrrrrrrrrrr");
+                    }
                     joueCoup(Coup_propagation);
                     nbHutteDisponibleJoueurCourant-=(getHauteurTuile(a.x,a.y));
                 }
@@ -815,7 +831,8 @@ public class Plateau implements Serializable {
             if(getHauteurTuile(i,j)<3) peut[k]=false;
             else{
                 for(Point2D p : pointsVillageCourant){
-                    if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
+                    if(p!=null) peut[k]=false;
+                    else if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
                 }
             }
             if(peut[k] && aCiteAutour(i,j,numJoueur)) return true;
@@ -902,10 +919,12 @@ public class Plateau implements Serializable {
     }
 
     public boolean annuler() {
+        historique.annuler(carte);
         return peutAnnuler();
     }
 
     public boolean refaire() {
+        historique.refaire(carte);
         return peutRefaire();
     }
 

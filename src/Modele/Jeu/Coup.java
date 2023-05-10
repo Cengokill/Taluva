@@ -18,8 +18,8 @@ public class Coup implements Serializable {
     public int tile2Ligne;
     public int tile2Colonne;
     public byte biome2;
-    int batiment_x;
-    int batiment_y;
+    public byte oldTerrain1;
+    public byte oldTerrain2;
     int IDdeJoueur;
     public int batimentLigne;
     public int batimentColonne;
@@ -47,5 +47,18 @@ public class Coup implements Serializable {
 
     public byte getNumJoueur() {
         return num_joueur;
+    }
+
+    public byte getOldTerrain1() {
+        return oldTerrain1;
+    }
+    public byte getOldTerrain2(){
+        return oldTerrain2;
+    }
+    public void setOldterrain1(byte oldterrain1){
+        this.oldTerrain1=oldterrain1;
+    }
+    public void setOldterrain2(byte oldterrain2){
+        this.oldTerrain2=oldterrain2;
     }
 }

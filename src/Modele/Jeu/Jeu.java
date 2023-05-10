@@ -1,6 +1,7 @@
 package Modele.Jeu;
 
 import Modele.IA.AbstractIA;
+import Modele.Jeu.Plateau.Historique;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
@@ -241,11 +242,11 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-        System.out.println("Annuler non implémenté");
+        plateau.annuler();
     }
 
     public void refaire() {
-        System.out.println("Refaire non implémenté");
+        plateau.refaire();
     }
 
     public void sauvegarder() {
