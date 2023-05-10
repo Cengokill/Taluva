@@ -64,6 +64,10 @@ public class Jeu extends Observable {
 
     }
 
+    public Joueur[] getJoueurs() {
+        return joueurs;
+    }
+
     public LinkedList<Tuile> getPioche(){
         return pioche;
     }
