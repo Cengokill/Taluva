@@ -157,12 +157,9 @@ public class FenetreJeu extends Container {
                 calculeRapports();
                 afficheFenetreScore(g2d);
                 afficheMessageErreur(g2d);
-                afficheBoutonSave(g2d);
-                afficheBoutonLoad(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
                 afficheBoutonTuto(g2d);
-                afficheBoutonQuitter(g2d);
                 afficheJoueurCourant(g2d);
             }
 
@@ -180,9 +177,10 @@ public class FenetreJeu extends Container {
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
                 posX_fenetre_score = 10;
                 posX_boutons = (int) (largeur * 0.97 - largeur_bouton);
-                posY_save = 0;
-                posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
-                posY_annuler = posY_save + hauteur_bouton + hauteur_bouton / 5;
+                posY_options = 0;
+                //posY_save = 0;
+                //posX_save = posX_boutons - largeur_bouton - largeur_bouton / 10;
+                posY_annuler = hauteur_bouton + hauteur_bouton / 5;
                 posY_fenetre_score = posY_annuler;
                 posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.02);
                 posX_prenom_j1 = posX_prenom_j0;
@@ -199,7 +197,7 @@ public class FenetreJeu extends Container {
                 posY_joueur_courant = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
                 posY_tuto = posY_refaire + hauteur_bouton + hauteur_bouton / 5;
-                posY_quitter = Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
+                //posY_quitter = Math.max(posY_tuto + hauteur_bouton + hauteur_bouton / 5, hauteur - 2 * hauteur_bouton);
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
                 hauteurMessageErreur = (int) (hauteur*0.05);
@@ -221,8 +219,7 @@ public class FenetreJeu extends Container {
     }
 
     public JFrame getFMenu(){
-        bouton_save = lisImageBuf("Sauvegarder");
-        //bouton_save_select = lisImageBuf("Sauvegarder_select");
+
         bouton_load = lisImageBuf("Charger");
         //bouton_load_select = lisImageBuf("Charger_select");
         bouton_annuler = lisImageBuf("Annuler");
@@ -231,8 +228,7 @@ public class FenetreJeu extends Container {
         //bouton_refaire_select = lisImageBuf("Refaire_select");
         bouton_tuto_on = lisImageBuf("Tuto_on");
         bouton_tuto_off = lisImageBuf("Tuto_off");
-        bouton_quitter = lisImageBuf("Quitter");
-        //bouton_quitter_select = lisImageBuf("Quitter_select");
+        bouton_options = lisImageBuf("Options");
         fenetre_score = lisImageBuf("fenetre_score");
         joueur_courant = lisImageBuf("Joueur_courant");
         return new JFrame() {
@@ -310,6 +306,13 @@ public class FenetreJeu extends Container {
 
     public static void afficheBackground(Graphics g) {
         g.drawImage(background, 0, 0, largeur, hauteur, null);
+    }
+
+    public static void afficheBoutonOptions(Graphics g) {
+        if(select_options)
+            g.drawImage(bouton_options_select, posX_boutons, posY_options, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_options, posX_boutons, posY_options, largeur_bouton, hauteur_bouton,null);
     }
 
     public static void afficheBoutonLoad(Graphics g) {
