@@ -1,5 +1,6 @@
 package Modele.Jeu.Plateau;
 
+import Modele.Jeu.Stock;
 import Modele.Jeu.Coup;
 import Modele.Jeu.Joueur;
 
@@ -31,9 +32,10 @@ public class Historique implements Serializable {
         return h;
     }
 
-    public static void annuler(Hexagone[][] carte) {
-        //System.out.println("passé : "+passe.size() );
+    public static Stock annuler(Hexagone[][] carte) {
+        //System.out.println("passé : "+passe.size());
         //System.out.println("futur : "+futur.size());
+
         if (peutAnnuler()) {
             Coup tete = passe.removeFirst();
             int hauteur = carte[tete.volcanLigne][tete.volcanColonne].getHauteur();
@@ -47,36 +49,44 @@ public class Historique implements Serializable {
                 System.out.println(tete.oldTerrain1+" "+tete.oldTerrain2);
                 carte[tete.tile1Ligne][tete.tile1Colonne] = new Hexagone((byte) (hauteur-1), tete.getOldTerrain1(), (byte) tete.volcanLigne, (byte) tete.volcanColonne,carte[tete.tile1Ligne][tete.tile1Colonne].getNum());
                 carte[tete.tile2Ligne][tete.tile2Colonne] = new Hexagone((byte) (hauteur-1 ), tete.getOldTerrain2(), (byte) tete.volcanLigne, (byte) tete.volcanColonne,carte[tete.tile2Ligne][tete.tile2Colonne].getNum());
-                //TODO changé de joueur
                 futur.addFirst(tete);
+                Stock stock=new Stock(-1,Coup.TUILE,true);
+                return stock;
             } else {
-                int rendHutte = 0;
-                while (passe.size() != 0 && tete.typePlacement == Coup.BATIMENT) {
+                int rendbatiment = 0;
+                System.out.println(tete.typePlacement);
+                System.out.println(Coup.BATIMENT);
+                while (passe.size() != 0 && tete.typePlacement > Coup.BATIMENT) {
+                    System.out.println("ici");
                     carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone((byte) -1, (byte) (hauteur+1),
                             carte[tete.batimentLigne][tete.batimentColonne].getBiomeTerrain(), (byte) 0,
                             (byte) carte[tete.batimentColonne][tete.batimentColonne].getLigneVolcan(),
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getColonneVolcan());
-                    //TODO comprendre pk il y a deux fois le meme coups ?
-                    if(tete.typePlacement==HUTTE){
-                        rendHutte++;
-                    }
+                    rendbatiment+= hauteur;
                     if (passe.size() != 0) {
                         futur.addFirst(tete);
                         tete = passe.removeFirst();
                     }
                 }
+                if(rendbatiment>1){
+                    rendbatiment=rendbatiment/2;
+                }
                 passe.addFirst(tete);
+                Stock stock =new Stock(rendbatiment, tete.typePlacement, false);
+                return stock;
 
-                //TODO rendre les hutes au joueur ici demande au gens
             }
 
         }
+        return null;
+
         //System.out.println("taille du futur :" + futur.size());
         //System.out.println("taille du passé : " + passe.size());
+
     }
 
 
-    public void refaire(Hexagone[][]carte) {
+    public Stock refaire(Hexagone[][]carte) {
         if (peutRefaire()) {
             Coup tete = futur.removeFirst();
             int hauteur = carte[tete.volcanLigne][tete.volcanColonne].getHauteur();
@@ -84,13 +94,14 @@ public class Historique implements Serializable {
                 carte[tete.volcanLigne][tete.volcanColonne] = new Hexagone((byte) (hauteur+1), Hexagone.VOLCAN, (byte) tete.volcanLigne, (byte) tete.volcanColonne);
                 carte[tete.tile1Ligne][tete.tile1Colonne] = new Hexagone((byte) (hauteur+1), tete.biome1, (byte) tete.tile1Ligne, (byte) tete.tile1Colonne);
                 carte[tete.tile2Ligne][tete.tile2Colonne] = new Hexagone((byte) (hauteur+1), tete.biome2, (byte) tete.tile2Ligne, (byte) tete.tile2Colonne);
-                //TODO changé de joueur !!!???
                 passe.addFirst(tete);
+                Stock stock=new Stock(-1,Coup.TUILE,false);
+                return stock;
             } else {
                 boolean skip=true;
-                int reprendHUtte = 0;
+                int reprendbatiment = 0;
                 System.out.println(tete.typePlacement);
-                while(skip&&tete.typePlacement==Coup.BATIMENT) {
+                while(skip&&tete.typePlacement>Coup.BATIMENT) {
                     byte batiment = 0;
                     if (tete.typePlacement == 1) {
                         batiment = Hexagone.HUTTE;
@@ -105,9 +116,9 @@ public class Historique implements Serializable {
                             carte[tete.batimentLigne][tete.batimentColonne].getBiomeTerrain(), batiment,
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getLigneVolcan(),
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getColonneVolcan());
-                    if(tete.typePlacement==HUTTE){
-                        reprendHUtte++;
-                    }
+
+                    reprendbatiment=reprendbatiment+hauteur;
+
                     if (futur.size() != 0) {
                         passe.addFirst(tete);
                         tete = futur.removeFirst();
@@ -115,14 +126,19 @@ public class Historique implements Serializable {
                         skip=false;
                     }
                 }
+                if(reprendbatiment>1){
+                    //TODO probleme ici
+                    reprendbatiment=reprendbatiment/2;
+                }
+
                 futur.addFirst(tete);
-
-
-                //TODO renprendre les huttes au joueurs
+                Stock stock =new Stock(reprendbatiment, tete.typePlacement, true);
+                return stock;
             }
         }
         //System.out.println("taille du futur 2 : "+futur.size());
         //System.out.println("taille du passe 2 : " + passe.size());
+        return null;
     }
     public static boolean peutAnnuler() {
         return !passe.isEmpty();

@@ -273,12 +273,40 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-        plateau.annuler();
-        changePhase();
+
+        Stock stock = plateau.annuler();
+            if(stock!=null) {
+                if (stock.changementDeJoueur == false) {
+                    changeJoueur();
+                }
+                if (stock.typeBatiment == TEMPLE) {
+                    joueurs[jCourant].decrementeTemple();
+                } else if (stock.typeBatiment == TOUR) {
+                    joueurs[jCourant].decrementeTour();
+                } else {
+                    for (int i = 0; i < stock.nbBatiment; i++) {
+                        joueurs[jCourant].decrementeHutte();
+                    }
+                }
+                changePhase();
+            }
     }
 
     public void refaire() {
-        plateau.refaire();
+        Stock stock =plateau.refaire();
+
+        if(stock.typeBatiment==TEMPLE){
+            joueurs[jCourant].incrementeTemple();
+        }else if(stock.typeBatiment==TOUR){
+            joueurs[jCourant].incrementeTour();
+        }else {
+            for (int i=0;i<=stock.nbBatiment;i++){
+                joueurs[jCourant].incrementeHutte();
+            }
+        }
+        if (stock.changementDeJoueur==true){
+            changeJoueur();
+        }
         changePhase();
     }
 
