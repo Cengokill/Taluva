@@ -57,68 +57,78 @@ public class IAIntelligente extends AbstractIA {
         byte joueur_courant = instance.getJoueurCourant();
         if(horizon==0){
             return evaluation_joueur(instance, joueur_courant);
-        }else {
-            int valeur = Integer.MIN_VALUE;
-            //le joueur A doit jouer
-            //Toutes les positions possibles pour poser une tuile
-            ArrayList<TripletDePosition> posPossibles = jeu.getPlateau().getTripletsPossibles();
-            ArrayList<Tuile> tuilesPioche = instance.getPioche();
-            //On parcourt l'ensemble des coups jouables par A
-            System.out.println("tuilesPioche.size() : "+tuilesPioche.size());
-            for (int i = 0; i < tuilesPioche.size(); i++) {
-                System.out.println("A");
-                Tuile tuile = tuilesPioche.get(i);
-                //pour chaque carte unique de la pioche
-                for (int j = 0; j < posPossibles.size(); j++) {
-                    System.out.println("0");
-                    TripletDePosition posCourante = posPossibles.get(j);
-                    Position[] points = new Position[3];
-                    points[0] = posCourante.getVolcan();
-                    points[1] = posCourante.getTile1();
-                    points[2] = posCourante.getTile2();
-                    //pour chaque orientation possible de la tuile piochée
-                    for (int k = 0; k < 3; k++) {
-                        System.out.println("1");
-                        Plateau plateauCopie = instance.getPlateau();
-                        //on place la tuile avec une orientation précise
-                        plateauCopie.placeEtage(joueur_courant, points[k].ligne(), points[k].colonne(), (points[k].ligne()+1)%3, (points[k].colonne()+1)%3, tuile.biome0, (points[k].ligne()+2)%3, (points[k].colonne()+2)%3, tuile.biome1);
-                        //là il faut retirer la tuile de la pioche
-                        ArrayList<Tuile> nouvellePioche;
-                        nouvellePioche = tuilesPioche;
-                        nouvellePioche.remove(i);
-                        //On doit placer un bâtiment
-                        ArrayList<Position> positionBatsPossibles = plateauCopie.getPositions_libres_batiments();
-                        for (int posBat=0;posBat<positionBatsPossibles.size();posBat++){
-                            System.out.println("2");
-                            Position posCouranteBat = positionBatsPossibles.get(posBat);
-                            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(posCouranteBat.ligne(),posCouranteBat.colonne(),joueur_courant);
-                            // On parcourt tous les choix de bâtiments possibles
-                            for (int batChoisit=0;batChoisit<batimentsPlacable.length;batChoisit++){
-                                System.out.println("3");
-                                if(batimentsPlacable[batChoisit]==1){
-                                    Joueur jCourantCopie = instance.getJoueur(joueur_courant);
-                                    Joueur[] joueurs = instance.getJoueurs();
+        }
+        
+        int valeur = Integer.MIN_VALUE;
 
-                                    plateauCopie.placeBatiment(joueur_courant,posCouranteBat.ligne(),posCouranteBat.colonne(),(byte) (batimentsPlacable[batChoisit]+1));
-                                    if(batChoisit==TEMPLE) jCourantCopie.incrementeTemple();
-                                    else if(batChoisit==HUTTE) jCourantCopie.incrementeHutte();
-                                    else if(batChoisit==TOUR) jCourantCopie.incrementeTour();
-                                    //on supprime la position du bâtiment qui n'est plus libre
-                                    plateauCopie.supprimeLibreBatiments(posCouranteBat);
+        ArrayList<TripletDePosition> tripletsPossibles = jeu.getPlateau().getTripletsPossibles();
+        ArrayList<Tuile> pioche = instance.getPioche();
+        
+        System.out.println("pioche.size() : "+pioche.size());
+        for (int piocheIndex = 0; piocheIndex < pioche.size(); piocheIndex++) {
+            System.out.println("A");
 
-                                    joueurs[joueur_courant] = jCourantCopie;
-                                    //on créer une copie de l'instance et on change le joueur courant
-                                    InstanceJeu instanceCopie = new InstanceJeu(nouvellePioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2));
-                                    valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
-                                    System.out.println("valeur calculCoups_joueur_B : "+valeur);
-                                }
-                            }
+            Tuile tuile = pioche.get(piocheIndex);
+            //pour chaque carte unique de la pioche
+
+            for (int tripletsIndex = 0; tripletsIndex < tripletsPossibles.size(); tripletsIndex++) {
+                System.out.println("0");
+
+                TripletDePosition tripletCourant = tripletsPossibles.get(tripletsIndex);
+                Position[] points = new Position[3];
+                points[0] = tripletCourant.getVolcan();
+                points[1] = tripletCourant.getTile1();
+                points[2] = tripletCourant.getTile2();
+
+                for (int orientationTuile = 0; orientationTuile < 3; orientationTuile++) {
+                    System.out.println("1");
+                    Plateau plateauCopie = instance.getPlateau();
+                    plateauCopie.placeEtage(joueur_courant, points[orientationTuile].ligne(), points[orientationTuile].colonne(), (points[orientationTuile].ligne()+1)%3, (points[orientationTuile].colonne()+1)%3, tuile.biome0, (points[orientationTuile].ligne()+2)%3, (points[orientationTuile].colonne()+2)%3, tuile.biome1);
+
+                    ArrayList<Tuile> nouvellePioche;
+                    nouvellePioche = pioche;
+                    nouvellePioche.remove(piocheIndex);
+                    ArrayList<Position> positionsLibresBatiments = plateauCopie.getPositions_libres_batiments();
+
+                    for (int position = 0; position < positionsLibresBatiments.size(); position++){
+                        System.out.println("2");
+                        Position positionCourante = positionsLibresBatiments.get(position);
+
+                        int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(),positionCourante.colonne(),joueur_courant);
+
+                        // On parcourt tous les choix de bâtiments possibles
+                        for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++){
+                            System.out.println("3");
+
+                            Joueur jCourantCopie = instance.getJoueur(joueur_courant);
+                            Joueur[] joueurs = instance.getJoueurs();
+
+                            plateauCopie.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) (batimentsPlacable[batimentChoisit]+1));
+
+                            updateBatimentsJoueur(batimentChoisit, jCourantCopie);
+
+                            //on supprime la position du bâtiment qui n'est plus libre
+                            plateauCopie.supprimeLibreBatiments(positionCourante);
+
+                            joueurs[joueur_courant] = jCourantCopie;
+                            //on créer une copie de l'instance et on change le joueur courant
+                            InstanceJeu instanceCopie = new InstanceJeu(nouvellePioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2));
+                            valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
+
+
+                            System.out.println("valeur calculCoups_joueur_B : "+valeur);
                         }
                     }
                 }
             }
-            return valeur;
         }
+        return valeur;
+    }
+
+    private static void updateBatimentsJoueur(int batimentChoisit, Joueur jCourantCopie) {
+        if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
+        else if(batimentChoisit == HUTTE) jCourantCopie.incrementeHutte();
+        else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
     }
 
     public int calculCoups_joueur_B(InstanceJeu instance, int horizon) {
