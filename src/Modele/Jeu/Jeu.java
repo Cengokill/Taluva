@@ -43,6 +43,7 @@ public class Jeu extends Observable {
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
         joueursObjet[0] = joueur1;
+        // POUR IA mettre IA1 a la place de joueur2 -> aller dans panelPlateau
         joueursObjet[1] = joueur2;
 
         pioche = new LinkedList<>();
@@ -91,7 +92,7 @@ public class Jeu extends Observable {
         if (!estJoueurCourantUneIA()) {
             return;
         }
-        plateau.affiche();
+
         Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
             System.out.println("pas libre A DEBUGGER");
@@ -260,6 +261,7 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
+        plateau.affiche();
         Random r = new Random();
         int index = r.nextInt(pioche.size()-1);
         Tuile tuile_courante = pioche.get(index);
@@ -272,13 +274,46 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-        plateau.annuler();
-        changePhase();
+
+        Stock stock = plateau.annuler();
+            if(stock!=null) {
+                if (stock.changementDeJoueur == false) {
+                    changeJoueur();
+                }
+                if(stock.typeBatiment==Coup.TUILE){
+                    pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+                } else if(stock.typeBatiment == TEMPLE) {
+                    joueurs[jCourant].decrementeTemple();
+                } else if (stock.typeBatiment == TOUR) {
+                    joueurs[jCourant].decrementeTour();
+                } else {
+                    for (int i = 0; i < stock.nbBatiment; i++) {
+                        joueurs[jCourant].decrementeHutte();
+                    }
+                }
+                changePhase();
+            }
     }
 
     public void refaire() {
-        plateau.refaire();
-        changePhase();
+        Stock stock =plateau.refaire();
+        if(stock!=null) {
+            if (stock.typeBatiment == Coup.TUILE) {
+                pioche.removeFirst();
+            } else if (stock.typeBatiment == TEMPLE) {
+                joueurs[jCourant].incrementeTemple();
+            } else if (stock.typeBatiment == TOUR) {
+                joueurs[jCourant].incrementeTour();
+            } else {
+                for (int i = 0; i <= stock.nbBatiment; i++) {
+                    joueurs[jCourant].incrementeHutte();
+                }
+            }
+            if (stock.changementDeJoueur == true) {
+                changeJoueur();
+            }
+            changePhase();
+        }
     }
 
     public void sauvegarder() {

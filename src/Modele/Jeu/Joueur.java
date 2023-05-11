@@ -112,6 +112,17 @@ public class Joueur {
         nbTemples--;
         nbTemplesPlaces++;
     }
+    public void decrementeHutte(){
+        nbHuttes++;
+        nbHuttesPlacees--;}
+
+    public void decrementeTour(){
+        nbTours++;
+        nbToursPlacees--;}
+    public void decrementeTemple(){
+        nbTemples++;
+        nbToursPlacees--;}
+
 
     public void incrementeVillage() {
         nbVillages++;

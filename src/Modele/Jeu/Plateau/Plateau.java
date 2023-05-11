@@ -1,5 +1,6 @@
 package Modele.Jeu.Plateau;
 
+import Modele.Jeu.Stock;
 import Modele.Jeu.Coup;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
@@ -950,14 +951,14 @@ public class Plateau implements Serializable, Cloneable {
         positions_libres_batiments.remove(pos);
     }
 
-    public boolean annuler() {
-        historique.annuler(carte);
-        return peutAnnuler();
+    public Stock annuler() {
+        Stock stock =historique.annuler(carte);
+        return stock;
     }
 
-    public boolean refaire() {
-        historique.refaire(carte);
-        return peutRefaire();
+    public Stock refaire() {
+        Stock stock = historique.refaire(carte);
+        return stock;
     }
 
     public ArrayList<TripletDePosition> getTripletsPossibles(){
