@@ -24,6 +24,13 @@ public class Historique implements Serializable {
         futur.clear();
     }
 
+    public Historique copie() {
+        Historique h = new Historique();
+        h.passe = (LinkedList<Coup>) passe.clone();
+        h.futur = (LinkedList<Coup>) futur.clone();
+        return h;
+    }
+
     public static void annuler(Hexagone[][] carte) {
         //System.out.println("passé : "+passe.size() );
         //System.out.println("futur : "+futur.size());

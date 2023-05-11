@@ -38,6 +38,23 @@ public class Plateau implements Serializable {
         //placeEtage((byte) 0,31,29,31,30,(byte) 1,32,29,(byte) 2);
     }
 
+    public Plateau copie(){
+        Plateau p = new Plateau();
+        p.historique = this.historique.copie();
+        p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
+        p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
+        p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
+        p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
+        p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
+        p.carte = new Hexagone[LIGNES][COLONNES];
+        for(int i=0;i<LIGNES;i++){
+            for(int j=0;j<COLONNES;j++){
+                p.carte[i][j] = this.carte[i][j];
+            }
+        }
+        return p;
+    }
+
     private void initHistorique() {
         historique = new Historique();
     }
