@@ -169,7 +169,7 @@ public class FenetreJeu extends Container {
                 largeur = getWidth();
                 hauteur = getHeight();
                 double rapport = 492.0 / 847.0;
-                double rapport_fenetre_score = 700.0/539.0;
+                double rapport_fenetre_score = 621.0/533.0;
                 double rapport_joueur_courant = 131.0/603.0;
                 double rapport_bouton_dans_options = 207.0/603.0;
                 //boutons général
@@ -191,23 +191,23 @@ public class FenetreJeu extends Container {
                 posY_tuto = (int) (posY_load + hauteur_menu_options * 0.20);
                 posY_quitter = (int) (posY_tuto + hauteur_menu_options * 0.20);
                 //fenêtre de score
-                largeur_fenetre_score = (int) (largeur_bouton * 2.2);
+                largeur_fenetre_score = (int) (largeur_bouton * 3.6);
                 hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
                 largeur_joueur_courant = (int) (largeur_bouton * 1.8);
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
-                posX_fenetre_score = 10;
-                posY_fenetre_score = posY_annuler;
-                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.02);
+                posX_fenetre_score = 2;
+                posY_fenetre_score = 2;
+                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.18);
                 posX_prenom_j1 = posX_prenom_j0;
-                posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.10);
-                posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.45);
-                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.19);
-                posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.53);
-                posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.88);
-                posY_scores_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.31);
-                posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.66);
-                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.67);
-                posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.92);
+                posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.16);
+                posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.46);
+                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.29);
+                posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.515);
+                posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.77);
+                posY_scores_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.30);
+                posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.62);
+                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.69);
+                posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
