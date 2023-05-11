@@ -55,6 +55,19 @@ public class Plateau implements Serializable, Cloneable {
         return p;
     }
 
+    public void affiche(){
+        int tronquer = 21;
+        System.out.println("Plateau :");
+        for(int i=tronquer;i<LIGNES-tronquer;i++){
+            for(int j=tronquer;j<COLONNES-tronquer;j++){
+                System.out.print("|");
+                carte[i][j].affiche();
+            }
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------------");
+    }
+
     private void initHistorique() {
         historique = new Historique();
     }

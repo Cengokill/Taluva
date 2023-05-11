@@ -80,6 +80,52 @@ public class Hexagone implements Serializable {
 
     public int getBatiment() {return batiment;}
 
+    public void affiche(){
+        switch(biomeTerrain){
+            case VOLCAN:
+                System.out.print("V");
+                break;
+            case GRASS:
+                System.out.print("G");
+                break;
+            case MONTAGNE:
+                System.out.print("M");
+                break;
+            case DESERT:
+                System.out.print("D");
+                break;
+            case FORET:
+                System.out.print("F");
+                break;
+            case LAC:
+                System.out.print("L");
+                break;
+            case WATER:
+            case VIDE:
+            default:
+                System.out.print(" ");
+                break;
+        }
+        switch(batiment){
+            case HUTTE:
+                if(hauteur==0) System.out.print("0");
+                else if(hauteur==1) System.out.print("1");
+                else if(hauteur==2) System.out.print("2");
+                else if(hauteur==3) System.out.print("3");
+                else System.out.print("?");
+                break;
+            case TEMPLE:
+                System.out.print("$");
+                break;
+            case TOUR:
+                System.out.print("!");
+                break;
+            default:
+                System.out.print(" ");
+                break;
+        }
+    }
+
 
     public Hexagone copy() {
         return new Hexagone(num_joueur, hauteur, biomeTerrain, batiment, volcan_i, volcan_j);

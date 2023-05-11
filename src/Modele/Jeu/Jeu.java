@@ -42,7 +42,7 @@ public class Jeu extends Observable {
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
-        joueursObjet[0] = IA2;
+        joueursObjet[0] = joueur1;
         joueursObjet[1] = IA1;
 
         pioche = new LinkedList<>();
@@ -62,7 +62,13 @@ public class Jeu extends Observable {
             // Pour pas que l'AbstractIA joue directement
             // Attendez un certain temps avant d'exécuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
-            Timer timer = new Timer(delai, e -> joueIA());
+            Timer timer = new Timer(delai, e -> {
+                try {
+                    joueIA();
+                } catch (CloneNotSupportedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
         }
@@ -81,7 +87,7 @@ public class Jeu extends Observable {
         return joueursObjet[jCourant] instanceof AbstractIA;
     }
 
-    public void joueIA() {
+    public void joueIA() throws CloneNotSupportedException {
         if (!estJoueurCourantUneIA()) {
             return;
         }
@@ -192,7 +198,13 @@ public class Jeu extends Observable {
             }
             getPlateau().nbHutteDisponibleJoueurCourant=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
-            Timer timer = new Timer(delai, e -> joueIA());
+            Timer timer = new Timer(delai, e -> {
+                try {
+                    joueIA();
+                } catch (CloneNotSupportedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
         }
@@ -248,6 +260,7 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
+        plateau.affiche();
         Random r = new Random();
         int index = r.nextInt(pioche.size()-1);
         Tuile tuile_courante = pioche.get(index);
