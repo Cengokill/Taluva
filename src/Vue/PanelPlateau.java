@@ -106,8 +106,8 @@ public class PanelPlateau extends JPanel {
 
     private void initCouleursJoueurs() {
         couleurs_joueurs = new Color[4];
-        couleurs_joueurs[0] = new Color(255, 0, 0, 127);
-        couleurs_joueurs[1] = new Color(0, 233, 255, 127);
+        couleurs_joueurs[0] = new Color(213, 9, 0, 166);
+        couleurs_joueurs[1] = new Color(0, 120, 255, 204);
         couleurs_joueurs[2] = new Color(183, 0, 255, 127);
         couleurs_joueurs[3] = new Color(255, 185, 0, 127);
     }
