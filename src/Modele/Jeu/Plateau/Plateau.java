@@ -649,7 +649,6 @@ public class Plateau implements Serializable, Cloneable {
     // N?cessite un appel ? peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
         Coup coup = new Coup(joueurCourant, volcanLigne, volcanColonne, tile1Ligne, tile1Colonne, biome1, tile2Ligne, tile2Colonne, biome2);
-
         //historique.ajoute(coup);
         joueCoup(coup);
     }

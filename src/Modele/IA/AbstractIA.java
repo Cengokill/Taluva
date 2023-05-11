@@ -15,7 +15,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         pioche = new LinkedList<>();
 
         //String type = p.getType_IA();
-        String type = "aléatoire";
+        String type = "intelligente";
         switch (type) {
             case "aléatoire":
                 resultat = new IAAleatoire();
@@ -33,7 +33,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         return resultat;
     }
 
-    public Coup joue() throws CloneNotSupportedException {
+    public Coup joue(){
         return null;
     }
 

@@ -28,8 +28,8 @@ public class InstanceJeu {
         return jCourant;
     }
 
-    public Plateau getPlateau() throws CloneNotSupportedException {
-        Plateau p = (Plateau) plateau.clone();
+    public Plateau getPlateau() {
+        Plateau p = (Plateau) plateau;
         return p;
     }
 
