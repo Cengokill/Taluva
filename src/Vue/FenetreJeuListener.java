@@ -49,6 +49,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (keyCode == KeyEvent.VK_Z) {
                 mode_numero = !mode_numero;
             }
+            //touche echap
+            if(keyCode == KeyEvent.VK_ESCAPE){
+                select_menu_options = !select_menu_options;
+            }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 shake();
                 fenetreJeu.panelPlateau.miseAJour();
