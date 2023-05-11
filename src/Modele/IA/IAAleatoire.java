@@ -12,6 +12,7 @@ import static Modele.Jeu.Plateau.EtatPlateau.scrollValue;
 class IAAleatoire extends AbstractIA {
 
     public IAAleatoire() {
+        super();
     }
 
     private int ajusterColonne(int ligne, int colonne){

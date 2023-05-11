@@ -18,8 +18,6 @@ public class IAIntelligente extends AbstractIA {
 
     public IAIntelligente() {
         super();
-        ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
-        InstancePlateau instance = new InstancePlateau(pioche, jeu.getPlateau(), jeu.getJoueurs());
     }
 
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -42,6 +40,8 @@ public class IAIntelligente extends AbstractIA {
 
     @Override
     public Coup joue() {
+        ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
+        InstancePlateau instance = new InstancePlateau(pioche, jeu.getPlateau(), jeu.getJoueurs());
         return null;
     }
 

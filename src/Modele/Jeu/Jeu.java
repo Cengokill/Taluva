@@ -13,8 +13,6 @@ import java.util.Random;
 import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class Jeu extends Observable {
-
-
     Plateau plateau;
     Joueur joueur1, joueur2;
     AbstractIA IA1=null;
@@ -43,7 +41,7 @@ public class Jeu extends Observable {
         jCourant = (byte) new Random().nextInt(1);
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
-        joueursObjet[0] = IA2;
+        joueursObjet[0] = joueur1;
         joueursObjet[1] = IA1;
 
         pioche = new LinkedList<>();
