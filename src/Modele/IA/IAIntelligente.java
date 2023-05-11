@@ -69,7 +69,6 @@ public class IAIntelligente extends AbstractIA {
 
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque carte unique de la pioche
-
             for (int tripletsIndex = 0; tripletsIndex < tripletsPossibles.size(); tripletsIndex++) {
                 System.out.println("0");
 
@@ -78,7 +77,9 @@ public class IAIntelligente extends AbstractIA {
                 points[0] = tripletCourant.getVolcan();
                 points[1] = tripletCourant.getTile1();
                 points[2] = tripletCourant.getTile2();
-
+                System.out.println("volcan x: "+points[0].ligne()+" y: "+points[0].colonne());
+                System.out.println("tile1 x: "+points[1].ligne()+" y: "+points[1].colonne());
+                System.out.println("tile2 x: "+points[2].ligne()+" y: "+points[2].colonne());
                 for (int orientationTuile = 0; orientationTuile < 3; orientationTuile++) {
                     System.out.println("1");
                     Plateau plateauCopie = instance.getPlateau();

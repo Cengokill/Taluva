@@ -33,6 +33,8 @@ public class Plateau implements Serializable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
+        TripletDePosition tripletDeBase = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
+        tripletsPossible.add(tripletDeBase);
         //placeEtage((byte) 0,31,29,31,30,(byte) 1,32,29,(byte) 2);
     }
 
