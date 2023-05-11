@@ -35,7 +35,6 @@ public class Historique implements Serializable {
     public static Stock annuler(Hexagone[][] carte) {
         //System.out.println("passé : "+passe.size());
         //System.out.println("futur : "+futur.size());
-
         if (peutAnnuler()) {
             Coup tete = passe.removeFirst();
             int hauteur = carte[tete.volcanLigne][tete.volcanColonne].getHauteur();
@@ -51,13 +50,15 @@ public class Historique implements Serializable {
                 carte[tete.tile2Ligne][tete.tile2Colonne] = new Hexagone((byte) (hauteur-1 ), tete.getOldTerrain2(), (byte) tete.volcanLigne, (byte) tete.volcanColonne,carte[tete.tile2Ligne][tete.tile2Colonne].getNum());
                 futur.addFirst(tete);
                 Stock stock=new Stock(-1,Coup.TUILE,true);
+                stock.setTerrain1(tete.biome1);
+                stock.setTerrain2(tete.biome2);
                 return stock;
             } else {
                 int rendbatiment = 0;
                 System.out.println(tete.typePlacement);
                 System.out.println(Coup.BATIMENT);
-                while (passe.size() != 0 && tete.typePlacement > Coup.BATIMENT) {
-                    System.out.println("ici");
+                while (passe.size() != 0 && tete.typePlacement >= Coup.BATIMENT) {
+                    System.out.println("icissssssssssss");
                     carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone((byte) -1, (byte) (hauteur+1),
                             carte[tete.batimentLigne][tete.batimentColonne].getBiomeTerrain(), (byte) 0,
                             (byte) carte[tete.batimentColonne][tete.batimentColonne].getLigneVolcan(),
@@ -101,7 +102,7 @@ public class Historique implements Serializable {
                 boolean skip=true;
                 int reprendbatiment = 0;
                 System.out.println(tete.typePlacement);
-                while(skip&&tete.typePlacement>Coup.BATIMENT) {
+                while(skip&&tete.typePlacement>=Coup.BATIMENT) {
                     byte batiment = 0;
                     if (tete.typePlacement == 1) {
                         batiment = Hexagone.HUTTE;

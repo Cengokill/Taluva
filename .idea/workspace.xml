@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments &#10;-changement de la phase du tour">
-      <change afterPath="$PROJECT_DIR$/src/Modele/Jeu/Stock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ressources/Plateau/background_plateau_x4_carre.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Plateau/background_plateau_x4_carre.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Joueur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Joueur.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Plateau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/PanelPlateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/PanelPlateau.java" afterDir="false" />
     </list>
     <list id="5c55dc87-a75f-4073-8ab0-c8967f6c2741" name="Changes by jerem" comment="Changes by jerem" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +144,7 @@
       <workItem from="1683701085810" duration="1563000" />
       <workItem from="1683723881980" duration="13118000" />
       <workItem from="1683804591474" duration="2762000" />
-      <workItem from="1683817106673" duration="4250000" />
+      <workItem from="1683817106673" duration="6827000" />
     </task>
     <task id="LOCAL-00010" summary="Changement controles">
       <created>1682586246895</created>
@@ -211,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683738393170</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé">
+      <created>1683821649753</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1683821649753</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,6 +255,7 @@
     <MESSAGE value="Changes by jerem" />
     <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments &#10;-changement de la phase du tour" />
     <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments" />
-    <option name="LAST_COMMIT_MESSAGE" value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments" />
+    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé" />
+    <option name="LAST_COMMIT_MESSAGE" value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé" />
   </component>
 </project>

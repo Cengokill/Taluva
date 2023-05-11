@@ -43,7 +43,7 @@ public class Jeu extends Observable {
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
         joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;
+        joueursObjet[1] = joueur2;
 
         pioche = new LinkedList<>();
         lancePartie();
@@ -279,7 +279,9 @@ public class Jeu extends Observable {
                 if (stock.changementDeJoueur == false) {
                     changeJoueur();
                 }
-                if (stock.typeBatiment == TEMPLE) {
+                if(stock.typeBatiment==Coup.TUILE){
+                    pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+                } else if(stock.typeBatiment == TEMPLE) {
                     joueurs[jCourant].decrementeTemple();
                 } else if (stock.typeBatiment == TOUR) {
                     joueurs[jCourant].decrementeTour();
@@ -294,20 +296,23 @@ public class Jeu extends Observable {
 
     public void refaire() {
         Stock stock =plateau.refaire();
-
-        if(stock.typeBatiment==TEMPLE){
-            joueurs[jCourant].incrementeTemple();
-        }else if(stock.typeBatiment==TOUR){
-            joueurs[jCourant].incrementeTour();
-        }else {
-            for (int i=0;i<=stock.nbBatiment;i++){
-                joueurs[jCourant].incrementeHutte();
+        if(stock!=null) {
+            if (stock.typeBatiment == Coup.TUILE) {
+                pioche.removeFirst();
+            } else if (stock.typeBatiment == TEMPLE) {
+                joueurs[jCourant].incrementeTemple();
+            } else if (stock.typeBatiment == TOUR) {
+                joueurs[jCourant].incrementeTour();
+            } else {
+                for (int i = 0; i <= stock.nbBatiment; i++) {
+                    joueurs[jCourant].incrementeHutte();
+                }
             }
+            if (stock.changementDeJoueur == true) {
+                changeJoueur();
+            }
+            changePhase();
         }
-        if (stock.changementDeJoueur==true){
-            changeJoueur();
-        }
-        changePhase();
     }
 
     public void sauvegarder() {
