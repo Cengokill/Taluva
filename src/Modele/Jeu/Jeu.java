@@ -38,7 +38,8 @@ public class Jeu extends Observable {
     }
 
     public void initPartie(){
-        jCourant = (byte) new Random().nextInt(1);
+        //jCourant = (byte) new Random().nextInt(1);
+        jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
         joueursObjet[0] = joueur1;

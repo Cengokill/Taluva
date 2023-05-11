@@ -171,6 +171,7 @@ public class IAIntelligente extends AbstractIA {
                                     Joueur jCourantCopie = instance.getJoueur(joueur_courant);
                                     Joueur[] joueurs = instance.getJoueurs();
 
+                                    // FAUDRA VERIFIER QU'IL RESTE A L'IA ASSEZ DE BAT
                                     plateauCopie.placeBatiment(joueur_courant,posCouranteBat.ligne(),posCouranteBat.colonne(),(byte) (batimentsPlacable[batChoisit]+1));
                                     if(batChoisit==TEMPLE) jCourantCopie.incrementeTemple();
                                     else if(batChoisit==HUTTE) jCourantCopie.incrementeHutte();
