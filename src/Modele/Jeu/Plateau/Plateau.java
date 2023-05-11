@@ -623,23 +623,21 @@ public class Plateau implements Serializable {
     public void placeBatiment(byte joueurCourant, int ligne, int colonne, byte type_bat){
         Coup coup = new Coup(joueurCourant, ligne,colonne,type_bat);
         //todo historique.ajoute(coup);
-
-
         joueCoup(coup);
 
         if (type_bat == (byte)1){
+            nbHutteDisponibleJoueurCourant-=getHauteurTuile(ligne,colonne);
             ArrayList<Point2D> nlh ;
             nlh = propagation(ligne,colonne,joueurCourant);
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-                if(nbHutteDisponibleJoueurCourant>getHauteurTuile(a.x,a.y)){
+                if(nbHutteDisponibleJoueurCourant>=getHauteurTuile(a.x,a.y) && nbHutteDisponibleJoueurCourant!=0){
                     if(coup.typePlacement!=4) {
                         historique.ajoute(Coup_propagation);
-                        System.out.println("rrrrrrrrrrrrrr");
+                        joueCoup(Coup_propagation);
+                        nbHutteDisponibleJoueurCourant-=(getHauteurTuile(a.x,a.y));
                     }
-                    joueCoup(Coup_propagation);
-                    nbHutteDisponibleJoueurCourant-=(getHauteurTuile(a.x,a.y));
                 }
             }
         }
