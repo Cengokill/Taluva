@@ -38,6 +38,7 @@ public class FenetreJeu extends Container {
         initPanels(controleur);
         initKeyBoardAndMouseListener();
         setBackgroundColor();
+        select_menu_options = false;
         frame.setVisible(true);
     }
 
