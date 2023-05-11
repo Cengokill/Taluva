@@ -86,7 +86,11 @@ class IAAleatoire extends AbstractIA {
             int batiment = -1;
             int[] batimensPlacable = coupJouableIA(positionrandom.ligne(),positionrandom.colonne());
             int randomInt = r.nextInt(3);
-            //System.out.println("batimentPlacable hutte: "+);
+            //System.out.println("hutte : "+batimensPlacable[1]+" temple: "+batimensPlacable[0]+" tour: "+batimensPlacable[2]);
+            if(batimensPlacable[0]==0 && batimensPlacable[1]==0 && batimensPlacable[2]==0){ // Si l'IA ne peut jouer aucun coup, on met fin a la partie
+                jeu.setFinPartie();
+                return null;
+            }
 
             if (batimensPlacable[0] == 0 && batimensPlacable[2] == 0) batiment = 1; // si on ne peut pas placer de temple ni de tour
             else if(batimensPlacable[1]==0){       // On ne peut pas placer de hutte
