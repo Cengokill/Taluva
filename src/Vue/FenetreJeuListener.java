@@ -6,9 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-import static Modele.Jeu.Plateau.Affichage.Camera.*;
+import static Vue.Camera.*;
 import static Modele.Jeu.Plateau.EtatPlateau.*;
-import static Modele.Jeu.Plateau.Affichage.ImageLoader.*;
+import static Vue.ImageLoader.*;
 
 
 public class FenetreJeuListener extends MouseAdapter implements MouseWheelListener {

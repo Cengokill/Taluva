@@ -2,7 +2,6 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Plateau.Hexagone;
-import Modele.Jeu.Plateau.Affichage.ImageLoader;
 import Modele.Jeu.Jeu;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
@@ -18,10 +17,10 @@ import java.util.ArrayList;
 import Vue.FenetreJeuListener.MouseHandler;
 import Vue.FenetreJeuListener.KeyboardListener;
 
-import static Modele.Jeu.Plateau.Affichage.Camera.*;
+import static Vue.Camera.*;
 import static Modele.Jeu.Plateau.EtatPlateau.*;
 import static Modele.Jeu.Plateau.Hexagone.*;
-import static Modele.Jeu.Plateau.Affichage.ImageLoader.*;
+import static Vue.ImageLoader.*;
 
 public class PanelPlateau extends JPanel {
     /////////////////////////////////////////////////////

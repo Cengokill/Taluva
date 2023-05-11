@@ -61,12 +61,11 @@ public class IAIntelligente extends AbstractIA {
         
         int valeur = Integer.MIN_VALUE;
 
-        ArrayList<TripletDePosition> tripletsPossibles = jeu.getPlateau().getTripletsPossibles();
+        ArrayList<TripletDePosition> tripletsPossibles = instance.getPlateau().getTripletsPossibles();
         ArrayList<Tuile> pioche = instance.getPioche();
         
         System.out.println("pioche.size() : "+pioche.size());
         for (int piocheIndex = 0; piocheIndex < pioche.size(); piocheIndex++) {
-            System.out.println("A");
 
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque carte unique de la pioche

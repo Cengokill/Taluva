@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Modele.Jeu.Plateau.Affichage.ImageLoader.applyRedFilter;
+import static Vue.ImageLoader.applyRedFilter;
 
 public class PanelMenu extends JPanel {
 

@@ -1,4 +1,4 @@
-package Modele.Jeu.Plateau.Affichage;
+package Vue;
 
 
 import javax.imageio.ImageIO;
@@ -17,7 +17,7 @@ public class ImageLoader {
     public static final BufferedImage[] choisirBat = new BufferedImage[12], temples = new BufferedImage[4],templesColor1 = new BufferedImage[4],templesColor2 = new BufferedImage[4],
             tours = new BufferedImage[4],toursColor1 = new BufferedImage[4],toursColor2 = new BufferedImage[4];
     public static final BufferedImage[][] hutteTile = new BufferedImage[3][4],maisonTileColor1 = new BufferedImage[3][4],maisonTileColor2 = new BufferedImage[3][4];
-    public static BufferedImage waterTile, fenetre_score, background, joueur_courant;
+    public static BufferedImage waterTile, fenetre_score, background, joueur_courant, tuile_derriere;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2;
@@ -34,7 +34,8 @@ public class ImageLoader {
             menu_options;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto,
     posX_joueur_courant, posY_joueur_courant, posX_prenom_j0, posX_prenom_j1, posY_prenom_j0, posY_prenom_j1, posX_huttes, posX_tours, posX_temples,
-            posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options;
+            posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
+            posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options;

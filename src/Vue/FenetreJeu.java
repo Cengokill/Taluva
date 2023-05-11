@@ -1,14 +1,13 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
-import Modele.Jeu.Plateau.Affichage.ImageLoader;
 import Modele.Jeu.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import static Modele.Jeu.Plateau.Affichage.ImageLoader.*;
+import static Vue.ImageLoader.*;
 
 
 public class FenetreJeu extends Container {
@@ -211,6 +210,10 @@ public class FenetreJeu extends Container {
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = posY_annuler;
                 posY_refaire = posY_annuler + hauteur_bouton + hauteur_bouton / 5;
+                posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.25);
+                posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.72);
+                largeur_tuile = (int) (largeur_fenetre_score*0.20);
+                hauteur_tuile = largeur_tuile;
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -248,6 +251,7 @@ public class FenetreJeu extends Container {
         menu_options = lisImageBuf("Menu_options");
         fenetre_score = lisImageBuf("fenetre_score");
         joueur_courant = lisImageBuf("Joueur_courant");
+        tuile_derriere = lisImageBuf("Tuile_derriere");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
@@ -319,6 +323,13 @@ public class FenetreJeu extends Container {
         g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
         g.drawString(nb_tuiles_pioche, posX_pioche, posY_pioche);
+        int decalage = 65;
+        if(jeu.getPioche().size() <= 48) {
+            for (int i = jeu.getPioche().size(); i>=0; i--) {
+                g.drawImage(tuile_derriere, posX_tuile_derriere + decalage, posY_tuile_derriere, largeur_tuile, hauteur_tuile, null);
+                decalage -= 2;
+            }
+        }
     }
 
     public static void afficheBackground(Graphics g) {

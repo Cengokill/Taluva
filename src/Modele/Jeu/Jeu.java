@@ -42,7 +42,7 @@ public class Jeu extends Observable {
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
-        joueursObjet[0] = joueur1;
+        joueursObjet[0] = IA2;
         joueursObjet[1] = IA1;
 
         pioche = new LinkedList<>();

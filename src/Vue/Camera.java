@@ -1,4 +1,4 @@
-package Modele.Jeu.Plateau.Affichage;
+package Vue;
 
 import javax.swing.*;
 import java.awt.*;
