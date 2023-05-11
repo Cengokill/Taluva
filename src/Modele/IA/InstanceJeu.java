@@ -4,13 +4,9 @@ import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class InstancePlateau {
+public class InstanceJeu {
     /*
     public Integer pioche;
     public Integer plateau;
@@ -19,11 +15,17 @@ public class InstancePlateau {
     public Plateau plateau;
     public ArrayList<Tuile> pioche;
     public Joueur[] joueurs;
+    public byte jCourant;
 
-    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs){
+    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs, byte jCourant){
         this.pioche = pioche;
         this.plateau = plateau;
         this.joueurs = joueurs;
+        this.jCourant = jCourant;
+    }
+
+    public byte getJoueurCourant(){
+        return jCourant;
     }
 
     public Plateau getPlateau() {
@@ -43,7 +45,7 @@ public class InstancePlateau {
 
     /*
 
-    public InstancePlateau(ArrayList<Tuile> pioche, Plateau plateau){
+    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau){
         // Récupère la pioche et le plateau sous forme Serializable
 
         ByteArrayOutputStream piocheByte = new ByteArrayOutputStream();

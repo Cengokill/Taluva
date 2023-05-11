@@ -4,12 +4,12 @@ import Modele.Jeu.Coup;
 import Structures.Sequence.SequenceListe;
 
 public class ArbrePossibilite implements Comparable<ArbrePossibilite>{
-    private final InstancePlateau courant;
+    private final InstanceJeu courant;
     private final ArbrePossibilite pere;
     private final SequenceListe<Coup> chemin;
     private final int poids;
 
-    public ArbrePossibilite(InstancePlateau courant, SequenceListe<Coup> chemin, ArbrePossibilite pere, int poid){
+    public ArbrePossibilite(InstanceJeu courant, SequenceListe<Coup> chemin, ArbrePossibilite pere, int poid){
         this.courant = courant;
         this.chemin = chemin;
         this.pere = pere;
@@ -20,7 +20,7 @@ public class ArbrePossibilite implements Comparable<ArbrePossibilite>{
         return poids;
     }
 
-    public InstancePlateau getCourant(){
+    public InstanceJeu getCourant(){
         return courant;
     }
 
