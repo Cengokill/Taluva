@@ -28,8 +28,9 @@ public class InstanceJeu {
         return jCourant;
     }
 
-    public Plateau getPlateau() {
-        return plateau;
+    public Plateau getPlateau() throws CloneNotSupportedException {
+        Plateau p = (Plateau) plateau.clone();
+        return p;
     }
 
     public ArrayList<Tuile> getPioche() {

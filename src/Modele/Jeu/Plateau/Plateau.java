@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
-public class Plateau implements Serializable {
+public class Plateau implements Serializable, Cloneable {
     final int LIGNES = 60;
     final int COLONNES = 60;
     protected Hexagone[][] carte;
@@ -40,6 +40,11 @@ public class Plateau implements Serializable {
 
     private void initHistorique() {
         historique = new Historique();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     private void initTripletsPossibles() {
