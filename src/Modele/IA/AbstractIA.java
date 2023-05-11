@@ -33,7 +33,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         return resultat;
     }
 
-    public Coup joue(){
+    public Coup joue() throws CloneNotSupportedException {
         return null;
     }
 
