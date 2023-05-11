@@ -44,7 +44,7 @@ public class IAIntelligente extends AbstractIA {
     }
 
     @Override
-    public Coup joue() {
+    public Coup joue() throws CloneNotSupportedException {
         System.out.println("jeu.getPioche().size : "+jeu.getPioche().size());
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
         System.out.println("pioche.size() : "+pioche.size());
@@ -53,7 +53,7 @@ public class IAIntelligente extends AbstractIA {
         return null;
     }
 
-    public int calculCoups_joueur_A(InstanceJeu instance, int horizon) {
+    public int calculCoups_joueur_A(InstanceJeu instance, int horizon) throws CloneNotSupportedException {
         byte joueur_courant = instance.getJoueurCourant();
         if(horizon==0){
             return evaluation_joueur(instance, joueur_courant);
@@ -131,7 +131,7 @@ public class IAIntelligente extends AbstractIA {
         else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
     }
 
-    public int calculCoups_joueur_B(InstanceJeu instance, int horizon) {
+    public int calculCoups_joueur_B(InstanceJeu instance, int horizon) throws CloneNotSupportedException {
         byte joueur_courant = instance.getJoueurCourant();
         if(horizon==0){
             return evaluation_joueur(instance, joueur_courant);
