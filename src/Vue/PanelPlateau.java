@@ -324,7 +324,7 @@ public class PanelPlateau extends JPanel {
                     Point2D PosCourante = aPropager.remove(0);
                     int posPrevX = PosCourante.getPointY() * voidTile.getWidth() - (PosCourante.getPointX() % 2 == 1 ? voidTile.getWidth() / 2 : 0);
                     int posPrevY = PosCourante.getPointX() * (int) (voidTile.getWidth() * 0.75);
-                    emplacementPropagation.add(new Position(posPrevX,posPrevY - heightoffset));
+                    emplacementPropagation.add(new Position(posPrevX,posPrevY));
                 }
             }else if(index_bat_precedent!=value){
                 emplacementPropagation = new ArrayList<>();
@@ -341,7 +341,7 @@ public class PanelPlateau extends JPanel {
         Position posBasic = emplacementPropagation.get(0);
         int nbHuttesDispo = jeu.getPlateau().nbHutteDisponibleJoueurCourant-(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
 
-        for(int i=1;i<emplacementPropagation.size();i++){
+        for(int i=0;i<emplacementPropagation.size();i++){
             Position posCourante = emplacementPropagation.get(i);
             // Convertir les coordonnées du système de pixels en coordonnées du système de grille
             int x = posCourante.colonne() / (int) (voidTile.getWidth() * 0.75);
@@ -805,6 +805,25 @@ public class PanelPlateau extends JPanel {
         return bool;
     }
 
+    private void decomptePropagation(){
+        if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
+        Position posBasic = emplacementPropagation.get(0);
+        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponibleJoueurCourant-(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
+
+        for(int i=0;i<emplacementPropagation.size();i++){
+            Position posCourante = emplacementPropagation.get(i);
+            // Convertir les coordonnées du système de pixels en coordonnées du système de grille
+            int x = posCourante.colonne() / (int) (voidTile.getWidth() * 0.75);
+            int y = (posCourante.ligne() + (i % 2 == 1 ? voidTile.getWidth() / 2 : 0)) / voidTile.getWidth();
+
+            int hauteurCourante = jeu.getPlateau().getHauteurTuile(x,y);
+            if(nbHuttesDispo>=hauteurCourante){
+                jeu.incrementePropagation(x,y);
+                nbHuttesDispo-=hauteurCourante;
+            }
+        }
+    }
+
     public void placerMaison(int i, int j) {
         int value = scrollValue%3;
         int[] coupsJouable = coupJouable(i,j);
@@ -813,20 +832,7 @@ public class PanelPlateau extends JPanel {
         if (value == 1) { // place hut
             if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;
             enSelection = false;
-            int nbHuttesDispo = jeu.getJoueurs()[jeu.jCourant].getNbHuttes()-1;
-
-            for (Position posCourante:emplacementPropagation) {
-                if(nbHuttesDispo>=0){
-                    int posX = posCourante.ligne();
-                    int posy = posCourante.colonne();
-                    if(posX>jeu.getPlateau().getCarte().length){
-                        posX = posCourante.colonne() / (int) (voidTile.getHeight() * 0.75);
-                        posy = (posCourante.ligne() + (i % 2 == 1 ? voidTile.getWidth() / 2 : 0)) / voidTile.getWidth();
-                    }
-                    jeu.incrementePropagation(posX,posy);
-                    nbHuttesDispo--;
-                }
-            }
+            decomptePropagation();
             controleur.placeBatiment(i,j,(byte) 1);
         }
         else if (value == 2){ // place tour
@@ -862,8 +868,8 @@ public class PanelPlateau extends JPanel {
         // Convertir les coordonnées du système de pixels en coordonnées du système de grille
         int i = clickPositionAdjusted.y / verticalOffset;
         int j = (clickPositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
-        /*System.out.println("SOURIS i: "+i+" j: "+j);
-        System.out.println("aCiterAutour: "+jeu.getPlateau().aCiteAutour(i,j,jeu.getNumJoueurCourant()));*/
+        //System.out.println("SOURIS i: "+i+" j: "+j);
+        //System.out.println("aCiterAutour: "+jeu.getPlateau().aCiteAutour(i,j,jeu.getNumJoueurCourant()));
 
 
         if(poseTile) placerTuiles(i,j);

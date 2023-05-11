@@ -156,6 +156,11 @@ public class Jeu extends Observable {
         }
         plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
         if(type_bat!=4){
+            if(type_bat == 1){
+                if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
+                joueurs[jCourant].incrementeHutte();
+            }
             if(type_bat == 2) {
                 joueurs[jCourant].incrementeTemple();
             }
@@ -169,6 +174,7 @@ public class Jeu extends Observable {
     }
 
     public void incrementePropagation(int ligne, int colonne){
+        if(ligne==0||colonne==0) return;
         if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
         if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
         joueurs[jCourant].incrementeHutte();
