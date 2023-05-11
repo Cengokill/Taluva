@@ -81,7 +81,7 @@ public class IAIntelligente extends AbstractIA {
                 for (int orientationTuile = 0; orientationTuile < 3; orientationTuile++) {
                     System.out.println("1");
                     Plateau plateauCopie = instance.getPlateau().copie(); // FAUDRA FAIRE UNE COPIE
-                    plateauCopie.placeEtage(joueur_courant, points[orientationTuile].ligne(), points[orientationTuile].colonne(), (points[(orientationTuile+1)%3].ligne()), (points[(orientationTuile+1)%3].colonne()), tuile.biome0, (points[(orientationTuile+2)%2].ligne()), (points[(orientationTuile+2)%2].colonne()), tuile.biome1);
+                    plateauCopie.placeEtage(joueur_courant, points[orientationTuile].ligne(), points[orientationTuile].colonne(), (points[(orientationTuile+1)%3].ligne()), (points[(orientationTuile+1)%3].colonne()), tuile.biome0, (points[(orientationTuile+2)%3].ligne()), (points[(orientationTuile+2)%3].colonne()), tuile.biome1);
 
                     ArrayList<Tuile> nouvellePioche;
                     nouvellePioche = copyPioche(pioche);
@@ -91,30 +91,28 @@ public class IAIntelligente extends AbstractIA {
                     for (int position = 0; position < positionsLibresBatiments.size(); position++){
                         System.out.println("2");
                         Position positionCourante = positionsLibresBatiments.get(position);
-
                         int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(),positionCourante.colonne(),joueur_courant);
-
                         // On parcourt tous les choix de bâtiments possibles
                         for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++){
-                            System.out.println("3");
+                            if(batimentsPlacable[batimentChoisit]==1){ // si le batiment est possable il est egal à 1
+                                System.out.println("3");
+                                Joueur jCourantCopie = instance.getJoueur(joueur_courant);
+                                Joueur[] joueurs = instance.getJoueurs();
+                                Plateau plateauCopie2 = plateauCopie.copie();
 
-                            Joueur jCourantCopie = instance.getJoueur(joueur_courant);
-                            Joueur[] joueurs = instance.getJoueurs();
+                                plateauCopie2.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) (batimentsPlacable[batimentChoisit]));
+                                plateauCopie2.affiche();
 
-                            plateauCopie.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) (batimentsPlacable[batimentChoisit]+1));
+                                updateBatimentsJoueur(batimentChoisit, jCourantCopie);
 
-                            updateBatimentsJoueur(batimentChoisit, jCourantCopie);
-
-                            //on supprime la position du bâtiment qui n'est plus libre
-                            plateauCopie.supprimeLibreBatiments(positionCourante);
-
-                            joueurs[joueur_courant] = jCourantCopie;
-                            //on créer une copie de l'instance et on change le joueur courant
-                            InstanceJeu instanceCopie = new InstanceJeu(nouvellePioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2));
-                            valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
-
-
-                            System.out.println("valeur calculCoups_joueur_B : "+valeur);
+                                //on supprime la position du bâtiment qui n'est plus libre
+                                plateauCopie2.supprimeLibreBatiments(positionCourante);
+                                joueurs[joueur_courant] = jCourantCopie;
+                                //on créer une copie de l'instance et on change le joueur courant
+                                InstanceJeu instanceCopie = new InstanceJeu(nouvellePioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2));
+                                //valeur = Math.max(valeur, calculCoups_joueur_B(instanceCopie, horizon - 1));
+                                //System.out.println("valeur calculCoups_joueur_B : "+valeur);
+                            }
                         }
                     }
                 }

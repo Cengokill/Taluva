@@ -43,7 +43,8 @@ public class Jeu extends Observable {
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
         joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;
+        // POUR IA mettre IA1 a la place de joueur2 -> aller dans panelPlateau
+        joueursObjet[1] = joueur2;
 
         pioche = new LinkedList<>();
         lancePartie();
