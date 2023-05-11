@@ -86,7 +86,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
-        g.drawImage(background, x + 70, y - 10, 5300 + 800, (int)(5300*0.75) + 800, null);
+        g.drawImage(background, x, y, 6000, 6000, null);
     }
 
 

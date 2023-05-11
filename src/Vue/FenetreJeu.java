@@ -88,7 +88,7 @@ public class FenetreJeu extends Container {
 
     private void setBackgroundColor() {
         //Définit la couleur d'arrière-plan en bleu océan
-        frame.getContentPane().setBackground(new Color(4, 13, 19));
+        frame.getContentPane().setBackground(new Color(0, 116, 125));
     }
 
     private void initPanels(ControleurMediateur controleur) {
@@ -129,8 +129,8 @@ public class FenetreJeu extends Container {
 
     private void initBackgroundPanel(){
         createBackgroundPanel();
-        backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        backgroundPanel.setOpaque(false);
+        //backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        //backgroundPanel.setOpaque(false);
         layeredPane.add(backgroundPanel, JLayeredPane.FRAME_CONTENT_LAYER);
     }
 
@@ -138,8 +138,8 @@ public class FenetreJeu extends Container {
         backgroundPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                super.paint(g);
-                afficheBackground(g);
+                //super.paint(g);
+                //afficheBackground(g);
             }
         };
     }
@@ -333,6 +333,7 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheBackground(Graphics g) {
+        System.out.println("afficheBackground");
         g.drawImage(background, 0, 0, largeur, hauteur, null);
     }
 

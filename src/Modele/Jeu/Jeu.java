@@ -43,7 +43,7 @@ public class Jeu extends Observable {
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
         joueursObjet[0] = joueur1;
-        joueursObjet[1] = IA1;
+        joueursObjet[1] = joueur2;
 
         pioche = new LinkedList<>();
         lancePartie();
@@ -91,7 +91,7 @@ public class Jeu extends Observable {
         if (!estJoueurCourantUneIA()) {
             return;
         }
-
+        plateau.affiche();
         Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
             System.out.println("pas libre A DEBUGGER");
@@ -260,7 +260,6 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        plateau.affiche();
         Random r = new Random();
         int index = r.nextInt(pioche.size()-1);
         Tuile tuile_courante = pioche.get(index);
