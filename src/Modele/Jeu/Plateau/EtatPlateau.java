@@ -10,7 +10,7 @@ public class EtatPlateau {
     public static int typeAConstruire = 0, posBat_x, posBat_y;
     public static boolean poseTile, mode_plateau = true, mode_numero = false;
     public static boolean clicDroiteEnfonce = false;
-    public static boolean enSelection = false,unefoisIA=false;
+    public static boolean enSelection = false;
     public static Color[] couleurs_joueurs;
     public static String[] nomJoueurs;
 }

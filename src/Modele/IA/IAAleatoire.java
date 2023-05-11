@@ -7,6 +7,8 @@ import Structures.Position.TripletDePosition;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static Modele.Jeu.Plateau.EtatPlateau.scrollValue;
+
 class IAAleatoire extends AbstractIA {
 
     public IAAleatoire() {
@@ -80,25 +82,47 @@ class IAAleatoire extends AbstractIA {
 
 
             // Choisir un batiment � placer
-            byte batiment;
-            int[] batimensPlacable = jeu.getPlateau().getBatimentPlacable(positionrandom.ligne(),positionrandom.colonne(),numIA);
-            if(batimensPlacable[1]==0&&batimensPlacable[2]==0) batiment=1;
-            else if(batimensPlacable[1]==0){
-                int value = r.nextInt(2);
-                if(value==0) batiment=1;
-                else batiment = 3;
-            }else{
-                int value = r.nextInt(2);
-                if(value==0) batiment=1;
-                else batiment = 2;
+            int batiment = -1;
+            int[] batimensPlacable = coupJouableIA(positionrandom.ligne(),positionrandom.colonne());
+            int randomInt = r.nextInt(3);
+            //System.out.println("batimentPlacable hutte: "+);
+
+            if (batimensPlacable[0] == 0 && batimensPlacable[2] == 0) batiment = 1; // si on ne peut pas placer de temple ni de tour
+            else if(batimensPlacable[1]==0){       // On ne peut pas placer de hutte
+                if(batimensPlacable[0]==0) batiment=2;
+                else if(batimensPlacable[2]==0) batiment=0;
+                else{
+                    batiment = randomInt % 2;
+                    if(batiment==1) batiment=2;
+                }
+            }
+            else if (batimensPlacable[0] == 0) {   // on ne peut pas placer de temple
+                batiment = randomInt % 2;
+                if (batiment == 0) batiment = 2;
+            } else if (batimensPlacable[2] == 0) { // On ne peut pas placer de tour
+                batiment = randomInt % 2;
+                if (batiment == 1) batiment = 0;
+                else if (batiment == 0) batiment = 1;
             }
 
-            return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),batiment);
+            return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),(byte) batiment);
         }
 
 
         //return new Coup(jeu.getNumJoueurCourant(),)
         return null;
+    }
+
+    public int[] coupJouableIA(int i,int j){
+        int[] coups = jeu.getPlateau().getBatimentPlacable(i,j, jeu.getNumJoueurCourant());
+
+        int hauteurTuile = jeu.getPlateau().getHauteurTuile(i,j);
+
+        if(jeu.getJoueurCourantClasse().getNbTemples()<=0) coups[0] = 0;
+        if(jeu.getJoueurCourantClasse().getNbTours()<=0) coups[2] = 0;
+        if(jeu.getJoueurCourantClasse().getNbHuttes()<hauteurTuile) coups[1] = 0;
+
+        return coups;
     }
 
 }

@@ -19,11 +19,14 @@ public class Joueur {
     private int nbTemplesPlaces;
     private int nbVillages;//nombre de villages construits
     //Image de profil
+
+    private boolean doitJouer;
     private BufferedImage image;
 
     public Joueur(byte type, String prenom){
         this.type_bat = type;//0 pour humain, 1 pour AbstractIA
         this.prenom = prenom;
+        doitJouer = false;
         nbHuttesPlacees = 0;
         nbToursPlacees = 0;
         nbTemplesPlaces = 0;
@@ -31,6 +34,10 @@ public class Joueur {
         nbHuttes = 6;
         nbTours = 2;
         nbTemples = 3;
+    }
+
+    public void setDoitJouer(boolean bool){
+        doitJouer=bool;
     }
 
     public void setImage(String image_nom){

@@ -18,7 +18,7 @@ public class Jeu extends Observable {
     Plateau plateau;
     Joueur joueur1, joueur2;
     AbstractIA IA1=null;
-    AbstractIA IA2;
+    AbstractIA IA2=null;
     public byte jCourant;
     byte jVainqueur;
     private Joueur[] joueurs = new Joueur[2];
@@ -31,7 +31,7 @@ public class Jeu extends Observable {
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
     boolean estFinPartie;
-
+    public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
     private static final int TAILLE_PIOCHE = 24;
 
@@ -41,6 +41,10 @@ public class Jeu extends Observable {
 
     public void initPartie(){
         jCourant = (byte) new Random().nextInt(1);
+        IA1 = AbstractIA.nouvelle(this);
+        IA2 = AbstractIA.nouvelle(this);
+        joueursObjet[0] = IA2;
+        joueursObjet[1] = IA1;
 
         pioche = new LinkedList<>();
         lancePartie();
@@ -57,7 +61,7 @@ public class Jeu extends Observable {
 
         if (estJoueurCourantUneIA()) {
             // Pour pas que l'AbstractIA joue directement
-            // Attendez un certain temps avant d'ex�cuter l'action finale
+            // Attendez un certain temps avant d'exécuter l'action finale
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> joueIA());
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
@@ -88,7 +92,6 @@ public class Jeu extends Observable {
             System.out.println("pas libre A DEBUGGER");
             return;
         }
-
         getPlateau().joueCoup(coup);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;
@@ -189,6 +192,10 @@ public class Jeu extends Observable {
                 jCourant = (byte) 0;
             }
             getPlateau().nbHutteDisponibleJoueurCourant=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+            int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
+            Timer timer = new Timer(delai, e -> joueIA());
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+            timer.start(); // Démarrez le timer
         }
     }
 

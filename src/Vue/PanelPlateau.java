@@ -55,8 +55,9 @@ public class PanelPlateau extends JPanel {
         poseTile = true;
         boucle();
 
-        cameraOffset.x -= fenetreJeu.frame.getWidth()/2;
-        cameraOffset.y -= fenetreJeu.frame.getHeight()/2 + 150;
+        cameraOffset.x -= fenetreJeu.frame.getWidth()/2 -1000;
+        cameraOffset.y -= fenetreJeu.frame.getHeight()/2 -50;
+
     }
 
     @Override
@@ -148,12 +149,6 @@ public class PanelPlateau extends JPanel {
         if(index_water==3){
             index_water=0;
         }else index_water++;
-        if(jeu.estJoueurCourantUneIA()){  // Faire jouer l'AbstractIA
-            if(unefoisIA){
-                jeu.joueIA();
-                unefoisIA=false;
-            }
-        }
     }
 
     private void changerPoseTile() {
@@ -299,7 +294,6 @@ public class PanelPlateau extends JPanel {
             g.drawImage(contourEtage3, drawX, drawY - heightoffset + 55, null);
         }
     }
-
 
     private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
@@ -875,7 +869,7 @@ public class PanelPlateau extends JPanel {
         if(poseTile) placerTuiles(i,j);
         else placeBatiment(i, j);
 
-        unefoisIA=true;
+        //jeu.unefoisIA=true; // A mettre en joueur contre IA ATTENTION
     }
 
     private void placeBatiment(int i, int j) {

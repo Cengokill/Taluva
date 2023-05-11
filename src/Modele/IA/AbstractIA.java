@@ -15,7 +15,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         pioche = new LinkedList<>();
 
         //String type = p.getType_IA();
-        String type = "tropSmart";
+        String type = "Aléatoire";
         switch (type) {
             case "Aléatoire":
                 resultat = new IAAleatoire();
