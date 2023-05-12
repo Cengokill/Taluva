@@ -72,7 +72,14 @@ public class FenetreJeu extends Container {
     }
 
     public void setStandardCursor(){
-        frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        Image cursorImage = Toolkit.getDefaultToolkit().getImage("ressources/Menu/normal_cursor.png");
+
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Point hotspot = new Point(0, 0);
+        Cursor idle_cursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom Cursor");
+
+        frame.setCursor(idle_cursor);
     }
 
     private void initMenu() throws IOException {
