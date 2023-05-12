@@ -44,6 +44,7 @@ public class Plateau implements Serializable, Cloneable {
         p.historique = this.historique.copie();
         p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
+        p.nbHutteDisponibleJoueurCourant = this.nbHutteDisponibleJoueurCourant; // putain kiki oublie pas ca
         p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
         p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
         p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
@@ -950,6 +951,17 @@ public class Plateau implements Serializable, Cloneable {
     public void supprimeLibreBatiments(Position pos){
         positions_libres_batiments.remove(pos);
     }
+
+    public void supprimeElementNew(Position posASupprimer){
+        ArrayList<Position> positionsASupprimer = new ArrayList<>();
+        for(Position posCourante: positions_libres_batiments){
+            if(posCourante.ligne()==posASupprimer.ligne() && posCourante.colonne()==posASupprimer.colonne()) positionsASupprimer.add(posCourante);
+        }
+        for(Position posCourante: positionsASupprimer){
+            positions_libres_batiments.remove(posCourante);
+        }
+    }
+
 
     public Stock annuler() {
         Stock stock =historique.annuler(carte);

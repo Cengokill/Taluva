@@ -52,8 +52,10 @@ public class IAIntelligente extends AbstractIA {
         System.out.println("jeu.getPioche().size : "+jeu.getPioche().size());
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
         System.out.println("pioche.size() : "+pioche.size());
-        InstanceJeu instance = new InstanceJeu(pioche, jeu.getPlateau(), jeu.getJoueurs(), jeu.getNumJoueurCourant());
-        System.out.println(calculCoups_joueur_A(instance, 1));
+        Plateau plateauIA = jeu.getPlateau();
+        plateauIA.nbHutteDisponibleJoueurCourant = jeu.getJoueurCourantClasse().getNbHuttes();
+        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant());
+        System.out.println(calculCoups_joueur_A(instance, 2));
         System.out.println("nbInstance: "+NbInstanceDifferentes);
         return null;
     }
@@ -70,7 +72,7 @@ public class IAIntelligente extends AbstractIA {
         ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
 
         //System.out.println("pioche.size() : "+pioche.size());
-        for (int piocheIndex = 0; piocheIndex < pioche.size(); piocheIndex++) {
+        for (int piocheIndex = 0; piocheIndex < 1; piocheIndex++) {
 
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque carte unique de la pioche
@@ -113,7 +115,9 @@ public class IAIntelligente extends AbstractIA {
                                     ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
                                     // La Hutte de base
                                     plateauCopie2.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) HUTTE);
-                                    plateauCopie2.supprimeLibreBatiments(new Position(positionCourante.ligne(),positionCourante.colonne()));
+                                    // La position actuelle n'est plus libre
+                                    Position posASupprimer = new Position(positionCourante.ligne(),positionCourante.colonne());
+                                    plateauCopie2.supprimeElementNew(posASupprimer);
                                     int hauteurCourante = plateauCopie2.getHauteurTuile(positionCourante.ligne(),positionCourante.colonne());
                                     updateBatimentsJoueur((byte) HUTTE, jCourantCopie,hauteurCourante);
 
@@ -125,8 +129,8 @@ public class IAIntelligente extends AbstractIA {
                                         if(nbHuttesDispo>=hauteurCourante){
                                             plateauCopie2.placeBatiment(joueur_courant,PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY(),(byte) HUTTE);
                                             // On place une hutte dessus, donc plus disponible
-                                            plateauCopie2.supprimeLibreBatiments(new Position(PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY()));
-                                            // On met a jour le compteur des huttes du joueur courant
+                                            posASupprimer = new Position(PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY());
+                                            plateauCopie2.supprimeElementNew(posASupprimer);
                                             updateBatimentsJoueur((byte) HUTTE, jCourantCopie,hauteurCourante);
                                             nbHuttesDispo-=hauteurCourante;
                                         }
@@ -134,13 +138,10 @@ public class IAIntelligente extends AbstractIA {
                                 }else{ // Si nous ne posons pas de hutte, il n'y a pas de propagation
                                     plateauCopie2.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) (batimentsPlacable[batimentChoisit]));
                                     updateBatimentsJoueur(batimentChoisit, jCourantCopie,0);
+                                    //on supprime la position du bâtiment qui n'est plus libre
+                                    Position posASupprimer = new Position(positionCourante.ligne(),positionCourante.colonne());
+                                    plateauCopie2.supprimeElementNew(posASupprimer);
                                 }
-
-                                //on supprime la position du bâtiment qui n'est plus libre
-                                plateauCopie2.supprimeLibreBatiments(positionCourante);
-                                joueurs[joueur_courant] = jCourantCopie;
-                                //on met a jour le nombre de hutte disponible
-                                plateauCopie2.nbHutteDisponibleJoueurCourant=instance.getJoueur(((joueur_courant+1)%2)).getNbHuttes();
 
                                 //on créer une copie de l'instance et on change le joueur courant
                                 NbInstanceDifferentes++;
@@ -176,7 +177,7 @@ public class IAIntelligente extends AbstractIA {
         ArrayList<TripletDePosition> tripletsPossibles = instance.getPlateau().getTripletsPossibles();
         ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
 
-        for (int piocheIndex = 0; piocheIndex < pioche.size(); piocheIndex++) {
+        for (int piocheIndex = 0; piocheIndex < 1; piocheIndex++) {
 
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque carte unique de la pioche
@@ -212,37 +213,56 @@ public class IAIntelligente extends AbstractIA {
                                 // Pour les HUTTES car propagation potentielle
                                 if(batimentChoisit==HUTTE) {
                                     // On créer un tableau contenant toutes les coordonées où l'on doit propager
-                                    ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
-                                    // La Hutte de base
+                                    ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), (byte) ((joueur_courant+1)%2)); // A MODIFIER POUR PLUS TARD TEST remettre joueur_courant
+                                    // AFFICHAGE DEBUG
+                                    boolean afficheApres = false;
+                                    if(aPropager.size()>=2){
+                                        System.out.println("AVANT");
+                                        plateauCopie2.affiche();
+                                        afficheApres = true;
+                                    }
+                                    // On place la hutte classique sans propagation
                                     plateauCopie2.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) HUTTE);
-                                    plateauCopie2.supprimeLibreBatiments(new Position(positionCourante.ligne(),positionCourante.colonne()));
+                                    // La position actuelle n'est plus libre
+                                    Position posASupprimer = new Position(positionCourante.ligne(),positionCourante.colonne());
+                                    plateauCopie2.supprimeElementNew(posASupprimer);
+                                    // On met a jour le nombre de hutte restante
                                     int hauteurCourante = plateauCopie2.getHauteurTuile(positionCourante.ligne(),positionCourante.colonne());
                                     updateBatimentsJoueur((byte) HUTTE, jCourantCopie,hauteurCourante);
 
                                     // On recupere le nombre de hutte disponibles pour le joueur A
                                     int nbHuttesDispo = plateauCopie2.nbHutteDisponibleJoueurCourant-(plateauCopie2.getHauteurTuile(positionCourante.ligne(),positionCourante.colonne()));
+
                                     while (aPropager.size() != 0) {
                                         Point2D PosCourantePropagation = aPropager.remove(0);
                                         hauteurCourante = plateauCopie2.getHauteurTuile(PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY());
+
                                         if(nbHuttesDispo>=hauteurCourante){
                                             plateauCopie2.placeBatiment(joueur_courant,PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY(),(byte) HUTTE);
                                             // On place une hutte dessus, donc plus disponible
-                                            plateauCopie2.supprimeLibreBatiments(new Position(PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY()));
+                                            posASupprimer = new Position(PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY());
+                                            plateauCopie2.supprimeElementNew(posASupprimer);
                                             // On met a jour le compteur des huttes du joueur courant
                                             updateBatimentsJoueur((byte) HUTTE, jCourantCopie,hauteurCourante);
                                             nbHuttesDispo-=hauteurCourante;
                                         }
+                                        // AFFICHAGE DEBUG
+                                        if(afficheApres && aPropager.size()==0){
+                                            System.out.println("**************");
+                                            System.out.println("APRES");
+                                            plateauCopie2.affiche();
+                                            afficheApres = false;
+                                        }
                                     }
+
                                 }else{ // Si nous ne posons pas de hutte, il n'y a pas de propagation
                                     plateauCopie2.placeBatiment(joueur_courant,positionCourante.ligne(),positionCourante.colonne(),(byte) (batimentsPlacable[batimentChoisit]));
                                     updateBatimentsJoueur(batimentChoisit, jCourantCopie,0);
+                                    Position posASupprimer = new Position(positionCourante.ligne(),positionCourante.colonne());
+                                    plateauCopie2.supprimeElementNew(posASupprimer);
                                 }
 
-                                //on supprime la position du bâtiment qui n'est plus libre
-                                plateauCopie2.supprimeLibreBatiments(positionCourante);
                                 joueurs[joueur_courant] = jCourantCopie;
-                                //on met a jour le nombre de hutte disponible
-                                plateauCopie2.nbHutteDisponibleJoueurCourant=instance.getJoueur(((joueur_courant+1)%2)).getNbHuttes();
 
                                 //on créer une copie de l'instance et on change le joueur courant
                                 NbInstanceDifferentes++;
@@ -256,7 +276,6 @@ public class IAIntelligente extends AbstractIA {
         }
         return valeur;
     }
-
     public ArrayList<Tuile> copyPioche(ArrayList<Tuile> pioche){
         ArrayList<Tuile> piocheCopie = new ArrayList<>();
         for (Tuile tuileCourante:pioche) {
