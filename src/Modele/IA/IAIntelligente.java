@@ -169,13 +169,14 @@ public class IAIntelligente extends AbstractIA {
                         int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
                         //On parcourt tous les choix de bâtiments possibles
                         for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
+                            System.out.println("batimentChoisit : " + batimentChoisit);
                             //si le bâtiment est plaçable
                             if (batimentsPlacable[batimentChoisit] == 1) {
                                 Joueur jCourantCopie = instance.getJoueur(joueur_courant);
                                 Joueur[] joueurs = instance.getJoueurs();
                                 Plateau plateauCopie2 = plateauCopie.copie();
                                 //si HUTTE (propagation potentielle)
-                                if (batimentChoisit == HUTTE) {
+                                if (batimentChoisit == HUTTE){
                                     //On créer un tableau contenant toutes les coordonées où l'on doit propager
                                     ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
                                     //On place la hutte classique sans propagation
@@ -214,6 +215,14 @@ public class IAIntelligente extends AbstractIA {
                             coupDuo.add(coupB);
                         }
                     }
+                }
+                //affiche coups_possibles
+                for(int i=0; i<coups_possibles.size(); i++){
+                    System.out.println("Coup de tuile :");
+                    coups_possibles.get(i).get(0).affiche();
+                    System.out.println("Coup de batiment :");
+                    coups_possibles.get(i).get(1).affiche();
+                    System.out.println("----------------------------------------");
                 }
                 coups_possibles.add(coupDuo);
             }

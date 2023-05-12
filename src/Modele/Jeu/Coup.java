@@ -69,4 +69,14 @@ public class Coup implements Serializable {
     public void setOldterrain2(byte oldterrain2){
         this.oldTerrain2=oldterrain2;
     }
+
+    public void affiche(){
+        System.out.println("Type de placement : "+typePlacement);
+        System.out.println("Joueur : "+num_joueur);
+        System.out.println("Volcan : "+volcanLigne+" "+volcanColonne);
+        System.out.println("Tile1 : "+tile1Ligne+" "+tile1Colonne+" "+biome1);
+        System.out.println("Tile2 : "+tile2Ligne+" "+tile2Colonne+" "+biome2);
+        System.out.println("Batiment : "+batimentLigne+" "+batimentColonne);
+
+    }
 }
