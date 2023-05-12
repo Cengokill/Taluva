@@ -22,6 +22,7 @@ public class IAIntelligente extends AbstractIA {
     public static int HUTTE = 1;
     public static int TOUR = 2;
     private Random r;
+    private CoupValeur coupValeur;
 
     public IAIntelligente() {
         super();
@@ -48,7 +49,12 @@ public class IAIntelligente extends AbstractIA {
     }
 
     @Override
-    public CoupValeur joue(){
+    public CoupValeur joue() {
+        return this.coupValeur;
+    }
+
+    @Override
+    public void calcule_coup(){
         System.out.println("jeu.getPioche().size : "+jeu.getPioche().size());
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
         System.out.println("pioche.size() : "+pioche.size());
@@ -59,7 +65,7 @@ public class IAIntelligente extends AbstractIA {
         //on choisit le meilleur coup au hasard dans la liste des meilleurs coups
         r = new Random();
         int index = r.nextInt(listeMeilleursCoups.size());
-        return listeMeilleursCoups.get(index);
+        this.coupValeur = listeMeilleursCoups.get(index);
     }
 
     public ArrayList<CoupValeur> meilleursCoups(InstanceJeu instance, int horizon){
@@ -143,6 +149,7 @@ public class IAIntelligente extends AbstractIA {
         byte joueur_courant = instance.getJoueurCourant();
         ArrayList<TripletDePosition> tripletsPossibles = instance.getPlateau().getTripletsPossibles();
         ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
+        ArrayList<Coup> coupDuo = new ArrayList<>();
         for (int piocheIndex = 0; piocheIndex < pioche.size(); piocheIndex++) {
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque tuile unique de la pioche
@@ -152,7 +159,7 @@ public class IAIntelligente extends AbstractIA {
                 points[0] = tripletCourant.getVolcan();
                 points[1] = tripletCourant.getTile1();
                 points[2] = tripletCourant.getTile2();
-                ArrayList<Coup> coupDuo = new ArrayList<>();
+                coupDuo.clear();
                 for (int orientationTuile = 0; orientationTuile < 3; orientationTuile++) {
                     Coup coupT = new Coup(joueur_courant, points[orientationTuile].ligne(), points[orientationTuile].colonne(), (points[(orientationTuile + 1) % 3].ligne()), (points[(orientationTuile + 1) % 3].colonne()), tuile.biome0, (points[(orientationTuile + 2) % 3].ligne()), (points[(orientationTuile + 2) % 3].colonne()), tuile.biome1);
                     coupDuo.add(coupT);
@@ -215,6 +222,16 @@ public class IAIntelligente extends AbstractIA {
                         }
                     }
                 }
+                //affiche coups_possibles
+                /*
+                for(int i=0; i<coups_possibles.size(); i++){
+                    System.out.println("Coup de tuile :");
+                    coups_possibles.get(i).get(0).affiche();
+                    System.out.println("Coup de batiment :");
+                    coups_possibles.get(i).get(1).affiche();
+                    System.out.println("----------------------------------------");
+                }
+                 */
                 coups_possibles.add(coupDuo);
             }
         }

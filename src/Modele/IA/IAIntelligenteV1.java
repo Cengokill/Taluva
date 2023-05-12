@@ -1,6 +1,5 @@
 package Modele.IA;
 
-import Modele.Jeu.Coup;
 import Modele.Jeu.CoupValeur;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;

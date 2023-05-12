@@ -8,8 +8,6 @@ import Structures.Position.TripletDePosition;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static Modele.Jeu.Plateau.EtatPlateau.scrollValue;
-
 class IAAleatoire extends AbstractIA {
 
     public IAAleatoire() {
