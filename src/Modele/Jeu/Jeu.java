@@ -91,7 +91,21 @@ public class Jeu extends Observable {
         if (!estJoueurCourantUneIA()) {
             return;
         }
+        CoupValeur coupValeur = ((AbstractIA)joueursObjet[jCourant]).joue();
+        Coup coupTuile = coupValeur.getCoupT();
+        Coup coupBatiment = coupValeur.getCoupB();
+        if (!getPlateau().estHexagoneLibre(coupTuile.volcanLigne,coupTuile.volcanColonne)) {
+            System.out.println("pas libre A DEBUGGER");
+            return;
+        }
+        getPlateau().joueCoup(coupTuile);   // place la plateforme
+        doit_placer_batiment = true;
+        doit_placer_tuile = false;
+        joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
+        doit_placer_batiment = false;
+        doit_placer_tuile = true;
 
+        /*
         Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
             System.out.println("pas libre A DEBUGGER");
@@ -106,7 +120,7 @@ public class Jeu extends Observable {
         joueurPlaceBatiment(coup.batimentLigne,coup.batimentColonne,coup.typePlacement);
         doit_placer_batiment = false;
         doit_placer_tuile = true;
-        //changeJoueur();
+        //changeJoueur();*/
         pioche();
     }
 

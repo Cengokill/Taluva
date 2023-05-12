@@ -1,6 +1,7 @@
 package Modele.IA;
 
 import Modele.Jeu.Coup;
+import Modele.Jeu.CoupValeur;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
@@ -21,7 +22,7 @@ class IAIntelligenteV1 extends AbstractIA {
         }
         return colonneAjustee;
     }
-    public Coup joue() {
+    public CoupValeur joue() {
 
         Random r = new Random();
         int ligne, colonne;
@@ -44,7 +45,8 @@ class IAIntelligenteV1 extends AbstractIA {
                 int colonneAjustee = ajusterColonne(ligne,colonne);
 
                 // controleur.placeEtage(ligne, colonne, ligne - 1, colonneAjustee, triplet[1][0], ligne - 1, colonneAjustee + 1, triplet[2][0]);
-                return new Coup(numIA,ligne,colonne,ligne-1,colonneAjustee,triplet[1][0],ligne-1,colonneAjustee+1,triplet[2][0]);
+                //return new Coup(numIA,ligne,colonne,ligne-1,colonneAjustee,triplet[1][0],ligne-1,colonneAjustee+1,triplet[2][0]);
+                return null;
             }else{
                 // Trouver un emplacement pour les hexagones
                 ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
@@ -64,7 +66,8 @@ class IAIntelligenteV1 extends AbstractIA {
                 int y2 = positionsrandom.getTile1().colonne();
                 int y3 = positionsrandom.getTile2().colonne();
 
-                return new Coup(numIA,x1,y1,x2,y2,triplet[1][0],x3,y3,triplet[2][0]);
+                //return new Coup(numIA,x1,y1,x2,y2,triplet[1][0],x3,y3,triplet[2][0]);
+                return null;
             }
         }
         else if(jeu.doit_placer_batiment()){
@@ -94,7 +97,7 @@ class IAIntelligenteV1 extends AbstractIA {
                 else batiment = 2;
             }
 
-            return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),batiment);
+            //return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),batiment);
         }
 
 
