@@ -868,7 +868,7 @@ public class PanelPlateau extends JPanel {
         if(poseTile) placerTuiles(i,j);
         else placeBatiment(i, j);
 
-        jeu.unefoisIA=true; // POUR IA mettre en commentaire
+        //jeu.unefoisIA=true; // POUR IA mettre en commentaire
     }
 
     private void placeBatiment(int i, int j) {
