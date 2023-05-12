@@ -199,7 +199,13 @@ public class ImageLoader {
 
     private static void readPlayableTilesImages() {
         String imageFolder = "/Plateau/Hexagones/Textures/";
-
+        int simple = 0;
+        int complexe = 1;
+        int modele_type = simple;
+        String modele_simple = "Simples/";
+        if(modele_type==simple){
+            imageFolder += modele_simple;
+        }
         grassTile_0 = lisImageBuf(imageFolder + "Grass_0_Tile");
         grassTile_1 = lisImageBuf(imageFolder + "Grass_1_Tile");
         grassTile_2 = lisImageBuf(imageFolder + "Grass_2_Tile");
