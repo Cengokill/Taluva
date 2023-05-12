@@ -41,9 +41,9 @@ public class Jeu extends Observable {
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
         //IA2 = AbstractIA.nouvelle(this);
-        Thread ia1Thread = new Thread(IA1);
+        //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
-        ia1Thread.start();
+        //ia1Thread.start();
         //ia2Thread.start();
         joueursObjet[0] = joueur1;
         // POUR IA mettre IA1 a la place de joueur2 -> aller dans panelPlateau

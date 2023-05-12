@@ -23,16 +23,19 @@ class IAAleatoire extends AbstractIA {
         }
         return j_modified;
     }
-    public CoupValeur joue() {
 
+    @Override
+    public CoupValeur joue() {
+        System.out.println("IA joue");
         Random r = new Random();
         int ligne=0, colonne=0;
         int taille_x = jeu.getPlateau().getCarte().length;
         int taille_y = jeu.getPlateau().getCarte()[0].length;
         byte numIA = jeu.getNumJoueurCourant();
 
-        if(jeu.doit_placer_tuile()){
+        Coup coupT = null, coupB = null;
 
+        if(jeu.doit_placer_tuile()){
             byte[] tuiles = jeu.getTuilesAPoser();
             byte[][] triplet = new byte[3][2];
             triplet[1][0] = tuiles[0]; // tile 1
@@ -65,12 +68,11 @@ class IAAleatoire extends AbstractIA {
                 int colonne2 = positionsrandom.getTile1().colonne();
                 int colonne3 = positionsrandom.getTile2().colonne();
 
-                //return new Coup(numIA,ligne1,colonne1,ligne2,colonne2,triplet[1][0],ligne3,colonne3,triplet[2][0]);
+                coupT = new Coup(numIA,ligne1,colonne1,ligne2,colonne2,triplet[1][0],ligne3,colonne3,triplet[2][0]);
             }
-            return null;
         }
         else if(jeu.doit_placer_batiment()){
-            // Trouver un empla�ement pour le batiment
+            // Trouver un emplacement pour le bâtiment
             ArrayList<Position> positionPossibles = jeu.getPlateau().getPositions_libres_batiments();
             //System.out.println("ICI DEFOIS MANGE LA MAISON DE L'ADVERSSAIRE A DEBUGGER");
             Position positionrandom = positionPossibles.get(r.nextInt(positionPossibles.size()));
@@ -82,7 +84,7 @@ class IAAleatoire extends AbstractIA {
             jeu.getPlateau().supprimeLibreBatiments(positionrandom);
 
 
-            // Choisir un batiment � placer
+            // Choisir un batiment à placer
             int batiment = -1;
             int[] batimensPlacable = coupJouableIA(positionrandom.ligne(),positionrandom.colonne());
             int randomInt = r.nextInt(3);
@@ -109,9 +111,9 @@ class IAAleatoire extends AbstractIA {
                 if (batiment == 1) batiment = 0;
                 else if (batiment == 0) batiment = 1;
             }
-            //return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),(byte) batiment);
+            coupB = new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),(byte) batiment);
         }
-        return null;
+        return new CoupValeur(coupT,coupB,0);
     }
 
     public int[] coupJouableIA(int i,int j){
