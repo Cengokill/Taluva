@@ -169,7 +169,6 @@ public class IAIntelligente extends AbstractIA {
                         int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
                         //On parcourt tous les choix de bâtiments possibles
                         for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
-                            System.out.println("batimentChoisit : " + batimentChoisit);
                             //si le bâtiment est plaçable
                             if (batimentsPlacable[batimentChoisit] == 1) {
                                 Joueur jCourantCopie = instance.getJoueur(joueur_courant);
@@ -211,18 +210,10 @@ public class IAIntelligente extends AbstractIA {
                                     plateauCopie2.supprimeElementNew(posASupprimer);
                                 }
                                 joueurs[joueur_courant] = jCourantCopie;
+                                coupDuo.add(coupB);
                             }
-                            coupDuo.add(coupB);
                         }
                     }
-                }
-                //affiche coups_possibles
-                for(int i=0; i<coups_possibles.size(); i++){
-                    System.out.println("Coup de tuile :");
-                    coups_possibles.get(i).get(0).affiche();
-                    System.out.println("Coup de batiment :");
-                    coups_possibles.get(i).get(1).affiche();
-                    System.out.println("----------------------------------------");
                 }
                 coups_possibles.add(coupDuo);
             }
