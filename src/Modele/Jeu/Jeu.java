@@ -214,7 +214,8 @@ public class Jeu extends Observable {
             } else {
                 jCourant = (byte) 0;
             }
-            getPlateau().nbHutteDisponiblesJoueur =joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+            getPlateau().nbHutteDisponiblesJoueur=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+            System.out.println("nbHutte: "+getPlateau().nbHutteDisponiblesJoueur);
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> {
                 try {

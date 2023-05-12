@@ -17,7 +17,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est exécutée par 
     public static AbstractIA nouvelle(Jeu j) {
         AbstractIA resultat = null;
         pioche = new LinkedList<>();
-        type_IA = ALEATOIRE;
+        type_IA = INTELLIGENTE;
         if(type_IA == ALEATOIRE) {
             resultat = new IAAleatoire();
         }else if(type_IA == INTELLIGENTE) {

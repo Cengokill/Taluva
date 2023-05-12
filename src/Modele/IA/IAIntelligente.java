@@ -50,6 +50,7 @@ public class IAIntelligente extends AbstractIA {
 
     @Override
     public CoupValeur joue() {
+        calcule_coup();
         return this.coupValeur;
     }
 
@@ -150,7 +151,7 @@ public class IAIntelligente extends AbstractIA {
         ArrayList<TripletDePosition> tripletsPossibles = instance.getPlateau().getTripletsPossibles();
         ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
         ArrayList<Coup> coupDuo = new ArrayList<>();
-        for (int piocheIndex = 0; piocheIndex < pioche.size(); piocheIndex++) {
+        for (int piocheIndex = 0; piocheIndex < 1; piocheIndex++) { // mettre pioche.size() à la place de 1
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque tuile unique de la pioche
             for (int tripletsIndex = 0; tripletsIndex < tripletsPossibles.size(); tripletsIndex++) {
@@ -275,13 +276,13 @@ public class IAIntelligente extends AbstractIA {
     }
 
     private static void updateBatimentsJoueur(int batimentChoisit, Joueur jCourantCopie, int hauteur) {
-        if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
+        /*if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
         else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
         else{
             if(hauteur>=3) jCourantCopie.incrementeHutte();
             if(hauteur==2) jCourantCopie.incrementeHutte();
             jCourantCopie.incrementeHutte();
-        }
+        }*/
     }
     public ArrayList<Tuile> copyPioche(ArrayList<Tuile> pioche){
         ArrayList<Tuile> piocheCopie = new ArrayList<>();
