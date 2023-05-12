@@ -37,6 +37,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est exécutée par 
         if(type_IA == INTELLIGENTE){
             calcule_coup();
         }
+
     }
 
     public void calcule_coup(){
