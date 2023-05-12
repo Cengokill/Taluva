@@ -1,6 +1,7 @@
 package Modele.IA;
 
 import Modele.Jeu.Coup;
+import Modele.Jeu.CoupValeur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Plateau.Tuile;
 
@@ -33,7 +34,7 @@ public class AbstractIA implements Runnable{//une AbstractIA est ex�cut�e pa
         return resultat;
     }
 
-    public Coup joue(){
+    public CoupValeur joue(){
         return null;
     }
 

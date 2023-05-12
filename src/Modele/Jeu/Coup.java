@@ -45,6 +45,14 @@ public class Coup implements Serializable {
         this.batimentColonne = batimentColonne;
     }
 
+    public int getBatLigne(){
+        return batimentLigne;
+    }
+
+    public int getBatColonne(){
+        return batimentColonne;
+    }
+
     public byte getNumJoueur() {
         return num_joueur;
     }

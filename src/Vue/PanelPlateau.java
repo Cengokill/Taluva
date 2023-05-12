@@ -332,7 +332,7 @@ public class PanelPlateau extends JPanel {
     private void affichePrevisualisationPropogation(Graphics g){
         if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
         Position posBasic = emplacementPropagation.get(0);
-        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponibleJoueurCourant-(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
+        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
 
         for(int i=0;i<emplacementPropagation.size();i++){
             Position posCourante = emplacementPropagation.get(i);
@@ -801,7 +801,7 @@ public class PanelPlateau extends JPanel {
     private void decomptePropagation(){
         if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
         Position posBasic = emplacementPropagation.get(0);
-        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponibleJoueurCourant-(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
+        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
 
         for(int i=0;i<emplacementPropagation.size();i++){
             Position posCourante = emplacementPropagation.get(i);

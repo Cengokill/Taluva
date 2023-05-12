@@ -1,6 +1,7 @@
 package Modele.IA;
 
 import Modele.Jeu.Coup;
+import Modele.Jeu.CoupValeur;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
@@ -24,7 +25,7 @@ class IAAleatoire extends AbstractIA {
         }
         return j_modified;
     }
-    public Coup joue() {
+    public CoupValeur joue() {
 
         Random r = new Random();
         int ligne=0, colonne=0;
@@ -46,7 +47,7 @@ class IAAleatoire extends AbstractIA {
                 int colonne_ajustee = ajusterColonne(ligne,colonne);
 
                 // controleur.placeEtage(ligne, colonne, ligne - 1, colonne_ajustee, triplet[1][0], ligne - 1, colonne_ajustee + 1, triplet[2][0]);
-                return new Coup(numIA,ligne,colonne,ligne-1,colonne_ajustee,triplet[1][0],ligne-1,colonne_ajustee+1,triplet[2][0]);
+                //return new Coup(numIA,ligne,colonne,ligne-1,colonne_ajustee,triplet[1][0],ligne-1,colonne_ajustee+1,triplet[2][0]);
             }else{
                 // Trouver un emplacement pour les hexagones
                 ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
@@ -66,8 +67,9 @@ class IAAleatoire extends AbstractIA {
                 int colonne2 = positionsrandom.getTile1().colonne();
                 int colonne3 = positionsrandom.getTile2().colonne();
 
-                return new Coup(numIA,ligne1,colonne1,ligne2,colonne2,triplet[1][0],ligne3,colonne3,triplet[2][0]);
+                //return new Coup(numIA,ligne1,colonne1,ligne2,colonne2,triplet[1][0],ligne3,colonne3,triplet[2][0]);
             }
+            return null;
         }
         else if(jeu.doit_placer_batiment()){
             // Trouver un empla�ement pour le batiment
@@ -109,12 +111,8 @@ class IAAleatoire extends AbstractIA {
                 if (batiment == 1) batiment = 0;
                 else if (batiment == 0) batiment = 1;
             }
-
-            return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),(byte) batiment);
+            //return new Coup(numIA,positionrandom.ligne(),positionrandom.colonne(),(byte) batiment);
         }
-
-
-        //return new Coup(jeu.getNumJoueurCourant(),)
         return null;
     }
 

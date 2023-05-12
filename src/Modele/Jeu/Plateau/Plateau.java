@@ -5,10 +5,8 @@ import Modele.Jeu.Coup;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
-import Vue.PanelPlateau;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
@@ -20,7 +18,7 @@ public class Plateau implements Serializable, Cloneable {
     protected byte[] quantitePionJoueur1;
     protected byte[] quantitePionJoueur2;
 
-    public int nbHutteDisponibleJoueurCourant=0; // Pour eviter d'aller dans le negatif lors de la propagation
+    public int nbHutteDisponiblesJoueur =0; // Pour eviter d'aller dans le negatif lors de la propagation
     private Historique historique;
     private ArrayList<Position> positions_libres;
 
@@ -44,7 +42,7 @@ public class Plateau implements Serializable, Cloneable {
         p.historique = this.historique.copie();
         p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
-        p.nbHutteDisponibleJoueurCourant = this.nbHutteDisponibleJoueurCourant; // putain kiki oublie pas ca
+        p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur; // putain kiki oublie pas ca
         p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
         p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
         p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
@@ -664,17 +662,17 @@ public class Plateau implements Serializable, Cloneable {
         joueCoup(coup);
 
         if (type_bat == (byte)1){
-            nbHutteDisponibleJoueurCourant-=getHauteurTuile(ligne,colonne);
+            nbHutteDisponiblesJoueur -=getHauteurTuile(ligne,colonne);
             ArrayList<Point2D> nlh ;
             nlh = propagation(ligne,colonne,joueurCourant);
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-                if(nbHutteDisponibleJoueurCourant>=getHauteurTuile(a.x,a.y) && nbHutteDisponibleJoueurCourant!=0){
+                if(nbHutteDisponiblesJoueur >=getHauteurTuile(a.x,a.y) && nbHutteDisponiblesJoueur !=0){
                     if(coup.typePlacement!=4) {
                         historique.ajoute(Coup_propagation);
                         joueCoup(Coup_propagation);
-                        nbHutteDisponibleJoueurCourant-=(getHauteurTuile(a.x,a.y));
+                        nbHutteDisponiblesJoueur -=(getHauteurTuile(a.x,a.y));
                     }
                 }
             }

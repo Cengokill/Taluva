@@ -1,7 +1,6 @@
 package Modele.Jeu;
 
 import Modele.IA.AbstractIA;
-import Modele.Jeu.Plateau.Historique;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
@@ -197,7 +196,7 @@ public class Jeu extends Observable {
             } else {
                 jCourant = (byte) 0;
             }
-            getPlateau().nbHutteDisponibleJoueurCourant=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+            getPlateau().nbHutteDisponiblesJoueur =joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
             int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> {
                 try {
