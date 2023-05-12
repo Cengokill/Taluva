@@ -32,7 +32,7 @@ public class FenetreJeu extends Container {
         FenetreJeu.jeu = jeu;
         this.frame = getFMenu();
         initFrame();
-        initMultiLayerPanel();
+        initLayeredPanel();
         initMenu();
         initPanels(controleur);
         initKeyBoardAndMouseListener();
@@ -119,7 +119,7 @@ public class FenetreJeu extends Container {
         layeredPane.add(panelPlateau, 50);
     }
 
-    private void initMultiLayerPanel() {
+    private void initLayeredPanel() {
         // Créer un JLayeredPane pour superposer les éléments
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));

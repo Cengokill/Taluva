@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" afterDir="false" />
+    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Curseur">
+      <change afterPath="$PROJECT_DIR$/machinet.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ressources/Menu/normal_cursor_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ressources/Menu/normal_cursor_3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ressources/Menu/normal_cursor_4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Plateau/background_plateau_x4_carre.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Plateau/background_plateau_x4_carre.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vue/FenetreJeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/FenetreJeu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/PanelPlateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/PanelPlateau.java" afterDir="false" />
     </list>
-    <list id="5c55dc87-a75f-4073-8ab0-c8967f6c2741" name="Changes by jerem" comment="Changes by jerem" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +37,6 @@
   </component>
   <component name="ProjectId" id="2P0DzlLcvgnG8PQJ83TJbwuDjsB" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -45,13 +47,19 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.obiscr.chatgpt.settings.ChatGPT&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\x\IdeaProjects\Taluva\ressources\Menu" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="TaluvaMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TaluvaMain" />
@@ -132,19 +140,11 @@
       <updated>1682548159378</updated>
     </task>
     <task active="true" id="Default" summary="Default task">
-      <changelist id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="" />
+      <changelist id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Affichage en surbrillance des volcans qui peuvent placer" />
       <created>1682585374491</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682585374491</updated>
-      <workItem from="1683093838425" duration="1497000" />
-      <workItem from="1683627123819" duration="8660000" />
-      <workItem from="1683648103464" duration="5198000" />
-      <workItem from="1683657639270" duration="6101000" />
-      <workItem from="1683701085810" duration="1563000" />
-      <workItem from="1683723881980" duration="13118000" />
-      <workItem from="1683804591474" duration="2762000" />
-      <workItem from="1683817106673" duration="6827000" />
     </task>
     <task id="LOCAL-00010" summary="Changement controles">
       <created>1682586246895</created>
@@ -188,39 +188,127 @@
       <option name="project" value="LOCAL" />
       <updated>1682682133277</updated>
     </task>
-    <task id="LOCAL-00016" summary="Ajout fichier .psd">
-      <created>1683093977553</created>
+    <task id="LOCAL-00016" summary="Affichage en surbrillance des volcans qui peuvent placer">
+      <created>1682690101830</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1683093977553</updated>
+      <updated>1682690101830</updated>
     </task>
-    <task id="LOCAL-00017" summary="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments &#10;-changement de la phase du tour">
-      <created>1683736299544</created>
+    <task id="LOCAL-00017" summary="Beacons">
+      <created>1682690832023</created>
       <option name="number" value="00017" />
       <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1683736299544</updated>
+      <updated>1682690832023</updated>
     </task>
-    <task id="LOCAL-00018" summary="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments">
-      <created>1683738393170</created>
+    <task id="LOCAL-00018" summary="White plus white">
+      <created>1682693054580</created>
       <option name="number" value="00018" />
       <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1683738393170</updated>
+      <updated>1682693054580</updated>
     </task>
-    <task id="LOCAL-00019" summary="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé">
-      <created>1683821649753</created>
+    <task id="LOCAL-00019" summary="Meilleurs beacons">
+      <created>1682693352482</created>
       <option name="number" value="00019" />
       <option name="presentableId" value="LOCAL-00019" />
       <option name="project" value="LOCAL" />
-      <updated>1683821649753</updated>
+      <updated>1682693352482</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="#&lt;4&gt; Erreur de Killian réglée">
+      <created>1683194185947</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1683194185947</updated>
+    </task>
+    <task id="LOCAL-00021" summary="#&lt;4&gt; Erreur de Killian réglée">
+      <created>1683194191478</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1683194191478</updated>
+    </task>
+    <task id="LOCAL-00022" summary="fix">
+      <created>1683194500252</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1683194500252</updated>
+    </task>
+    <task id="LOCAL-00023" summary="fix">
+      <created>1683280412830</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1683280412830</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Bug plus">
+      <created>1683280498819</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1683280498819</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Frame">
+      <created>1683300304603</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1683300304603</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Peut placer etage">
+      <created>1683301190595</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1683301190595</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Couleurs étage">
+      <created>1683302131900</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1683302131900</updated>
+    </task>
+    <task id="LOCAL-00028" summary="palto">
+      <created>1683302714106</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1683302714106</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Je suis un esclave">
+      <created>1683309446548</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1683309446548</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Je suis un esclave">
+      <created>1683314850282</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1683314850282</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Renommage bebou">
+      <created>1683815649897</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1683815649897</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Curseur">
+      <created>1683909363253</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1683909363253</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -234,12 +322,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tengine Tuiles Triplé fix" />
-    <MESSAGE value="Fix taille volcan" />
-    <MESSAGE value="Hexagones connaissent volcans" />
-    <MESSAGE value="Merged" />
-    <MESSAGE value="Multiples changes me souviens plus" />
-    <MESSAGE value="Couleur et tout" />
     <MESSAGE value="Toggle niveaux avec ctrl" />
     <MESSAGE value="Images" />
     <MESSAGE value="Mode plateau et mode numéro (A et Z)" />
@@ -250,12 +332,21 @@
     <MESSAGE value="Affichage du joueur courant" />
     <MESSAGE value="Modification images bâtiments" />
     <MESSAGE value="Ajout EchoServeur et EchoClient" />
-    <MESSAGE value="Ajout fichier .psd" />
-    <MESSAGE value="Ajouts IA" />
-    <MESSAGE value="Changes by jerem" />
-    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments &#10;-changement de la phase du tour" />
-    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments" />
-    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé" />
-    <option name="LAST_COMMIT_MESSAGE" value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé" />
+    <MESSAGE value="Affichage en surbrillance des volcans qui peuvent placer" />
+    <MESSAGE value="Beacons" />
+    <MESSAGE value="White plus white" />
+    <MESSAGE value="Meilleurs beacons" />
+    <MESSAGE value="Crash pas quand l'image n'existe pas" />
+    <MESSAGE value="#&lt;4&gt; Erreur de Killian réglée" />
+    <MESSAGE value="fix" />
+    <MESSAGE value="Bug plus" />
+    <MESSAGE value="Frame" />
+    <MESSAGE value="Peut placer etage" />
+    <MESSAGE value="Couleurs étage" />
+    <MESSAGE value="palto" />
+    <MESSAGE value="Je suis un esclave" />
+    <MESSAGE value="Renommage bebou" />
+    <MESSAGE value="Curseur" />
+    <option name="LAST_COMMIT_MESSAGE" value="Curseur" />
   </component>
 </project>

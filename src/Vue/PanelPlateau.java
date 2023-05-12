@@ -633,9 +633,9 @@ public class PanelPlateau extends JPanel {
         int heightoffset1 = 1;
         int heightoffset2 = 1;
         int heightoffset3 = 1;
-        heightoffset1 *= 30;
-        heightoffset2 *= 30;
-        heightoffset3 *= 30;
+        heightoffset1 *= 60;
+        heightoffset2 *= 60;
+        heightoffset3 *= 60;
 
         if (scrollValue == 1) {
             g.drawImage(tile2, drawX - tileWidth /2, drawY - verticalOffset -  heightoffset2, null);
