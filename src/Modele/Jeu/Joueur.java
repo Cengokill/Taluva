@@ -93,6 +93,10 @@ public class Joueur {
         return nbTemples;
     }
 
+    public byte getType_joueur(){
+        return type_joueur;
+    }
+
     public void setCouleur(String couleur){
         this.couleur = couleur;
     }

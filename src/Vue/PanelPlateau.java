@@ -1,6 +1,7 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
+import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Jeu;
 import Structures.Position.Point2D;
@@ -75,7 +76,7 @@ public class PanelPlateau extends JPanel {
             g2d.translate(cameraOffset.x, cameraOffset.y);
             g2d.scale(zoomFactor, zoomFactor);
             displayHexagonMap(g);
-            affichePrevisualisationPropogation(g);
+            affichePrevisualisationPropagation(g);
 
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
@@ -173,7 +174,7 @@ public class PanelPlateau extends JPanel {
         int x = colonne * tileWidth - (ligne % 2 == 1 ? tileWidth / 2 : 0);
         int y = ligne * verticalOffset;
         g.setFont(new Font("TimesRoman", Font.BOLD, 80));
-        g.drawString("("+ligne+","+colonne+")",x+120, y+250);
+        if(jeu.debug)  g.drawString("("+ligne+","+colonne+")",x+120, y+250);
     }
 
     private void afficheHexagone(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int ligne, int colonne, int tileId) {
@@ -333,7 +334,7 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    private void affichePrevisualisationPropogation(Graphics g){
+    private void affichePrevisualisationPropagation(Graphics g){
         if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
         Position posBasic = emplacementPropagation.get(0);
         int nbHuttesDispo = jeu.getPlateau().nbHutteDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
@@ -425,7 +426,9 @@ public class PanelPlateau extends JPanel {
     private void afficheFiltresTileMode(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         if (poseTile) {
             afficherFiltreSombre(g, map, ligne, colonne, drawX, drawY, heightoffset);
-            afficherFiltreVolcan(g, map, ligne, colonne, drawX, drawY, heightoffset);
+            if(jeu.getJoueurCourant().getType_joueur()==Joueur.HUMAIN) {
+                afficherFiltreVolcan(g, map, ligne, colonne, drawX, drawY, heightoffset);
+            }
         }
     }
 

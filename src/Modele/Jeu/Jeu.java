@@ -49,12 +49,12 @@ public class Jeu extends Observable {
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
-        //IA2 = AbstractIA.nouvelle(this);
+        IA2 = AbstractIA.nouvelle(this);
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = IA2;//new Joueur(Joueur.HUMAIN, "Joueur 1");
         joueurs[1] = IA1;
 
         pioche = new LinkedList<>();
