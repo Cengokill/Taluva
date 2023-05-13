@@ -13,7 +13,7 @@ public class TaluvaMain {
 
         byte type_jeu = CONSOLE;
 
-        Jeu jeu = new Jeu(CONSOLE);
+        Jeu jeu = new Jeu(type_jeu);
         ControleurMediateur controler = new ControleurMediateur(jeu);
         Serveur serveur = new Serveur(42113);
         Client client = new Client("localhost", 42113);
@@ -21,9 +21,8 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
 
-
         FenetreJeu fenetre = new FenetreJeu(jeu, controler);
-        fenetre.panelMenu.repaint();
+        fenetre.panelMenu.metAJour();
         fenetre.panelMenu.setFenetre(fenetre);
 
     }
