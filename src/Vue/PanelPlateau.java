@@ -426,7 +426,7 @@ public class PanelPlateau extends JPanel {
     private void afficheFiltresTileMode(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         if (poseTile) {
             afficherFiltreSombre(g, map, ligne, colonne, drawX, drawY, heightoffset);
-            if(jeu.getJoueurCourant().getType_joueur()==Joueur.HUMAIN) {
+            if(jeu.getJoueurCourant().getTypeJoueur()==Joueur.HUMAIN) {
                 afficherFiltreVolcan(g, map, ligne, colonne, drawX, drawY, heightoffset);
             }
         }
