@@ -3,16 +3,21 @@ package Modele.IA;
 import Modele.Jeu.Coup;
 import Modele.Jeu.CoupValeur;
 import Modele.Jeu.Jeu;
+import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Tuile;
 
 import java.util.LinkedList;
 
-public class AbstractIA implements Runnable{//une AbstractIA est exécutée par un nouveau thread
+public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est exécutée par un nouveau thread
     protected Jeu jeu;
     public static LinkedList<Tuile> pioche;
     private static int type_IA;
     private static int INTELLIGENTE = 0;
     private static int ALEATOIRE = 1;
+
+    public AbstractIA(byte type, String prenom) {
+        super(type, prenom);
+    }
 
     public static AbstractIA nouvelle(Jeu j) {
         AbstractIA resultat = null;

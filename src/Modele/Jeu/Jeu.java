@@ -19,8 +19,6 @@ public class Jeu extends Observable {
     public byte jCourant;
     byte jVainqueur;
     private Joueur[] joueurs = new Joueur[2];
-
-    final Object[] joueursObjet = new Object[2];
     Parametres p;
     final int[]score = new int[2];
     final byte[] tuileAPoser = new byte[5];
@@ -45,9 +43,8 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueursObjet[0] = joueur1;
-        // POUR IA mettre IA1 a la place de joueur2 -> aller dans panelPlateau
-        joueursObjet[1] = IA1;
+        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[1] = IA1;
 
         pioche = new LinkedList<>();
         lancePartie();
@@ -55,7 +52,6 @@ public class Jeu extends Observable {
 
     public void lancePartie(){
         initPioche();
-        initJoueurs();
         plateau = new Plateau();
         estFinPartie = false;
         doit_placer_tuile = true;
@@ -88,14 +84,14 @@ public class Jeu extends Observable {
     }
 
     public boolean estJoueurCourantUneIA() {
-        return joueursObjet[jCourant] instanceof AbstractIA;
+        return joueurs[jCourant].type_joueur == Joueur.IA;
     }
 
     public void joueIA() throws CloneNotSupportedException {
         if (!estJoueurCourantUneIA()) {
             return;
         }
-        CoupValeur coupValeur = ((AbstractIA)joueursObjet[jCourant]).joue();
+        CoupValeur coupValeur = joueurs[jCourant].joue();
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
         if (!getPlateau().estHexagoneLibre(coupTuile.volcanLigne,coupTuile.volcanColonne)) {
@@ -279,7 +275,7 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        plateau.affiche();
+        //plateau.affiche();
         Random r = new Random();
         int index = r.nextInt(pioche.size()-1);
         Tuile tuile_courante = pioche.get(index);
@@ -292,7 +288,6 @@ public class Jeu extends Observable {
     }
 
     public void annuler() {
-
         Stock stock = plateau.annuler();
             if(stock!=null) {
                 if (stock.changementDeJoueur == false) {

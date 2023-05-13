@@ -12,7 +12,7 @@ import java.util.Random;
 class IAAleatoire extends AbstractIA {
 
     public IAAleatoire() {
-        super();
+        super(IA, "IA aleatoire");
     }
 
     private int ajusterColonne(int ligne, int colonne){

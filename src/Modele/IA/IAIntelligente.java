@@ -25,7 +25,7 @@ public class IAIntelligente extends AbstractIA {
     private CoupValeur coupValeur;
 
     public IAIntelligente() {
-        super();
+        super(IA, "IA");
     }
 
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes

@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class Joueur {
-    private final byte type_bat;
+    public final static byte HUMAIN = 0;
+    public final static byte IA = 1;
+    final byte type_joueur;
     private String prenom;
     private String couleur;
     //définit le nombre de bâtiments initial
@@ -24,7 +26,7 @@ public class Joueur {
     private BufferedImage image;
 
     public Joueur(byte type, String prenom){
-        this.type_bat = type;//0 pour humain, 1 pour AbstractIA
+        this.type_joueur = type;
         this.prenom = prenom;
         doitJouer = false;
         nbHuttesPlacees = 0;
@@ -57,10 +59,6 @@ public class Joueur {
 
     public void setPrenom(String prenom) {
         this.prenom = prenom;
-    }
-
-    public byte getTypeBat(){
-        return type_bat;
     }
 
     public String getPrenom(){
@@ -126,6 +124,10 @@ public class Joueur {
 
     public void incrementeVillage() {
         nbVillages++;
+    }
+
+    public CoupValeur joue() {
+        return null;
     }
 }
 

@@ -1,6 +1,7 @@
 package Modele.IA;
 
 import Modele.Jeu.CoupValeur;
+import Modele.Jeu.Joueur;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
@@ -10,6 +11,7 @@ import java.util.Random;
 class IAIntelligenteV1 extends AbstractIA {
 
     public IAIntelligenteV1() {
+        super(IA, "IA");
     }
 
     private int ajusterColonne(int ligne, int colonne){
