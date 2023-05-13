@@ -12,6 +12,11 @@ import java.util.Random;
 import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class Jeu extends Observable {
+    public final static byte CONSOLE = 0;
+    public final static byte GRAPHIQUE = 1;
+    private static final int TAILLE_PIOCHE = 24;
+    public byte type_jeu;
+    public int delai;
     Plateau plateau;
     Joueur joueur1, joueur2;
     AbstractIA IA1=null;
@@ -28,22 +33,26 @@ public class Jeu extends Observable {
     boolean estFinPartie;
     public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
-    private static final int TAILLE_PIOCHE = 24;
 
-    public Jeu(){
-
+    public Jeu(byte type_jeu){
+        this.type_jeu = type_jeu;
+        if(type_jeu == CONSOLE) {
+            delai = 0;
+        }else{
+            delai = 1000;
+        }
     }
 
     public void initPartie(){
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
-        //IA2 = AbstractIA.nouvelle(this);
+        IA2 = AbstractIA.nouvelle(this);
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = IA2;//new Joueur(Joueur.HUMAIN, "Joueur 1");
         joueurs[1] = IA1;
 
         pioche = new LinkedList<>();
@@ -61,13 +70,9 @@ public class Jeu extends Observable {
         if (estJoueurCourantUneIA()) {
             // Pour pas que l'AbstractIA joue directement
             // Attendez un certain temps avant d'exécuter l'action finale
-            int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
+            joueIA();
             Timer timer = new Timer(delai, e -> {
-                try {
-                    joueIA();
-                } catch (CloneNotSupportedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                joueIA();
             });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
@@ -87,7 +92,7 @@ public class Jeu extends Observable {
         return joueurs[jCourant].type_joueur == Joueur.IA;
     }
 
-    public void joueIA() throws CloneNotSupportedException {
+    public void joueIA(){
         if (!estJoueurCourantUneIA()) {
             return;
         }
@@ -212,13 +217,8 @@ public class Jeu extends Observable {
             }
             getPlateau().nbHutteDisponiblesJoueur=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
             System.out.println("nbHutte: "+getPlateau().nbHutteDisponiblesJoueur);
-            int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, e -> {
-                try {
-                    joueIA();
-                } catch (CloneNotSupportedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                joueIA();
             });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
