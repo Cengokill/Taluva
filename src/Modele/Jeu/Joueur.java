@@ -93,7 +93,7 @@ public class Joueur {
         return nbTemples;
     }
 
-    public byte getType_joueur(){
+    public byte getTypeJoueur(){
         return type_joueur;
     }
 
