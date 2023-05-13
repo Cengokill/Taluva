@@ -209,7 +209,7 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBoutonPleinEcran(e)) panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
         if(estCurseurSurBoutonDaltonien(e)) panelMenu.Daltonien = !panelMenu.Daltonien;
         if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;
-        // Options r�glables
+        // Options réglables
         if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_son==5)) panelMenu.index_son++;
         if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_son==0)) panelMenu.index_son--;
         if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musique==5)) panelMenu.index_musique++;

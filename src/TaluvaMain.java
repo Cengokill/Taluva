@@ -11,7 +11,7 @@ public class TaluvaMain {
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException {
 
-        byte type_jeu = CONSOLE;
+        byte type_jeu = GRAPHIQUE;
 
         Jeu jeu = new Jeu(type_jeu);
         ControleurMediateur controler = new ControleurMediateur(jeu);
@@ -20,7 +20,6 @@ public class TaluvaMain {
         Thread t = new Thread(serveur);
         Thread t2 = new Thread(client);
         t.start();
-
         FenetreJeu fenetre = new FenetreJeu(jeu, controler);
         fenetre.panelMenu.metAJour();
         fenetre.panelMenu.setFenetre(fenetre);

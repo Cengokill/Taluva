@@ -59,6 +59,11 @@ public class FenetreJeu extends Container {
         frame.repaint();
     }
 
+    public void initMenuChoixModeJeu(){
+        layeredPane.removeAll();
+        initFrame();
+    }
+
     public void initRenduJeu(){
         jeu.initPartie();
         initFrame();

@@ -170,6 +170,10 @@ public class PanelPlateau extends JPanel {
         if (tileId != VIDE) {
             afficheHexagone(g, map, tileWidth, verticalOffset, ligne, colonne, tileId);
         }
+        int x = colonne * tileWidth - (ligne % 2 == 1 ? tileWidth / 2 : 0);
+        int y = ligne * verticalOffset;
+        g.setFont(new Font("TimesRoman", Font.BOLD, 80));
+        g.drawString("("+ligne+","+colonne+")",x+120, y+250);
     }
 
     private void afficheHexagone(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int ligne, int colonne, int tileId) {
