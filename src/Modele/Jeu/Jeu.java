@@ -17,6 +17,7 @@ public class Jeu extends Observable {
     private static final int TAILLE_PIOCHE = 24;
     public byte type_jeu;
     public int delai;
+    public boolean debug;
     Plateau plateau;
     Joueur joueur1, joueur2;
     AbstractIA IA1=null;
@@ -41,18 +42,19 @@ public class Jeu extends Observable {
         }else{
             delai = 1000;
         }
+        debug = false;
     }
 
     public void initPartie(){
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
-        IA2 = AbstractIA.nouvelle(this);
+        //IA2 = AbstractIA.nouvelle(this);
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = IA2;//new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
         joueurs[1] = IA1;
 
         pioche = new LinkedList<>();
@@ -70,7 +72,6 @@ public class Jeu extends Observable {
         if (estJoueurCourantUneIA()) {
             // Pour pas que l'AbstractIA joue directement
             // Attendez un certain temps avant d'exécuter l'action finale
-            joueIA();
             Timer timer = new Timer(delai, e -> {
                 joueIA();
             });
@@ -106,10 +107,13 @@ public class Jeu extends Observable {
         getPlateau().joueCoup(coupTuile);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;
-        joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
-        doit_placer_batiment = false;
-        doit_placer_tuile = true;
-
+        Timer timer = new Timer(delai, e -> {
+            joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
+            doit_placer_batiment = false;
+            doit_placer_tuile = true;
+        });
+        timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+        timer.start(); // Démarrez le timer
         /*
         Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
