@@ -48,11 +48,7 @@ public class IAIntelligente extends AbstractIA {
         return false;
     }
 
-    @Override
-    public CoupValeur joue() {
-        calcule_coup();
-        return this.coupValeur;
-    }
+
 
     @Override
     public void calcule_coup(){
@@ -61,7 +57,7 @@ public class IAIntelligente extends AbstractIA {
         System.out.println("pioche.size() : "+pioche.size());
         Plateau plateauIA = jeu.getPlateau();
         plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant());
+        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
         ArrayList<CoupValeur> listeMeilleursCoups = meilleursCoups(instance, 1);
         //on choisit le meilleur coup au hasard dans la liste des meilleurs coups
         r = new Random();
@@ -125,7 +121,7 @@ public class IAIntelligente extends AbstractIA {
             updateBatimentsJoueur(coupB.typePlacement, jCourantCopie, 0);
         }
         joueurs[joueur_courant] = jCourantCopie;
-        InstanceJeu instanceCopie = new InstanceJeu(pioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2));
+        InstanceJeu instanceCopie = new InstanceJeu(pioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2),false);
         return instanceCopie;
     }
 
@@ -152,7 +148,8 @@ public class IAIntelligente extends AbstractIA {
         ArrayList<TripletDePosition> tripletsPossibles = instance.getPlateau().getTripletsPossibles();
         ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
         ArrayList<Coup> coupDuo = new ArrayList<>();
-        for (int piocheIndex = 0; piocheIndex < 1; piocheIndex++) { // mettre pioche.size() à la place de 1
+
+        for (int piocheIndex = 0; piocheIndex < 1; piocheIndex++) {
             Tuile tuile = pioche.get(piocheIndex);
             //pour chaque tuile unique de la pioche
             for (int tripletsIndex = 0; tripletsIndex < tripletsPossibles.size(); tripletsIndex++) {
@@ -235,10 +232,6 @@ public class IAIntelligente extends AbstractIA {
             return evaluation_joueur(instance, instance.getJoueurCourant());
         }
         int valeur = Integer.MIN_VALUE;
-        Tuile tuile_pioche = jeu.getPioche().get(0);
-        ArrayList<Tuile> pioche = new ArrayList<>();
-        pioche.add(tuile_pioche);
-        instance.pioche = pioche;
         ArrayList<ArrayList<Coup>> coups_possibles = coupsPossibles(instance);
         for(int i = 0; i<coups_possibles.size(); i++){
             ArrayList<Coup> coupDuo = coups_possibles.get(i);
@@ -305,4 +298,88 @@ public class IAIntelligente extends AbstractIA {
         return score_joueur;
     }
 
+
+    ///////////////////////////////////////////////////////
+    public int minimaxAlphaBeta(InstanceJeu instance, int profondeur, int alpha, int beta, boolean maximizingPlayer) {
+        if (profondeur == 0 || instance.estFinJeu) {
+            // Évaluation heuristique de l'état du jeu pour la feuille de l'arbre
+            // Retourner le meilleur score évalué
+            // ...
+            return evaluation_joueur(instance,instance.getJoueurCourant());
+        }
+
+        ArrayList<ArrayList<Coup>> coupsPossibles = coupsPossibles(instance);
+
+        if (maximizingPlayer) {
+            int meilleurScore = Integer.MIN_VALUE;
+            for (ArrayList<Coup> coups : coupsPossibles) {
+                CoupValeur coupCourant = new CoupValeur(coups.get(0),coups.get(1),0);
+                InstanceJeu nouvelleInstance = instance.simulerCoup(coupCourant);
+                int score = minimaxAlphaBeta(nouvelleInstance, profondeur - 1, alpha, beta, false);
+                meilleurScore = Math.max(meilleurScore, score);
+                alpha = Math.max(alpha, meilleurScore);
+                if (beta <= alpha) {
+                    System.out.println("Elagage Max");
+                    // Élagage Alpha-Bêta
+                    break;
+                }
+            }
+            return meilleurScore;
+        } else {
+            int meilleurScore = Integer.MAX_VALUE;
+            for (ArrayList<Coup> coups : coupsPossibles) {
+                CoupValeur coupCourant = new CoupValeur(coups.get(0),coups.get(1),0);
+                InstanceJeu nouvelleInstance = instance.simulerCoup(coupCourant);
+                int score = minimaxAlphaBeta(nouvelleInstance, profondeur - 1, alpha, beta, true);
+                meilleurScore = Math.min(meilleurScore, score);
+                beta = Math.min(beta, meilleurScore);
+                if (beta <= alpha) {
+                    System.out.println("Elagage Min");
+                    // Élagage Alpha-Bêta
+                    break;
+                }
+            }
+            return meilleurScore;
+        }
+    }
+
+    public CoupValeur calculerCoup(InstanceJeu instance, int profondeur) {
+        // Initialisation des variables alpha et beta
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
+
+        ArrayList<ArrayList<Coup>> coupsPossibles = coupsPossibles(instance);
+
+        int meilleurScore = Integer.MIN_VALUE;
+        CoupValeur meilleurCoup = null;
+
+        for (ArrayList<Coup> coups : coupsPossibles) {
+            CoupValeur coupCourant = new CoupValeur(coups.get(0),coups.get(1),0);
+            InstanceJeu nouvelleInstance = instance.simulerCoup(coupCourant);
+            int score = minimaxAlphaBeta(nouvelleInstance, profondeur - 1, alpha, beta, false);
+            if (score > meilleurScore) {
+                meilleurScore = score;
+                meilleurCoup = coupCourant;
+            }
+            alpha = Math.max(alpha, meilleurScore);
+            if (beta <= alpha) {
+                // Élagage Alpha-Bêta
+                break;
+            }
+        }
+
+        return meilleurCoup;
+    }
+
+    @Override
+    public CoupValeur joue() {
+        System.out.println("on calcul");
+        ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
+        Plateau plateauIA = jeu.getPlateau();
+        plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
+        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
+        return calculerCoup(instance,1);
+        /*calcule_coup();
+        return this.coupValeur;*/
+    }
 }
