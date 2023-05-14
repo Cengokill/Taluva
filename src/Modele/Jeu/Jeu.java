@@ -16,9 +16,9 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class Jeu extends Observable {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
-    private static final int TAILLE_PIOCHE = 24;
     public byte type_jeu;
-    public int delai;
+    private int delai;
+    private int delai_avant_pioche = 1200;
     public boolean debug;
     Plateau plateau;
     Joueur joueur1, joueur2;
@@ -43,7 +43,7 @@ public class Jeu extends Observable {
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 200;
+            delai = 1000;
         }
         debug = false;
     }
@@ -59,10 +59,10 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
-        //joueurs[0] = IA1;
-        joueurs[1] = IA2;
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        joueurs[0] = IA1;
+        //joueurs[1] = IA2;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();
@@ -75,19 +75,25 @@ public class Jeu extends Observable {
         estFinPartie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
-        pioche();
 
         if (estJoueurCourantUneIA()) {
-            System.out.println("IA joue");
             if (type_jeu == CONSOLE) {
-                joueIA();
-            } else {
+            } else {//l'IA joue avec un délai
                 Timer timer = new Timer(delai, e -> {
                     try {
+                        pioche();
                         joueIA();
                     } catch (CloneNotSupportedException ex) {
                         throw new RuntimeException(ex);
                     }
+                });
+                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                timer.start(); // Démarrez le timer
+            }
+        }else{
+            if (type_jeu == GRAPHIQUE) {
+                Timer timer = new Timer(delai_avant_pioche, e -> {
+                    pioche();
                 });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
                 timer.start(); // Démarrez le timer
@@ -133,7 +139,6 @@ public class Jeu extends Observable {
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
         }
-        pioche();
     }
 
     public void calculScore(){
@@ -251,10 +256,17 @@ public class Jeu extends Observable {
             if(type_jeu==GRAPHIQUE && getJoueurCourant().type_joueur==Joueur.IA) {
                 Timer timer = new Timer(delai, e -> {
                     try {
+                        pioche();
                         joueIA();
                     } catch (CloneNotSupportedException ex) {
                         throw new RuntimeException(ex);
                     }
+                });
+                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                timer.start(); // Démarrez le timer
+            }else if(type_jeu==GRAPHIQUE && getJoueurCourant().type_joueur==Joueur.HUMAIN){
+                Timer timer = new Timer(delai_avant_pioche, e -> {
+                    pioche();
                 });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
                 timer.start(); // Démarrez le timer

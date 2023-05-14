@@ -28,6 +28,7 @@ public class TaluvaMain {
         }else{
             jeu.initPartie();
             while(!jeu.estFinPartie()){
+                jeu.pioche();
                 jeu.joueIA();
             }
         }

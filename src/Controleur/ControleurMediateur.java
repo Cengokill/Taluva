@@ -22,7 +22,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
     public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
         if (jeu.joueurPlaceEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2)) {
-            jeu.pioche();
         }
     }
     public boolean peutPlacerBatiment(int ligne, int colonne){
