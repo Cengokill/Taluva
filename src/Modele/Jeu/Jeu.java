@@ -56,8 +56,8 @@ public class Jeu extends Observable {
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
-        joueurs[1] = IA2;
+        joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        //joueurs[1] = IA2;
         joueurs[0] = IA1;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
@@ -108,31 +108,59 @@ public class Jeu extends Observable {
         return joueurs[jCourant].type_joueur == Joueur.IA;
     }
 
-    public void joueIA() throws CloneNotSupportedException {
-        CoupValeur coupValeur = joueurs[jCourant].joue();
+    private void joueSansThread() throws CloneNotSupportedException {
+        CoupValeur coupValeur = null;
+        coupValeur = joueurs[jCourant].joue();
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
-        if(coupBatiment == null){//l'IA ne peut pas placer de bâtiment
+        if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
             estPartieFinie = true;
-            jVainqueur = (byte) ((jCourant+1)%2);
+            jVainqueur = (byte) ((jCourant + 1) % 2);
             return;
         }
         getPlateau().joueCoup(coupTuile);
         doit_placer_batiment = true;
         doit_placer_tuile = false;
         if (type_jeu == CONSOLE) {
-            joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
+            joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
             doit_placer_batiment = false;
             doit_placer_tuile = true;
-        }else {
+        }
+    }
+
+    private void joueMultiThread(){
+        Thread iaThread = new Thread(()-> {
+            CoupValeur coupValeur = null;
+            try {
+                coupValeur = joueurs[jCourant].joue();
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+            Coup coupTuile = coupValeur.getCoupT();
+            Coup coupBatiment = coupValeur.getCoupB();
+            if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
+                estPartieFinie = true;
+                jVainqueur = (byte) ((jCourant + 1) % 2);
+                return;
+            }
+            getPlateau().joueCoup(coupTuile);
+            doit_placer_batiment = true;
+            doit_placer_tuile = false;
             Timer timer = new Timer(delai, e -> {
-                joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
+                joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
                 doit_placer_batiment = false;
                 doit_placer_tuile = true;
             });
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-            timer.start(); // Démarrez le timer
-        }
+                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                timer.start(); // Démarrez le timer
+            });
+        iaThread.start();
+    }
+
+
+    public void joueIA() throws CloneNotSupportedException {
+        if(type_jeu==CONSOLE) joueSansThread();
+        else joueMultiThread();
     }
 
     public boolean estFinPartie() {

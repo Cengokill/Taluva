@@ -41,7 +41,7 @@ class IAAleatoire extends AbstractIA {
         pioche.add(tuile_pioche);
         Plateau plateauIA = jeu.getPlateau();
         plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant());
+        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
         //on choisit un coup au hasard dans la liste des coups
         CoupValeur coupValeur = choisitCoup(instance);
         /*System.out.println("duree_getTripletsPossibles : " + duree_getTripletsPossibles);
