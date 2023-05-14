@@ -21,19 +21,15 @@ public class Jeu extends Observable {
     private int delai_avant_pioche = 1200;
     public boolean debug;
     Plateau plateau;
-    AbstractIA IA1=null;
-    AbstractIA IA2=null;
-    public byte jCourant;
-    public byte jVainqueur;
+    AbstractIA IA1=null, IA2=null;
+    public byte jCourant, jVainqueur;
     private Joueur[] joueurs = new Joueur[2];
     Parametres p;
     final int[]score = new int[2];
     public Joueur[] score_victoires = new Joueur[2];
     final byte[] tuileAPoser = new byte[5];
     private Tuile tuile_courante;//tuile piochée
-    boolean doit_placer_tuile;
-    boolean doit_placer_batiment;
-    boolean estFinPartie;
+    boolean doit_placer_tuile, doit_placer_batiment, estPartieFinie;
     public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
 
@@ -59,9 +55,9 @@ public class Jeu extends Observable {
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        joueurs[1] = IA2;
         joueurs[0] = IA1;
-        //joueurs[1] = IA2;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();
@@ -71,13 +67,12 @@ public class Jeu extends Observable {
     public void lancePartie() throws CloneNotSupportedException {
         initPioche();
         plateau = new Plateau();
-        estFinPartie = false;
+        estPartieFinie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
 
         if (estJoueurCourantUneIA()) {
-            if (type_jeu == CONSOLE) {
-            } else {//l'IA joue avec un délai
+            if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
                 Timer timer = new Timer(delai, e -> {
                     try {
                         pioche();
@@ -114,17 +109,20 @@ public class Jeu extends Observable {
 
     public void joueIA() throws CloneNotSupportedException {
         CoupValeur coupValeur = joueurs[jCourant].joue();
-        if(coupValeur == null){
-            System.out.println(getJoueurCourant().getPrenom() + " a perdu : impossible de jouer");
-            estFinPartie = true;
+        if(coupValeur == null){//l'IA ne peut pas placer de bâtiment
+            estPartieFinie = true;
+            jVainqueur = (byte) ((jCourant+1)%2);
             return;
         }
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
-        getPlateau().joueCoup(coupTuile);   // place la plateforme
+        if(coupBatiment == null){//l'IA ne peut pas placer de bâtiment
+            System.err.println("L'IA ne peut pas placer de batiment");
+            System.exit(1);
+        }
+        getPlateau().joueCoup(coupTuile);
         doit_placer_batiment = true;
         doit_placer_tuile = false;
-        isJoueurCourantPerdu();
         if (type_jeu == CONSOLE) {
             joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
             doit_placer_batiment = false;
@@ -140,15 +138,46 @@ public class Jeu extends Observable {
         }
     }
 
+    public boolean estFinPartie() {
+        if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
+            if(type_jeu==CONSOLE){
+                System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
+                System.out.println("Le joueur " + joueurs[jVainqueur].getPrenom() + " a gagne !");
+            }
+            return true;
+        }
+        int nb_temples_j = joueurs[jCourant].getNbTemples();
+        int nb_tours_j = joueurs[jCourant].getNbTours();
+        int nb_huttes_j = joueurs[jCourant].getNbHuttes();
+        // !!! reste à ajouter le fait que le joueur courant ne puisse pas jouer parce qu'il ne peut plus poser de bâtiment
+        if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
+            jVainqueur = jCourant;
+            if(type_jeu==CONSOLE){
+                System.out.println("Le joueur " + joueurs[jVainqueur].getPrenom() + " a gagne !");
+            }
+            return true;
+        }
+        if(pioche.isEmpty()){
+            calculScore();
+            if(type_jeu==CONSOLE){
+                afficheScore();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public void calculScore(){
         for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
             score[joueurIndex] = joueurs[joueurIndex].getNbTemplesPlaces()*1000 + joueurs[joueurIndex].getNbToursPlacees()*100 + joueurs[joueurIndex].getNbHuttesPlacees();
         }
     }
 
-    public void initJoueurs(){
-        joueurs[0] = new Joueur((byte)0,"Jean-Sebastien");
-        joueurs[1] = new Joueur((byte)1,"Sacha");
+    public void afficheScore(){
+        System.out.println("Score :");
+        for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
+            System.out.println(joueurs[joueurIndex].getPrenom() + " : " + score[joueurIndex]);
+        }
     }
 
     public int[] coupJouable(int i,int j){
@@ -171,27 +200,11 @@ public class Jeu extends Observable {
         setFinPartie();
     }
 
-    public boolean estFinPartie() {
-        if(estFinPartie) return true; // Pour pouvoir détecter quand un joueur ne peut plus poser de bâtiment
-        int nb_temples_j = joueurs[jCourant].getNbTemples();
-        int nb_tours_j = joueurs[jCourant].getNbTours();
-        int nb_huttes_j = joueurs[jCourant].getNbHuttes();
-        // !!! reste à ajouter le fait que le joueur courant ne puisse pas jouer parce qu'il ne peut plus poser de bâtiment
-        if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
-            jVainqueur = jCourant;
-            if(type_jeu==CONSOLE){
-                System.out.println("Le joueur " + joueurs[jVainqueur].getPrenom() + " a gagné !");
-            }
-            return true;
-        }
-        return pioche.isEmpty();
-    }
-
     public Joueur getJoueurCourantClasse(){
         return joueurs[jCourant];
     }
     public void setFinPartie(){
-        estFinPartie = true;
+        estPartieFinie = true;
     }
 
     public boolean doit_placer_tuile() {
@@ -244,34 +257,31 @@ public class Jeu extends Observable {
     }
 
     public void changeJoueur() {
-        if(estFinPartie()) System.out.println("FIN DE LA PARTIE");
-        else {
-            if (jCourant == (byte) 0) {
-                jCourant = (byte) 1;
-            } else {
-                jCourant = (byte) 0;
+        if (jCourant == (byte) 0) {
+            jCourant = (byte) 1;
+        } else {
+            jCourant = (byte) 0;
+        }
+        getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+        if(type_jeu==GRAPHIQUE){
+            if(estFinPartie()){
+                return;
             }
-            getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
-            if(type_jeu==GRAPHIQUE && getJoueurCourant().type_joueur==Joueur.IA) {
-                Timer timer = new Timer(delai, e -> {
+            Timer timer = new Timer(delai_avant_pioche, e -> {
+                if(getJoueurCourant().type_joueur==Joueur.IA) {
+                    pioche();
                     try {
-                        pioche();
                         joueIA();
                     } catch (CloneNotSupportedException ex) {
                         throw new RuntimeException(ex);
                     }
-                });
-                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-                timer.start(); // Démarrez le timer
-            }else if(type_jeu==GRAPHIQUE && getJoueurCourant().type_joueur==Joueur.HUMAIN){
-                Timer timer = new Timer(delai_avant_pioche, e -> {
+                }else{
                     pioche();
-                });
-                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-                timer.start(); // Démarrez le timer
-            }
+                }
+            });
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+            timer.start();
         }
-
     }
 
     public Joueur getJoueurCourant(){
@@ -326,8 +336,10 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        System.out.println("Tuiles dans la pioche : "+pioche.size());
-        plateau.affiche();
+        if(type_jeu==CONSOLE) {
+            System.out.println("Tuiles dans la pioche : " + pioche.size());
+            plateau.affiche();
+        }
         tuile_courante = pioche.get(0);
         pioche.remove(0);
         tuileAPoser[0] = tuile_courante.biome0;
