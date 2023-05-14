@@ -51,12 +51,13 @@ public class Jeu extends Observable {
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
-        IA2 = AbstractIA.nouvelle(this);
+        //IA2 = AbstractIA.nouvelle(this);
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = IA2;//new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
         joueurs[1] = IA1;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
@@ -107,10 +108,10 @@ public class Jeu extends Observable {
         }
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
-        if (!getPlateau().estHexagoneLibre(coupTuile.volcanLigne,coupTuile.volcanColonne)) {
+        /*if (!getPlateau().estHexagoneLibre(coupTuile.volcanLigne,coupTuile.volcanColonne)) {
             System.out.println("pas libre A DEBUGGER");
             return;
-        }
+        }*/
         getPlateau().joueCoup(coupTuile);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;

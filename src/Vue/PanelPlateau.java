@@ -4,6 +4,7 @@ import Controleur.ControleurMediateur;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Jeu;
+import Modele.Jeu.Plateau.Plateau;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
@@ -65,7 +66,7 @@ public class PanelPlateau extends JPanel {
         if (!ImageLoader.loaded) {
             return;
         }
-        if(!jeu.estFinPartie()){
+        //if(!jeu.estFinPartie()){
             changerTuileAPoser();
             changerPoseTile();
 
@@ -81,9 +82,9 @@ public class PanelPlateau extends JPanel {
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
             
-        }else{
+        //}else{
             // TODO Affiche fin de la partie
-        }
+        //}
     }
 
     private void afficheBackground(int x, int y, Graphics g) {
@@ -137,10 +138,20 @@ public class PanelPlateau extends JPanel {
 
 
     public void affichetripletpossible(){
+        System.out.println("on affiche");
         for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
-            System.out.println("libre en : ");
-            System.out.println("("+ t.getVolcan().ligne()+", "+t.getVolcan().colonne()+") "+"("+ t.getTile1().ligne()+", "+t.getTile1().colonne()+") "+"("+ t.getTile2().ligne()+", "+t.getTile2().colonne()+") ");
-            System.out.println();
+            Plateau plateauCopie = jeu.getPlateau().copie();
+            boolean affiche = false;
+            if(plateauCopie.getTuile(t.getVolcan().ligne(),t.getVolcan().colonne()).getBiomeTerrain() == VOLCAN || plateauCopie.getTuile(t.getTile1().ligne(),t.getTile1().colonne()).getBiomeTerrain() == VOLCAN
+            || plateauCopie.getTuile(t.getTile2().ligne(),t.getTile2().colonne()).getBiomeTerrain() == VOLCAN){
+                plateauCopie.affiche();
+                affiche=true;
+            }
+            if(affiche) System.out.println("("+ t.getVolcan().ligne()+", "+t.getVolcan().colonne()+") "+"("+ t.getTile1().ligne()+", "+t.getTile1().colonne()+") "+"("+ t.getTile2().ligne()+", "+t.getTile2().colonne()+") ");
+            plateauCopie.placeEtage(jeu.getNumJoueurCourant(),t.getVolcan().ligne(),t.getVolcan().colonne(),t.getTile1().ligne(),t.getTile1().colonne(),GRASS,t.getTile2().ligne(),t.getTile2().colonne(),MONTAGNE);
+            if(affiche) plateauCopie.affiche();
+            //System.out.println("libre en : ");
+            //System.out.println();
         }
     }
 
