@@ -208,27 +208,27 @@ public class Plateau implements Serializable, Cloneable {
 
         if(listeDesHutesVoisines_1!=null)
             listeDesHutesVoisines_1.add(positionHutte_1);
-            listeVillages.add(listeDesHutesVoisines_1);
+        listeVillages.add(listeDesHutesVoisines_1);
         if(!batEnCommun(listeDesHutesVoisines_1,listeDesHutesVoisines_2))
             if(listeDesHutesVoisines_2!=null)
                 listeDesHutesVoisines_2.add(positionHutte_2);
-                listeVillages.add(listeDesHutesVoisines_2);
+        listeVillages.add(listeDesHutesVoisines_2);
         if(!batEnCommun(listeDesHutesVoisines_1,listeDesHutesVoisines_3) && !batEnCommun(listeDesHutesVoisines_2,listeDesHutesVoisines_3))
             if(listeDesHutesVoisines_3!=null)
                 listeDesHutesVoisines_3.add(positionHutte_3);
-                listeVillages.add(listeDesHutesVoisines_3);
+        listeVillages.add(listeDesHutesVoisines_3);
         if(!batEnCommun(listeDesHutesVoisines_1,listeDesHutesVoisines_4) && !batEnCommun(listeDesHutesVoisines_2,listeDesHutesVoisines_4) && !batEnCommun(listeDesHutesVoisines_3,listeDesHutesVoisines_4))
             if(listeDesHutesVoisines_4!=null)
                 listeDesHutesVoisines_4.add(positionHutte_4);
-                listeVillages.add(listeDesHutesVoisines_4);
+        listeVillages.add(listeDesHutesVoisines_4);
         if(!batEnCommun(listeDesHutesVoisines_1,listeDesHutesVoisines_5) && !batEnCommun(listeDesHutesVoisines_2,listeDesHutesVoisines_5) && !batEnCommun(listeDesHutesVoisines_3,listeDesHutesVoisines_5)  && !batEnCommun(listeDesHutesVoisines_4,listeDesHutesVoisines_5))
             if(listeDesHutesVoisines_5!=null)
                 listeDesHutesVoisines_5.add(positionHutte_5);
-                listeVillages.add(listeDesHutesVoisines_5);
+        listeVillages.add(listeDesHutesVoisines_5);
         if(!batEnCommun(listeDesHutesVoisines_1,listeDesHutesVoisines_6) && !batEnCommun(listeDesHutesVoisines_2,listeDesHutesVoisines_6) && !batEnCommun(listeDesHutesVoisines_3,listeDesHutesVoisines_6)  && !batEnCommun(listeDesHutesVoisines_4,listeDesHutesVoisines_6) && !batEnCommun(listeDesHutesVoisines_5,listeDesHutesVoisines_6))
             if(listeDesHutesVoisines_6!=null)
                 listeDesHutesVoisines_6.add(positionHutte_6);
-                listeVillages.add(listeDesHutesVoisines_6);
+        listeVillages.add(listeDesHutesVoisines_6);
 
         return listeVillages;
     }
@@ -390,7 +390,7 @@ public class Plateau implements Serializable, Cloneable {
                 && carte[ligneTile2][colonneTile2].getLigneVolcan()==ligneVolcan && carte[ligneTile2][colonneTile2].getColonneVolcan()==colonneVolcan){
             return 4;
         }
-        
+
         // On ne place pas sur un temple
         if(estTemple(ligneVolcan,colonneVolcan)||estTemple(ligneTile1,colonneTile1)||estTemple(ligneTile2,colonneTile2)) return 5;
         // On ne place pas sur une tour
@@ -518,20 +518,20 @@ public class Plateau implements Serializable, Cloneable {
             if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enHautGauche.ligne(), enHautGauche.colonne(), enHautDroite.ligne(), enHautDroite.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, enHautGauche, enHautDroite));
             }
-            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enHautGauche.ligne(), enHautGauche.colonne(), gauche.ligne(), gauche.colonne()))==0) {
-                triplets.add(new TripletDePosition(courant, enHautGauche, gauche));
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), gauche.ligne(), gauche.colonne(), enHautGauche.ligne(), enHautGauche.colonne()))==0) {
+                triplets.add(new TripletDePosition(courant, gauche, enHautGauche));
+            }
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enBasGauche.ligne(), enBasGauche.colonne(), gauche.ligne(), gauche.colonne()))==0) {
+                triplets.add(new TripletDePosition(courant, enBasGauche, gauche));
+            }
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasDroite.colonne(), enBasGauche.ligne(), enBasGauche.colonne()))==0) {
+                triplets.add(new TripletDePosition(courant, enBasDroite, enBasGauche));
+            }
+            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), droite.ligne(), droite.colonne(), enBasDroite.ligne(), enBasDroite.colonne()))==0) {
+                triplets.add(new TripletDePosition(courant, droite, enBasDroite));
             }
             if ((peutPlacerTuile(courant.ligne(), courant.colonne(), droite.ligne(), droite.colonne(), enHautDroite.ligne(), enHautDroite.colonne()))==0) {
                 triplets.add(new TripletDePosition(courant, droite, enHautDroite));
-            }
-            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), gauche.ligne(), gauche.colonne(), enBasGauche.ligne(), enBasGauche.colonne()))==0) {
-                triplets.add(new TripletDePosition(courant, gauche, enBasGauche));
-            }
-            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasGauche.colonne(), enBasDroite.ligne(), enBasDroite.colonne()))==0) {
-                triplets.add(new TripletDePosition(courant, enBasGauche, enBasDroite));
-            }
-            if ((peutPlacerTuile(courant.ligne(), courant.colonne(), enBasDroite.ligne(), enBasDroite.colonne(), droite.ligne(), droite.colonne()))==0) {
-                triplets.add(new TripletDePosition(courant, enBasDroite, droite));
             }
         }
         tripletsPossible.addAll(triplets);

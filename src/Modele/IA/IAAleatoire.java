@@ -42,13 +42,15 @@ class IAAleatoire extends AbstractIA {
         triplet[0][0] = tuiles[2];
         // Trouver un emplacement pour les hexagones
         ArrayList<TripletDePosition> positionsPossible = jeu.getPlateau().getTripletsPossibles();
+        //System.out.println("Taille des triplets: "+positionsPossible.size());
+
         TripletDePosition positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
         boolean bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
-        while(!bon){
+        /*while(!bon){
             jeu.getPlateau().supprimeTriplets(positionsrandom);
             positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
             bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
-        }
+        }*/
 
         int ligne1 = positionsrandom.getVolcan().ligne();
         int ligne2 = positionsrandom.getTile1().ligne();
