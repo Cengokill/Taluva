@@ -54,7 +54,7 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = IA2;//new Joueur(Joueur.HUMAIN, "Joueur 1");
         joueurs[1] = IA1;
 
         pioche = new LinkedList<>();
@@ -70,6 +70,7 @@ public class Jeu extends Observable {
         pioche();
 
         if (estJoueurCourantUneIA()) {
+            System.out.println("IA joue");
             // Pour pas que l'AbstractIA joue directement
             // Attendez un certain temps avant d'exécuter l'action finale
             Timer timer = new Timer(delai, e -> {
@@ -144,12 +145,15 @@ public class Jeu extends Observable {
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
     public boolean estFinPartie() {
-        if(estFinPartie) return true; // Pour pouvoir detecter quand un joueur ne peut plus passer aucun batiment
+        if(estFinPartie) return true; // Pour pouvoir détecter quand un joueur ne peut plus poser de bâtiment
         int nb_temples_j = joueurs[jCourant].getNbTemples();
         int nb_tours_j = joueurs[jCourant].getNbTours();
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
+            if(type_jeu==CONSOLE){
+                System.out.println("Le joueur " + joueurs[jVainqueur].getPrenom() + " a gagné !");
+            }
             return true;
         }
         return pioche.isEmpty();

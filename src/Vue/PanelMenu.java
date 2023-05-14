@@ -91,13 +91,13 @@ public class PanelMenu extends JPanel {
         select_annuler = false;
         clicOptions = false;
 
-        // El�ments de l'interface
+        // Eléments de l'interface
         frame = f;
         this.layeredPane = layeredPane;
         this.jeu = jeu;
         this.controleur = controleur;
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //D�finition des dimensions de la fen�tre
+        //Définition des dimensions de la fenêtre
         tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
         screenWidth=tailleEcran.width;
         screenHeight=tailleEcran.height;
@@ -105,11 +105,9 @@ public class PanelMenu extends JPanel {
         frameWidth=tailleFenetre.width;
         frameHeight=tailleFenetre.width;
         posX_menu_options = frameWidth;
-
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
-
-        boucle();
+        boucle();//Timer
     }
 
     public void setFenetre(FenetreJeu fenetre) {
