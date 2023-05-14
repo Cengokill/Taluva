@@ -72,15 +72,16 @@ public class Jeu extends Observable {
 
         if (estJoueurCourantUneIA()) {
             System.out.println("IA joue");
-            // Pour pas que l'AbstractIA joue directement
-            // Attendez un certain temps avant d'exécuter l'action finale
-            Timer timer = new Timer(delai, e -> {
+            if (type_jeu == CONSOLE) {
                 joueIA();
-            });
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-            timer.start(); // Démarrez le timer
+            } else {
+                Timer timer = new Timer(delai, e -> {
+                    joueIA();
+                });
+                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                timer.start(); // Démarrez le timer
+            }
         }
-
     }
 
     public Joueur[] getJoueurs() {
@@ -96,9 +97,6 @@ public class Jeu extends Observable {
     }
 
     public void joueIA(){
-        if (!estJoueurCourantUneIA()) {
-            return;
-        }
         CoupValeur coupValeur = joueurs[jCourant].joue();
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
@@ -109,13 +107,19 @@ public class Jeu extends Observable {
         getPlateau().joueCoup(coupTuile);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;
-        Timer timer = new Timer(delai, e -> {
+        if (type_jeu == CONSOLE) {
             joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
             doit_placer_batiment = false;
             doit_placer_tuile = true;
-        });
-        timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-        timer.start(); // Démarrez le timer
+        }else {
+            Timer timer = new Timer(delai, e -> {
+                joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
+                doit_placer_batiment = false;
+                doit_placer_tuile = true;
+            });
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+            timer.start(); // Démarrez le timer
+        }
         /*
         Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
         if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
@@ -286,6 +290,7 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
+        System.out.println("Tuiles dans la pioche : "+pioche.size());
         plateau.affiche();
         int index = pioche.size()-1;
         Tuile tuile_courante = pioche.get(index);
