@@ -116,7 +116,6 @@ class IAAleatoire extends AbstractIA {
         }
         return coups_possibles;
     }
-
     public ArrayList<Coup> coupsBatimentsPossibles(InstanceJeu instance, Coup coupT) {
         ArrayList<Coup> coups_possibles = new ArrayList<>();
         Plateau plateauCopie = instance.getPlateau().copie();
