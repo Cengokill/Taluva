@@ -53,6 +53,8 @@ public class Jeu extends Observable {
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
         IA2 = AbstractIA.nouvelle(this);
+        IA1.setPrenom("IA1");
+        IA2.setPrenom("IA2");
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
@@ -104,7 +106,7 @@ public class Jeu extends Observable {
     public void joueIA(){
         CoupValeur coupValeur = joueurs[jCourant].joue();
         if(coupValeur == null){
-            System.out.println(getJoueurCourant().getPrenom() + " a perdu");
+            System.out.println(getJoueurCourant().getPrenom() + " a perdu : impossible de jouer");
             estFinPartie = true;
             return;
         }
