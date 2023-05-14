@@ -9,6 +9,7 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -73,14 +74,14 @@ class IAAleatoire extends AbstractIA {
             if(!coupsB.isEmpty()){
                 // Pour placer les tours en priorité
                 for(Coup coupCourant:coupsB){
-                    if(coupCourant.typePlacement == 3){
+                    if(coupCourant!=null && coupCourant.typePlacement == 3){
                         CoupValeur coupValeur = new CoupValeur(coupT, coupCourant, 0);
                         return coupValeur;
                     }
                 }
                 // Pour placer les temples en priorité
                 for(Coup coupCourant:coupsB){
-                    if(coupCourant.typePlacement == 2){
+                    if(coupCourant!=null && coupCourant.typePlacement == 2){
                         CoupValeur coupValeur = new CoupValeur(coupT, coupCourant, 0);
                         return coupValeur;
                     }
@@ -133,12 +134,12 @@ class IAAleatoire extends AbstractIA {
                 if (batimentsPlacable[batimentChoisit] == 1) {
                     if (batimentChoisit == HUTTE) {
                         //On place une hutte si il nous en reste
-                        if(instance.getJoueur(instance.jCourant).getNbHuttes()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
+                        if(instance.getJoueur(instance.jCourant).getNbHuttes()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) HUTTE);
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
                         if(batimentChoisit==TEMPLE){
-                            if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte)(TEMPLE+1));
+                            if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TEMPLE+2));
                         }else{
-                            if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (TOUR+1));
+                            if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TOUR+1));
                         }
                     }
                     coups_possibles.add(coupB);
