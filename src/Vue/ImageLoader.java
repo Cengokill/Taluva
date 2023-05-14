@@ -78,8 +78,8 @@ public class ImageLoader {
         readHeightImages(getReducedOpacityImage(wrongTile1, 0.5f), getReducedOpacityImage(wrongTile2, 0.5f), getReducedOpacityImage(wrongTile3, 0.5f));
         readTileOrientationImages();
         readBatimentsImages();
-        readSelectionBatimentImage();
         readAndFilterContoursImages();
+        readSelectionBatimentImage();
         filterTiles();
         loaded = true;
     }

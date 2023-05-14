@@ -200,8 +200,8 @@ public class PanelPlateau extends JPanel {
 
         afficheFiltresTileMode(g, map, ligne, colonne, x, y, heightoffset);
         afficheNumerosNiveaux(g, map, ligne, colonne, x, y, heightoffset);
-        afficheBatiments(g, map, ligne, colonne, x, y, heightoffset);
         afficheContourParNiveau(g, map, ligne, colonne, x, y, heightoffset);
+        afficheBatiments(g, map, ligne, colonne, x, y, heightoffset);
     }
 
     private void afficheContourParNiveau(Graphics g, Hexagone[][] map, int ligne, int colonne, int xDrawPosition, int yDrawPosition, int heightoffset) {
@@ -341,7 +341,7 @@ public class PanelPlateau extends JPanel {
             posX_bat_precedent = ligne;
             posY_bat_precedent = colonne;
             index_bat_precedent = value;
-            choixBatiment(g, pos_x, pos_y, value, coups);
+            afficheSelecteurBatiment(g, pos_x, pos_y, value, coups);
         }
     }
 
@@ -385,7 +385,7 @@ public class PanelPlateau extends JPanel {
         return value;
     }
 
-    private void choixBatiment(Graphics g, int pos_x, int pos_y, int value, int[] coups) {
+    private void afficheSelecteurBatiment(Graphics g, int pos_x, int pos_y, int value, int[] coups) {
         if(coups[1]==0){
             if(coups[0]==0) g.drawImage(choisirBat[11], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             else if(coups[2]==0) g.drawImage(choisirBat[9], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
