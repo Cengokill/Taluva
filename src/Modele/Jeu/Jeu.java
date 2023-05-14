@@ -31,7 +31,7 @@ public class Jeu extends Observable {
     final int[]score = new int[2];
     public Joueur[] score_victoires = new Joueur[2];
     final byte[] tuileAPoser = new byte[5];
-
+    private Tuile tuile_courante;//tuile piochée
     boolean doit_placer_tuile;
     boolean doit_placer_batiment;
     boolean estFinPartie;
@@ -59,9 +59,9 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
         //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
-        joueurs[0] = IA1;
+        //joueurs[0] = IA1;
         joueurs[1] = IA2;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
@@ -244,7 +244,7 @@ public class Jeu extends Observable {
                 jCourant = (byte) 0;
             }
             getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
-            if(type_jeu==GRAPHIQUE) {
+            if(type_jeu==GRAPHIQUE && getJoueurCourant().type_joueur==Joueur.IA) {
                 Timer timer = new Timer(delai, e -> {
                     joueIA();
                 });
@@ -309,14 +309,17 @@ public class Jeu extends Observable {
     public void pioche() {
         System.out.println("Tuiles dans la pioche : "+pioche.size());
         plateau.affiche();
-        int index = pioche.size()-1;
-        Tuile tuile_courante = pioche.get(index);
-        pioche.remove(index);
+        tuile_courante = pioche.get(0);
+        pioche.remove(0);
         tuileAPoser[0] = tuile_courante.biome0;
         tuileAPoser[1] = tuile_courante.biome1;
         tuileAPoser[2] = (byte) tuile_courante.numero0;
         tuileAPoser[3] = (byte) tuile_courante.numero1;
         tuileAPoser[4] = (byte) tuile_courante.numero2;
+    }
+
+    public Tuile getTuileCourante() {
+        return tuile_courante;
     }
 
     public void annuler() {
