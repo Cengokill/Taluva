@@ -104,27 +104,42 @@ public class Joueur {
     public int getNbVillages(){return nbVillages;}
 
     public void incrementeHutte(){
-        nbHuttes--;
+        if(nbHuttes > 0) {
+            nbHuttes--;
+        }
         nbHuttesPlacees++;}
 
     public void incrementeTour(){
-        nbTours--;
+        if(nbTours > 0) {
+            nbTours--;
+        }
         nbToursPlacees++;}
 
     public void incrementeTemple() {
-        nbTemples--;
+        if(nbTemples > 0) {
+            nbTemples--;
+        }
         nbTemplesPlaces++;
     }
-    public void decrementeHutte(){
+    public void decrementeHutte() {
         nbHuttes++;
-        nbHuttesPlacees--;}
+        if(nbHuttesPlacees > 0) {
+            nbHuttesPlacees--;
+        }
+    }
 
     public void decrementeTour(){
         nbTours++;
-        nbToursPlacees--;}
-    public void decrementeTemple(){
+        if(nbToursPlacees>0) {
+            nbToursPlacees--;
+        }
+    }
+    public void decrementeTemple() {
         nbTemples++;
-        nbToursPlacees--;}
+        if(nbTemplesPlaces > 0) {
+            nbTemplesPlaces--;
+        }
+    }
 
 
     public void incrementeVillage() {
