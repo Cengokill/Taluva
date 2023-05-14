@@ -186,7 +186,7 @@ public class PanelMenuListener implements MouseListener  {
         return false;
     }
 
-    public void verif(MouseEvent e) throws IOException {
+    public void verif(MouseEvent e) throws IOException, CloneNotSupportedException {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
             //efface tout le contenu de la frame
             panelMenu.layeredPane.removeAll();
@@ -229,6 +229,8 @@ public class PanelMenuListener implements MouseListener  {
         try {
             verif(e);
         } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } catch (CloneNotSupportedException ex) {
             throw new RuntimeException(ex);
         }
     }

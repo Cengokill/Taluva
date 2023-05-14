@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Coup implements Serializable {
 
-    public static final byte TUILE = 0;
+    public static final byte TUILE = 64;
     public static final byte BATIMENT = 1;
 
     public final byte typePlacement;
@@ -71,12 +71,16 @@ public class Coup implements Serializable {
     }
 
     public void affiche(){
-        System.out.println("Type de placement : "+typePlacement);
-        System.out.println("Joueur : "+num_joueur);
-        System.out.println("Volcan : "+volcanLigne+" "+volcanColonne);
-        System.out.println("Tile1 : "+tile1Ligne+" "+tile1Colonne+" "+biome1);
-        System.out.println("Tile2 : "+tile2Ligne+" "+tile2Colonne+" "+biome2);
-        System.out.println("Batiment : "+batimentLigne+" "+batimentColonne);
-
+        if(typePlacement==TUILE){
+            System.out.println("Type de placement : "+typePlacement);
+            System.out.println("Joueur : "+num_joueur);
+            System.out.println("Volcan : "+volcanLigne+" "+volcanColonne);
+            System.out.println("Tile1 : "+tile1Ligne+" "+tile1Colonne+" "+biome1);
+            System.out.println("Tile2 : "+tile2Ligne+" "+tile2Colonne+" "+biome2);
+        }else{
+            System.out.println("BatimentX: "+batimentLigne);
+            System.out.println("BatimentY: "+batimentColonne);
+            System.out.println("Type batiment: "+typePlacement);
+        }
     }
 }

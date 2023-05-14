@@ -49,11 +49,11 @@ public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est 
     public void calcule_coup(){
     }
 
-    public CoupValeur joue(){
+    public CoupValeur joue() throws CloneNotSupportedException {
         return null;
     }
 
-    public ArrayList<ArrayList<Coup>> coupsPossibles(InstanceJeu instance){
+    public ArrayList<ArrayList<Coup>> coupsPossibles(InstanceJeu instance) throws CloneNotSupportedException {
         return null;
     }
 

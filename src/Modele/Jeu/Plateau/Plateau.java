@@ -44,9 +44,19 @@ public class Plateau implements Serializable, Cloneable {
         p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
         p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur;
-        p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
-        p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
-        p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
+        p.positions_libres = new ArrayList<>();
+        for(Position posCourante: this.positions_libres){
+            p.positions_libres.add(posCourante);
+        }
+        p.positions_libres_batiments = new ArrayList<>();
+        for(Position posCourante: this.positions_libres_batiments){
+            p.positions_libres_batiments.add(posCourante);
+        }
+        p.tripletsPossible = new ArrayList<>();
+        for(TripletDePosition posCourante: this.tripletsPossible){
+            p.tripletsPossible.add(posCourante);
+        }
+
         p.carte = new Hexagone[LIGNES][COLONNES];
         for(int i=0;i<LIGNES;i++){
             for(int j=0;j<COLONNES;j++){
@@ -602,8 +612,10 @@ public class Plateau implements Serializable, Cloneable {
             carte[coup.tile2Ligne][coup.tile2Colonne].resetBatHexagone();
 
             // On ajoute les emplacements libres des batiments
-            positions_libres_batiments.add(new Position(coup.tile1Ligne,coup.tile1Colonne));
-            positions_libres_batiments.add(new Position(coup.tile2Ligne,coup.tile2Colonne));
+            if(coup.tile1Ligne!=0 && coup.tile1Colonne!=0 && coup.tile2Ligne!=0 && coup.tile2Colonne!=0){
+                positions_libres_batiments.add(new Position(coup.tile1Ligne,coup.tile1Colonne));
+                positions_libres_batiments.add(new Position(coup.tile2Ligne,coup.tile2Colonne));
+            }
             // On ajoute les emplacements libres des tuiles
             ArrayList<Position> listeVoisins = voisins(coup.volcanLigne,coup.volcanColonne);
             metAjourPositionsLibres(listeVoisins);
@@ -879,6 +891,7 @@ public class Plateau implements Serializable, Cloneable {
     // TOUJOURS verifier qu'il reste le batiment dans l'inventaire du joueur avant de la poser
     public int[] getBatimentPlacable(int i,int j, byte numJoueur){
         int[] coups = new int[3];
+        if(getTuile(i,j).getBiomeTerrain()==VOLCAN) return coups;
         if(getBatiment(i,j)!=0 && getBatiment(i,j)!=CHOISIR_BATIMENT) return coups; // S'il y a deja un batiment, ce n'est pas construisible
         if(getHauteurTuile(i,j)>0) coups[1] = 1;
         if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,numJoueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
