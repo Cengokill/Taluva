@@ -48,7 +48,7 @@ public class Jeu extends Observable {
         debug = false;
     }
 
-    public void initPartie(){
+    public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
@@ -69,7 +69,7 @@ public class Jeu extends Observable {
         lancePartie();
     }
 
-    public void lancePartie(){
+    public void lancePartie() throws CloneNotSupportedException {
         initPioche();
         plateau = new Plateau();
         estFinPartie = false;
@@ -83,7 +83,11 @@ public class Jeu extends Observable {
                 joueIA();
             } else {
                 Timer timer = new Timer(delai, e -> {
-                    joueIA();
+                    try {
+                        joueIA();
+                    } catch (CloneNotSupportedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
                 timer.start(); // Démarrez le timer
@@ -103,7 +107,7 @@ public class Jeu extends Observable {
         return joueurs[jCourant].type_joueur == Joueur.IA;
     }
 
-    public void joueIA(){
+    public void joueIA() throws CloneNotSupportedException {
         CoupValeur coupValeur = joueurs[jCourant].joue();
         if(coupValeur == null){
             System.out.println(getJoueurCourant().getPrenom() + " a perdu : impossible de jouer");
@@ -122,7 +126,7 @@ public class Jeu extends Observable {
             doit_placer_tuile = true;
         }else {
             Timer timer = new Timer(delai, e -> {
-                joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
+                joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
                 doit_placer_batiment = false;
                 doit_placer_tuile = true;
             });
@@ -246,7 +250,11 @@ public class Jeu extends Observable {
             getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
             if(type_jeu==GRAPHIQUE && getJoueurCourant().type_joueur==Joueur.IA) {
                 Timer timer = new Timer(delai, e -> {
-                    joueIA();
+                    try {
+                        joueIA();
+                    } catch (CloneNotSupportedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
                 timer.start(); // Démarrez le timer

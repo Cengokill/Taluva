@@ -64,7 +64,7 @@ public class FenetreJeu extends Container {
         initFrame();
     }
 
-    public void initRenduJeu(){
+    public void initRenduJeu() throws CloneNotSupportedException {
         jeu.initPartie();
         initFrame();
         initPanels(controleur);

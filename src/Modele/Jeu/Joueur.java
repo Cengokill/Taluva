@@ -135,7 +135,7 @@ public class Joueur {
         nb_victoires++;
     }
 
-    public CoupValeur joue() {
+    public CoupValeur joue() throws CloneNotSupportedException {
         return null;
     }
 }

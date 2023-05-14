@@ -16,7 +16,6 @@ import java.util.Random;
 
 class IAAleatoire extends AbstractIA {
     private Random r;
-    private CoupValeur coupValeur = new CoupValeur();
     public static int TEMPLE = 0;
     public static int HUTTE = 1;
     public static int TOUR = 2;
@@ -43,13 +42,13 @@ class IAAleatoire extends AbstractIA {
         plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
         InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant());
         //on choisit un coup au hasard dans la liste des coups
-        coupValeur = choisitCoup(instance);
-        System.out.println("duree_getTripletsPossibles : " + duree_getTripletsPossibles);
+        CoupValeur coupValeur = choisitCoup(instance);
+        /*System.out.println("duree_getTripletsPossibles : " + duree_getTripletsPossibles);
         System.out.println("duree_getPlateau_copie : " + duree_getPlateau_copie);
         System.out.println("duree_placeEtage : " + duree_placeEtage);
         System.out.println("duree_getBatimentPlacable : " + duree_getBatimentPlacable);
         System.out.println("duree_temp : " + duree_temp);
-        System.out.println("duree_totale : " + duree_totale);
+        System.out.println("duree_totale : " + duree_totale);*/
         return coupValeur;
     }
 
@@ -73,7 +72,8 @@ class IAAleatoire extends AbstractIA {
             ArrayList<Coup> coupsB = coupsBatimentsPossibles(instance, coupT);
             if(!coupsB.isEmpty()){
                 for(Coup coupCourant:coupsB){
-                    if(coupCourant.typePlacement == TEMPLE){
+                    if(coupCourant.typePlacement == 2){
+                        coupCourant.affiche();
                         CoupValeur coupValeur = new CoupValeur(coupT, coupCourant, 0);
                         return coupValeur;
                     }
@@ -120,54 +120,17 @@ class IAAleatoire extends AbstractIA {
         for (int position = 0; position < positionsLibresBatiments.size(); position++) {
             Coup coupB = null;
             Position positionCourante = positionsLibresBatiments.get(position);
-            startTime = System.currentTimeMillis();
             int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
-            endTime = System.currentTimeMillis();
-            duree_getBatimentPlacable += endTime - startTime;
             //On parcourt tous les choix de bâtiments possibles
             for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
                 //si le bâtiment est plaçable
                 if (batimentsPlacable[batimentChoisit] == 1) {
-                    Joueur jCourantCopie = instance.getJoueur(joueur_courant);
-                    Joueur[] joueurs = instance.getJoueurs();
-                    startTimeTemp = System.currentTimeMillis();
-                    Plateau plateauCopie2 = plateauCopie.copie();
-                    endTimeTemp = System.currentTimeMillis();
-                    duree_temp += endTimeTemp - startTimeTemp;
-                    //si HUTTE (propagation potentielle)
                     if (batimentChoisit == HUTTE) {
-                        //On créer un tableau contenant toutes les coordonées où l'on doit propager
-                        ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
                         //On place la hutte classique sans propagation
                         coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
-                        plateauCopie2.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
-                        //La position actuelle n'est plus libre
-                        Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
-                        plateauCopie2.supprimeElementNew(posASupprimer);
-                        //On met a jour le nombre de hutte restantes
-                        int hauteurCourante = plateauCopie2.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne());
-                        // On récupère le nombre de huttes disponibles pour le joueur courant
-                        int nbHuttesDispo = plateauCopie2.nbHutteDisponiblesJoueur - (plateauCopie2.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne()));
-                        while (aPropager.size() != 0) {
-                            Point2D posCourantePropagation = aPropager.remove(0);
-                            hauteurCourante = plateauCopie2.getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
-                            if (nbHuttesDispo >= hauteurCourante) {
-                                plateauCopie2.placeBatiment(joueur_courant, posCourantePropagation.getPointX(), posCourantePropagation.getPointY(), (byte) HUTTE);
-                                // On place une hutte dessus, donc plus disponible
-                                posASupprimer = new Position(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
-                                plateauCopie2.supprimeElementNew(posASupprimer);
-                                nbHuttesDispo -= hauteurCourante;
-                            }
-                        }
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                        System.out.println("Batiment choisi : " + (batimentsPlacable[batimentChoisit]-1));
-                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]-1));
-                        plateauCopie2.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]-1));
-                        //on supprime la position du bâtiment qui n'est plus libre
-                        Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
-                        plateauCopie2.supprimeElementNew(posASupprimer);
+                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
                     }
-                    joueurs[joueur_courant] = jCourantCopie;
                     coups_possibles.add(coupB);
                 }
             }
