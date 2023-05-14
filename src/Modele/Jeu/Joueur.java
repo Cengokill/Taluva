@@ -11,6 +11,7 @@ public class Joueur {
     final byte type_joueur;
     private String prenom;
     private String couleur;
+    private int nb_victoires;
     //définit le nombre de bâtiments initial
     private int nbHuttes;
     private int nbTours;
@@ -128,6 +129,10 @@ public class Joueur {
 
     public void incrementeVillage() {
         nbVillages++;
+    }
+
+    public void incrementeVictoire(){
+        nb_victoires++;
     }
 
     public CoupValeur joue() {

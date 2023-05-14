@@ -24,10 +24,11 @@ public class Jeu extends Observable {
     AbstractIA IA1=null;
     AbstractIA IA2=null;
     public byte jCourant;
-    byte jVainqueur;
+    public byte jVainqueur;
     private Joueur[] joueurs = new Joueur[2];
     Parametres p;
     final int[]score = new int[2];
+    public Joueur[] score_victoires = new Joueur[2];
     final byte[] tuileAPoser = new byte[5];
 
     boolean doit_placer_tuile;
@@ -57,7 +58,8 @@ public class Jeu extends Observable {
         //ia2Thread.start();
         joueurs[0] = IA2;//new Joueur(Joueur.HUMAIN, "Joueur 1");
         joueurs[1] = IA1;
-
+        score_victoires[0] = joueurs[0];
+        score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();
         lancePartie();
     }
@@ -159,6 +161,7 @@ public class Jeu extends Observable {
         int nb_temples_j = joueurs[jCourant].getNbTemples();
         int nb_tours_j = joueurs[jCourant].getNbTours();
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
+        // !!! reste à ajouter le fait que le joueur courant ne puisse pas jouer parce qu'il ne peut plus poser de bâtiment
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
             if(type_jeu==CONSOLE){
