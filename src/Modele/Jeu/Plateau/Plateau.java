@@ -688,6 +688,9 @@ public class Plateau implements Serializable, Cloneable {
         return true;
     }
     public boolean check (int x, int y,int IDjoueurs) {
+        if(!estDansPlateau(x,y)){
+            System.out.println("pas dans le plateau : "+x+" "+y);
+        }
         return getTuile(x,y).getNumJoueur()==IDjoueurs && (getTuile(x,y).getBatiment()==HUTTE||estTemple(x,y)||estTour(x,y));
     }
     public boolean check2 (int x, int y,byte TypeTerrain) {
