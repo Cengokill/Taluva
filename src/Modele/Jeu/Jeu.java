@@ -98,6 +98,11 @@ public class Jeu extends Observable {
 
     public void joueIA(){
         CoupValeur coupValeur = joueurs[jCourant].joue();
+        if(coupValeur == null){
+            System.out.println(getJoueurCourant().getPrenom() + " a perdu");
+            estFinPartie = true;
+            return;
+        }
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
         if (!getPlateau().estHexagoneLibre(coupTuile.volcanLigne,coupTuile.volcanColonne)) {
@@ -231,7 +236,7 @@ public class Jeu extends Observable {
             getPlateau().nbHutteDisponiblesJoueur=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
             System.out.println("nbHutte: "+getPlateau().nbHutteDisponiblesJoueur);
             Timer timer = new Timer(delai, e -> {
-                joueIA();
+                //joueIA();
             });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
