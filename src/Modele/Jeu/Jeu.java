@@ -43,7 +43,7 @@ public class Jeu extends Observable {
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 1000;
+            delai = 200;
         }
         debug = false;
     }

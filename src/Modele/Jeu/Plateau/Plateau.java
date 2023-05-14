@@ -47,17 +47,12 @@ public class Plateau implements Serializable, Cloneable {
         p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
         p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
         p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
-
         p.carte = new Hexagone[LIGNES][COLONNES];
-        p.carte = Arrays.copyOf(this.carte,LIGNES);
-        /*
         for(int i=0;i<LIGNES;i++){
             for(int j=0;j<COLONNES;j++){
                 p.carte[i][j] = this.carte[i][j];
             }
         }
-         */
-
         return p;
     }
 
@@ -652,7 +647,7 @@ public class Plateau implements Serializable, Cloneable {
     }
 
 
-    // N?cessite un appel ? peutPlacerEtage
+    // Nécessite un appel à peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
         Coup coup = new Coup(joueurCourant, volcanLigne, volcanColonne, tile1Ligne, tile1Colonne, biome1, tile2Ligne, tile2Colonne, biome2);
         //historique.ajoute(coup);
