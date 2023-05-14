@@ -46,11 +46,6 @@ class IAAleatoire extends AbstractIA {
 
         TripletDePosition positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
         boolean bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
-        /*while(!bon){
-            jeu.getPlateau().supprimeTriplets(positionsrandom);
-            positionsrandom = positionsPossible.get(r.nextInt(positionsPossible.size()));
-            bon = jeu.getPlateau().estHexagoneVide(positionsrandom.getVolcan().ligne(),positionsrandom.getVolcan().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile1().ligne(),positionsrandom.getTile1().colonne())&&jeu.getPlateau().estHexagoneVide(positionsrandom.getTile2().ligne(),positionsrandom.getTile2().colonne());
-        }*/
 
         int ligne1 = positionsrandom.getVolcan().ligne();
         int ligne2 = positionsrandom.getTile1().ligne();

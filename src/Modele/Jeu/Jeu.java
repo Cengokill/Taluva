@@ -51,14 +51,15 @@ public class Jeu extends Observable {
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this);
-        //IA2 = AbstractIA.nouvelle(this);
+        IA2 = AbstractIA.nouvelle(this);
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
         //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
-        joueurs[1] = IA1;
+        joueurs[0] = IA1;
+        joueurs[1] = IA2;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();
@@ -108,10 +109,6 @@ public class Jeu extends Observable {
         }
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
-        /*if (!getPlateau().estHexagoneLibre(coupTuile.volcanLigne,coupTuile.volcanColonne)) {
-            System.out.println("pas libre A DEBUGGER");
-            return;
-        }*/
         getPlateau().joueCoup(coupTuile);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;
@@ -128,22 +125,6 @@ public class Jeu extends Observable {
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
         }
-        /*
-        Coup coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // tuiles
-        if (!getPlateau().estHexagoneLibre(coup.volcanLigne,coup.volcanColonne)) {
-            System.out.println("pas libre A DEBUGGER");
-            return;
-        }
-        getPlateau().joueCoup(coup);   // place la plateforme
-        doit_placer_batiment = true;
-        doit_placer_tuile = false;
-
-        coup = ((AbstractIA)joueursObjet[jCourant]).joue(); // batiment
-        //getPlateau().joueCoup(coup);
-        joueurPlaceBatiment(coup.batimentLigne,coup.batimentColonne,coup.typePlacement);
-        doit_placer_batiment = false;
-        doit_placer_tuile = true;
-        //changeJoueur();*/
         pioche();
     }
 
@@ -238,12 +219,6 @@ public class Jeu extends Observable {
                 jCourant = (byte) 0;
             }
             getPlateau().nbHutteDisponiblesJoueur=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
-            System.out.println("nbHutte: "+getPlateau().nbHutteDisponiblesJoueur);
-            Timer timer = new Timer(delai, e -> {
-                //joueIA();
-            });
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-            timer.start(); // Démarrez le timer
         }
     }
 
