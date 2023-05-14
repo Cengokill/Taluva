@@ -21,7 +21,6 @@ public class Jeu extends Observable {
     private int delai_avant_pioche = 1200;
     public boolean debug;
     Plateau plateau;
-    Joueur joueur1, joueur2;
     AbstractIA IA1=null;
     AbstractIA IA2=null;
     public byte jCourant;
