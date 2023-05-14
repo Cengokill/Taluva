@@ -18,7 +18,9 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
          */
+        int nb_parties = 100;
         Jeu jeu = new Jeu(type_jeu);
+        jeu.AFFICHAGE = false;
 
         if(type_jeu == GRAPHIQUE) {
             ControleurMediateur controler = new ControleurMediateur(jeu);
@@ -26,10 +28,13 @@ public class TaluvaMain {
             fenetre.panelMenu.metAJour();
             fenetre.panelMenu.setFenetre(fenetre);
         }else{
-            jeu.initPartie();
-            while(!jeu.estFinPartie()){
-                jeu.pioche();
-                jeu.joueIA();
+            for(int i = 0; i < nb_parties; i++) {
+                System.out.println("Partie " + (i+1) + "/" + nb_parties);
+                jeu.initPartie();
+                while (!jeu.estFinPartie()) {
+                    jeu.pioche();
+                    jeu.joueIA();
+                }
             }
         }
     }

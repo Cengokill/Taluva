@@ -16,6 +16,7 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class Jeu extends Observable {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
+    public static boolean AFFICHAGE;
     public byte type_jeu;
     private int delai;
     private int delai_avant_pioche = 1200;
@@ -136,7 +137,7 @@ public class Jeu extends Observable {
 
     public boolean estFinPartie() {
         if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
-            if(type_jeu==CONSOLE){
+            if(type_jeu==CONSOLE && AFFICHAGE){
                 System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
@@ -148,14 +149,14 @@ public class Jeu extends Observable {
         // !!! reste à ajouter le fait que le joueur courant ne puisse pas jouer parce qu'il ne peut plus poser de bâtiment
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
-            if(type_jeu==CONSOLE){
+            if(type_jeu==CONSOLE && AFFICHAGE){
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
             return true;
         }
         if(pioche.isEmpty()){
             calculScore();
-            if(type_jeu==CONSOLE){
+            if(type_jeu==CONSOLE && AFFICHAGE){
                 afficheScore();
             }
             return true;
@@ -332,7 +333,7 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        if(type_jeu==CONSOLE) {
+        if(type_jeu==CONSOLE && AFFICHAGE) {
             System.out.println("Tuiles dans la pioche : " + pioche.size());
             plateau.affiche();
         }
