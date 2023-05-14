@@ -109,16 +109,12 @@ public class Jeu extends Observable {
 
     public void joueIA() throws CloneNotSupportedException {
         CoupValeur coupValeur = joueurs[jCourant].joue();
-        if(coupValeur == null){//l'IA ne peut pas placer de bâtiment
-            estPartieFinie = true;
-            jVainqueur = (byte) ((jCourant+1)%2);
-            return;
-        }
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
         if(coupBatiment == null){//l'IA ne peut pas placer de bâtiment
-            System.err.println("L'IA ne peut pas placer de batiment");
-            System.exit(1);
+            estPartieFinie = true;
+            jVainqueur = (byte) ((jCourant+1)%2);
+            return;
         }
         getPlateau().joueCoup(coupTuile);
         doit_placer_batiment = true;
@@ -142,7 +138,7 @@ public class Jeu extends Observable {
         if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
             if(type_jeu==CONSOLE){
                 System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
-                System.out.println("Le joueur " + joueurs[jVainqueur].getPrenom() + " a gagne !");
+                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
             return true;
         }
@@ -153,7 +149,7 @@ public class Jeu extends Observable {
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
             if(type_jeu==CONSOLE){
-                System.out.println("Le joueur " + joueurs[jVainqueur].getPrenom() + " a gagne !");
+                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
             return true;
         }
