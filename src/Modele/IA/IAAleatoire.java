@@ -133,10 +133,14 @@ class IAAleatoire extends AbstractIA {
                 //si le bâtiment est plaçable
                 if (batimentsPlacable[batimentChoisit] == 1) {
                     if (batimentChoisit == HUTTE) {
-                        //On place la hutte classique sans propagation
-                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
+                        //On place une hutte si il nous en reste
+                        if(instance.getJoueur(instance.jCourant).getNbHuttes()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
+                        if(batimentChoisit==TEMPLE){
+                            if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte)(TEMPLE+1));
+                        }else{
+                            if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (TOUR+1));
+                        }
                     }
                     coups_possibles.add(coupB);
                 }
