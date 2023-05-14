@@ -71,9 +71,16 @@ class IAAleatoire extends AbstractIA {
             coupT = coupsT.get(i);
             ArrayList<Coup> coupsB = coupsBatimentsPossibles(instance, coupT);
             if(!coupsB.isEmpty()){
+                // Pour placer les tours en priorité
+                for(Coup coupCourant:coupsB){
+                    if(coupCourant.typePlacement == 3){
+                        CoupValeur coupValeur = new CoupValeur(coupT, coupCourant, 0);
+                        return coupValeur;
+                    }
+                }
+                // Pour placer les temples en priorité
                 for(Coup coupCourant:coupsB){
                     if(coupCourant.typePlacement == 2){
-                        coupCourant.affiche();
                         CoupValeur coupValeur = new CoupValeur(coupT, coupCourant, 0);
                         return coupValeur;
                     }
