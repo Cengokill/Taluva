@@ -4,11 +4,12 @@ import Modele.IA.AbstractIA;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
+import Structures.Position.Position;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
@@ -112,6 +113,7 @@ public class Jeu extends Observable {
         getPlateau().joueCoup(coupTuile);   // place la plateforme
         doit_placer_batiment = true;
         doit_placer_tuile = false;
+        isJoueurCourantPerdu();
         if (type_jeu == CONSOLE) {
             joueurPlaceBatiment(coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement);
             doit_placer_batiment = false;
@@ -138,6 +140,27 @@ public class Jeu extends Observable {
         joueurs[0] = new Joueur((byte)0,"Jean-Sebastien");
         joueurs[1] = new Joueur((byte)1,"Sacha");
     }
+
+    public int[] coupJouable(int i,int j){
+        int[] coups = getPlateau().getBatimentPlacable(i,j, getNumJoueurCourant());
+
+        int hauteurTuile = getPlateau().getHauteurTuile(i,j);
+        if(getJoueurCourantClasse().getNbTemples()<=0) coups[0] = 0;
+        if(getJoueurCourantClasse().getNbTours()<=0) coups[2] = 0;
+        if(getJoueurCourantClasse().getNbHuttes()<hauteurTuile) coups[1] = 0;
+
+        return coups;
+    }
+
+    public void isJoueurCourantPerdu(){
+        ArrayList<Position> posPlacable = getPlateau().getPositions_libres_batiments();
+        for (Position posCourante: posPlacable) {
+            int[] coupsPossibleCourant = coupJouable(posCourante.ligne(),posCourante.colonne());
+            if(coupsPossibleCourant[0]!=0 || coupsPossibleCourant[1]!=0 || coupsPossibleCourant[2]!=0) return;
+        }
+        setFinPartie();
+    }
+
     public boolean estFinPartie() {
         if(estFinPartie) return true; // Pour pouvoir détecter quand un joueur ne peut plus poser de bâtiment
         int nb_temples_j = joueurs[jCourant].getNbTemples();
@@ -174,7 +197,7 @@ public class Jeu extends Observable {
             return false;
         }
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
-
+        isJoueurCourantPerdu();
         doit_placer_batiment = true;
         doit_placer_tuile = false;
         return true;
@@ -212,14 +235,22 @@ public class Jeu extends Observable {
 
     public void changeJoueur() {
         if(estFinPartie()) System.out.println("FIN DE LA PARTIE");
-        else{
+        else {
             if (jCourant == (byte) 0) {
                 jCourant = (byte) 1;
             } else {
                 jCourant = (byte) 0;
             }
-            getPlateau().nbHutteDisponiblesJoueur=joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+            getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+            if(type_jeu==GRAPHIQUE) {
+                Timer timer = new Timer(delai, e -> {
+                    joueIA();
+                });
+                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                timer.start(); // Démarrez le timer
+            }
         }
+
     }
 
     public Joueur getJoueurCourant(){

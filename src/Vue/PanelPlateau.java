@@ -545,12 +545,7 @@ public class PanelPlateau extends JPanel {
     }
 
     public void detectionPlusAucunCoupAJouer(){
-        ArrayList<Position> posPlacable = jeu.getPlateau().getPositions_libres_batiments();
-        for (Position posCourante: posPlacable) {
-            int[] coupsPossibleCourant = coupJouable(posCourante.ligne(),posCourante.colonne());
-            if(coupsPossibleCourant[0]!=0 || coupsPossibleCourant[1]!=0 || coupsPossibleCourant[2]!=0) return;
-        }
-        jeu.setFinPartie();
+        jeu.isJoueurCourantPerdu();
     }
 
     public void updateCursorPosOnTiles(MouseEvent e) {
