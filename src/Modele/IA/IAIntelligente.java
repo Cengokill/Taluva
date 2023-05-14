@@ -145,6 +145,7 @@ public class IAIntelligente extends AbstractIA {
     }
 
     //calcule les coups possibles pour une configuration de jeu : un coup de placement de tuile, et un coup de placement de bâtiment
+    @Override
     public ArrayList<ArrayList<Coup>> coupsPossibles(InstanceJeu instance){
         ArrayList<ArrayList<Coup>> coups_possibles = new ArrayList<>();
         byte joueur_courant = instance.getJoueurCourant();

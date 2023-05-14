@@ -10,7 +10,7 @@ public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException {
-        byte type_jeu = GRAPHIQUE;
+        byte type_jeu = CONSOLE;
         /*
         Serveur serveur = new Serveur(42113);
         Client client = new Client("localhost", 42113);

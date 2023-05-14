@@ -4,8 +4,13 @@ import Modele.Jeu.Coup;
 import Modele.Jeu.CoupValeur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
+import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
+import Structures.Position.Point2D;
+import Structures.Position.Position;
+import Structures.Position.TripletDePosition;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est exécutée par un nouveau thread
@@ -45,6 +50,10 @@ public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est 
     }
 
     public CoupValeur joue(){
+        return null;
+    }
+
+    public ArrayList<ArrayList<Coup>> coupsPossibles(InstanceJeu instance){
         return null;
     }
 

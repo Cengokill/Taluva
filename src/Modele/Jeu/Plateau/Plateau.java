@@ -8,6 +8,7 @@ import Structures.Position.TripletDePosition;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
@@ -42,16 +43,21 @@ public class Plateau implements Serializable, Cloneable {
         p.historique = this.historique.copie();
         p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
-        p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur; // putain kiki oublie pas ca
+        p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur;
         p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
         p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
         p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
+
         p.carte = new Hexagone[LIGNES][COLONNES];
+        p.carte = Arrays.copyOf(this.carte,LIGNES);
+        /*
         for(int i=0;i<LIGNES;i++){
             for(int j=0;j<COLONNES;j++){
                 p.carte[i][j] = this.carte[i][j];
             }
         }
+         */
+
         return p;
     }
 
