@@ -6,6 +6,7 @@ import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
 
 import javax.swing.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -272,6 +273,8 @@ public class Jeu extends Observable {
         for(int i=0; i<11; i++){
             pioche.add(new Tuile(prairie, foret));
         }
+        //mélange la pioche
+        Collections.shuffle(pioche);
     }
 
     public byte[] getTuilesAPoser() {
@@ -283,9 +286,8 @@ public class Jeu extends Observable {
     }
 
     public void pioche() {
-        //plateau.affiche();
-        Random r = new Random();
-        int index = r.nextInt(pioche.size()-1);
+        plateau.affiche();
+        int index = pioche.size()-1;
         Tuile tuile_courante = pioche.get(index);
         pioche.remove(index);
         tuileAPoser[0] = tuile_courante.biome0;
