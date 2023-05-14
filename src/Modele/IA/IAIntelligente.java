@@ -224,16 +224,6 @@ public class IAIntelligente extends AbstractIA {
                         }
                     }
                 }
-                //affiche coups_possibles
-                /*
-                for(int i=0; i<coups_possibles.size(); i++){
-                    System.out.println("Coup de tuile :");
-                    coups_possibles.get(i).get(0).affiche();
-                    System.out.println("Coup de batiment :");
-                    coups_possibles.get(i).get(1).affiche();
-                    System.out.println("----------------------------------------");
-                }
-                 */
                 coups_possibles.add(coupDuo);
             }
         }
@@ -245,6 +235,10 @@ public class IAIntelligente extends AbstractIA {
             return evaluation_joueur(instance, instance.getJoueurCourant());
         }
         int valeur = Integer.MIN_VALUE;
+        Tuile tuile_pioche = jeu.getPioche().get(0);
+        ArrayList<Tuile> pioche = new ArrayList<>();
+        pioche.add(tuile_pioche);
+        instance.pioche = pioche;
         ArrayList<ArrayList<Coup>> coups_possibles = coupsPossibles(instance);
         for(int i = 0; i<coups_possibles.size(); i++){
             ArrayList<Coup> coupDuo = coups_possibles.get(i);
