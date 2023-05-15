@@ -8,29 +8,37 @@ import Structures.Position.Position;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class Jeu extends Observable {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
+    private static final int TAILLE_PIOCHE = 24;
     public static boolean AFFICHAGE;
     public byte type_jeu;
-    private int delai;
-    private int delai_avant_pioche = 1200;
+    public int delai;
     public boolean debug;
     Plateau plateau;
-    AbstractIA IA1=null, IA2=null;
-    public byte jCourant, jVainqueur;
+    private Tuile tuile_courante;
+    private int delai_avant_pioche = 1200;
+    Joueur joueur1, joueur2;
+    AbstractIA IA1=null;
+    AbstractIA IA2=null;
+    public byte jCourant;
+    public byte jVainqueur;
     private Joueur[] joueurs = new Joueur[2];
     Parametres p;
     final int[]score = new int[2];
     public Joueur[] score_victoires = new Joueur[2];
     final byte[] tuileAPoser = new byte[5];
-    private Tuile tuile_courante;//tuile piochée
-    boolean doit_placer_tuile, doit_placer_batiment, estPartieFinie;
+
+    boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
+    boolean estFinPartie;
     public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
 
@@ -55,10 +63,10 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
-        joueurs[1] = IA2;
-        joueurs[0] = IA1;
+        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        //joueurs[1] = IA2;
+        //joueurs[0] = IA1;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();

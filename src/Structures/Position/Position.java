@@ -22,4 +22,6 @@ public class Position implements Serializable {
     public Position copy() {
         return new Position(this.ligne, this.colonne);
     }
+
+
 }

@@ -9,6 +9,7 @@ import Structures.Position.TripletDePosition;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
@@ -24,6 +25,7 @@ public class Plateau implements Serializable, Cloneable {
     private ArrayList<Position> positions_libres;
 
     private ArrayList<TripletDePosition> tripletsPossible;
+    private ArrayList<ArrayList<TripletDePosition>> ListeTripletsPossible;
     private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
@@ -33,8 +35,11 @@ public class Plateau implements Serializable, Cloneable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
+        initListeTripletsPossibles();
+
         TripletDePosition tripletDeBase = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
         tripletsPossible.add(tripletDeBase);
+        ListeTripletsPossible.add(tripletsPossible);
         //placeEtage((byte) 0,31,29,31,30,(byte) 1,32,29,(byte) 2);
     }
 
@@ -55,6 +60,14 @@ public class Plateau implements Serializable, Cloneable {
         p.tripletsPossible = new ArrayList<>();
         for(TripletDePosition posCourante: this.tripletsPossible){
             p.tripletsPossible.add(posCourante);
+        }
+        p.ListeTripletsPossible = new ArrayList<>();
+        for(ArrayList<TripletDePosition> ListePosCourant :this.ListeTripletsPossible){
+            ArrayList<TripletDePosition> tripletsPossibl =new ArrayList<>();
+            for(TripletDePosition PosCurant : ListePosCourant){
+                tripletsPossibl.add(PosCurant);
+            }
+            p.ListeTripletsPossible.add(tripletsPossibl);
         }
 
         p.carte = new Hexagone[LIGNES][COLONNES];
@@ -88,6 +101,9 @@ public class Plateau implements Serializable, Cloneable {
         return super.clone();
     }
 
+    private void initListeTripletsPossibles(){
+        ListeTripletsPossible= new ArrayList<>();
+    }
     private void initTripletsPossibles() {
         tripletsPossible = new ArrayList<>();
     }
@@ -545,35 +561,45 @@ public class Plateau implements Serializable, Cloneable {
                 triplets.add(new TripletDePosition(courant, droite, enHautDroite));
             }
         }
-        tripletsPossible.addAll(triplets);
+
+        ListeTripletsPossible.get(ListeTripletsPossible.size()-1).addAll(triplets);
     }
 
 
     public void metAjourPositionsLibres(ArrayList<Position> listeVoisins){
         ArrayList<Position> aSupprimer = new ArrayList<>();
         ArrayList<TripletDePosition> tripletsaSupprimer = new ArrayList<>();
+        int j= 0;
         for(Position p : listeVoisins){
+            j++;
             //si p est dans positions_libres et n'est pas de l'eau, on l'enl?ve
             if(!estHexagoneVide(p.ligne(), p.colonne())) {
                 aSupprimer.add(p);
             }
         }
+        System.out.println(j+"<--------jjjj");
         //System.out.println("Pour ?tre sur taille AVANT: "+listeVoisins.size());
-
+        int k = 0 ;
+        int l = 0;
         for(Position p : aSupprimer){
             listeVoisins.remove(p);
-            for(TripletDePosition t : tripletsPossible){
+            for(TripletDePosition t : ListeTripletsPossible.get(ListeTripletsPossible.size()-1)){
+
                 if(((t.getVolcan().ligne()==p.ligne() && t.getVolcan().colonne()==p.colonne())||(t.getTile1().ligne()==p.ligne() && t.getTile1().colonne()==p.colonne())||(t.getTile2().ligne()==p.ligne() && t.getTile2().colonne()==p.colonne()))
                         ||!estHexagoneVide(t.getVolcan().ligne(),t.getVolcan().colonne())||!estHexagoneVide(t.getTile1().ligne(),t.getTile1().colonne())||!estHexagoneVide(t.getTile2().ligne(),t.getTile2().colonne())){
                     tripletsaSupprimer.add(t);
+                    k++;
                 }
+                l++;
             }
         }
+        System.out.println(j+"<----------------");
+        System.out.println(k+"<--------");
         //System.out.println("Pour ?tre sur taille APRES: "+listeVoisins.size());
         for(TripletDePosition t : tripletsaSupprimer){
-            tripletsPossible.remove(t);
+            ListeTripletsPossible.get(ListeTripletsPossible.size()-1).remove(t);
         }
-        positions_libres.addAll(listeVoisins);
+            positions_libres.addAll(listeVoisins);
     }
 
 
@@ -617,16 +643,26 @@ public class Plateau implements Serializable, Cloneable {
                 positions_libres_batiments.add(new Position(coup.tile2Ligne,coup.tile2Colonne));
             }
             // On ajoute les emplacements libres des tuiles
+            copieTripletsPossible();
+            System.out.println("new liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            System.out.println("old liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             ArrayList<Position> listeVoisins = voisins(coup.volcanLigne,coup.volcanColonne);
             metAjourPositionsLibres(listeVoisins);
+            System.out.println("new liste taille v2.1 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            System.out.println("old liste taille v2.1 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             listeVoisins = voisins(coup.tile1Ligne,coup.tile1Colonne);
             metAjourPositionsLibres(listeVoisins);
+            System.out.println("new liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            System.out.println("old liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(positions_libres);
+            System.out.println("new liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            System.out.println("old liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             if(coup.typePlacement!=4) {
                 historique.ajoute(coup);
             }
+
 
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
             hauteur = carte[coup.batimentLigne][coup.batimentColonne].getHauteur();
@@ -642,13 +678,15 @@ public class Plateau implements Serializable, Cloneable {
             }
             if(batiment!=Hexagone.CHOISIR_BATIMENT){
                 Position aSupprimer = new Position(coup.batimentLigne,coup.batimentColonne);
-                positions_libres_batiments.remove(aSupprimer);
+                supprimeElementNew(aSupprimer);
             }
 
             carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
             if(coup.typePlacement!=4){
                 historique.ajoute(coup);
             }
+            System.out.println("new liste taille v2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            System.out.println("old liste taille v2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
 
         }
     }
@@ -938,7 +976,9 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public boolean peutAnnuler() {
+
         return historique.peutAnnuler();
+
     }
 
     public boolean peutRefaire() {
@@ -978,7 +1018,9 @@ public class Plateau implements Serializable, Cloneable {
 
 
     public Stock annuler() {
-        Stock stock =historique.annuler(carte);
+        affiche();
+        Stock stock =historique.annuler(carte,ListeTripletsPossible,positions_libres_batiments);
+        affiche();
         return stock;
     }
 
@@ -1039,4 +1081,17 @@ public class Plateau implements Serializable, Cloneable {
     public int getCOLONNES(){
         return COLONNES;
     }
+
+    public void copieTripletsPossible(){
+        ArrayList<TripletDePosition> copieTriplets=new ArrayList<>();
+        for(TripletDePosition triplet: ListeTripletsPossible.get(ListeTripletsPossible.size()-1) ){
+            copieTriplets.add(triplet);
+        }
+
+        ListeTripletsPossible.add(copieTriplets);
+        System.out.println("new liste taille : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+        System.out.println("old liste taille :"+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+    }
+
+
 }
