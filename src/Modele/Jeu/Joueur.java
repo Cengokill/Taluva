@@ -107,7 +107,6 @@ public class Joueur {
     public void setCouleur(String couleur){
         this.couleur = couleur;
     }
-    public int getNbVillages(){return nbVillages;}
 
     public void incrementeHutte(){
         if(nbHuttes > 0) {
@@ -145,15 +144,6 @@ public class Joueur {
         if(nbTemplesPlaces > 0) {
             nbTemplesPlaces--;
         }
-    }
-
-
-    public void incrementeVillage() {
-        nbVillages++;
-    }
-
-    public void incrementeVictoire(){
-        nb_victoires++;
     }
 
     public CoupValeur joue() throws CloneNotSupportedException {

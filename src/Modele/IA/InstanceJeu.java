@@ -60,6 +60,18 @@ public class InstanceJeu {
         return instanceNew;
     }
 
+    public InstanceJeu simulerTuile(Coup coupT){
+        InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,estFinJeu);
+        joueTuile(coupT,instanceNew);
+        return instanceNew;
+    }
+
+    public InstanceJeu simulerBatiment(Coup coupB){
+        InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,estFinJeu);
+        joueBatiment(coupB,instanceNew);
+        return instanceNew;
+    }
+
     private void joueTuile(Coup coupTuile,InstanceJeu instanceCourante){
         instanceCourante.plateau.placeEtage(getJoueurCourant(), coupTuile.volcanLigne, coupTuile.volcanColonne, coupTuile.tile1Ligne, coupTuile.tile1Colonne, coupTuile.biome1, coupTuile.tile2Ligne, coupTuile.tile2Colonne, coupTuile.biome2);
     }

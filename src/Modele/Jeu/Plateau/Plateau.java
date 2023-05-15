@@ -683,7 +683,6 @@ public class Plateau implements Serializable, Cloneable {
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
                 if(nbHutteDisponiblesJoueur >=getHauteurTuile(a.x,a.y) && nbHutteDisponiblesJoueur !=0){
                     if(coup.typePlacement!=4) {
-                        historique.ajoute(Coup_propagation);
                         joueCoup(Coup_propagation);
                         nbHutteDisponiblesJoueur -=(getHauteurTuile(a.x,a.y));
                     }
