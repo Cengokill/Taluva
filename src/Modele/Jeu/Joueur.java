@@ -25,6 +25,7 @@ public class Joueur {
 
     private boolean doitJouer;
     private BufferedImage image;
+    private int score = 0;
 
     public Joueur(byte type, String prenom){
         this.type_joueur = type;
@@ -96,6 +97,11 @@ public class Joueur {
 
     public byte getTypeJoueur(){
         return type_joueur;
+    }
+
+    public int calculScore(){
+        score = nbTemplesPlaces*1000 + nbToursPlacees*100 + nbHuttesPlacees;
+        return score;
     }
 
     public void setCouleur(String couleur){

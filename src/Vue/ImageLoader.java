@@ -26,7 +26,7 @@ public class ImageLoader {
     public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
     public static BufferedImage lacTile_0, lacTile_1, lacTile_2;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
-    public static BufferedImage joueurCourant;
+    public static BufferedImage joueurCourant, finPartie;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
@@ -35,11 +35,12 @@ public class ImageLoader {
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto,
     posX_joueur_courant, posY_joueur_courant, posX_prenom_j0, posX_prenom_j1, posY_prenom_j0, posY_prenom_j1, posX_huttes, posX_tours, posX_temples,
             posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
-            posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile;
+            posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options;
-    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter;
+    public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
+    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie;
 
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
     public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;

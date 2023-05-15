@@ -78,8 +78,6 @@ public class FenetreJeu extends Container {
 
     public void setStandardCursor(){
         Image cursorImage = Toolkit.getDefaultToolkit().getImage("ressources/Menu/normal_cursor.png");
-
-
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Point hotspot = new Point(0, 0);
         Cursor idle_cursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom Cursor");
@@ -173,6 +171,7 @@ public class FenetreJeu extends Container {
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
                 afficheJoueurCourant(g2d);
+                afficheFinPartie(g2d);
                 afficheMenuOptions(g2d);
             }
 
@@ -183,6 +182,7 @@ public class FenetreJeu extends Container {
                 double rapport_fenetre_score = 621.0/533.0;
                 double rapport_joueur_courant = 131.0/603.0;
                 double rapport_bouton_dans_options = 207.0/603.0;
+                double rapport_fin_partie = 959.0/1029.0;
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
@@ -226,6 +226,14 @@ public class FenetreJeu extends Container {
                 posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.72);
                 largeur_tuile = (int) (largeur_fenetre_score*0.20);
                 hauteur_tuile = largeur_tuile;
+                //fin de partie
+                largeur_fin_partie = (int) (largeur*0.5);
+                hauteur_fin_partie = (int) (largeur_fin_partie* rapport_fin_partie);
+                posX_fin_partie = (largeur - largeur_fin_partie)/2;
+                posY_fin_partie = (hauteur - hauteur_fin_partie)/2;
+                posX_joueur_victoire = (int) (posX_fin_partie + largeur_fin_partie*0.25);
+                posY_joueur_victoire = (int) (posY_fin_partie + hauteur_fin_partie*0.25);
+                posX_score_fin_partie = (int) (posX_fin_partie + largeur_fin_partie*0.7);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -248,6 +256,7 @@ public class FenetreJeu extends Container {
     }
 
     public JFrame getFMenu(){
+        finPartie = lisImageBuf("Fin_partie");
         bouton_save = lisImageBuf("Sauvegarder");
         bouton_load = lisImageBuf("Charger");
         bouton_quitter = lisImageBuf("Quitter");
@@ -341,6 +350,20 @@ public class FenetreJeu extends Container {
                 g.drawImage(tuile_derriere, posX_tuile_derriere + decalage, posY_tuile_derriere, largeur_tuile, hauteur_tuile, null);
                 decalage -= 2;
             }
+        }
+    }
+
+    public static void afficheFinPartie(Graphics g) {
+        if (select_fin_partie) {
+            g.drawImage(finPartie, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie, null);
+            Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            g.setFont(font);
+            g.setColor(Color.BLACK);
+            String joueur_victoire = jeu.getJoueurs()[jeu.jVainqueur].getPrenom();
+            String score_victoire = Integer.toString(jeu.getJoueurs()[jeu.jVainqueur].calculScore());
+            g.drawString(joueur_victoire, posX_joueur_victoire, posY_joueur_victoire);
+            g.drawString(score_victoire, posX_score_fin_partie, posY_joueur_victoire);
+            afficheBoutonQuitter(g);
         }
     }
 
