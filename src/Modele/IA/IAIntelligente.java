@@ -9,6 +9,7 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class IAIntelligente extends AbstractIA {
@@ -27,6 +28,8 @@ public class IAIntelligente extends AbstractIA {
     public IAIntelligente() {
         super(IA, "IA");
     }
+
+    InstanceJeu instance;
 
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
         ArrayList<Tuile> pioche = new ArrayList<>();
@@ -48,240 +51,71 @@ public class IAIntelligente extends AbstractIA {
         return false;
     }
 
-
-
-    @Override
-    public void calcule_coup(){
-        System.out.println("jeu.getPioche().size : "+jeu.getPioche().size());
-        ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
-        System.out.println("pioche.size() : "+pioche.size());
-        Plateau plateauIA = jeu.getPlateau();
-        plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
-        ArrayList<CoupValeur> listeMeilleursCoups = meilleursCoups(instance, 1);
-        //on choisit le meilleur coup au hasard dans la liste des meilleurs coups
-        r = new Random();
-        int index = r.nextInt(listeMeilleursCoups.size());
-        this.coupValeur = listeMeilleursCoups.get(index);
-    }
-
-    public ArrayList<CoupValeur> meilleursCoups(InstanceJeu instance, int horizon){
-        ArrayList<CoupValeur> coups_calcules = new ArrayList<>();
-        ArrayList<ArrayList<Coup>> coups_possibles = coupsPossibles(instance);
-        //for chaque coup possible
-        for(int i = 0; i<coups_possibles.size(); i++){
-            ArrayList<Coup> coupDuo = coups_possibles.get(i);//on rappelle qu'on coup est constitué d'un coup de tuile et d'un coup de bâtiment d'où le Duo
-            InstanceJeu nouvelle_configuration = appliquerCoup(instance, coupDuo.get(0), coupDuo.get(1));
-            int valeur = calculCoups_joueur_A(nouvelle_configuration, horizon);
-            coups_calcules.add(new CoupValeur(coupDuo.get(0), coupDuo.get(1), valeur));
-        }
-        // Trouver le coup avec la valeur maximale
-        ArrayList<CoupValeur> meilleurs_coups = coupsMax(coups_calcules);
-        return meilleurs_coups;
-    }
-
-    public InstanceJeu appliquerCoup(InstanceJeu instance, Coup coupT, Coup coupB){
-        ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
-        Plateau plateauCopie = instance.getPlateau().copie();
-        Joueur[] joueurs = instance.getJoueurs();
-        byte joueur_courant = instance.getJoueurCourant();
-        plateauCopie.placeEtage(joueur_courant, coupT.volcanLigne, coupT.volcanColonne, coupT.tile1Ligne, coupT.tile1Colonne, coupT.biome1, coupT.tile2Ligne, coupT.tile2Colonne, coupT.biome2);
-        byte type_batiment = coupB.typePlacement;
-        Position positionCourante = new Position(coupB.getBatLigne(), coupB.getBatColonne());
-        Joueur jCourantCopie = instance.getJoueur(joueur_courant);
-
-        // La position actuelle n'est plus libre
-        Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
-        plateauCopie.supprimeElementNew(posASupprimer);
-        if(type_batiment == HUTTE) {
-            // On créer un tableau contenant toutes les coordonées où l'on doit propager
-            ArrayList<Point2D> aPropager = plateauCopie.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), (byte) ((joueur_courant + 1) % 2)); // A MODIFIER POUR PLUS TARD TEST remettre joueur_courant
-            // On place la hutte classique sans propagation
-            plateauCopie.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
-            // On met a jour le nombre de huttes restantes
-            int hauteurCourante = plateauCopie.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne());
-            updateBatimentsJoueur((byte) HUTTE, jCourantCopie, hauteurCourante);
-            // On récupère le nombre de hutte disponibles pour le joueur courant
-            int nbHuttesDispo = plateauCopie.nbHutteDisponiblesJoueur - (plateauCopie.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne()));
-            while (aPropager.size() != 0) {
-                Point2D PosCourantePropagation = aPropager.remove(0);
-                hauteurCourante = plateauCopie.getHauteurTuile(PosCourantePropagation.getPointX(), PosCourantePropagation.getPointY());
-                if(nbHuttesDispo>=hauteurCourante){
-                    plateauCopie.placeBatiment(joueur_courant,PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY(),(byte) HUTTE);
-                    // On place une hutte dessus, donc plus disponible
-                    posASupprimer = new Position(PosCourantePropagation.getPointX(),PosCourantePropagation.getPointY());
-                    plateauCopie.supprimeElementNew(posASupprimer);
-                    // On met a jour le compteur des huttes du joueur courant
-                    updateBatimentsJoueur((byte) HUTTE, jCourantCopie,hauteurCourante);
-                    nbHuttesDispo-=hauteurCourante;
+    private CoupValeur choisirCoupTuile(Tuile tuile){
+        int i=0, score_max = Integer.MAX_VALUE;
+        int score_courant;
+        ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
+        CoupValeur coupAFaire;
+        ArrayList<TripletDePosition> coupsTuilePossibles = instance.getPlateau().getTripletsPossibles();
+        while(i < coupsTuilePossibles.size()){
+            TripletDePosition tripletCourant = coupsTuilePossibles.get(i);
+            Coup coupT = new Coup(instance.getJoueurCourant(),tripletCourant.getVolcan().ligne(),tripletCourant.getVolcan().colonne(),tripletCourant.getTile1().ligne(),tripletCourant.getTile1().colonne(),tuile.biome0,tripletCourant.getTile2().ligne(),tripletCourant.getTile2().colonne(),tuile.biome1);
+            instance.getPlateau().joueCoup(coupT);
+            coupAFaire = choisirCoupBatiment(coupT);
+            if(coupARenvoyer!=null){
+                score_courant = coupAFaire.getValeur();
+                // si le coup est aussi bien que notre meilleur on le rajoute
+                if(score_courant==score_max){
+                    coupARenvoyer.add(coupAFaire);
+                }
+                // si le coup est mieux on efface la liste, et on met la nouvelle valeur
+                else{
+                    score_max = score_courant;
+                    coupARenvoyer = new ArrayList<>();
+                    coupARenvoyer.add(coupAFaire);
                 }
             }
-        }else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-            plateauCopie.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), coupB.typePlacement);
-            updateBatimentsJoueur(coupB.typePlacement, jCourantCopie, 0);
+            // TODO annuler le placement dans instance
+
+            i++;
         }
-        joueurs[joueur_courant] = jCourantCopie;
-        InstanceJeu instanceCopie = new InstanceJeu(pioche, plateauCopie,joueurs, (byte) ((joueur_courant+1)%2),false);
-        return instanceCopie;
+        // On renvoie un coup des coups optimaux calculés
+        if(coupARenvoyer.size()==0){
+            System.out.println("L'IA ne peut pas jouer");
+            return null;
+        }
+        return coupARenvoyer.get(r.nextInt(coupARenvoyer.size()));
     }
 
-    public static ArrayList<CoupValeur> coupsMax(ArrayList<CoupValeur> coups) {
-        ArrayList<CoupValeur> coupsMax = new ArrayList<>();
-        int valeur_max = Integer.MIN_VALUE;
-        for (CoupValeur coup_valeur : coups) {
-            if (coup_valeur.getValeur() > valeur_max) {
-                coupsMax = new ArrayList<>();
-                coupsMax.add(coup_valeur);
-                valeur_max = coup_valeur.getValeur();
-            } else if (coup_valeur.getValeur() == valeur_max) {
-                coupsMax.add(coup_valeur);
+    private CoupValeur choisirCoupBatiment(Coup coupT) {
+        int i=0, score_max = Integer.MIN_VALUE;
+        int score_courant;
+        ArrayList<Coup> coupsBatimentARenvoyer = new ArrayList<>();
+        ArrayList<Coup> coupsBatimentPossible = getTousLesCoupsPossiblesDesBatiments();
+
+        while(i < coupsBatimentPossible.size()){
+            Coup coupCourant = coupsBatimentPossible.get(i);
+            instance.getPlateau().joueCoup(coupCourant);
+            score_courant = Evaluation();
+            if(score_courant == score_max){
+                coupsBatimentARenvoyer.add(coupCourant);
+            }else if(score_courant > score_max){
+                coupsBatimentARenvoyer = new ArrayList<>();
+                coupsBatimentARenvoyer.add(coupCourant);
+                score_max = score_courant;
             }
+            // TODO annuler le coup sur instance
+
+            i++;
         }
-        return coupsMax;
+        if(coupsBatimentARenvoyer.size()==0){
+            return null;
+        }
+        return new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
     }
 
-    //calcule les coups possibles pour une configuration de jeu : un coup de placement de tuile, et un coup de placement de bâtiment
-    @Override
-    public ArrayList<ArrayList<Coup>> coupsPossibles(InstanceJeu instance){
-        ArrayList<ArrayList<Coup>> coups_possibles = new ArrayList<>();
-        byte joueur_courant = instance.getJoueurCourant();
-        ArrayList<TripletDePosition> tripletsPossibles = instance.getPlateau().getTripletsPossibles();
-        ArrayList<Tuile> pioche = copyPioche(instance.getPioche());
-        ArrayList<Coup> coupDuo = new ArrayList<>();
-
-        for (int piocheIndex = 0; piocheIndex < 1; piocheIndex++) {
-            Tuile tuile = pioche.get(piocheIndex);
-            //pour chaque tuile unique de la pioche
-            for (int tripletsIndex = 0; tripletsIndex < tripletsPossibles.size(); tripletsIndex++) {
-                TripletDePosition tripletCourant = tripletsPossibles.get(tripletsIndex);
-                Position[] points = new Position[3];
-                points[0] = tripletCourant.getVolcan();
-                points[1] = tripletCourant.getTile1();
-                points[2] = tripletCourant.getTile2();
-                coupDuo.clear();
-                for (int orientationTuile = 0; orientationTuile < 3; orientationTuile++) {
-                    Coup coupT = new Coup(joueur_courant, points[orientationTuile].ligne(), points[orientationTuile].colonne(), (points[(orientationTuile + 1) % 3].ligne()), (points[(orientationTuile + 1) % 3].colonne()), tuile.biome0, (points[(orientationTuile + 2) % 3].ligne()), (points[(orientationTuile + 2) % 3].colonne()), tuile.biome1);
-                    coupDuo.add(coupT);
-                    Plateau plateauCopie = instance.getPlateau().copie();
-                    plateauCopie.placeEtage(joueur_courant, points[orientationTuile].ligne(), points[orientationTuile].colonne(), (points[(orientationTuile + 1) % 3].ligne()), (points[(orientationTuile + 1) % 3].colonne()), tuile.biome0, (points[(orientationTuile + 2) % 3].ligne()), (points[(orientationTuile + 2) % 3].colonne()), tuile.biome1);
-                    ArrayList<Tuile> nouvellePioche;
-                    nouvellePioche = copyPioche(pioche);
-                    nouvellePioche.remove(piocheIndex);
-                    ArrayList<Position> positionsLibresBatiments = plateauCopie.getPositions_libres_batiments();
-                    //On parcourt toutes les positions libres des bâtiments
-                    for (int position = 0; position < positionsLibresBatiments.size(); position++) {
-                        Coup coupB = null;
-                        Position positionCourante = positionsLibresBatiments.get(position);
-                        int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
-                        //On parcourt tous les choix de bâtiments possibles
-                        for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
-                            //si le bâtiment est plaçable
-                            if (batimentsPlacable[batimentChoisit] == 1) {
-                                Joueur jCourantCopie = instance.getJoueur(joueur_courant);
-                                Joueur[] joueurs = instance.getJoueurs();
-                                Plateau plateauCopie2 = plateauCopie.copie();
-                                //si HUTTE (propagation potentielle)
-                                if (batimentChoisit == HUTTE){
-                                    //On créer un tableau contenant toutes les coordonées où l'on doit propager
-                                    ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
-                                    //On place la hutte classique sans propagation
-                                    coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
-                                    plateauCopie2.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
-                                    //La position actuelle n'est plus libre
-                                    Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
-                                    plateauCopie2.supprimeElementNew(posASupprimer);
-                                    //On met a jour le nombre de hutte restantes
-                                    int hauteurCourante = plateauCopie2.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne());
-                                    updateBatimentsJoueur((byte) HUTTE, jCourantCopie, hauteurCourante);
-                                    // On récupère le nombre de huttes disponibles pour le joueur courant
-                                    int nbHuttesDispo = plateauCopie2.nbHutteDisponiblesJoueur - (plateauCopie2.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne()));
-                                    while (aPropager.size() != 0) {
-                                        Point2D posCourantePropagation = aPropager.remove(0);
-                                        hauteurCourante = plateauCopie2.getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
-                                        if (nbHuttesDispo >= hauteurCourante) {
-                                            plateauCopie2.placeBatiment(joueur_courant, posCourantePropagation.getPointX(), posCourantePropagation.getPointY(), (byte) HUTTE);
-                                            // On place une hutte dessus, donc plus disponible
-                                            posASupprimer = new Position(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
-                                            plateauCopie2.supprimeElementNew(posASupprimer);
-                                            updateBatimentsJoueur((byte) HUTTE, jCourantCopie, hauteurCourante);
-                                            nbHuttesDispo -= hauteurCourante;
-                                        }
-                                    }
-                                } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                                    coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
-                                    plateauCopie2.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
-                                    updateBatimentsJoueur(batimentChoisit, jCourantCopie, 0);
-                                    //on supprime la position du bâtiment qui n'est plus libre
-                                    Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
-                                    plateauCopie2.supprimeElementNew(posASupprimer);
-                                }
-                                joueurs[joueur_courant] = jCourantCopie;
-                                coupDuo.add(coupB);
-                            }
-                        }
-                    }
-                }
-                coups_possibles.add(coupDuo);
-            }
-        }
-        return coups_possibles;
-    }
-
-    public int calculCoups_joueur_A(InstanceJeu instance, int horizon) {
-        if(horizon==0){
-            return evaluation_joueur(instance, instance.getJoueurCourant());
-        }
-        int valeur = Integer.MIN_VALUE;
-        ArrayList<ArrayList<Coup>> coups_possibles = coupsPossibles(instance);
-        for(int i = 0; i<coups_possibles.size(); i++){
-            ArrayList<Coup> coupDuo = coups_possibles.get(i);
-            //si impossible de placer un bâtiment
-            if(coupDuo.get(1)==null) valeur = Integer.MIN_VALUE;
-            else{
-                InstanceJeu successeur = appliquerCoup(instance, coupDuo.get(0), coupDuo.get(1));
-                valeur = Math.max(valeur, calculCoups_joueur_B(successeur, horizon-1));
-            }
-        }
-        return valeur;
-    }
-
-    public int calculCoups_joueur_B(InstanceJeu instance, int horizon) {
-        if(horizon==0){
-            return evaluation_joueur(instance, instance.getJoueurCourant());
-        }
-        int valeur = Integer.MAX_VALUE;
-        ArrayList<ArrayList<Coup>> coups_possibles = coupsPossibles(instance);
-        for(int i = 0; i<coups_possibles.size(); i++){
-            ArrayList<Coup> coupDuo = coups_possibles.get(i);
-            //si impossible de placer un bâtiment
-            if(coupDuo.get(1)==null) valeur = Integer.MAX_VALUE;
-            else{
-                InstanceJeu successeur = appliquerCoup(instance, coupDuo.get(0), coupDuo.get(1));
-                valeur = Math.min(valeur, calculCoups_joueur_A(successeur, horizon-1));
-            }
-        }
-        return valeur;
-    }
-
-    private static void updateBatimentsJoueur(int batimentChoisit, Joueur jCourantCopie, int hauteur) {
-        /*if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
-        else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
-        else{
-            if(hauteur>=3) jCourantCopie.incrementeHutte();
-            if(hauteur==2) jCourantCopie.incrementeHutte();
-            jCourantCopie.incrementeHutte();
-        }*/
-    }
-    public ArrayList<Tuile> copyPioche(ArrayList<Tuile> pioche){
-        ArrayList<Tuile> piocheCopie = new ArrayList<>();
-        for (Tuile tuileCourante:pioche) {
-            piocheCopie.add(tuileCourante);
-        }
-        return piocheCopie;
-    }
-
-    public int evaluation_joueur(InstanceJeu instance, int num_joueur){
-        Joueur j = instance.getJoueur(num_joueur);
+    public int Evaluation(){
+        Joueur j = instance.getJoueur(instance.getJoueurCourant());
         //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
         if((j.getNbHuttes() == 0 && j.getNbTemples() == 0)||(j.getNbTemples() ==0 && j.getNbTours() ==0)||(j.getNbHuttes()==0 && j.getNbTours()==0)){
             return Integer.MAX_VALUE;
@@ -299,87 +133,68 @@ public class IAIntelligente extends AbstractIA {
     }
 
 
-    ///////////////////////////////////////////////////////
-    public int minimaxAlphaBeta(InstanceJeu instance, int profondeur, int alpha, int beta, boolean maximizingPlayer) {
-        if (profondeur == 0 || instance.estFinJeu) {
-            // Évaluation heuristique de l'état du jeu pour la feuille de l'arbre
-            // Retourner le meilleur score évalué
-            // ...
-            return evaluation_joueur(instance,instance.getJoueurCourant());
-        }
-
-        ArrayList<ArrayList<Coup>> coupsPossibles = coupsPossibles(instance);
-
-        if (maximizingPlayer) {
-            int meilleurScore = Integer.MIN_VALUE;
-            for (ArrayList<Coup> coups : coupsPossibles) {
-                CoupValeur coupCourant = new CoupValeur(coups.get(0),coups.get(1),0);
-                InstanceJeu nouvelleInstance = instance.simulerCoup(coupCourant);
-                int score = minimaxAlphaBeta(nouvelleInstance, profondeur - 1, alpha, beta, false);
-                meilleurScore = Math.max(meilleurScore, score);
-                alpha = Math.max(alpha, meilleurScore);
-                if (beta <= alpha) {
-                    System.out.println("Elagage Max");
-                    // Élagage Alpha-Bêta
-                    break;
+    private ArrayList<Coup> getTousLesCoupsPossiblesDesBatiments(){
+        ArrayList<Coup> coupsPossiblesARenvoyer = new ArrayList<>();
+        ArrayList<Position> positionsPossiblesBatiment = instance.getPlateau().getPositions_libres_batiments();
+        byte joueur_courant = instance.getJoueurCourant();
+        // On parcours toutes les positions possibles
+        for (int position = 0; position < positionsPossiblesBatiment.size(); position++) {
+            Coup coupB = null;
+            Position positionCourante = positionsPossiblesBatiment.get(position);
+            int[] batimentsPlacable = instance.getPlateau().getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
+            //On parcourt tous les choix de bâtiments possibles
+            for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
+                //si le bâtiment est plaçable
+                if (batimentsPlacable[batimentChoisit] == 1) {
+                    Joueur jCourantCopie = instance.getJoueur(joueur_courant);
+                    Joueur[] joueurs = instance.getJoueurs();
+                    //si HUTTE (propagation potentielle)
+                    if (batimentChoisit == HUTTE){
+                        //On créer un tableau contenant toutes les coordonées où l'on doit propager
+                        ArrayList<Point2D> aPropager = instance.getPlateau().previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
+                        //On place la hutte classique sans propagation
+                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
+                        instance.getPlateau().placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
+                        //La position actuelle n'est plus libre
+                        Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
+                        //instance.getPlateau().supprimeElementNew(posASupprimer);
+                        //On met a jour le nombre de hutte restantes
+                        int hauteurCourante = instance.getPlateau().getHauteurTuile(positionCourante.ligne(), positionCourante.colonne());
+                        // On récupère le nombre de huttes disponibles pour le joueur courant
+                        int nbHuttesDispo = instance.getPlateau().nbHutteDisponiblesJoueur - (instance.getPlateau().getHauteurTuile(positionCourante.ligne(), positionCourante.colonne()));
+                        while (aPropager.size() != 0) {
+                            Point2D posCourantePropagation = aPropager.remove(0);
+                            hauteurCourante = instance.getPlateau().getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
+                            if (nbHuttesDispo >= hauteurCourante) {
+                                instance.getPlateau().placeBatiment(joueur_courant, posCourantePropagation.getPointX(), posCourantePropagation.getPointY(), (byte) HUTTE);
+                                // On place une hutte dessus, donc plus disponible
+                                posASupprimer = new Position(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
+                                //instance.getPlateau().supprimeElementNew(posASupprimer);
+                                nbHuttesDispo -= hauteurCourante;
+                            }
+                        }
+                    } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
+                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
+                        instance.getPlateau().placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
+                        //on supprime la position du bâtiment qui n'est plus libre
+                        Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
+                        //instance.getPlateau().supprimeElementNew(posASupprimer);
+                    }
+                    coupsPossiblesARenvoyer.add(coupB);
+                    // TODO annuler l'action précédente
                 }
             }
-            return meilleurScore;
-        } else {
-            int meilleurScore = Integer.MAX_VALUE;
-            for (ArrayList<Coup> coups : coupsPossibles) {
-                CoupValeur coupCourant = new CoupValeur(coups.get(0),coups.get(1),0);
-                InstanceJeu nouvelleInstance = instance.simulerCoup(coupCourant);
-                int score = minimaxAlphaBeta(nouvelleInstance, profondeur - 1, alpha, beta, true);
-                meilleurScore = Math.min(meilleurScore, score);
-                beta = Math.min(beta, meilleurScore);
-                if (beta <= alpha) {
-                    System.out.println("Elagage Min");
-                    // Élagage Alpha-Bêta
-                    break;
-                }
-            }
-            return meilleurScore;
         }
+        return coupsPossiblesARenvoyer;
     }
 
-    public CoupValeur calculerCoup(InstanceJeu instance, int profondeur) {
-        // Initialisation des variables alpha et beta
-        int alpha = Integer.MIN_VALUE;
-        int beta = Integer.MAX_VALUE;
-
-        ArrayList<ArrayList<Coup>> coupsPossibles = coupsPossibles(instance);
-
-        int meilleurScore = Integer.MIN_VALUE;
-        CoupValeur meilleurCoup = null;
-
-        for (ArrayList<Coup> coups : coupsPossibles) {
-            CoupValeur coupCourant = new CoupValeur(coups.get(0),coups.get(1),0);
-            InstanceJeu nouvelleInstance = instance.simulerCoup(coupCourant);
-            int score = minimaxAlphaBeta(nouvelleInstance, profondeur - 1, alpha, beta, false);
-            if (score > meilleurScore) {
-                meilleurScore = score;
-                meilleurCoup = coupCourant;
-            }
-            alpha = Math.max(alpha, meilleurScore);
-            if (beta <= alpha) {
-                // Élagage Alpha-Bêta
-                break;
-            }
-        }
-
-        return meilleurCoup;
-    }
 
     @Override
     public CoupValeur joue() {
-        System.out.println("on calcul");
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau();
         plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
-        return calculerCoup(instance,1);
-        /*calcule_coup();
-        return this.coupValeur;*/
+        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
+        return choisirCoupTuile(jeu.getTuileCourante());
     }
 }
