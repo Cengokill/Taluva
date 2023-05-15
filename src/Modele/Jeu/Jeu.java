@@ -409,7 +409,7 @@ public class Jeu extends Observable {
             } else if (stock.typeBatiment == TOUR) {
                 joueurs[jCourant].incrementeTour();
             } else {
-                for (int i = 0; i <= stock.nbBatiment; i++) {
+                for (int i = 0; i < stock.nbBatiment; i++) {
                     joueurs[jCourant].incrementeHutte();
                 }
             }
@@ -421,7 +421,21 @@ public class Jeu extends Observable {
     }
 
     public void sauvegarder() {
-        System.out.println("Sauvegarder non implémenté");
+
+        try {
+            FileOutputStream f = new FileOutputStream("sauvegarde1.txt");
+            ObjectOutputStream out = new ObjectOutputStream(f);
+            out.writeBoolean(doit_placer_tuile);
+            out.writeBoolean(doit_placer_batiment);
+            out.writeObject(plateau);
+            out.writeByte(jCourant);
+            out.writeObject(pioche);
+
+        }catch (IOException e){
+            System.err.println("Impossible de save");
+            System.out.println(e);
+            System.exit(1);
+        }
     }
 
     public void charger() {

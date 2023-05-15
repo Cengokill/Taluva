@@ -38,7 +38,6 @@ public class Historique implements Serializable {
         if (peutAnnuler()) {
             Coup tete = passe.removeFirst();
             int hauteur = carte[tete.volcanLigne][tete.volcanColonne].getHauteur();
-            //System.out.println(hauteur+": hauteur");
             if (tete.typePlacement == Coup.TUILE) {
                 if (hauteur == 1) {
                     carte[tete.volcanLigne][tete.volcanColonne] = new Hexagone((byte) (hauteur-1), (byte) 0, (byte) tete.batimentLigne, (byte) tete.batimentColonne);
@@ -65,7 +64,6 @@ public class Historique implements Serializable {
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getColonneVolcan());
                     rendbatiment+= hauteur;
                     if (passe.size() != 0) {
-                        futur.addFirst(tete);
                         tete = passe.removeFirst();
                     }
                 }
