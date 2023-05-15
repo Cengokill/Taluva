@@ -55,10 +55,8 @@ public class Jeu extends Observable {
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
         jCourant = 1;
-        IA1 = AbstractIA.nouvelle(this);
-        IA2 = AbstractIA.nouvelle(this);
-        IA1.setPrenom("IA1");
-        IA2.setPrenom("IA2");
+        IA1 = AbstractIA.nouvelle(this, (byte)1);
+        IA2 = AbstractIA.nouvelle(this, (byte)0);
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
@@ -102,6 +100,27 @@ public class Jeu extends Observable {
                 timer.start(); // Démarrez le timer
             }
         }
+    }
+
+    public void switchIAJoueur(int n){
+        byte numero = joueurs[n].getNumero();
+        int nbHuttes = joueurs[n].getNbHuttes();
+        int nbTemples = joueurs[n].getNbTemples();
+        int nbTours = joueurs[n].getNbTours();
+        int nbHuttesPlacees = joueurs[n].getNbHuttesPlacees();
+        int nbTemplesPlaces = joueurs[n].getNbTemplesPlaces();
+        int nbToursPlacees = joueurs[n].getNbToursPlacees();
+        if(joueurs[n].type_joueur == Joueur.IA){
+            joueurs[n] = new Joueur(Joueur.HUMAIN, numero, "Joueur "+numero);
+        }else{
+            joueurs[n] = AbstractIA.nouvelle(this, numero);
+        }
+        joueurs[n].setNbHuttes(nbHuttes);
+        joueurs[n].setNbTemples(nbTemples);
+        joueurs[n].setNbTours(nbTours);
+        joueurs[n].setNbHuttesPlacees(nbHuttesPlacees);
+        joueurs[n].setNbTemplesPlaces(nbTemplesPlaces);
+        joueurs[n].setNbToursPlacees(nbToursPlacees);
     }
 
     public Joueur[] getJoueurs() {

@@ -25,8 +25,8 @@ public class IAIntelligente extends AbstractIA {
     private Random r;
     private CoupValeur coupValeur;
 
-    public IAIntelligente() {
-        super(IA, "IA");
+    public IAIntelligente(byte n) {
+        super(IA, n, "IA"+n);
     }
 
     InstanceJeu instance;

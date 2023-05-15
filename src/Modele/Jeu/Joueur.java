@@ -26,9 +26,11 @@ public class Joueur {
     private boolean doitJouer;
     private BufferedImage image;
     private int score = 0;
+    private byte numero;
 
-    public Joueur(byte type, String prenom){
+    public Joueur(byte type, byte numero, String prenom){
         this.type_joueur = type;
+        this.numero = numero;
         this.prenom = prenom;
         doitJouer = false;
         nbHuttesPlacees = 0;
@@ -63,12 +65,44 @@ public class Joueur {
         this.prenom = prenom;
     }
 
+    public void setNbHuttes(int n){
+        nbHuttes = n;
+    }
+
+    public void setNbTours(int n){
+        nbTours = n;
+    }
+
+    public void setNbTemples(int n){
+        nbTemples = n;
+    }
+
+    public void setNbHuttesPlacees(int n){
+        nbHuttesPlacees = n;
+    }
+
+    public void setNbToursPlacees(int n){
+        nbToursPlacees = n;
+    }
+
+    public void setNbTemplesPlaces(int n){
+        nbTemplesPlaces = n;
+    }
+
+    public void setNumero(byte n){
+        numero = numero;
+    }
+
     public String getPrenom(){
         return prenom;
     }
 
     public String getCouleur(){
         return couleur;
+    }
+
+    public byte getNumero(){
+        return numero;
     }
 
     public int getNbToursPlacees(){

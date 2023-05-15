@@ -30,8 +30,8 @@ class IAAleatoire extends AbstractIA {
     private long duree_placeEtage = 0;
     private long duree_getBatimentPlacable = 0;
 
-    public IAAleatoire() {
-        super(IA, "IA aleatoire");
+    public IAAleatoire(byte n) {
+        super(IA, n, "IA aleatoire");
     }
 
     @Override
