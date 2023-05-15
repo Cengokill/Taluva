@@ -64,7 +64,7 @@ public class IAIntelligente extends AbstractIA {
             Coup coupT = new Coup(instance.getJoueurCourant(),tripletCourant.getVolcan().ligne(),tripletCourant.getVolcan().colonne(),tripletCourant.getTile1().ligne(),tripletCourant.getTile1().colonne(),tuile.biome0,tripletCourant.getTile2().ligne(),tripletCourant.getTile2().colonne(),tuile.biome1);
             instance.getPlateau().joueCoup(coupT);
             coupAFaire = choisirCoupBatiment(coupT);
-            if(coupARenvoyer!=null){
+            if(coupAFaire!=null){
                 score_courant = coupAFaire.getValeur();
                 // si le coup est aussi bien que notre meilleur on le rajoute
                 if(score_courant==score_max){
@@ -89,6 +89,30 @@ public class IAIntelligente extends AbstractIA {
         return coupARenvoyer.get(r.nextInt(coupARenvoyer.size()));
     }
 
+
+    private static void augmenteBatimentsJoueur(int batimentChoisit, Joueur jCourantCopie, int hauteur) {
+        if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
+        else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
+        else{
+            if(hauteur>=3) jCourantCopie.incrementeHutte();
+            if(hauteur==2) jCourantCopie.incrementeHutte();
+            jCourantCopie.incrementeHutte();
+        }
+    }
+
+    private static Joueur diminueBatimentsJoueur(int batimentChoisit, Joueur jCourantCopie, int hauteur) {
+        if(batimentChoisit == TEMPLE) jCourantCopie.decrementeTemple();
+        else if(batimentChoisit == TOUR) jCourantCopie.decrementeTour();
+        else{
+            if(hauteur>=3) jCourantCopie.decrementeHutte();
+            if(hauteur==2) jCourantCopie.decrementeHutte();
+            jCourantCopie.decrementeHutte();
+        }
+        return jCourantCopie;
+    }
+
+
+
     private CoupValeur choisirCoupBatiment(Coup coupT) {
         int i=0, score_max = Integer.MIN_VALUE;
         int score_courant;
@@ -97,8 +121,42 @@ public class IAIntelligente extends AbstractIA {
 
         while(i < coupsBatimentPossible.size()){
             Coup coupCourant = coupsBatimentPossible.get(i);
-            instance.getPlateau().joueCoup(coupCourant);
-            score_courant = Evaluation();
+            ArrayList<Coup> coupPropagation = new ArrayList<>();
+            /*if (coupCourant.typePlacement == HUTTE){
+                //On créer un tableau contenant toutes les coordonées où l'on doit propager
+                ArrayList<Point2D> aPropager = instance.getPlateau().previsualisePropagation(coupCourant.batimentLigne, coupCourant.batimentColonne, instance.getJoueurCourant());
+                //On place la hutte classique sans propagation
+                coupPropagation.add(new Coup(instance.getJoueurCourant(), coupCourant.batimentLigne, coupCourant.batimentColonne, (byte) HUTTE));
+                // On récupère le nombre de huttes disponibles pour le joueur courant
+                int nbHuttesDispo = instance.getPlateau().nbHutteDisponiblesJoueur - (instance.getPlateau().getHauteurTuile(coupCourant.batimentLigne, coupCourant.batimentColonne));
+
+                while (aPropager.size() != 0) {
+                    Point2D posCourantePropagation = aPropager.remove(0);
+                    int hauteurCourante = instance.getPlateau().getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
+                    if (nbHuttesDispo >= hauteurCourante) {
+                        coupPropagation.add(new Coup(instance.getJoueurCourant(), posCourantePropagation.getPointX(),posCourantePropagation.getPointY(), (byte) HUTTE));
+                        nbHuttesDispo -= hauteurCourante;
+                    }
+                }
+            }*/
+            Joueur joueurCourant = instance.getJoueur(instance.getJoueurCourant());
+            int batiment = 1;
+            /*if(coupPropagation.size()>0){
+                for(Coup coupPropager: coupPropagation){
+                    instance.getPlateau().joueCoup(coupPropager);
+                    augmenteBatimentsJoueur(HUTTE,joueurCourant,instance.getPlateau().getHauteurTuile(coupPropager.batimentLigne,coupPropager.batimentColonne));
+                }
+            }else{*/
+                instance.getPlateau().joueCoup(coupCourant);
+                if(coupCourant.typePlacement==2){
+                    System.out.println("en x: "+coupCourant.batimentLigne+" y: "+coupCourant.batimentColonne);
+                    batiment = TEMPLE;
+                }
+                else if (coupCourant.typePlacement==3) batiment = TOUR;
+                augmenteBatimentsJoueur(batiment,joueurCourant,0);
+            //}
+
+            score_courant = Evaluation(joueurCourant);
             if(score_courant == score_max){
                 coupsBatimentARenvoyer.add(coupCourant);
             }else if(score_courant > score_max){
@@ -107,7 +165,15 @@ public class IAIntelligente extends AbstractIA {
                 score_max = score_courant;
             }
             // TODO annuler le coup sur instance
-            instance.annuler();
+            /*if(coupPropagation.size()>0){
+                for(Coup coupPropager: coupPropagation){
+                    diminueBatimentsJoueur(HUTTE,joueurCourant,instance.getPlateau().getHauteurTuile(coupPropager.batimentLigne,coupPropager.batimentColonne));
+                    instance.annuler();
+                }
+            }else{*/
+                diminueBatimentsJoueur(batiment,joueurCourant,0);
+                instance.annuler();
+            //}
             i++;
         }
         if(coupsBatimentARenvoyer.size()==0){
@@ -116,20 +182,22 @@ public class IAIntelligente extends AbstractIA {
         return new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
     }
 
-    public int Evaluation(){
-        Joueur j = instance.getJoueur(instance.getJoueurCourant());
+    public int Evaluation(Joueur joueur){
+        //if(joueur.getNbTemplesPlaces()!=0) System.out.println("NB TEMPLE PLACES "+joueur.getNbTemplesPlaces());
         //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
-        if((j.getNbHuttes() == 0 && j.getNbTemples() == 0)||(j.getNbTemples() ==0 && j.getNbTours() ==0)||(j.getNbHuttes()==0 && j.getNbTours()==0)){
+        if((joueur.getNbHuttes() == 0 && joueur.getNbTemples() == 0)||(joueur.getNbTemples() ==0 && joueur.getNbTours() ==0)||(joueur.getNbHuttes()==0 && joueur.getNbTours()==0)){
+            System.out.println("infini");
             return Integer.MAX_VALUE;
         }
         //si le joueur ne peut plus construire de huttes, il doit placer un temple ou une tour
-        if(j.getNbHuttes() == 0){
+        if(joueur.getNbHuttes() == 0){
+            System.out.println("c'est 0");
             return 0;
         }
         //sinon on calcule le score du joueur
-        int score_joueur = j.getNbHuttesPlacees() * poids_hutte;
-        score_joueur += j.getNbToursPlacees() * poids_tour;
-        score_joueur += j.getNbTemplesPlaces() * poids_temple;
+        int score_joueur = joueur.getNbHuttesPlacees() * poids_hutte;
+        score_joueur += joueur.getNbToursPlacees() * poids_tour;
+        score_joueur += joueur.getNbTemplesPlaces() * poids_temple;
 
         return score_joueur;
     }
@@ -180,9 +248,8 @@ public class IAIntelligente extends AbstractIA {
                             }
                         }
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                        System.out.println("TEMPLE");
-                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
-                        instance.getPlateau().placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
+                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
+                        instance.getPlateau().placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
                         //on supprime la position du bâtiment qui n'est plus libre
                         Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
                         //instance.getPlateau().supprimeElementNew(posASupprimer);

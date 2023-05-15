@@ -59,7 +59,7 @@ public class InstanceJeu {
 
     public void annuler() {
         Stock stock = plateau.annuler();
-        if(stock!=null) {
+        /*if(stock!=null) {
             if (stock.changementDeJoueur == false) {
                 changeJoueur();
             }
@@ -72,7 +72,7 @@ public class InstanceJeu {
                     joueurs[jCourant].decrementeHutte();
                 }
             }
-        }
+        }*/
     }
 
     public void changeJoueur() {
