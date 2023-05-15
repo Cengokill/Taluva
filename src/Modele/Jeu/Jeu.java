@@ -39,7 +39,7 @@ public class Jeu extends Observable {
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 1000;
+            delai = 200;
         }
         debug = false;
     }
@@ -55,10 +55,10 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
-        //joueurs[1] = IA2;
-        //joueurs[0] = IA1;
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        joueurs[1] = IA2;
+        joueurs[0] = IA1;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();
@@ -228,7 +228,7 @@ public class Jeu extends Observable {
         if(type_bat!=4){
             if(type_bat == 1){
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
-                if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(ligne,colonne)>=3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
             if(type_bat == 2) {
@@ -240,8 +240,6 @@ public class Jeu extends Observable {
             doit_placer_batiment = false;
             doit_placer_tuile = true;
             if(!estFinPartie()) {
-                //System.out.println("taille pioche : " + pioche.size());
-                //System.out.println("change joueur");
                 changeJoueur();
             }else{
                 return true;
@@ -261,7 +259,6 @@ public class Jeu extends Observable {
         int nb_temples_j = joueurs[jCourant].getNbTemples();
         int nb_tours_j = joueurs[jCourant].getNbTours();
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
-        //System.out.println("nb temples : " + nb_temples_j + " nb tours : " + nb_tours_j + " nb huttes : " + nb_huttes_j);
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
             if(type_jeu==CONSOLE && AFFICHAGE){

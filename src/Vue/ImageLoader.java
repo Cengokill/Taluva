@@ -185,16 +185,19 @@ public class ImageLoader {
     }
 
     private static BufferedImage getMaison(byte id_player, int hauteurTerrain,int typeTerrain) {
+        int nbMaison;
+        if(hauteurTerrain>=3) nbMaison = 3;
+        else nbMaison = hauteurTerrain;
         if (id_player == 0) {
-            if(typeTerrain==GRASS) return maisonTileColor1[hauteurTerrain-1][0];
-            if(typeTerrain==MONTAGNE) return maisonTileColor1[hauteurTerrain-1][1];
-            if(typeTerrain==DESERT) return maisonTileColor1[hauteurTerrain-1][2];
-            return maisonTileColor1[hauteurTerrain-1][3];
+            if(typeTerrain==GRASS) return maisonTileColor1[nbMaison-1][0];
+            if(typeTerrain==MONTAGNE) return maisonTileColor1[nbMaison-1][1];
+            if(typeTerrain==DESERT) return maisonTileColor1[nbMaison-1][2];
+            return maisonTileColor1[nbMaison-1][3];
         } else {
-            if(typeTerrain==GRASS) return maisonTileColor2[hauteurTerrain-1][0];
-            if(typeTerrain==MONTAGNE) return maisonTileColor2[hauteurTerrain-1][1];
-            if(typeTerrain==DESERT) return maisonTileColor2[hauteurTerrain-1][2];
-            return maisonTileColor2[hauteurTerrain-1][3];
+            if(typeTerrain==GRASS) return maisonTileColor2[nbMaison-1][0];
+            if(typeTerrain==MONTAGNE) return maisonTileColor2[nbMaison-1][1];
+            if(typeTerrain==DESERT) return maisonTileColor2[nbMaison-1][2];
+            return maisonTileColor2[nbMaison-1][3];
         }
     }
 
