@@ -51,7 +51,6 @@ public class Plateau implements Serializable, Cloneable {
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
         p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur;
         p.positions_libres = new ArrayList<>();
-
         for(Position posCourante: this.positions_libres){
             p.positions_libres.add(posCourante);
         }
@@ -1087,6 +1086,10 @@ public class Plateau implements Serializable, Cloneable {
     }
     public int getCOLONNES(){
         return COLONNES;
+    }
+
+    public ArrayList<ArrayList<TripletDePosition>> getListeTripletsPossible(){
+        return ListeTripletsPossible;
     }
 
     public void copieTripletsPossible(){

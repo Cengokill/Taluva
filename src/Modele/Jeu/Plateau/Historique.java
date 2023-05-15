@@ -46,7 +46,6 @@ public class Historique implements Serializable {
                 } else {
                     carte[tete.volcanLigne][tete.volcanColonne] = new Hexagone((byte) (hauteur-1), Hexagone.VOLCAN, (byte) tete.batimentLigne, (byte) tete.batimentColonne);
                 }
-                System.out.println(tete.oldTerrain1+" "+tete.oldTerrain2);
                 carte[tete.tile1Ligne][tete.tile1Colonne] = new Hexagone((byte) (hauteur-1), tete.getOldTerrain1(), (byte) tete.volcanColonne, (byte) tete.volcanColonne,carte[tete.tile1Ligne][tete.tile1Colonne].getNum());
                 carte[tete.tile2Ligne][tete.tile2Colonne] = new Hexagone((byte) (hauteur-1), tete.getOldTerrain2(), (byte) tete.volcanLigne, (byte) tete.volcanColonne,carte[tete.tile2Ligne][tete.tile2Colonne].getNum());
                 futur.addFirst(tete);
