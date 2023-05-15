@@ -231,6 +231,9 @@ public class FenetreJeu extends Container {
                 hauteur_fin_partie = (int) (largeur_fin_partie* rapport_fin_partie);
                 posX_fin_partie = (largeur - largeur_fin_partie)/2;
                 posY_fin_partie = (hauteur - hauteur_fin_partie)/2;
+                posX_joueur_victoire = (int) (posX_fin_partie + largeur_fin_partie*0.25);
+                posY_joueur_victoire = (int) (posY_fin_partie + hauteur_fin_partie*0.25);
+                posX_score_fin_partie = (int) (posX_fin_partie + largeur_fin_partie*0.7);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -350,6 +353,20 @@ public class FenetreJeu extends Container {
         }
     }
 
+    public static void afficheFinPartie(Graphics g) {
+        if (select_fin_partie) {
+            g.drawImage(finPartie, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie, null);
+            Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            g.setFont(font);
+            g.setColor(Color.BLACK);
+            String joueur_victoire = jeu.getJoueurs()[jeu.jVainqueur].getPrenom();
+            String score_victoire = Integer.toString(jeu.getJoueurs()[jeu.jVainqueur].calculScore());
+            g.drawString(joueur_victoire, posX_joueur_victoire, posY_joueur_victoire);
+            g.drawString(score_victoire, posX_score_fin_partie, posY_joueur_victoire);
+            afficheBoutonQuitter(g);
+        }
+    }
+
     public static void afficheBackground(Graphics g) {
         System.out.println("afficheBackground");
         g.drawImage(background, 0, 0, largeur, hauteur, null);
@@ -361,13 +378,6 @@ public class FenetreJeu extends Container {
             afficheBoutonLoad(g);
             afficheBoutonSave(g);
             afficheBoutonTuto(g);
-            afficheBoutonQuitter(g);
-        }
-    }
-
-    public static void afficheFinPartie(Graphics g) {
-        if (select_fin_partie) {
-            g.drawImage(finPartie, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie, null);
             afficheBoutonQuitter(g);
         }
     }

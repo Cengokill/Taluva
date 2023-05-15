@@ -39,6 +39,7 @@ public class ImageLoader {
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options;
+    public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
     public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie;
 
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;

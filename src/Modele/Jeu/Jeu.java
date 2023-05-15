@@ -164,9 +164,6 @@ public class Jeu extends Observable {
     }
 
     public void calculScore(){
-        for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
-            score[joueurIndex] = joueurs[joueurIndex].getNbTemplesPlaces()*1000 + joueurs[joueurIndex].getNbToursPlacees()*100 + joueurs[joueurIndex].getNbHuttesPlacees();
-        }
     }
 
     public void afficheScore(){
