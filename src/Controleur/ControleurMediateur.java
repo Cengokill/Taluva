@@ -5,6 +5,8 @@ import Modele.Jeu.Jeu;
 import Patterns.CollecteurEvenements;
 import Vue.FenetreJeu;
 
+import static Vue.ImageLoader.select_fin_partie;
+
 public class ControleurMediateur implements CollecteurEvenements {
     final Jeu jeu;
     FenetreJeu vue;
@@ -21,15 +23,16 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getPlateau().peutPlacerTuile(volcan_i, volcan_j, tile1_i, tile1_j, tile2_i, tile2_j);
     }
     public void placeEtage(int volcan_x, int volcan_y, int tile1_x, int tile1_y, byte terrain1, int tile2_x, int tile2_y, byte terrain2) {
-        if (jeu.joueurPlaceEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2)) {
-        }
+        jeu.joueurPlaceEtage(volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
     }
     public boolean peutPlacerBatiment(int ligne, int colonne){
         return jeu.getPlateau().peutPlacerMaison(ligne,colonne);
     }
 
     public void placeBatiment(int ligne, int colonne, byte type_bat) {
-        jeu.joueurPlaceBatiment(ligne, colonne, type_bat);
+        if(jeu.joueurPlaceBatiment(ligne, colonne, type_bat)){//si fin de partie
+            select_fin_partie = true;
+        }
     }
 
     public Hexagone[][] getPlateau() {

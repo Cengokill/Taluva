@@ -163,35 +163,6 @@ public class Jeu extends Observable {
         else joueMultiThread();
     }
 
-    public boolean estFinPartie() {
-        if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
-            if(type_jeu==CONSOLE && AFFICHAGE){
-                System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
-                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
-            }
-            return true;
-        }
-        int nb_temples_j = joueurs[jCourant].getNbTemples();
-        int nb_tours_j = joueurs[jCourant].getNbTours();
-        int nb_huttes_j = joueurs[jCourant].getNbHuttes();
-        // !!! reste à ajouter le fait que le joueur courant ne puisse pas jouer parce qu'il ne peut plus poser de bâtiment
-        if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
-            jVainqueur = jCourant;
-            if(type_jeu==CONSOLE && AFFICHAGE){
-                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
-            }
-            return true;
-        }
-        if(pioche.isEmpty()){
-            calculScore();
-            if(type_jeu==CONSOLE && AFFICHAGE){
-                afficheScore();
-            }
-            return true;
-        }
-        return false;
-    }
-
     public void calculScore(){
         for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
             score[joueurIndex] = joueurs[joueurIndex].getNbTemplesPlaces()*1000 + joueurs[joueurIndex].getNbToursPlacees()*100 + joueurs[joueurIndex].getNbHuttesPlacees();
@@ -251,9 +222,10 @@ public class Jeu extends Observable {
         return true;
     }
 
-    public void joueurPlaceBatiment(int ligne, int colonne, byte type_bat){
+    public boolean joueurPlaceBatiment(int ligne, int colonne, byte type_bat){
         if (doit_placer_tuile) {
-            return;
+            System.err.println("Erreur : le joueur doit placer une tuile");
+            return false;
         }
         plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
         if(type_bat!=4){
@@ -270,8 +242,45 @@ public class Jeu extends Observable {
             }
             doit_placer_batiment = false;
             doit_placer_tuile = true;
-            changeJoueur();
+            if(!estFinPartie()) {
+                System.out.println("taille pioche : " + pioche.size());
+                System.out.println("change joueur");
+                changeJoueur();
+            }else{
+                return true;
+            }
         }
+        return false;
+    }
+
+    public boolean estFinPartie() {
+        if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
+            if(type_jeu==CONSOLE && AFFICHAGE){
+                System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
+                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
+            }
+            return true;
+        }
+        int nb_temples_j = joueurs[jCourant].getNbTemples();
+        int nb_tours_j = joueurs[jCourant].getNbTours();
+        int nb_huttes_j = joueurs[jCourant].getNbHuttes();
+        System.out.println("nb temples : " + nb_temples_j + " nb tours : " + nb_tours_j + " nb huttes : " + nb_huttes_j);
+        if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
+            jVainqueur = jCourant;
+            if(type_jeu==CONSOLE && AFFICHAGE){
+                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
+            }
+            System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
+            return true;
+        }
+        if(pioche.isEmpty()){
+            calculScore();
+            if(type_jeu==CONSOLE && AFFICHAGE){
+                afficheScore();
+            }
+            return true;
+        }
+        return false;
     }
 
     public void incrementePropagation(int ligne, int colonne){
