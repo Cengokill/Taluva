@@ -34,7 +34,7 @@ public class Historique implements Serializable {
         return h;
     }
 
-    public static Stock annuler(Hexagone[][] carte, ArrayList<ArrayList<TripletDePosition>>  ListetripletDePosition,ArrayList<Position>positions_libres_batiments) {
+    public static Stock annuler(Hexagone[][] carte, ArrayList<ArrayList<TripletDePosition>>  ListetripletDePosition,ArrayList<Position>positions_libres_batiments,ArrayList<ArrayList<Position>>ListePositions_libres) {
         //System.out.println("passé : "+passe.size());
         //System.out.println("futur : "+futur.size());
         if (peutAnnuler()) {
@@ -57,14 +57,11 @@ public class Historique implements Serializable {
                 Stock stock=new Stock(-1,Coup.TUILE,true);
                 stock.setTerrain1(tete.biome1);
                 stock.setTerrain2(tete.biome2);
-                System.out.println("nb de position libre de batiment : "+positions_libres_batiments.size());
                 //System.out.println("taille du futur :" + futur.size());
                 //System.out.println("taille du passé : " + passe.size());
-                System.out.println(ListetripletDePosition.get(ListetripletDePosition.size()-1).size()+" <-00000000");
-                System.out.println(ListetripletDePosition.size());
                 ListetripletDePosition.remove(ListetripletDePosition.size()-1);
-                System.out.println(ListetripletDePosition.get(ListetripletDePosition.size()-1).size()+" <-00000000");
-                System.out.println(ListetripletDePosition.size());
+                ListePositions_libres.remove(ListePositions_libres.size()-1);
+
                 return stock;
             } else {
                 int rendbatiment = 0;

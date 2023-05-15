@@ -22,7 +22,8 @@ public class Plateau implements Serializable, Cloneable {
 
     public int nbHutteDisponiblesJoueur =0; // Pour eviter d'aller dans le negatif lors de la propagation
     private Historique historique;
-    private ArrayList<Position> positions_libres;
+    private ArrayList<Position>positions_libres ;
+    private ArrayList<ArrayList<Position>>ListePositions_libres;
 
     private ArrayList<TripletDePosition> tripletsPossible;
     private ArrayList<ArrayList<TripletDePosition>> ListeTripletsPossible;
@@ -50,8 +51,16 @@ public class Plateau implements Serializable, Cloneable {
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
         p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur;
         p.positions_libres = new ArrayList<>();
+
         for(Position posCourante: this.positions_libres){
             p.positions_libres.add(posCourante);
+        }
+        for (ArrayList<Position>positions_libre:ListePositions_libres){
+            ArrayList<Position> positions_libr = new ArrayList<>();
+            for (Position position : positions_libr){
+                positions_libr.add(position);
+            }
+            p.ListePositions_libres.add(positions_libr);
         }
         p.positions_libres_batiments = new ArrayList<>();
         for(Position posCourante: this.positions_libres_batiments){
@@ -110,9 +119,9 @@ public class Plateau implements Serializable, Cloneable {
 
     private void initPositionsLibres() {
         positions_libres = new ArrayList<>();
+        ListePositions_libres = new ArrayList<>();
         positions_libres_batiments = new ArrayList<>();
     }
-
     private void initQuantitePions() {
         quantitePionJoueur1 = new byte[3];
         quantitePionJoueur2 = new byte[3];
@@ -577,10 +586,7 @@ public class Plateau implements Serializable, Cloneable {
                 aSupprimer.add(p);
             }
         }
-        System.out.println(j+"<--------jjjj");
         //System.out.println("Pour ?tre sur taille AVANT: "+listeVoisins.size());
-        int k = 0 ;
-        int l = 0;
         for(Position p : aSupprimer){
             listeVoisins.remove(p);
             for(TripletDePosition t : ListeTripletsPossible.get(ListeTripletsPossible.size()-1)){
@@ -588,18 +594,20 @@ public class Plateau implements Serializable, Cloneable {
                 if(((t.getVolcan().ligne()==p.ligne() && t.getVolcan().colonne()==p.colonne())||(t.getTile1().ligne()==p.ligne() && t.getTile1().colonne()==p.colonne())||(t.getTile2().ligne()==p.ligne() && t.getTile2().colonne()==p.colonne()))
                         ||!estHexagoneVide(t.getVolcan().ligne(),t.getVolcan().colonne())||!estHexagoneVide(t.getTile1().ligne(),t.getTile1().colonne())||!estHexagoneVide(t.getTile2().ligne(),t.getTile2().colonne())){
                     tripletsaSupprimer.add(t);
-                    k++;
+
                 }
-                l++;
             }
         }
-        System.out.println(j+"<----------------");
-        System.out.println(k+"<--------");
         //System.out.println("Pour ?tre sur taille APRES: "+listeVoisins.size());
         for(TripletDePosition t : tripletsaSupprimer){
             ListeTripletsPossible.get(ListeTripletsPossible.size()-1).remove(t);
         }
-            positions_libres.addAll(listeVoisins);
+        if(ListePositions_libres.size()!=0){
+            ListePositions_libres.get(ListePositions_libres.size()-1).addAll(listeVoisins);
+        }else {
+            ListePositions_libres.add(listeVoisins);
+        }
+
     }
 
 
@@ -644,6 +652,7 @@ public class Plateau implements Serializable, Cloneable {
             }
             // On ajoute les emplacements libres des tuiles
             copieTripletsPossible();
+            copieListePositions_libres();
             System.out.println("new liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
             System.out.println("old liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             ArrayList<Position> listeVoisins = voisins(coup.volcanLigne,coup.volcanColonne);
@@ -656,7 +665,7 @@ public class Plateau implements Serializable, Cloneable {
             System.out.println("old liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
-            creerTriplets(positions_libres);
+            creerTriplets(ListePositions_libres.get(ListePositions_libres.size()-1));
             System.out.println("new liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
             System.out.println("old liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             if(coup.typePlacement!=4) {
@@ -685,11 +694,10 @@ public class Plateau implements Serializable, Cloneable {
             if(coup.typePlacement!=4){
                 historique.ajoute(coup);
             }
-            System.out.println("new liste taille v2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
-            System.out.println("old liste taille v2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
 
         }
     }
+
 
     public ArrayList<Point2D> previsualisePropagation(int hutteX, int hutteY,byte joueurCourant){
         ArrayList<Point2D> nlh ;
@@ -1018,9 +1026,7 @@ public class Plateau implements Serializable, Cloneable {
 
 
     public Stock annuler() {
-        affiche();
-        Stock stock =historique.annuler(carte,ListeTripletsPossible,positions_libres_batiments);
-        affiche();
+        Stock stock =historique.annuler(carte,ListeTripletsPossible,positions_libres_batiments,ListePositions_libres);
         return stock;
     }
 
@@ -1050,6 +1056,7 @@ public class Plateau implements Serializable, Cloneable {
         System.arraycopy(this.quantitePionJoueur2, 0, nbPions[1], 0, this.quantitePionJoueur2.length);
         return nbPions;
     }
+    /*
 
     private ArrayList<Position> copyPositionsLibres() {
         ArrayList<Position> positions_libres = new ArrayList<>();
@@ -1057,7 +1064,7 @@ public class Plateau implements Serializable, Cloneable {
             positions_libres.add(positions_libre.copy());
         }
         return positions_libres;
-    }
+    }*/
 
     private ArrayList<Position> copyPositionsLibresBatiment() {
         ArrayList<Position> positions_libres_batiments = new ArrayList<>();
@@ -1087,10 +1094,18 @@ public class Plateau implements Serializable, Cloneable {
         for(TripletDePosition triplet: ListeTripletsPossible.get(ListeTripletsPossible.size()-1) ){
             copieTriplets.add(triplet);
         }
-
         ListeTripletsPossible.add(copieTriplets);
         System.out.println("new liste taille : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
         System.out.println("old liste taille :"+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+    }
+    private void copieListePositions_libres() {
+        ArrayList<Position> copiePosition=new ArrayList<>();
+        if(ListePositions_libres.size()!=0) {
+            for (Position position : ListePositions_libres.get(ListePositions_libres.size() - 1)) {
+                copiePosition.add(position);
+            }
+            ListePositions_libres.add(copiePosition);
+        }
     }
 
 
