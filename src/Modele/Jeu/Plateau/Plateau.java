@@ -653,21 +653,21 @@ public class Plateau implements Serializable, Cloneable {
             // On ajoute les emplacements libres des tuiles
             copieTripletsPossible();
             copieListePositions_libres();
-            System.out.println("new liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
-            System.out.println("old liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+            //System.out.println("new liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            //System.out.println("old liste taille v2.0 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             ArrayList<Position> listeVoisins = voisins(coup.volcanLigne,coup.volcanColonne);
             metAjourPositionsLibres(listeVoisins);
-            System.out.println("new liste taille v2.1 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
-            System.out.println("old liste taille v2.1 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+            //System.out.println("new liste taille v2.1 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            //System.out.println("old liste taille v2.1 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             listeVoisins = voisins(coup.tile1Ligne,coup.tile1Colonne);
             metAjourPositionsLibres(listeVoisins);
-            System.out.println("new liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
-            System.out.println("old liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+            //System.out.println("new liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            //System.out.println("old liste taille v2.2 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(ListePositions_libres.get(ListePositions_libres.size()-1));
-            System.out.println("new liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
-            System.out.println("old liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+            //System.out.println("new liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+            //System.out.println("old liste taille v2.3 : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
             if(coup.typePlacement!=4) {
                 historique.ajoute(coup);
             }
@@ -1095,8 +1095,8 @@ public class Plateau implements Serializable, Cloneable {
             copieTriplets.add(triplet);
         }
         ListeTripletsPossible.add(copieTriplets);
-        System.out.println("new liste taille : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
-        System.out.println("old liste taille :"+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
+        //System.out.println("new liste taille : "+ListeTripletsPossible.get(ListeTripletsPossible.size()-1).size());
+        //System.out.println("old liste taille :"+ListeTripletsPossible.get(ListeTripletsPossible.size()-2).size());
     }
     private void copieListePositions_libres() {
         ArrayList<Position> copiePosition=new ArrayList<>();

@@ -84,7 +84,7 @@ public class Historique implements Serializable {
 
                 }
                 passe.addFirst(tete);
-                System.out.println("nb de position libre de batiment : "+positions_libres_batiments.size());
+                //System.out.println("nb de position libre de batiment : "+positions_libres_batiments.size());
                 Stock stock =new Stock(rendbatiment,typeDeBatiment, false);
                 //System.out.println("taille du futur :" + futur.size());
                 //System.out.println("taille du passé : " + passe.size());
