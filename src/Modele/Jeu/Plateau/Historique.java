@@ -74,7 +74,7 @@ public class Historique implements Serializable {
                     rendbatiment+= hauteur+1;
 
                     Position ajouter = new Position(tete.batimentLigne,tete.batimentColonne);
-                    positions_libres_batiments.add(ajouter);
+                    positions_libres_batiments.add(0,ajouter);
 
 
                     futur.addFirst(tete);
