@@ -386,7 +386,7 @@ public class PanelPlateau extends JPanel {
     }
 
     private void afficheSelecteurBatiment(Graphics g, int pos_x, int pos_y, int value, int[] coups) {
-        if(coups[1]==0){
+        if(coups[1]==0){//HUTTE
             if(coups[0]==0) g.drawImage(choisirBat[11], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             else if(coups[2]==0) g.drawImage(choisirBat[9], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             else{
@@ -394,14 +394,14 @@ public class PanelPlateau extends JPanel {
                else g.drawImage(choisirBat[10], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             }
         }
-        else if(coups[0]==0){
+        else if(coups[0]==0){//TEMPLE
             if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             else{
                 if(value ==1) g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
                 else g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             }
         }else{
-            if(coups[2]==0){
+            if(coups[2]==0){//TOUR
                 if(value ==1) g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
                 else g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             }else{
