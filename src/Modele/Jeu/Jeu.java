@@ -55,10 +55,10 @@ public class Jeu extends Observable {
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
         joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
         //joueurs[1] = IA2;
-        joueurs[0] = IA1;
+        //joueurs[0] = IA1;
         score_victoires[0] = joueurs[0];
         score_victoires[1] = joueurs[1];
         pioche = new LinkedList<>();

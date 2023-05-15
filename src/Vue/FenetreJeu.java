@@ -263,7 +263,7 @@ public class FenetreJeu extends Container {
         bouton_annuler = lisImageBuf("Annuler");
         //bouton_load_select = lisImageBuf("Charger_select");
         bouton_annuler = lisImageBuf("Annuler");
-        //bouton_annuler_select = lisImageBuf("Annuler_select");
+        bouton_annuler_select = lisImageBuf("Annuler_select");
         bouton_refaire = lisImageBuf("Refaire");
         //bouton_refaire_select = lisImageBuf("Refaire_select");
         bouton_tuto_on = lisImageBuf("Tuto_on");
