@@ -7,6 +7,10 @@ import Patterns.Observable;
 import Structures.Position.Position;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -427,7 +431,6 @@ public class Jeu extends Observable {
     }
 
     public void sauvegarder() {
-
         try {
             FileOutputStream f = new FileOutputStream("sauvegarde1.txt");
             ObjectOutputStream out = new ObjectOutputStream(f);
@@ -436,7 +439,6 @@ public class Jeu extends Observable {
             out.writeObject(plateau);
             out.writeByte(jCourant);
             out.writeObject(pioche);
-
         }catch (IOException e){
             System.err.println("Impossible de save");
             System.out.println(e);
