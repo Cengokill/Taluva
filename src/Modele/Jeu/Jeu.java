@@ -240,8 +240,8 @@ public class Jeu extends Observable {
             doit_placer_batiment = false;
             doit_placer_tuile = true;
             if(!estFinPartie()) {
-                System.out.println("taille pioche : " + pioche.size());
-                System.out.println("change joueur");
+                //System.out.println("taille pioche : " + pioche.size());
+                //System.out.println("change joueur");
                 changeJoueur();
             }else{
                 return true;
@@ -261,7 +261,7 @@ public class Jeu extends Observable {
         int nb_temples_j = joueurs[jCourant].getNbTemples();
         int nb_tours_j = joueurs[jCourant].getNbTours();
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
-        System.out.println("nb temples : " + nb_temples_j + " nb tours : " + nb_tours_j + " nb huttes : " + nb_huttes_j);
+        //System.out.println("nb temples : " + nb_temples_j + " nb tours : " + nb_tours_j + " nb huttes : " + nb_huttes_j);
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
             if(type_jeu==CONSOLE && AFFICHAGE){
