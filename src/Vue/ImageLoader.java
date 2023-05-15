@@ -72,7 +72,7 @@ public class ImageLoader {
 
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
-        background = lisImageBuf("/Plateau/background_plateau_x4_carre");
+        background = lisImageBuf("/Plateau/background_plateau_x4_carre_2");
         readTilesImages();
         readPlayableTilesImages();
         readHeightImages(lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_1_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_2_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_3_hex"));
