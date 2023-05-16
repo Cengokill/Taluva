@@ -67,23 +67,26 @@ public class PanelPlateau extends JPanel {
             return;
         }
         //if(!jeu.estFinPartie()){
-            changerTuileAPoser();
-            changerPoseTile();
+        changerTuileAPoser();
+        changerPoseTile();
 
-            super.paintComponent(g);
-            afficheBackground(cameraOffset.x, cameraOffset.y, g);
+        super.paintComponent(g);
+        afficheBackground(cameraOffset.x, cameraOffset.y, g);
 
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.translate(cameraOffset.x, cameraOffset.y);
-            g2d.scale(zoomFactor, zoomFactor);
-            displayHexagonMap(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(cameraOffset.x, cameraOffset.y);
+        g2d.scale(zoomFactor, zoomFactor);
+        displayHexagonMap(g);
+
+        if (!select_menu_options) {
             affichePrevisualisationPropagation(g);
-
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
-            
+        }
+
+
         //}else{
-            // TODO Affiche fin de la partie
+        // TODO Affiche fin de la partie
         //}
     }
 
@@ -143,7 +146,7 @@ public class PanelPlateau extends JPanel {
             Plateau plateauCopie = jeu.getPlateau().copie();
             boolean affiche = false;
             if(plateauCopie.getTuile(t.getVolcan().ligne(),t.getVolcan().colonne()).getBiomeTerrain() == VOLCAN || plateauCopie.getTuile(t.getTile1().ligne(),t.getTile1().colonne()).getBiomeTerrain() == VOLCAN
-            || plateauCopie.getTuile(t.getTile2().ligne(),t.getTile2().colonne()).getBiomeTerrain() == VOLCAN){
+                    || plateauCopie.getTuile(t.getTile2().ligne(),t.getTile2().colonne()).getBiomeTerrain() == VOLCAN){
                 plateauCopie.affiche();
                 affiche=true;
             }
@@ -179,9 +182,8 @@ public class PanelPlateau extends JPanel {
             return;
         }
         int tileId = map[ligne][colonne].getBiomeTerrain();
-        if (tileId != VIDE) {
-            afficheHexagone(g, map, tileWidth, verticalOffset, ligne, colonne, tileId);
-        }
+        afficheHexagone(g, map, tileWidth, verticalOffset, ligne, colonne, tileId);
+
         int x = colonne * tileWidth - (ligne % 2 == 1 ? tileWidth / 2 : 0);
         int y = ligne * verticalOffset;
         g.setFont(new Font("TimesRoman", Font.BOLD, 80));
@@ -280,7 +282,7 @@ public class PanelPlateau extends JPanel {
 
 
         if (estCoteTuile(colonneDirection, map[ligne], ligneHexagones[colonne])) {
-                g.drawImage(contourTuile, xDrawPosition, yDrawPosition - heightoffset + 55, null);
+            g.drawImage(contourTuile, xDrawPosition, yDrawPosition - heightoffset + 55, null);
         }
 
         if (estBordureHauteur(colonneDirection, map[ligne], ligneHexagones[colonne])) {
@@ -294,8 +296,8 @@ public class PanelPlateau extends JPanel {
 
     private boolean estCoteTuile(int colonneDirection, Hexagone[] map, Hexagone hexagoneCourant) {
         boolean aMemeVolcan = map[colonneDirection].getColonneVolcan() == hexagoneCourant.getColonneVolcan()
-                                &&
-                              map[colonneDirection].getLigneVolcan() == hexagoneCourant.getLigneVolcan();
+                &&
+                map[colonneDirection].getLigneVolcan() == hexagoneCourant.getLigneVolcan();
 
         return hexagoneCourant.getBiomeTerrain() != Hexagone.VIDE && !aMemeVolcan;
     }
@@ -390,8 +392,8 @@ public class PanelPlateau extends JPanel {
             if(coups[0]==0) g.drawImage(choisirBat[11], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             else if(coups[2]==0) g.drawImage(choisirBat[9], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             else{
-               if(value==0) g.drawImage(choisirBat[8], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-               else g.drawImage(choisirBat[10], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                if(value==0) g.drawImage(choisirBat[8], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+                else g.drawImage(choisirBat[10], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
             }
         }
         else if(coups[0]==0){
@@ -444,10 +446,15 @@ public class PanelPlateau extends JPanel {
     }
 
     private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
+        int j2 = convertionTileMapToHexagonal(ligne, colonne);
         if (map[ligne][colonne].getBiomeTerrain() == VOLCAN) {
-            int j2 = convertionTileMapToHexagonal(ligne, colonne);
             illumineVolcanLibre(g, ligne, colonne, drawX, drawY, heightoffset - 50, j2);
-            afficheDirectionsLibres(g, ligne, colonne, drawX, drawY, heightoffset, j2);
+            afficheDirectionsLibres(g, ligne, colonne, drawX, drawY, heightoffset - 50, j2);
+        } else if (map[ligne][colonne].getBiomeTerrain() == VIDE || map[ligne][colonne].getBiomeTerrain() == WATER) {
+            afficheDirectionsLibres(g, ligne, colonne, drawX, drawY, heightoffset - 50, j2);
+        }
+        if (map[ligne][colonne].placable) {
+            g.drawImage(placable, drawX, drawY - heightoffset + 50, null);
         }
     }
 
@@ -474,24 +481,36 @@ public class PanelPlateau extends JPanel {
         return colonneAjustee;
     }
 
-    private void afficheDirectionsLibres(Graphics g, int colonne, int ligne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
-        if ((controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee, colonne - 1, colonneAjustee + 1))==0) {
-            g.drawImage(beacon_1, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+    private void afficheDirectionsLibres(Graphics g, int ligne, int colonne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
+        if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee, ligne - 1, colonneAjustee + 1))==0) {
+            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee].placable = true;
+            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee + 1].placable = true;
+            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
         }
-        if ((controleur.peutPlacerTuile(colonne, ligne, colonne - 1, colonneAjustee + 1, colonne, ligne + 1))==0) {
-            g.drawImage(beacon_2, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee + 1, ligne, colonne + 1))==0) {
+            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee + 1].placable = true;
+            jeu.getPlateau().getCarte()[ligne][colonneAjustee + 1].placable = true;
+            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
         }
-        if ((controleur.peutPlacerTuile(colonne, ligne, colonne, ligne + 1, colonne + 1, colonneAjustee + 1))==0) {
-            g.drawImage(beacon_3, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne + 1, ligne + 1, colonneAjustee + 1))==0) {
+            jeu.getPlateau().getCarte()[ligne][colonne + 1].placable = true;
+            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
+            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
         }
-        if ((controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee + 1, colonne + 1, colonneAjustee))==0) {
-            g.drawImage(beacon_4, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee + 1, ligne + 1, colonneAjustee))==0) {
+            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
+            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
+            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
         }
-        if ((controleur.peutPlacerTuile(colonne, ligne, colonne + 1, colonneAjustee, colonne, ligne - 1))==0) {
-            g.drawImage(beacon_5, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee, ligne, colonne - 1))==0) {
+            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee].placable = true;
+            jeu.getPlateau().getCarte()[ligne][colonne - 1].placable = true;
+            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
         }
-        if ((controleur.peutPlacerTuile(colonne, ligne, colonne, ligne - 1, colonne - 1, colonneAjustee))==0) {
-            g.drawImage(beacon_6, volcanDrawX, volcanDrawY - heightoffset + 5, null);
+        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne - 1, ligne - 1, colonneAjustee))==0) {
+            jeu.getPlateau().getCarte()[ligne][colonne - 1].placable = true;
+            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee].placable = true;
+            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
         }
     }
 
@@ -631,9 +650,9 @@ public class PanelPlateau extends JPanel {
             if (tile1 != null && tile2 != null && tile3 != null) {
                 opacity = updateOpacite(i, j, j2, opacity);
                 if (opacity != 1f) {
-                        tile1 = tileErreur;
-                        tile2 = tileErreur;
-                        tile3 = tileErreur;
+                    tile1 = tileErreur;
+                    tile2 = tileErreur;
+                    tile3 = tileErreur;
                 }
             }
 
