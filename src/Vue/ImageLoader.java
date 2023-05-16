@@ -81,7 +81,7 @@ public class ImageLoader {
         readBatimentsImages();
         readAndFilterContoursImages();
         readSelectionBatimentImage();
-        //posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
+        posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
     }
