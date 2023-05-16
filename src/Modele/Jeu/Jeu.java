@@ -34,6 +34,8 @@ public class Jeu extends Observable {
     public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
 
+    public MusicPlayer musicPlayer;
+
     public Jeu(byte type_jeu){
         this.type_jeu = type_jeu;
         if(type_jeu == CONSOLE) {
@@ -71,6 +73,9 @@ public class Jeu extends Observable {
         estPartieFinie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
+        musicPlayer = new MusicPlayer("Musiques/Alberto.wav");
+        musicPlayer.setVolume(-13.0f);
+        musicPlayer.loop();
 
         if (estJoueurCourantUneIA()) {
             if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
