@@ -328,8 +328,6 @@ public class PanelPlateau extends JPanel {
             //else if(value==0) value = 1;
             int[] coups = coupJouable(ligne, colonne);
             peutPlacerBatiment = updateScrollValue(s, coups);
-            System.out.println("s : "+s);
-            System.out.println("peutPlacerBatiment : "+peutPlacerBatiment);
 
             if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
             if(peutPlacerBatiment && s==0){
