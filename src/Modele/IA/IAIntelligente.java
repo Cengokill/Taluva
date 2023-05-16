@@ -9,7 +9,6 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class IAIntelligente extends AbstractIA {
@@ -30,7 +29,15 @@ public class IAIntelligente extends AbstractIA {
     }
 
     InstanceJeu instance;
-
+    @Override
+    public CoupValeur joue() {
+        r = new Random();
+        ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
+        Plateau plateauIA = jeu.getPlateau().copie();
+        plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
+        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
+        return choisirCoupTuile(jeu.getTuileCourante());
+    }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
         ArrayList<Tuile> pioche = new ArrayList<>();
         //calcule tous les coups avec chaque tuile de la pioche
@@ -87,7 +94,6 @@ public class IAIntelligente extends AbstractIA {
         return coupARenvoyer.get(r.nextInt(coupARenvoyer.size()));
     }
 
-
     public ArrayList<Tuile> copyPioche(ArrayList<Tuile> pioche){
         ArrayList<Tuile> piocheCopie = new ArrayList<>();
         for (Tuile tuileCourante:pioche) {
@@ -116,7 +122,6 @@ public class IAIntelligente extends AbstractIA {
         }
         return jCourantCopie;
     }
-
 
     private CoupValeur choisirCoupBatiment(Coup coupT, InstanceJeu instance) {
         int i=0, score_max = Integer.MIN_VALUE;
@@ -162,7 +167,8 @@ public class IAIntelligente extends AbstractIA {
                 else if (coupCourant.typePlacement==3) batiment = TOUR;
                 augmenteBatimentsJoueur(batiment,joueurAEvaluer,0);
             }
-            score_courant = Evaluation(instanceAEvaluer);
+            // On evalue la nouvelle instance
+            score_courant = evaluationScoreInstance(instanceAEvaluer);
             if(score_courant == score_max){
                 coupsBatimentARenvoyer.add(coupCourant);
             }else if(score_courant > score_max){
@@ -185,25 +191,6 @@ public class IAIntelligente extends AbstractIA {
         }
         return new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
     }
-
-    public int Evaluation(InstanceJeu instanceCourante){
-        Joueur j = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
-        //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
-        if((j.getNbHuttes() == 0 && j.getNbTemples() == 0)||(j.getNbTemples() ==0 && j.getNbTours() ==0)||(j.getNbHuttes()==0 && j.getNbTours()==0)){
-            return Integer.MAX_VALUE;
-        }
-        //si le joueur ne peut plus construire de huttes, il doit placer un temple ou une tour
-        if(j.getNbHuttes() == 0){
-            return 0;
-        }
-        //sinon on calcule le score du joueur
-        int score_joueur = j.getNbHuttesPlacees() * poids_hutte;
-        score_joueur += j.getNbToursPlacees() * poids_tour;
-        score_joueur += j.getNbTemplesPlaces() * poids_temple;
-
-        return score_joueur;
-    }
-
 
     private ArrayList<Coup> getTousLesCoupsPossiblesDesBatiments(InstanceJeu instanceCourante){
         Plateau plateauCopie = instanceCourante.getPlateau().copie();
@@ -262,14 +249,56 @@ public class IAIntelligente extends AbstractIA {
         return coupsPossiblesARenvoyer;
     }
 
+    private int evaluationScoreInstance(InstanceJeu instanceCourante){
+        int scoreJoueur = evaluationInstance(instanceCourante,true);
+        int scoreAdverse = evaluationInstance(instanceCourante,false);
 
-    @Override
-    public CoupValeur joue() {
-        r = new Random();
-        ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
-        Plateau plateauIA = jeu.getPlateau().copie();
-        plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
-        return choisirCoupTuile(jeu.getTuileCourante());
+        return scoreJoueur-scoreAdverse;
     }
+
+    private int evaluationInstance(InstanceJeu instanceCourante, boolean joueurCourant){
+        Joueur joueur;
+        if(joueurCourant) joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
+        else joueur = instanceCourante.getJoueur((instanceCourante.getJoueurCourant()+1%2));
+
+        //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
+        if((joueur.getNbHuttes() == 0 && joueur.getNbTemples() == 0)||(joueur.getNbTemples() ==0 && joueur.getNbTours() ==0)||(joueur.getNbHuttes()==0 && joueur.getNbTours()==0)){
+            return Integer.MAX_VALUE;
+        }
+        // On veut eviter le cas où le joueur n'a plus de hutte
+        if(joueur.getNbHuttes() == 0){
+            return 0;
+        }
+
+        //sinon on calcule le score du joueur
+        int score_joueur = joueur.getNbHuttesPlacees() * poids_hutte;
+        score_joueur += joueur.getNbToursPlacees() * poids_tour;
+        score_joueur += joueur.getNbTemplesPlaces() * poids_temple;
+
+        return score_joueur;
+    }
+
+    private int evaluerVillages(InstanceJeu instanceJeu,Joueur joueurAEvaluer){
+        int nombreVillages = joueurAEvaluer.getNbVillages();
+        int score = nombreVillages;
+        int nbHuttesPlacables = 0;
+        int nbTemplesPlacables = 0;
+        int nbToursPlacables = 0;
+
+        // On regarde tous les batiments placables par le joueurAEvaluer sur l'instance courante
+        for(int i=0;i<instanceJeu.getPlateau().getLIGNES();i++){
+            for(int j=0;j<instanceJeu.getPlateau().getCOLONNES();j++){
+                int hauteurCourante = instanceJeu.getPlateau().getHauteurTuile(i,j);
+                int[] batimentsPlacables = instanceJeu.getPlateau().getBatimentPlacable(i,j,joueurAEvaluer.getNumero());
+                if(batimentsPlacables[0]==1) nbTemplesPlacables++;
+                if(batimentsPlacables[1]==1) nbHuttesPlacables = nbHuttesPlacables+hauteurCourante;
+                if(batimentsPlacables[2]==1) nbToursPlacables++;
+            }
+        }
+
+
+
+        return score;
+    }
+
 }
