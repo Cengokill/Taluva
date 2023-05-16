@@ -488,8 +488,8 @@ public class Jeu extends Observable implements Serializable{
         this.tuile_courante=jeu.tuile_courante;
         this.jCourant=jeu.jCourant;
         this.jVainqueur=jeu.jVainqueur;
-        Joueur joueurs2=new Joueur(jeu.joueurs[0].getTypeJoueur(),jeu.joueurs[0].getNumero(),jeu.joueurs[0].getPrenom());
-
+        this.joueurs[0]=jeu.joueurs[0];
+        this.joueurs[1]=jeu.joueurs[1];
         this.p=jeu.p;
         this.tuileAPoser=jeu.tuileAPoser;
         this.doit_placer_tuile=jeu.doit_placer_tuile;
