@@ -225,8 +225,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (!e.isControlDown()) {
                 // Lorsque le bouton droit est enfoncé, modifiez la valeur de scrollValue
                 if(e.getWheelRotation() == 1){
+                    provenanceScroll = (byte)2;
                     scrollValue = Math.max(1,(scrollValue+1)%7);
                 }else{
+                    provenanceScroll = (byte)1;
                     if(scrollValue == 1) scrollValue = 6;
                     else scrollValue--;
                 }

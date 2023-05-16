@@ -41,6 +41,9 @@ public class PanelPlateau extends JPanel {
 
     public final int HAUTEUR_ETAGE = 80;
     public final int HAUTEUR_OCEAN = 50;
+    public int posX_selecteur_vert_depart = -10;
+    public int posX_selecteur_vert;
+    public int vitesse = 30;
 
     public PanelPlateau(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
         this.fenetreJeu = t;
@@ -343,7 +346,7 @@ public class PanelPlateau extends JPanel {
             posY_bat_precedent = colonne;
             index_bat_precedent = value;
             afficheSelecteurBatiment(g, pos_x, pos_y, coups);
-            afficheSelecteurVert(g, pos_x, pos_y, value, coups);
+            afficheSelecteurVert(g, pos_x+posX_selecteur_vert, pos_y-8, coups);
         }
     }
 
@@ -387,8 +390,7 @@ public class PanelPlateau extends JPanel {
         return value;
     }
 
-    private void afficheSelecteurVert(Graphics g, int pos_x, int pos_y, int value, int[] coups){
-        if(value == 0)
+    private void afficheSelecteurVert(Graphics g, int pos_x, int pos_y, int[] coups){
         g.drawImage(selecteur_vert, pos_x, pos_y, selecteur_vert.getWidth()*2, selecteur_vert.getHeight()*2, null);
     }
 
@@ -784,8 +786,7 @@ public class PanelPlateau extends JPanel {
         else if (scrollValue == 6){
             placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified);
         }
-
-        //miseAJour();
+        scrollValue = 0;//on met la valeur de scrollValue à 0 pour que la sélection se fasse sur la hutte juste après
     }
 
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
@@ -867,6 +868,7 @@ public class PanelPlateau extends JPanel {
                 controleur.placeBatiment(i,j,(byte) 2);
             }
         }
+        scrollValue = 1;//on met la valeur de scrollValue à 1 car si elle est à 0 la prochaine tuile ne s'affichera pas
     }
 
     public void addToCursor(MouseEvent e) {
@@ -944,6 +946,28 @@ public class PanelPlateau extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 miseAJour();
+                int s = scrollValue%3;
+                if(s==0){//si le sélecteur doit se placer sur la hutte
+                    if(provenanceScroll == 1){//si le sélecteur était à droite
+                        posX_selecteur_vert = Math.max(posX_selecteur_vert_depart, posX_selecteur_vert-vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_selecteur_vert_depart;
+                    }
+                }else if(s==1){//si le sélecteur doit se placer sur le temple
+                    if(provenanceScroll == 1){//si le sélecteur était à droite
+                        posX_selecteur_vert = Math.max(posX_tiers_selecteur_vert, posX_selecteur_vert-vitesse);
+                    }else if(provenanceScroll == 2){//si le sélecteur était à gauche
+                        posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert, posX_selecteur_vert+vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_tiers_selecteur_vert;
+                    }
+                }else{//si le sélecteur doit se placer sur la tour
+                    if(provenanceScroll == 2) {//si le sélecteur était à gauche
+                        posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert * 2, posX_selecteur_vert + vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_tiers_selecteur_vert * 2;
+                    }
+                }
                 timerValue+=10;
             }
         });

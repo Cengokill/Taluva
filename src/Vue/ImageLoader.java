@@ -38,7 +38,7 @@ public class ImageLoader {
             posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
-            hauteur_menu_options;
+            hauteur_menu_options, posX_tiers_selecteur_vert;
     public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
     public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie;
 
@@ -81,6 +81,7 @@ public class ImageLoader {
         readBatimentsImages();
         readAndFilterContoursImages();
         readSelectionBatimentImage();
+        posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
     }
