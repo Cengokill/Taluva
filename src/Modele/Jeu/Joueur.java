@@ -57,6 +57,14 @@ public class Joueur {
         this.image = image;
     }
 
+    public void incrementeNbVillages(){
+        nbVillages++;
+    }
+
+    public int getNbVillages(){
+        return nbVillages;
+    }
+
     public BufferedImage getImage(){
         return image;
     }
