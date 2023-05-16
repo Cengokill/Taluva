@@ -83,10 +83,11 @@ public class Jeu extends Observable implements Serializable{
         estPartieFinie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
-
-        musicPlayer = new MusicPlayer("Musiques/Alberto.wav");
-        musicPlayer.setVolume(-13.0f);
-        musicPlayer.loop();
+        if(type_jeu == GRAPHIQUE) {
+            musicPlayer = new MusicPlayer("Musiques/Alberto.wav");
+            musicPlayer.setVolume(-13.0f);
+            musicPlayer.loop();
+        }
 
         if (estJoueurCourantUneIA()) {
             if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
