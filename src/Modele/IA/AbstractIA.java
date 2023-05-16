@@ -19,19 +19,21 @@ public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est 
     private static int type_IA;
     private static int INTELLIGENTE = 0;
     private static int ALEATOIRE = 1;
+    private byte numero;
 
-    public AbstractIA(byte type, String prenom) {
-        super(type, prenom);
+    public AbstractIA(byte type, byte n, String prenom) {
+        super(type, n, prenom);
+        numero = n;
     }
 
-    public static AbstractIA nouvelle(Jeu j) {
+    public static AbstractIA nouvelle(Jeu j, byte n) {
         AbstractIA resultat = null;
         pioche = new LinkedList<>();
-        type_IA = ALEATOIRE;
+        type_IA = INTELLIGENTE;
         if(type_IA == ALEATOIRE) {
-            resultat = new IAAleatoire();
+            resultat = new IAAleatoire(n);
         }else if(type_IA == INTELLIGENTE) {
-            resultat = new IAIntelligente();
+            resultat = new IAIntelligente(n);
         }else{
             System.err.println("AbstractIA non supportée.");
             System.exit(1);

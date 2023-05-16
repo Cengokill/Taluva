@@ -41,6 +41,9 @@ public class PanelPlateau extends JPanel {
 
     public final int HAUTEUR_ETAGE = 80;
     public final int HAUTEUR_OCEAN = 50;
+    public int posX_selecteur_vert_depart = -10;
+    public int posX_selecteur_vert;
+    public int vitesse = 30;
 
     public PanelPlateau(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
         this.fenetreJeu = t;
@@ -318,16 +321,18 @@ public class PanelPlateau extends JPanel {
             g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment(),jeu.getPlateau().getTuile(ligne,colonne).getBiomeTerrain(),jeu.getPlateau().getHauteurTuile(ligne,colonne)), x, y - heightoffset, null);
 
         } else if (map[ligne][colonne].getBatiment() == CHOISIR_BATIMENT) {
-            int pos_x = x -150;
+            int pos_x = x-choisirBat[0].getWidth()/2;
             int pos_y = y -300;
-            int value = scrollValue%3;
-            if(value==1) value = 0;
-            else if(value==0) value = 1;
+            int s = scrollValue%3;//0 : hutte, 1 : temple, 2 : tour
+            boolean peutPlacerBatiment = false;
+            //System.out.println("value : "+value);
+            //if(value==1) value = 0;
+            //else if(value==0) value = 1;
             int[] coups = coupJouable(ligne, colonne);
+            peutPlacerBatiment = updateScrollValue(s, coups);
 
-            value = updateScrollValue(value, coups);
             if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
-            if(value==1 && (index_bat_precedent!=1||posX_bat_precedent!=ligne||posY_bat_precedent!=colonne)){
+            if(peutPlacerBatiment && s==0){
                 emplacementPropagation = new ArrayList<>();
                 emplacementPropagation.add(new Position(ligne,colonne));
                 ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
@@ -337,13 +342,14 @@ public class PanelPlateau extends JPanel {
                     int posPrevY = PosCourante.getPointX() * (int) (voidTile.getWidth() * 0.75);
                     emplacementPropagation.add(new Position(posPrevX,posPrevY));
                 }
-            }else if(index_bat_precedent!=value){
+            }else{
                 emplacementPropagation = new ArrayList<>();
             }
             posX_bat_precedent = ligne;
             posY_bat_precedent = colonne;
-            index_bat_precedent = value;
-            afficheSelecteurBatiment(g, pos_x, pos_y, value, coups);
+            //index_bat_precedent = 1;
+            afficheSelecteurBatiment(g, pos_x, pos_y, coups);
+            afficheSelecteurVert(g, pos_x+posX_selecteur_vert, pos_y-10, coups);
         }
     }
 
@@ -366,48 +372,38 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    private int updateScrollValue(int value, int[] coups) {
-        if (coups[0] == 0 && coups[2] == 0) value = 1; // si on ne peut pas placer de temple ni de tour
-        else if(coups[1]==0){       // On ne peut pas placer de hutte
-            if(coups[0]==0) value=2;
-            else if(coups[2]==0) value=0;
-            else{
-                value = scrollValue % 2;
-                if(value==1) value=2;
-            }
-        }
-        else if (coups[0] == 0) {   // on ne peut pas placer de temple
-            value = scrollValue % 2;
-            if (value == 0) value = 2;
-        } else if (coups[2] == 0) { // On ne peut pas placer de tour
-            value = scrollValue % 2;
-            if (value == 1) value = 0;
-            else if (value == 0) value = 1;
-        }
-        return value;
+    private void afficheSelecteurVert(Graphics g, int pos_x, int pos_y, int[] coups){
+        g.drawImage(selecteur_vert, pos_x, pos_y, selecteur_vert.getWidth()*2, selecteur_vert.getHeight()*2, null);
     }
 
-    private void afficheSelecteurBatiment(Graphics g, int pos_x, int pos_y, int value, int[] coups) {
-        if(coups[1]==0){
-            if(coups[0]==0) g.drawImage(choisirBat[11], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-            else if(coups[2]==0) g.drawImage(choisirBat[9], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-            else{
-                if(value==0) g.drawImage(choisirBat[8], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                else g.drawImage(choisirBat[10], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+    private void afficheSelecteurBatiment(Graphics g, int pos_x, int pos_y, int[] coups) {
+        if(coups[1]==0){//impossible de construire une hutte
+            if(coups[0]==0){//impossible de construire un temple
+                if(coups[2]==0){//impossible de construire une tour
+                    g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[7].getWidth()*2,choisirBat[7].getHeight()*2, null);
+                }else{//tour possible
+                    g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[6].getWidth()*2,choisirBat[6].getHeight()*2, null);
+                }
+            }else{//temple possible
+                if(coups[2]==0){//impossible de construire une tour
+                    g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[5].getWidth()*2,choisirBat[5].getHeight()*2, null);
+                }else{//tour possible
+                    g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[4].getWidth()*2,choisirBat[4].getHeight()*2, null);
+                }
             }
-        }
-        else if(coups[0]==0){
-            if(coups[2]==0) g.drawImage(choisirBat[7], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-            else{
-                if(value ==1) g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                else g.drawImage(choisirBat[6], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-            }
-        }else{
-            if(coups[2]==0){
-                if(value ==1) g.drawImage(choisirBat[4], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-                else g.drawImage(choisirBat[5], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
-            }else{
-                g.drawImage(choisirBat[value], pos_x, pos_y,choisirBat[value].getWidth()*2,choisirBat[value].getWidth()*2, null);
+        }else{//hutte possible
+            if(coups[0]==0){//impossible de construire un temple
+                if(coups[2]==0){//impossible de construire une tour
+                    g.drawImage(choisirBat[3], pos_x, pos_y,choisirBat[3].getWidth()*2,choisirBat[3].getHeight()*2, null);
+                }else{//tour possible
+                    g.drawImage(choisirBat[2], pos_x, pos_y,choisirBat[2].getWidth()*2,choisirBat[2].getHeight()*2, null);
+                }
+            }else{//temple possible
+                if(coups[2]==0){//impossible de construire une tour
+                    g.drawImage(choisirBat[1], pos_x, pos_y,choisirBat[1].getWidth()*2,choisirBat[1].getHeight()*2, null);
+                }else{//tour possible
+                    g.drawImage(choisirBat[0], pos_x, pos_y,choisirBat[0].getWidth()*2,choisirBat[0].getHeight()*2, null);
+                }
             }
         }
     }
@@ -789,8 +785,7 @@ public class PanelPlateau extends JPanel {
         else if (scrollValue == 6){
             placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified);
         }
-
-        //miseAJour();
+        scrollValue = 0;//on met la valeur de scrollValue à 0 pour que la sélection se fasse sur la hutte juste après
     }
 
     private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
@@ -849,28 +844,38 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    public void placerMaison(int i, int j) {
-        int value = scrollValue%3;
-        int[] coupsJouable = coupJouable(i,j);
-        value = updateScrollValue(value, coupsJouable);
+    private boolean updateScrollValue(int value, int[] coups) {
+        //coups[0] : temple, coups[1] : hutte, coups[2] : tour
+        if(value==0){//si on veut placer une hutte
+            return coups[1]==1;//si on peut placer une hutte
+        }else if(value==1){//si on veut placer un temple
+            return coups[0]==1;//si on peut placer un temple
+        }else{//si on veut placer une tour
+            return coups[2]==1;//si on peut placer une tour
+        }
+    }
 
-        if (value == 1) { // place hut
-            if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;
-            enSelection = false;
-            decomptePropagation();
-            controleur.placeBatiment(i,j,(byte) 1);
-        }
-        else if (value == 2){ // place tour
-            if(peutPoserTour(i,j)){ // on verifie la condition pour poser une tour
+    public void placerMaison(int i, int j) {
+        int s = scrollValue%3;
+        int[] coupsJouable = coupJouable(i,j);
+        if(updateScrollValue(s, coupsJouable)) {
+            if (s == 0) { // place une hutte
+                if (jeu.getPlateau().getHauteurTuile(i, j) > 1 && !aCiteAutour(i, j)) return;
                 enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 3);
+                decomptePropagation();
+                controleur.placeBatiment(i, j, (byte) 1);
+            } else if (s == 2) { // place une tour
+                if (peutPoserTour(i, j)) { // on verifie la condition pour poser une tour
+                    enSelection = false;
+                    controleur.placeBatiment(i, j, (byte) 3);
+                }
+            } else if (s == 1) { // place un temple
+                if (peutPoserTemple(i, j)) {
+                    enSelection = false;
+                    controleur.placeBatiment(i, j, (byte) 2);
+                }
             }
-        }
-        else if (value == 0){ // place temple
-            if(peutPoserTemple(i,j)){
-                enSelection = false;
-                controleur.placeBatiment(i,j,(byte) 2);
-            }
+            scrollValue = 1;//on met la valeur de scrollValue à 1 car si elle est à 0 la prochaine tuile ne s'affichera pas
         }
     }
 
@@ -902,6 +907,7 @@ public class PanelPlateau extends JPanel {
 
         //jeu.unefoisIA=true; // POUR IA mettre en commentaire
     }
+
 
     private void placeBatiment(int i, int j) {
         if(!enSelection){
@@ -949,6 +955,28 @@ public class PanelPlateau extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 miseAJour();
+                int s = scrollValue%3;
+                if(s==0){//si le sélecteur doit se placer sur la hutte
+                    if(provenanceScroll == 1){//si le sélecteur était à droite
+                        posX_selecteur_vert = Math.max(posX_selecteur_vert_depart, posX_selecteur_vert-vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_selecteur_vert_depart;
+                    }
+                }else if(s==1){//si le sélecteur doit se placer sur le temple
+                    if(provenanceScroll == 1){//si le sélecteur était à droite
+                        posX_selecteur_vert = Math.max(posX_tiers_selecteur_vert, posX_selecteur_vert-vitesse);
+                    }else if(provenanceScroll == 2){//si le sélecteur était à gauche
+                        posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert, posX_selecteur_vert+vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_tiers_selecteur_vert;
+                    }
+                }else{//si le sélecteur doit se placer sur la tour
+                    if(provenanceScroll == 2) {//si le sélecteur était à gauche
+                        posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert * 2, posX_selecteur_vert + vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_tiers_selecteur_vert * 2;
+                    }
+                }
                 timerValue+=10;
             }
         });

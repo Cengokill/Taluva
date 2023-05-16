@@ -8,7 +8,6 @@ import Structures.Position.TripletDePosition;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
@@ -43,20 +42,10 @@ public class Plateau implements Serializable, Cloneable {
         p.historique = this.historique.copie();
         p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
-        p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur;
-        p.positions_libres = new ArrayList<>();
-        for(Position posCourante: this.positions_libres){
-            p.positions_libres.add(posCourante);
-        }
-        p.positions_libres_batiments = new ArrayList<>();
-        for(Position posCourante: this.positions_libres_batiments){
-            p.positions_libres_batiments.add(posCourante);
-        }
-        p.tripletsPossible = new ArrayList<>();
-        for(TripletDePosition posCourante: this.tripletsPossible){
-            p.tripletsPossible.add(posCourante);
-        }
-
+        p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur; // putain kiki oublie pas ca
+        p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
+        p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
+        p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
         p.carte = new Hexagone[LIGNES][COLONNES];
         for(int i=0;i<LIGNES;i++){
             for(int j=0;j<COLONNES;j++){
@@ -159,7 +148,7 @@ public class Plateau implements Serializable, Cloneable {
     private boolean estTour(int ligne,int colonne){
         return getBatiment(ligne, colonne) == TOUR;
     }
-    private ArrayList<Point2D> positionsBatsVillage(int x, int y, byte idjoueur){
+    public ArrayList<Point2D> positionsBatsVillage(int x, int y, byte idjoueur){
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
         Point2D positionHutte = new Point2D(x,y);
         listeDesHutesVoisines.add(positionHutte);
@@ -265,6 +254,7 @@ public class Plateau implements Serializable, Cloneable {
 
 
     private void ajouterHuttesVoisines(byte idjoueur, ArrayList<Point2D> listeDesHutesVoisines, Point2D HuteCourant) {
+        System.out.println("IDJOUEUR: "+idjoueur);
         if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY(), idjoueur)){
             Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY());
             if(notIn(listeDesHutesVoisines,p1))
@@ -566,6 +556,7 @@ public class Plateau implements Serializable, Cloneable {
                 if(((t.getVolcan().ligne()==p.ligne() && t.getVolcan().colonne()==p.colonne())||(t.getTile1().ligne()==p.ligne() && t.getTile1().colonne()==p.colonne())||(t.getTile2().ligne()==p.ligne() && t.getTile2().colonne()==p.colonne()))
                         ||!estHexagoneVide(t.getVolcan().ligne(),t.getVolcan().colonne())||!estHexagoneVide(t.getTile1().ligne(),t.getTile1().colonne())||!estHexagoneVide(t.getTile2().ligne(),t.getTile2().colonne())){
                     tripletsaSupprimer.add(t);
+
                 }
             }
         }
@@ -612,10 +603,8 @@ public class Plateau implements Serializable, Cloneable {
             carte[coup.tile2Ligne][coup.tile2Colonne].resetBatHexagone();
 
             // On ajoute les emplacements libres des batiments
-            if(coup.tile1Ligne!=0 && coup.tile1Colonne!=0 && coup.tile2Ligne!=0 && coup.tile2Colonne!=0){
-                positions_libres_batiments.add(new Position(coup.tile1Ligne,coup.tile1Colonne));
-                positions_libres_batiments.add(new Position(coup.tile2Ligne,coup.tile2Colonne));
-            }
+            positions_libres_batiments.add(new Position(coup.tile1Ligne,coup.tile1Colonne));
+            positions_libres_batiments.add(new Position(coup.tile2Ligne,coup.tile2Colonne));
             // On ajoute les emplacements libres des tuiles
             ArrayList<Position> listeVoisins = voisins(coup.volcanLigne,coup.volcanColonne);
             metAjourPositionsLibres(listeVoisins);
@@ -627,6 +616,7 @@ public class Plateau implements Serializable, Cloneable {
             if(coup.typePlacement!=4) {
                 historique.ajoute(coup);
             }
+
 
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
             hauteur = carte[coup.batimentLigne][coup.batimentColonne].getHauteur();
@@ -659,7 +649,7 @@ public class Plateau implements Serializable, Cloneable {
     }
 
 
-    // Nécessite un appel à peutPlacerEtage
+    // N?cessite un appel ? peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
         Coup coup = new Coup(joueurCourant, volcanLigne, volcanColonne, tile1Ligne, tile1Colonne, biome1, tile2Ligne, tile2Colonne, biome2);
         //historique.ajoute(coup);
@@ -700,9 +690,6 @@ public class Plateau implements Serializable, Cloneable {
         return true;
     }
     public boolean check (int x, int y,int IDjoueurs) {
-        if(!estDansPlateau(x,y)){
-            System.out.println("pas dans le plateau : "+x+" "+y);
-        }
         return getTuile(x,y).getNumJoueur()==IDjoueurs && (getTuile(x,y).getBatiment()==HUTTE||estTemple(x,y)||estTour(x,y));
     }
     public boolean check2 (int x, int y,byte TypeTerrain) {
@@ -1008,6 +995,7 @@ public class Plateau implements Serializable, Cloneable {
         System.arraycopy(this.quantitePionJoueur2, 0, nbPions[1], 0, this.quantitePionJoueur2.length);
         return nbPions;
     }
+    /*
 
     private ArrayList<Position> copyPositionsLibres() {
         ArrayList<Position> positions_libres = new ArrayList<>();
@@ -1015,7 +1003,7 @@ public class Plateau implements Serializable, Cloneable {
             positions_libres.add(positions_libre.copy());
         }
         return positions_libres;
-    }
+    }*/
 
     private ArrayList<Position> copyPositionsLibresBatiment() {
         ArrayList<Position> positions_libres_batiments = new ArrayList<>();

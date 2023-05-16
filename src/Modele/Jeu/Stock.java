@@ -1,11 +1,11 @@
 package Modele.Jeu;
 
 public class Stock {
-    int nbBatiment ;
-    int typeBatiment;
-    boolean changementDeJoueur;
-    int terrain1;
-    int terrain2;
+    public int nbBatiment ;
+    public int typeBatiment;
+    public boolean changementDeJoueur;
+    public int terrain1;
+    public int terrain2;
 
 
 

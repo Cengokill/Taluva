@@ -8,61 +8,71 @@ import Structures.Position.Position;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
-public class Jeu extends Observable {
+public class Jeu extends Observable implements Serializable{
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
+    private static final int TAILLE_PIOCHE = 24;
     public static boolean AFFICHAGE;
     public byte type_jeu;
-    private int delai;
-    private int delai_avant_pioche = 1200;
+    public int delai;
     public boolean debug;
     Plateau plateau;
-    AbstractIA IA1=null, IA2=null;
-    public byte jCourant, jVainqueur;
-    private Joueur[] joueurs = new Joueur[2];
+    private Tuile tuile_courante;
+    private int delai_avant_pioche = 1200;
+    AbstractIA IA1=null;
+    AbstractIA IA2=null;
+    public byte jCourant;
+    public byte jVainqueur;
+    private Joueur[] joueurs;
     Parametres p;
     final int[]score = new int[2];
     public Joueur[] score_victoires = new Joueur[2];
-    final byte[] tuileAPoser = new byte[5];
-    private Tuile tuile_courante;//tuile piochée
-    boolean doit_placer_tuile, doit_placer_batiment, estPartieFinie;
+    byte[] tuileAPoser = new byte[5];
+
+    boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
+    boolean estFinPartie;
     public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
 
     public MusicPlayer musicPlayer;
+
 
     public Jeu(byte type_jeu){
         this.type_jeu = type_jeu;
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 1000;
+            delai = 10;
         }
         debug = false;
     }
 
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
+        int nb_joueurs = 2;
+        joueurs = new Joueur[nb_joueurs];
         jCourant = 1;
-        IA1 = AbstractIA.nouvelle(this);
-        IA2 = AbstractIA.nouvelle(this);
+        IA1 = AbstractIA.nouvelle(this, (byte)1);
+        IA2 = AbstractIA.nouvelle(this, (byte)0);
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, "Joueur 1");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, "Joueur 2");
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
         //joueurs[1] = IA2;
-        //joueurs[0] = IA1;
-        score_victoires[0] = joueurs[0];
-        score_victoires[1] = joueurs[1];
+        joueurs[0] = IA1;
+        joueurs[1].setCouleur("Rouge");
+        joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
         lancePartie();
     }
@@ -73,9 +83,11 @@ public class Jeu extends Observable {
         estPartieFinie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
-        musicPlayer = new MusicPlayer("Musiques/Alberto.wav");
-        musicPlayer.setVolume(-13.0f);
-        musicPlayer.loop();
+        if(type_jeu == GRAPHIQUE) {
+            musicPlayer = new MusicPlayer("Musiques/Alberto.wav");
+            musicPlayer.setVolume(-13.0f);
+            musicPlayer.loop();
+        }
 
         if (estJoueurCourantUneIA()) {
             if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
@@ -99,6 +111,27 @@ public class Jeu extends Observable {
                 timer.start(); // Démarrez le timer
             }
         }
+    }
+
+    public void switchIAJoueur(int n){
+        byte numero = joueurs[n].getNumero();
+        int nbHuttes = joueurs[n].getNbHuttes();
+        int nbTemples = joueurs[n].getNbTemples();
+        int nbTours = joueurs[n].getNbTours();
+        int nbHuttesPlacees = joueurs[n].getNbHuttesPlacees();
+        int nbTemplesPlaces = joueurs[n].getNbTemplesPlaces();
+        int nbToursPlacees = joueurs[n].getNbToursPlacees();
+        if(joueurs[n].type_joueur == Joueur.IA){
+            joueurs[n] = new Joueur(Joueur.HUMAIN, numero, "Joueur "+numero);
+        }else{
+            joueurs[n] = AbstractIA.nouvelle(this, numero);
+        }
+        joueurs[n].setNbHuttes(nbHuttes);
+        joueurs[n].setNbTemples(nbTemples);
+        joueurs[n].setNbTours(nbTours);
+        joueurs[n].setNbHuttesPlacees(nbHuttesPlacees);
+        joueurs[n].setNbTemplesPlaces(nbTemplesPlaces);
+        joueurs[n].setNbToursPlacees(nbToursPlacees);
     }
 
     public Joueur[] getJoueurs() {
@@ -233,7 +266,7 @@ public class Jeu extends Observable {
         if(type_bat!=4){
             if(type_bat == 1){
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
-                if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
+                if(plateau.getHauteurTuile(ligne,colonne)>=3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
             if(type_bat == 2) {
@@ -245,8 +278,6 @@ public class Jeu extends Observable {
             doit_placer_batiment = false;
             doit_placer_tuile = true;
             if(!estFinPartie()) {
-                //System.out.println("taille pioche : " + pioche.size());
-                //System.out.println("change joueur");
                 changeJoueur();
             }else{
                 return true;
@@ -266,7 +297,6 @@ public class Jeu extends Observable {
         int nb_temples_j = joueurs[jCourant].getNbTemples();
         int nb_tours_j = joueurs[jCourant].getNbTours();
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
-        //System.out.println("nb temples : " + nb_temples_j + " nb tours : " + nb_tours_j + " nb huttes : " + nb_huttes_j);
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
             if(type_jeu==CONSOLE && AFFICHAGE){
@@ -455,5 +485,26 @@ public class Jeu extends Observable {
             doit_placer_tuile=false;
             doit_placer_batiment=true;
         }
+    }
+
+    public void setJeu(Jeu jeu){
+        this.AFFICHAGE=jeu.AFFICHAGE;
+        this.type_jeu=jeu.type_jeu;
+        this.delai=jeu.delai;
+        this.debug=jeu.debug;
+        this.plateau=jeu.plateau;
+        this.tuile_courante=jeu.tuile_courante;
+        this.jCourant=jeu.jCourant;
+        this.jVainqueur=jeu.jVainqueur;
+        this.joueurs[0]=jeu.joueurs[0];
+        this.joueurs[1]=jeu.joueurs[1];
+        this.p=jeu.p;
+        this.tuileAPoser=jeu.tuileAPoser;
+        this.doit_placer_tuile=jeu.doit_placer_tuile;
+        this.doit_placer_batiment=jeu.doit_placer_batiment;
+        this.estFinPartie= jeu.estFinPartie();
+        this.estFinPartie= jeu.estFinPartie();
+        this.unefoisIA=jeu.unefoisIA;
+        this.pioche=jeu.pioche;
     }
 }

@@ -49,6 +49,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (keyCode == KeyEvent.VK_Z) {
                 mode_numero = !mode_numero;
             }
+            if (keyCode == KeyEvent.VK_D) {
+                fenetreJeu.jeu.debug = !fenetreJeu.jeu.debug;
+            }
+            if(keyCode == KeyEvent.VK_S){
+                fenetreJeu.jeu.switchIAJoueur(fenetreJeu.jeu.getNumJoueurCourant());
+            }
             //touche echap
             if(keyCode == KeyEvent.VK_ESCAPE){
                 select_menu_options = !select_menu_options;
@@ -61,21 +67,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 fenetreJeu.panelPlateau.affichetripletpossible();
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                scrollValue++;
-                if (scrollValue < 1) {
-                    scrollValue = 6;
-                } else if (scrollValue > 6) {
-                    scrollValue = 1;
-                }
+                scrollValue = Math.max(1,(scrollValue+1)%7);
                 fenetreJeu.panelPlateau.miseAJour();
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                scrollValue--;
-                if (scrollValue < 1) {
-                    scrollValue = 6;
-                } else if (scrollValue > 6) {
-                    scrollValue = 1;
-                }
+                if(scrollValue == 1) scrollValue = 6;
+                else scrollValue--;
                 fenetreJeu.panelPlateau.miseAJour();
             }
         }
@@ -144,10 +141,11 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             if(estSurAnnuler(e)) {
                 System.out.println("Annuler");
-                fenetreJeu.panelPlateau.controleur.annuler();
+                fenetreJeu.sauvegarder();
+
             }
             if(estSurRefaire(e)) {
-                fenetreJeu.panelPlateau.controleur.refaire();
+                fenetreJeu.charger();
             }
             if(estSurQuitter(e)){
                 fenetreJeu.layeredPane.removeAll();
@@ -227,13 +225,15 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public void mouseWheelMoved(MouseWheelEvent e) {
             if (!e.isControlDown()) {
                 // Lorsque le bouton droit est enfoncé, modifiez la valeur de scrollValue
-                scrollValue -= e.getWheelRotation();
-                if (scrollValue < 1) {
-                    scrollValue = 6;
-                } else if (scrollValue > 6) {
-                    scrollValue = 1;
+                if(e.getWheelRotation() == 1){
+                    provenanceScroll = (byte)2;
+                    scrollValue = Math.max(1,(scrollValue+1)%7);
+                }else{
+                    provenanceScroll = (byte)1;
+                    if(scrollValue == 1) scrollValue = 6;
+                    else scrollValue--;
                 }
-                fenetreJeu.panelPlateau.repaint();
+                fenetreJeu.panelPlateau.miseAJour();
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;

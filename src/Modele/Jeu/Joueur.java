@@ -4,11 +4,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Joueur {
+public class Joueur implements Serializable {
     public final static byte HUMAIN = 0;
     public final static byte IA = 1;
-    final byte type_joueur;
+    byte type_joueur;
     private String prenom;
     private String couleur;
     private int nb_victoires;
@@ -26,9 +27,11 @@ public class Joueur {
     private boolean doitJouer;
     private BufferedImage image;
     private int score = 0;
+    private byte numero;
 
-    public Joueur(byte type, String prenom){
+    public Joueur(byte type, byte numero, String prenom){
         this.type_joueur = type;
+        this.numero = numero;
         this.prenom = prenom;
         doitJouer = false;
         nbHuttesPlacees = 0;
@@ -55,6 +58,14 @@ public class Joueur {
         this.image = image;
     }
 
+    public void incrementeNbVillages(){
+        nbVillages++;
+    }
+
+    public int getNbVillages(){
+        return nbVillages;
+    }
+
     public BufferedImage getImage(){
         return image;
     }
@@ -63,12 +74,44 @@ public class Joueur {
         this.prenom = prenom;
     }
 
+    public void setNbHuttes(int n){
+        nbHuttes = n;
+    }
+
+    public void setNbTours(int n){
+        nbTours = n;
+    }
+
+    public void setNbTemples(int n){
+        nbTemples = n;
+    }
+
+    public void setNbHuttesPlacees(int n){
+        nbHuttesPlacees = n;
+    }
+
+    public void setNbToursPlacees(int n){
+        nbToursPlacees = n;
+    }
+
+    public void setNbTemplesPlaces(int n){
+        nbTemplesPlaces = n;
+    }
+
+    public void setNumero(byte n){
+        numero = numero;
+    }
+
     public String getPrenom(){
         return prenom;
     }
 
     public String getCouleur(){
         return couleur;
+    }
+
+    public byte getNumero(){
+        return numero;
     }
 
     public int getNbToursPlacees(){
@@ -148,6 +191,26 @@ public class Joueur {
 
     public CoupValeur joue() throws CloneNotSupportedException {
         return null;
+    }
+    public void SetJoueur(Joueur joueur){
+        this.type_joueur=joueur.type_joueur;
+        this.prenom=joueur.prenom;
+        this.couleur=joueur.couleur;
+        this.nb_victoires=joueur.nb_victoires;
+        //définit le nombre de bâtiments initial
+        this.nbHuttes=joueur.nbHuttes;
+        this.nbTours=joueur.nbTours;
+        this.nbTemples=joueur.nbTemples;
+        this.nbToursPlacees=joueur.nbToursPlacees;
+        this.nbHuttesPlacees=joueur.nbHuttesPlacees;
+        this.nbTemplesPlaces=joueur.nbTemplesPlaces;
+        this.nbVillages=joueur.nbVillages;//nombre de villages construits
+        //Image de profil
+
+        this.doitJouer=joueur.doitJouer;
+        this.image=joueur.image;
+        this.score=joueur.score;
+        this.numero=joueur.numero;
     }
 }
 

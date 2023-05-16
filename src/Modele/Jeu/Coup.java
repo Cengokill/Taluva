@@ -24,6 +24,9 @@ public class Coup implements Serializable {
     public int batimentLigne;
     public int batimentColonne;
 
+    public int oldVolcanColonne ;
+    public int oldVolcanligne ;
+
     public Coup(byte num_joueur, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {// placement TUILE
         this.num_joueur = num_joueur;
         this.typePlacement = TUILE;
@@ -63,6 +66,19 @@ public class Coup implements Serializable {
     public byte getOldTerrain2(){
         return oldTerrain2;
     }
+
+    public int getOldVolcanColonne() {return oldVolcanColonne;}
+
+    public int getOldVolcanligne() {return oldVolcanligne;}
+
+    public void setOldVolcanColonne(int oldVolcanColonne){
+        this.oldVolcanColonne=oldVolcanColonne;
+    }
+    public void setOldVolcanligne(int oldVolcanligne){
+        this.oldVolcanligne=oldVolcanligne;
+
+    }
+
     public void setOldterrain1(byte oldterrain1){
         this.oldTerrain1=oldterrain1;
     }

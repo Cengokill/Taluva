@@ -5,10 +5,14 @@ import Modele.Jeu.CoupValeur;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
+import Modele.Jeu.Stock;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
 
 import java.util.ArrayList;
+
+import static Modele.Jeu.Plateau.Hexagone.TEMPLE;
+import static Modele.Jeu.Plateau.Hexagone.TOUR;
 
 public class InstanceJeu {
     /*
@@ -38,8 +42,12 @@ public class InstanceJeu {
         return jCourant;
     }
 
+    public Joueur getJoueurCourantClasse(){
+        return joueurs[jCourant];
+    }
+
     public Plateau getPlateau() {
-        Plateau p = (Plateau) plateau;
+        Plateau p = plateau;
         return p;
     }
     public ArrayList<Tuile> getPioche() {
@@ -51,6 +59,33 @@ public class InstanceJeu {
     }
     public Joueur getJoueur(int n){
         return joueurs[n];
+    }
+
+    public void annuler() {
+        Stock stock = plateau.annuler();
+        /*if(stock!=null) {
+            if (stock.changementDeJoueur == false) {
+                changeJoueur();
+            }
+            if(stock.typeBatiment == TEMPLE) {
+                joueurs[jCourant].decrementeTemple();
+            } else if (stock.typeBatiment == TOUR) {
+                joueurs[jCourant].decrementeTour();
+            } else {
+                for (int i = 0; i < stock.nbBatiment; i++) {
+                    joueurs[jCourant].decrementeHutte();
+                }
+            }
+        }*/
+    }
+
+    public void changeJoueur() {
+        if (jCourant == (byte) 0) {
+            jCourant = (byte) 1;
+        } else {
+            jCourant = (byte) 0;
+        }
+        getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
     }
 
     public InstanceJeu simulerCoup(CoupValeur coupValeur){

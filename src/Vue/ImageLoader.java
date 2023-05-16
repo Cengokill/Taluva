@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.BufferOverflowException;
 
 import static Modele.Jeu.Plateau.EtatPlateau.couleurs_joueurs;
 import static Modele.Jeu.Plateau.Hexagone.*;
@@ -26,7 +25,7 @@ public class ImageLoader {
     public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
     public static BufferedImage lacTile_0, lacTile_1, lacTile_2;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
-    public static BufferedImage joueurCourant, finPartie;
+    public static BufferedImage joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
@@ -53,6 +52,11 @@ public class ImageLoader {
     public static boolean select_fin_partie;
     public static BufferedImage echap_button;
 
+            hauteur_menu_options, posX_tiers_selecteur_vert;
+    public static int posX_score_finPartie, posX_joueur_finPartie, posY_joueur_finPartie, posY_joueur_deux, posY_joueur_trois, posY_joueur_quatre;
+    public static int posX_cadre, posY_cadre, decalageY_cadre, largeur_cadre, hauteur_cadre, decalageY_joueur, posX_huttes_finPartie, posX_temples_finPartie, posX_tours_finPartie;
+    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie,
+            ecran_fin_partie;
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
     public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;
     public static BufferedImage foretTile_0_Red, foretTile_1_Red, foretTile_2_Red;
@@ -92,32 +96,22 @@ public class ImageLoader {
         readBatimentsImages();
         readAndFilterContoursImages();
         readSelectionBatimentImage();
+        posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
     }
 
     private static void readSelectionBatimentImage() {
         String imageFolder = "Plateau/Batiments/Selecteur/";
-
-        for(int i=0;i<3;i++){
-            choisirBat[i] = lisImageBuf(imageFolder + "choisir_bat_" +(i+1));
+        for(int i=0;i<7;i++){
+            choisirBat[i] = lisImageBuf(imageFolder + "choisir_bat_" +i);
         }
-        choisirBat[3] = lisImageBuf(imageFolder + "choisir_bat_1_sans_2");
-        choisirBat[4] = lisImageBuf(imageFolder + "choisir_bat_1_sans_3");
-        choisirBat[5] = lisImageBuf(imageFolder + "choisir_bat_2_sans_3");
-        choisirBat[6] = lisImageBuf(imageFolder + "choisir_bat_3_sans_2");
-        choisirBat[7] = lisImageBuf(imageFolder + "choisir_bat_sans_23");
-        choisirBat[8] = lisImageBuf(imageFolder + "choisir_bat_2_sans_1");
-        choisirBat[9] = lisImageBuf(imageFolder + "choisir_bat_2_sans_1_3");
-        choisirBat[10] = lisImageBuf(imageFolder + "choisir_bat_3_sans_1");
-        choisirBat[11] = lisImageBuf(imageFolder + "choisir_bat_3_sans_1_2");
-
+        selecteur_vert = lisImageBuf(imageFolder + "selecteur_vert");
         constructionMode = lisImageBuf(imageFolder + "construction");
     }
 
     private static void filterTiles() {
         voidTile_transparent = getReducedOpacityImage(voidTileOld, 0.2f);
-
         filterTilesEnRouge();
     }
 
@@ -198,16 +192,19 @@ public class ImageLoader {
     }
 
     private static BufferedImage getMaison(byte id_player, int hauteurTerrain,int typeTerrain) {
+        int nbMaison;
+        if(hauteurTerrain>=3) nbMaison = 3;
+        else nbMaison = hauteurTerrain;
         if (id_player == 0) {
-            if(typeTerrain==GRASS) return maisonTileColor1[hauteurTerrain-1][0];
-            if(typeTerrain==MONTAGNE) return maisonTileColor1[hauteurTerrain-1][1];
-            if(typeTerrain==DESERT) return maisonTileColor1[hauteurTerrain-1][2];
-            return maisonTileColor1[hauteurTerrain-1][3];
+            if(typeTerrain==GRASS) return maisonTileColor1[nbMaison-1][0];
+            if(typeTerrain==MONTAGNE) return maisonTileColor1[nbMaison-1][1];
+            if(typeTerrain==DESERT) return maisonTileColor1[nbMaison-1][2];
+            return maisonTileColor1[nbMaison-1][3];
         } else {
-            if(typeTerrain==GRASS) return maisonTileColor2[hauteurTerrain-1][0];
-            if(typeTerrain==MONTAGNE) return maisonTileColor2[hauteurTerrain-1][1];
-            if(typeTerrain==DESERT) return maisonTileColor2[hauteurTerrain-1][2];
-            return maisonTileColor2[hauteurTerrain-1][3];
+            if(typeTerrain==GRASS) return maisonTileColor2[nbMaison-1][0];
+            if(typeTerrain==MONTAGNE) return maisonTileColor2[nbMaison-1][1];
+            if(typeTerrain==DESERT) return maisonTileColor2[nbMaison-1][2];
+            return maisonTileColor2[nbMaison-1][3];
         }
     }
 
