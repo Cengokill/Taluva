@@ -30,25 +30,38 @@ public class ImageLoader {
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on, bouton_options, bouton_options_select,
-            menu_options;
-    public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posY_tuto,
-    posX_joueur_courant, posY_joueur_courant, posX_prenom_j0, posX_prenom_j1, posY_prenom_j0, posY_prenom_j1, posX_huttes, posX_tours, posX_temples,
+            menu_options, menu_dark_filter;
+    public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save,
+            posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
+            posX_Echap, posY_Echap,
+            posX_joueur_courant, posY_joueur_courant, posX_prenom_j0, posX_prenom_j1, posY_prenom_j0, posY_prenom_j1, posX_huttes, posX_tours, posX_temples,
             posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
             posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
-            hauteur_menu_options, posX_tiers_selecteur_vert;
-    public static int posX_score_finPartie, posX_joueur_finPartie, posY_joueur_finPartie, posY_joueur_deux, posY_joueur_trois, posY_joueur_quatre;
+            hauteur_menu_options;
+    public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
+    public static boolean select_options;
+    public static boolean select_menu_options;
+    public static boolean select_save;
+    public static boolean select_load;
+    public static boolean select_annuler;
+    public static boolean select_refaire;
+    public static boolean tuto_on;
+    public static boolean select_quitter;
+    public static boolean select_fin_partie;
+    public static BufferedImage echap_button;
+
+    public static int posX_score_finPartie, posX_joueur_finPartie, posY_joueur_finPartie, posY_joueur_deux, posY_joueur_trois, posX_tiers_selecteur_vert;
     public static int posX_cadre, posY_cadre, decalageY_cadre, largeur_cadre, hauteur_cadre, decalageY_joueur, posX_huttes_finPartie, posX_temples_finPartie, posX_tours_finPartie;
-    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie,
-            ecran_fin_partie;
+    public static boolean ecran_fin_partie;
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
     public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;
     public static BufferedImage foretTile_0_Red, foretTile_1_Red, foretTile_2_Red;
     public static BufferedImage desertTile_0_Red, desertTile_1_Red, desertTile_2_Red;
     public static BufferedImage montagneTile_0_Red, montagneTile_1_Red, montagneTile_2_Red;
     public static BufferedImage lacTile_0_Red, lacTile_1_Red, lacTile_2_Red;
-    public static BufferedImage tileErreur;
+    public static BufferedImage tileErreur, placable;
 
     public static BufferedImage
             plateau_hautGauche_etage1,
@@ -120,7 +133,9 @@ public class ImageLoader {
         lacTile_1_Red = applyRedFilter(lacTile_1);
         lacTile_2_Red = applyRedFilter(lacTile_2);
 
-        tileErreur = getReducedOpacityImage(grassTile_0_Red, 0.5f);
+        String imageFolder = "/Plateau/Hexagones/Textures/";
+        tileErreur = lisImageBuf(imageFolder + "Wrong_tile");
+        placable = lisImageBuf(imageFolder + "Placable");
     }
 
     private static void readTilesImages() {
@@ -254,47 +269,47 @@ public class ImageLoader {
 
     private static void filtreCouleurBatiments() {
         // Joueur 1
-            // Prairie
-            maisonTileColor1[0][0] = applyColorFilter(hutteTile[0][0], (byte) 0);
-            maisonTileColor1[1][0] = applyColorFilter(hutteTile[1][0], (byte) 0);
-            maisonTileColor1[2][0] = applyColorFilter(hutteTile[2][0], (byte) 0);
-            // Pierre
-            maisonTileColor1[0][1] = applyColorFilter(hutteTile[0][1], (byte) 0);
-            maisonTileColor1[1][1] = applyColorFilter(hutteTile[1][1], (byte) 0);
-            maisonTileColor1[2][1] = applyColorFilter(hutteTile[2][1], (byte) 0);
-            // Desert
-            maisonTileColor1[0][2] = applyColorFilter(hutteTile[0][2], (byte) 0);
-            maisonTileColor1[1][2] = applyColorFilter(hutteTile[1][2], (byte) 0);
-            maisonTileColor1[2][2] = applyColorFilter(hutteTile[2][2], (byte) 0);
-            // Jungle
-            maisonTileColor1[0][3] = applyColorFilter(hutteTile[0][3], (byte) 0);
-            maisonTileColor1[1][3] = applyColorFilter(hutteTile[1][3], (byte) 0);
-            maisonTileColor1[2][3] = applyColorFilter(hutteTile[2][3], (byte) 0);
+        // Prairie
+        maisonTileColor1[0][0] = applyColorFilter(hutteTile[0][0], (byte) 0);
+        maisonTileColor1[1][0] = applyColorFilter(hutteTile[1][0], (byte) 0);
+        maisonTileColor1[2][0] = applyColorFilter(hutteTile[2][0], (byte) 0);
+        // Pierre
+        maisonTileColor1[0][1] = applyColorFilter(hutteTile[0][1], (byte) 0);
+        maisonTileColor1[1][1] = applyColorFilter(hutteTile[1][1], (byte) 0);
+        maisonTileColor1[2][1] = applyColorFilter(hutteTile[2][1], (byte) 0);
+        // Desert
+        maisonTileColor1[0][2] = applyColorFilter(hutteTile[0][2], (byte) 0);
+        maisonTileColor1[1][2] = applyColorFilter(hutteTile[1][2], (byte) 0);
+        maisonTileColor1[2][2] = applyColorFilter(hutteTile[2][2], (byte) 0);
+        // Jungle
+        maisonTileColor1[0][3] = applyColorFilter(hutteTile[0][3], (byte) 0);
+        maisonTileColor1[1][3] = applyColorFilter(hutteTile[1][3], (byte) 0);
+        maisonTileColor1[2][3] = applyColorFilter(hutteTile[2][3], (byte) 0);
 
         // Joueur 2
-            // Prairie
-            maisonTileColor2[0][0] = applyColorFilter(hutteTile[0][0], (byte) 1);
-            maisonTileColor2[1][0] = applyColorFilter(hutteTile[1][0], (byte) 1);
-            maisonTileColor2[2][0] = applyColorFilter(hutteTile[2][0], (byte) 1);
-            // Pierre
-            maisonTileColor2[0][1] = applyColorFilter(hutteTile[0][1], (byte) 1);
-            maisonTileColor2[1][1] = applyColorFilter(hutteTile[1][1], (byte) 1);
-            maisonTileColor2[2][1] = applyColorFilter(hutteTile[2][1], (byte) 1);
-            // Desert
-            maisonTileColor2[0][2] = applyColorFilter(hutteTile[0][2], (byte) 1);
-            maisonTileColor2[1][2] = applyColorFilter(hutteTile[1][2], (byte) 1);
-            maisonTileColor2[2][2] = applyColorFilter(hutteTile[2][2], (byte) 1);
-            // Jungle
-            maisonTileColor2[0][3] = applyColorFilter(hutteTile[0][3], (byte) 1);
-            maisonTileColor2[1][3] = applyColorFilter(hutteTile[1][3], (byte) 1);
-            maisonTileColor2[2][3] = applyColorFilter(hutteTile[2][3], (byte) 1);
+        // Prairie
+        maisonTileColor2[0][0] = applyColorFilter(hutteTile[0][0], (byte) 1);
+        maisonTileColor2[1][0] = applyColorFilter(hutteTile[1][0], (byte) 1);
+        maisonTileColor2[2][0] = applyColorFilter(hutteTile[2][0], (byte) 1);
+        // Pierre
+        maisonTileColor2[0][1] = applyColorFilter(hutteTile[0][1], (byte) 1);
+        maisonTileColor2[1][1] = applyColorFilter(hutteTile[1][1], (byte) 1);
+        maisonTileColor2[2][1] = applyColorFilter(hutteTile[2][1], (byte) 1);
+        // Desert
+        maisonTileColor2[0][2] = applyColorFilter(hutteTile[0][2], (byte) 1);
+        maisonTileColor2[1][2] = applyColorFilter(hutteTile[1][2], (byte) 1);
+        maisonTileColor2[2][2] = applyColorFilter(hutteTile[2][2], (byte) 1);
+        // Jungle
+        maisonTileColor2[0][3] = applyColorFilter(hutteTile[0][3], (byte) 1);
+        maisonTileColor2[1][3] = applyColorFilter(hutteTile[1][3], (byte) 1);
+        maisonTileColor2[2][3] = applyColorFilter(hutteTile[2][3], (byte) 1);
 
-            for(int i=0;i<temples.length;i++){
-                templesColor1[i] = applyColorFilter(temples[i], (byte) 0);
-                templesColor2[i] = applyColorFilter(temples[i], (byte) 1);
-                toursColor1[i] = applyColorFilter(tours[i], (byte) 0);
-                toursColor2[i] = applyColorFilter(tours[i], (byte) 1);
-            }
+        for(int i=0;i<temples.length;i++){
+            templesColor1[i] = applyColorFilter(temples[i], (byte) 0);
+            templesColor2[i] = applyColorFilter(temples[i], (byte) 1);
+            toursColor1[i] = applyColorFilter(tours[i], (byte) 0);
+            toursColor2[i] = applyColorFilter(tours[i], (byte) 1);
+        }
     }
 
     private static void readTileOrientationImages() {
