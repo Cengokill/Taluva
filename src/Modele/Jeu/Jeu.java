@@ -31,10 +31,9 @@ public class Jeu extends Observable {
     AbstractIA IA2=null;
     public byte jCourant;
     public byte jVainqueur;
-    private Joueur[] joueurs = new Joueur[2];
+    private Joueur[] joueurs;
     Parametres p;
     final int[]score = new int[2];
-    public Joueur[] score_victoires = new Joueur[2];
     final byte[] tuileAPoser = new byte[5];
 
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
@@ -54,6 +53,8 @@ public class Jeu extends Observable {
 
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
+        int nb_joueurs = 2;
+        joueurs = new Joueur[nb_joueurs];
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this, (byte)1);
         IA2 = AbstractIA.nouvelle(this, (byte)0);
@@ -62,11 +63,11 @@ public class Jeu extends Observable {
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
-        joueurs[1] = IA2;
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
+        //joueurs[1] = IA2;
         joueurs[0] = IA1;
-        score_victoires[0] = joueurs[0];
-        score_victoires[1] = joueurs[1];
+        joueurs[1].setCouleur("Rouge");
+        joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
         lancePartie();
     }

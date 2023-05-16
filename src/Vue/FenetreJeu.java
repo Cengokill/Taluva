@@ -2,10 +2,13 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
+import Modele.Jeu.Joueur;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static Vue.ImageLoader.*;
 
@@ -25,10 +28,12 @@ public class FenetreJeu extends Container {
     public static Point LastPosition;
     public static Jeu jeu;
     final JFrame frame;
+    public static ArrayList<Joueur> joueurs_tries;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
+        joueurs_tries = new ArrayList<>();
         FenetreJeu.jeu = jeu;
         this.frame = getFMenu();
         initFrame();
@@ -182,7 +187,8 @@ public class FenetreJeu extends Container {
                 double rapport_fenetre_score = 621.0/533.0;
                 double rapport_joueur_courant = 131.0/603.0;
                 double rapport_bouton_dans_options = 207.0/603.0;
-                double rapport_fin_partie = 959.0/1029.0;
+                double rapport_fin_partie = 816.0/1456.0;
+                double rapport_cadre = 76.0/1180.0;
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
@@ -227,13 +233,27 @@ public class FenetreJeu extends Container {
                 largeur_tuile = (int) (largeur_fenetre_score*0.20);
                 hauteur_tuile = largeur_tuile;
                 //fin de partie
-                largeur_fin_partie = (int) (largeur*0.5);
-                hauteur_fin_partie = (int) (largeur_fin_partie* rapport_fin_partie);
-                posX_fin_partie = (largeur - largeur_fin_partie)/2;
-                posY_fin_partie = (hauteur - hauteur_fin_partie)/2;
-                posX_joueur_victoire = (int) (posX_fin_partie + largeur_fin_partie*0.25);
-                posY_joueur_victoire = (int) (posY_fin_partie + hauteur_fin_partie*0.25);
-                posX_score_fin_partie = (int) (posX_fin_partie + largeur_fin_partie*0.7);
+                if((double)hauteur/(double)largeur > rapport_fin_partie){
+                    largeur_fin_partie = largeur;
+                    hauteur_fin_partie = (int) (largeur_fin_partie * rapport_fin_partie);
+                }else{
+                    hauteur_fin_partie = hauteur;
+                    largeur_fin_partie = (int) (hauteur_fin_partie / rapport_fin_partie);
+                }
+                largeur_cadre = (int) (largeur_fin_partie * 0.80906593406);
+                hauteur_cadre = (int) (largeur_cadre * rapport_cadre);
+                posX_fin_partie = 0;
+                posY_fin_partie = 0;
+                posX_cadre = (int) (largeur_fin_partie*0.021);
+                posY_cadre = (int) (hauteur_fin_partie*0.19);
+                decalageY_cadre = (int) (hauteur_cadre+hauteur_fin_partie*0.02);
+                posX_joueur_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.03);
+                posY_joueur_finPartie = (int) (posY_fin_partie + hauteur_fin_partie*0.25);
+                decalageY_joueur = decalageY_cadre;
+                posX_huttes_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.32);
+                posX_temples_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.46);
+                posX_tours_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.60);
+                posX_score_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.72);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -256,7 +276,11 @@ public class FenetreJeu extends Container {
     }
 
     public JFrame getFMenu(){
-        finPartie = lisImageBuf("Fin_partie");
+        finPartie = lisImageBuf("Fin_partie_2");
+        cadreBleu = lisImageBuf("cadre_bleu");
+        cadreRouge = lisImageBuf("cadre_rouge");
+        cadreVert = lisImageBuf("cadre_vert");
+        cadreViolet = lisImageBuf("cadre_violet");
         bouton_save = lisImageBuf("Sauvegarder");
         bouton_load = lisImageBuf("Charger");
         bouton_quitter = lisImageBuf("Quitter");
@@ -355,21 +379,62 @@ public class FenetreJeu extends Container {
 
     public static void afficheFinPartie(Graphics g) {
         if (select_fin_partie) {
+            if(!ecran_fin_partie) {//évite de recalculer tous les scores des joueurs à chaque actualisation de l'écran
+                ecran_fin_partie = true;
+                ArrayList<Joueur> joueurs_copie = new ArrayList<>();
+                joueurs_tries = new ArrayList<>();
+                for (int i = 0; i < jeu.getJoueurs().length; i++) {
+                    joueurs_copie.add(jeu.getJoueurs()[i]);
+                }
+                int score_meilleur = Integer.MIN_VALUE;
+                int indice_meilleur_joueur = -1;
+                int score_courant;
+                while (joueurs_copie.size() > 1) {
+                    for (int i = 0; i < joueurs_copie.size(); i++) {
+                        score_courant = joueurs_copie.get(i).calculScore();
+                        if (score_courant > score_meilleur) {
+                            score_meilleur = score_courant;
+                            indice_meilleur_joueur = i;
+                        }
+                    }
+                    joueurs_tries.add(joueurs_copie.get(indice_meilleur_joueur));
+                    joueurs_copie.remove(indice_meilleur_joueur);
+                    indice_meilleur_joueur = -1;
+                    score_meilleur = Integer.MIN_VALUE;
+                }
+                joueurs_tries.add(joueurs_copie.get(0));
+            }
             g.drawImage(finPartie, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie, null);
             Font font = new Font("Bookman Old Style", Font.BOLD, 29);
             g.setFont(font);
             g.setColor(Color.BLACK);
-            String joueur_victoire = jeu.getJoueurs()[jeu.jVainqueur].getPrenom();
-            String score_victoire = Integer.toString(jeu.getJoueurs()[jeu.jVainqueur].calculScore());
-            g.drawString(joueur_victoire, posX_joueur_victoire, posY_joueur_victoire);
-            g.drawString(score_victoire, posX_score_fin_partie, posY_joueur_victoire);
+            for(int i=0; i<joueurs_tries.size(); i++){
+                String couleur_courante = joueurs_tries.get(i).getCouleur();
+                BufferedImage img = null;
+                if(couleur_courante.equals("Rouge")){
+                    img = cadreRouge;
+                }else if(couleur_courante.equals("Bleu")){
+                    img = cadreBleu;
+                }else if(couleur_courante.equals("Vert")){
+                    img = cadreVert;
+                }else if(couleur_courante.equals("Violet")){
+                    img = cadreViolet;
+                }
+                g.drawImage(img, posX_cadre, posY_cadre+decalageY_cadre*i, largeur_cadre, hauteur_cadre, null);
+                Joueur joueur_courant = joueurs_tries.get(i);
+                String joueur = joueur_courant.getPrenom();
+                String nb_huttes = Integer.toString(joueur_courant.getNbHuttes());
+                String nb_temples = Integer.toString(joueur_courant.getNbTemples());
+                String nb_tours = Integer.toString(joueur_courant.getNbTours());
+                String score = Integer.toString(joueur_courant.calculScore());
+                g.drawString(joueur, posX_joueur_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
+                g.drawString(nb_huttes, posX_huttes_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
+                g.drawString(nb_temples, posX_temples_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
+                g.drawString(nb_tours, posX_tours_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
+                g.drawString(score, posX_score_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
+            }
             afficheBoutonQuitter(g);
         }
-    }
-
-    public static void afficheBackground(Graphics g) {
-        System.out.println("afficheBackground");
-        g.drawImage(background, 0, 0, largeur, hauteur, null);
     }
 
     public static void afficheMenuOptions(Graphics g) {

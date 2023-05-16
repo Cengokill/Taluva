@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.BufferOverflowException;
 
 import static Modele.Jeu.Plateau.EtatPlateau.couleurs_joueurs;
 import static Modele.Jeu.Plateau.Hexagone.*;
@@ -26,7 +25,7 @@ public class ImageLoader {
     public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
     public static BufferedImage lacTile_0, lacTile_1, lacTile_2;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
-    public static BufferedImage joueurCourant, finPartie, selecteur_vert;
+    public static BufferedImage joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
@@ -39,9 +38,10 @@ public class ImageLoader {
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options, posX_tiers_selecteur_vert;
-    public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
-    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie;
-
+    public static int posX_score_finPartie, posX_joueur_finPartie, posY_joueur_finPartie, posY_joueur_deux, posY_joueur_trois, posY_joueur_quatre;
+    public static int posX_cadre, posY_cadre, decalageY_cadre, largeur_cadre, hauteur_cadre, decalageY_joueur, posX_huttes_finPartie, posX_temples_finPartie, posX_tours_finPartie;
+    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie,
+            ecran_fin_partie;
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
     public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;
     public static BufferedImage foretTile_0_Red, foretTile_1_Red, foretTile_2_Red;
@@ -81,7 +81,7 @@ public class ImageLoader {
         readBatimentsImages();
         readAndFilterContoursImages();
         readSelectionBatimentImage();
-        //posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
+        posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
     }
