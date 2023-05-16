@@ -555,6 +555,7 @@ public class Plateau implements Serializable, Cloneable {
                 if(((t.getVolcan().ligne()==p.ligne() && t.getVolcan().colonne()==p.colonne())||(t.getTile1().ligne()==p.ligne() && t.getTile1().colonne()==p.colonne())||(t.getTile2().ligne()==p.ligne() && t.getTile2().colonne()==p.colonne()))
                         ||!estHexagoneVide(t.getVolcan().ligne(),t.getVolcan().colonne())||!estHexagoneVide(t.getTile1().ligne(),t.getTile1().colonne())||!estHexagoneVide(t.getTile2().ligne(),t.getTile2().colonne())){
                     tripletsaSupprimer.add(t);
+
                 }
             }
         }
@@ -615,6 +616,7 @@ public class Plateau implements Serializable, Cloneable {
                 historique.ajoute(coup);
             }
 
+
         } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
             hauteur = carte[coup.batimentLigne][coup.batimentColonne].getHauteur();
             byte batiment = 0;
@@ -670,7 +672,6 @@ public class Plateau implements Serializable, Cloneable {
                 Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
                 if(nbHutteDisponiblesJoueur >=getHauteurTuile(a.x,a.y) && nbHutteDisponiblesJoueur !=0){
                     if(coup.typePlacement!=4) {
-                        historique.ajoute(Coup_propagation);
                         joueCoup(Coup_propagation);
                         nbHutteDisponiblesJoueur -=(getHauteurTuile(a.x,a.y));
                     }
@@ -875,6 +876,7 @@ public class Plateau implements Serializable, Cloneable {
     // TOUJOURS verifier qu'il reste le batiment dans l'inventaire du joueur avant de la poser
     public int[] getBatimentPlacable(int i,int j, byte numJoueur){
         int[] coups = new int[3];
+        if(getTuile(i,j).getBiomeTerrain()==VOLCAN) return coups;
         if(getBatiment(i,j)!=0 && getBatiment(i,j)!=CHOISIR_BATIMENT) return coups; // S'il y a deja un batiment, ce n'est pas construisible
         if(getHauteurTuile(i,j)>0) coups[1] = 1;
         if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,numJoueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
@@ -962,9 +964,8 @@ public class Plateau implements Serializable, Cloneable {
 
 
     public Stock annuler() {
-        //Stock stock =historique.annuler(carte);
-        //return stock;
-        return null;
+        Stock stock =historique.annuler(carte);
+        return stock;
     }
 
     public Stock refaire() {
@@ -993,6 +994,7 @@ public class Plateau implements Serializable, Cloneable {
         System.arraycopy(this.quantitePionJoueur2, 0, nbPions[1], 0, this.quantitePionJoueur2.length);
         return nbPions;
     }
+    /*
 
     private ArrayList<Position> copyPositionsLibres() {
         ArrayList<Position> positions_libres = new ArrayList<>();
@@ -1000,7 +1002,7 @@ public class Plateau implements Serializable, Cloneable {
             positions_libres.add(positions_libre.copy());
         }
         return positions_libres;
-    }
+    }*/
 
     private ArrayList<Position> copyPositionsLibresBatiment() {
         ArrayList<Position> positions_libres_batiments = new ArrayList<>();

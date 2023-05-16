@@ -3,9 +3,11 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
+import Modele.Jeu.Plateau.Plateau;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -505,5 +507,35 @@ public class FenetreJeu extends Container {
 
     public void metAjour(){
         repaint();
+    }
+
+    public static void sauvegarder() {
+        try {
+            File fichier = new File("sauvegarde.txt");
+            fichier.delete();
+            fichier.createNewFile();
+            FileOutputStream fichierOut = new FileOutputStream(fichier);
+            ObjectOutputStream out = new ObjectOutputStream(fichierOut);
+            out.writeObject(jeu);
+            out.writeObject(jeu.getJoueurs());
+            out.close();
+            fichierOut.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de sauvegarder cette partie.\n" + e);
+        }
+    }
+
+    public static void charger() {
+        try {
+            FileInputStream fichier = new FileInputStream("sauvegarde.txt");
+            ObjectInputStream in = new ObjectInputStream(fichier);
+            Jeu jeu1 = new Jeu((byte)1) ;
+            jeu1 = (Jeu) in.readObject();
+            jeu.setJeu(jeu1);
+            in.close();
+            fichier.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de charger cette sauvegarde.\n" + e);
+        }
     }
 }

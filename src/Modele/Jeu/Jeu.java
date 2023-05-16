@@ -15,7 +15,7 @@ import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
-public class Jeu extends Observable {
+public class Jeu extends Observable implements Serializable{
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     private static final int TAILLE_PIOCHE = 24;
@@ -26,7 +26,6 @@ public class Jeu extends Observable {
     Plateau plateau;
     private Tuile tuile_courante;
     private int delai_avant_pioche = 1200;
-    Joueur joueur1, joueur2;
     AbstractIA IA1=null;
     AbstractIA IA2=null;
     public byte jCourant;
@@ -34,7 +33,8 @@ public class Jeu extends Observable {
     private Joueur[] joueurs;
     Parametres p;
     final int[]score = new int[2];
-    final byte[] tuileAPoser = new byte[5];
+    public Joueur[] score_victoires = new Joueur[2];
+    byte[] tuileAPoser = new byte[5];
 
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
     boolean estFinPartie;
@@ -58,14 +58,16 @@ public class Jeu extends Observable {
         jCourant = 1;
         IA1 = AbstractIA.nouvelle(this, (byte)1);
         IA2 = AbstractIA.nouvelle(this, (byte)0);
+        IA1.setPrenom("IA1");
+        IA2.setPrenom("IA2");
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
         joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
         //joueurs[1] = IA2;
-        joueurs[0] = IA1;
+        //joueurs[0] = IA1;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
@@ -254,7 +256,6 @@ public class Jeu extends Observable {
         }
         plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
         if(type_bat!=4){
-            if(!plateau.aCiteAutour(ligne,colonne,getNumJoueurCourant())) joueurs[jCourant].incrementeNbVillages();
             if(type_bat == 1){
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
                 if(plateau.getHauteurTuile(ligne,colonne)>=3) joueurs[jCourant].incrementeHutte();
@@ -476,5 +477,26 @@ public class Jeu extends Observable {
             doit_placer_tuile=false;
             doit_placer_batiment=true;
         }
+    }
+
+    public void setJeu(Jeu jeu){
+        this.AFFICHAGE=jeu.AFFICHAGE;
+        this.type_jeu=jeu.type_jeu;
+        this.delai=jeu.delai;
+        this.debug=jeu.debug;
+        this.plateau=jeu.plateau;
+        this.tuile_courante=jeu.tuile_courante;
+        this.jCourant=jeu.jCourant;
+        this.jVainqueur=jeu.jVainqueur;
+        Joueur joueurs2=new Joueur(jeu.joueurs[0].getTypeJoueur(),jeu.joueurs[0].getNumero(),jeu.joueurs[0].getPrenom());
+
+        this.p=jeu.p;
+        this.tuileAPoser=jeu.tuileAPoser;
+        this.doit_placer_tuile=jeu.doit_placer_tuile;
+        this.doit_placer_batiment=jeu.doit_placer_batiment;
+        this.estFinPartie= jeu.estFinPartie();
+        this.estFinPartie= jeu.estFinPartie();
+        this.unefoisIA=jeu.unefoisIA;
+        this.pioche=jeu.pioche;
     }
 }

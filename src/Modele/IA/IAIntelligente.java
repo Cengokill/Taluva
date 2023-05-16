@@ -9,9 +9,11 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.*;
 
-public class IAIntelligente extends AbstractIA {
+public class IAIntelligente extends AbstractIA implements Serializable {
 
     public byte num_joueur_ia;
     private int nbInstancesDifferentes =0;

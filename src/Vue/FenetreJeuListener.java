@@ -141,10 +141,11 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             if(estSurAnnuler(e)) {
                 System.out.println("Annuler");
-                fenetreJeu.panelPlateau.controleur.annuler();
+                fenetreJeu.sauvegarder();
+
             }
             if(estSurRefaire(e)) {
-                fenetreJeu.panelPlateau.controleur.refaire();
+                fenetreJeu.charger();
             }
             if(estSurQuitter(e)){
                 fenetreJeu.layeredPane.removeAll();

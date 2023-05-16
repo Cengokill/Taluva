@@ -61,14 +61,12 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.refaire();
     }
 
-    @Override
+
     public void sauvegarder() {
-        jeu.sauvegarder();
+        FenetreJeu.sauvegarder();
     }
 
-    @Override
-    public void charger() {
-        jeu.charger();
-    }
+
+    public void charger() {FenetreJeu.charger();}
 }
 

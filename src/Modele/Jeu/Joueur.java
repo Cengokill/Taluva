@@ -4,11 +4,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Joueur {
+public class Joueur implements Serializable {
     public final static byte HUMAIN = 0;
     public final static byte IA = 1;
-    final byte type_joueur;
+    byte type_joueur;
     private String prenom;
     private String couleur;
     private int nb_victoires;
@@ -190,6 +191,26 @@ public class Joueur {
 
     public CoupValeur joue() throws CloneNotSupportedException {
         return null;
+    }
+    public void SetJoueur(Joueur joueur){
+        this.type_joueur=joueur.type_joueur;
+        this.prenom=joueur.prenom;
+        this.couleur=joueur.couleur;
+        this.nb_victoires=joueur.nb_victoires;
+        //définit le nombre de bâtiments initial
+        this.nbHuttes=joueur.nbHuttes;
+        this.nbTours=joueur.nbTours;
+        this.nbTemples=joueur.nbTemples;
+        this.nbToursPlacees=joueur.nbToursPlacees;
+        this.nbHuttesPlacees=joueur.nbHuttesPlacees;
+        this.nbTemplesPlaces=joueur.nbTemplesPlaces;
+        this.nbVillages=joueur.nbVillages;//nombre de villages construits
+        //Image de profil
+
+        this.doitJouer=joueur.doitJouer;
+        this.image=joueur.image;
+        this.score=joueur.score;
+        this.numero=joueur.numero;
     }
 }
 
