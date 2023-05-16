@@ -33,7 +33,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         if(jeu.joueurPlaceBatiment(ligne, colonne, type_bat)){//si fin de partie
             select_fin_partie = true;
         }
-        select_fin_partie = true;
     }
 
     public Hexagone[][] getPlateau() {
