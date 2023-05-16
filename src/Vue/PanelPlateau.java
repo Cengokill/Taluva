@@ -327,7 +327,7 @@ public class PanelPlateau extends JPanel {
             //else if(value==0) value = 1;
             int[] coups = coupJouable(ligne, colonne);
 
-            //value = updateScrollValue(value, coups);
+            value = updateScrollValue(value, coups);
             if(coupJouable(ligne, colonne)[0]==0 && coupJouable(ligne, colonne)[1]==0 && coupJouable(ligne, colonne)[2]==0) return;
             if(value==1 && (index_bat_precedent!=1||posX_bat_precedent!=ligne||posY_bat_precedent!=colonne)){
                 emplacementPropagation = new ArrayList<>();
@@ -346,7 +346,7 @@ public class PanelPlateau extends JPanel {
             posY_bat_precedent = colonne;
             index_bat_precedent = value;
             afficheSelecteurBatiment(g, pos_x, pos_y, coups);
-            afficheSelecteurVert(g, pos_x+posX_selecteur_vert, pos_y-8, coups);
+            afficheSelecteurVert(g, pos_x+posX_selecteur_vert, pos_y-10, coups);
         }
     }
 
@@ -850,7 +850,7 @@ public class PanelPlateau extends JPanel {
         int[] coupsJouable = coupJouable(i,j);
         value = updateScrollValue(value, coupsJouable);
 
-        if (value == 1) { // place hut
+        if (value == 1) { // place hutte
             if(jeu.getPlateau().getHauteurTuile(i,j)>1 && !aCiteAutour(i,j)) return;
             enSelection = false;
             decomptePropagation();
