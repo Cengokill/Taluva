@@ -67,21 +67,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 fenetreJeu.panelPlateau.affichetripletpossible();
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                scrollValue++;
-                if (scrollValue < 1) {
-                    scrollValue = 6;
-                } else if (scrollValue > 6) {
-                    scrollValue = 1;
-                }
+                scrollValue = Math.max(1,(scrollValue+1)%7);
                 fenetreJeu.panelPlateau.miseAJour();
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                scrollValue--;
-                if (scrollValue < 1) {
-                    scrollValue = 6;
-                } else if (scrollValue > 6) {
-                    scrollValue = 1;
-                }
+                if(scrollValue == 1) scrollValue = 6;
+                else scrollValue--;
                 fenetreJeu.panelPlateau.miseAJour();
             }
         }
@@ -233,13 +224,13 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public void mouseWheelMoved(MouseWheelEvent e) {
             if (!e.isControlDown()) {
                 // Lorsque le bouton droit est enfoncé, modifiez la valeur de scrollValue
-                scrollValue -= e.getWheelRotation();
-                if (scrollValue < 1) {
-                    scrollValue = 6;
-                } else if (scrollValue > 6) {
-                    scrollValue = 1;
+                if(e.getWheelRotation() == 1){
+                    scrollValue = Math.max(1,(scrollValue+1)%7);
+                }else{
+                    if(scrollValue == 1) scrollValue = 6;
+                    else scrollValue--;
                 }
-                fenetreJeu.panelPlateau.repaint();
+                fenetreJeu.panelPlateau.miseAJour();
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;
