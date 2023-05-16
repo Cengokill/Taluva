@@ -391,6 +391,7 @@ public class FenetreJeu extends Container {
 
     public static void afficheFinPartie(Graphics g) {
         if (select_fin_partie) {
+            //System.out.println("afficheFinPartie");
             if(!ecran_fin_partie) {//évite de recalculer tous les scores des joueurs à chaque actualisation de l'écran
                 ecran_fin_partie = true;
                 ArrayList<Joueur> joueurs_copie = new ArrayList<>();

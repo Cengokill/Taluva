@@ -25,7 +25,7 @@ public class Jeu extends Observable implements Serializable{
     public boolean debug;
     Plateau plateau;
     private Tuile tuile_courante;
-    private int delai_avant_pioche = 1200;
+    private int delai_avant_pioche = 500;
     AbstractIA IA1=null;
     AbstractIA IA2=null;
     public byte jCourant;
@@ -66,10 +66,10 @@ public class Jeu extends Observable implements Serializable{
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
-        joueurs[1] = IA2;
-        joueurs[0] = IA1;
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
+        //joueurs[0] = IA1;
+        //joueurs[1] = IA2;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
@@ -83,7 +83,7 @@ public class Jeu extends Observable implements Serializable{
         doit_placer_tuile = true;
         doit_placer_batiment = false;
         if(type_jeu == GRAPHIQUE) {
-            musicPlayer = new MusicPlayer("Musiques/Alberto.wav");
+            musicPlayer = new MusicPlayer("Musiques\\A_Story_You_Wont_Believe.wav");
             musicPlayer.setVolume(-13.0f);
             musicPlayer.loop();
         }
@@ -276,6 +276,7 @@ public class Jeu extends Observable implements Serializable{
             }
             doit_placer_batiment = false;
             doit_placer_tuile = true;
+        }else{
             if(!estFinPartie()) {
                 changeJoueur();
             }else{
@@ -287,7 +288,7 @@ public class Jeu extends Observable implements Serializable{
 
     public boolean estFinPartie() {
         if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
-            if(type_jeu==CONSOLE && AFFICHAGE){
+            if(AFFICHAGE){
                 System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
@@ -298,14 +299,14 @@ public class Jeu extends Observable implements Serializable{
         int nb_huttes_j = joueurs[jCourant].getNbHuttes();
         if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
             jVainqueur = jCourant;
-            if(type_jeu==CONSOLE && AFFICHAGE){
+            if(AFFICHAGE){
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
             return true;
         }
         if(pioche.isEmpty()){
             calculScore();
-            if(type_jeu==CONSOLE && AFFICHAGE){
+            if(AFFICHAGE){
                 System.out.println("Partie terminee, pioche vide !");
                 afficheScore();
             }

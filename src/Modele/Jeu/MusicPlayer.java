@@ -1,6 +1,7 @@
 package Modele.Jeu;
 
 import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -17,6 +18,7 @@ public class MusicPlayer {
             clip.open(audioIn);
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.err.println("Impossible d'ouvrir le fichier son " + path);
             e.printStackTrace();
         }
     }
