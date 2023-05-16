@@ -52,11 +52,9 @@ public class ImageLoader {
     public static boolean select_fin_partie;
     public static BufferedImage echap_button;
 
-            hauteur_menu_options, posX_tiers_selecteur_vert;
-    public static int posX_score_finPartie, posX_joueur_finPartie, posY_joueur_finPartie, posY_joueur_deux, posY_joueur_trois, posY_joueur_quatre;
+    public static int posX_score_finPartie, posX_joueur_finPartie, posY_joueur_finPartie, posY_joueur_deux, posY_joueur_trois, posX_tiers_selecteur_vert;
     public static int posX_cadre, posY_cadre, decalageY_cadre, largeur_cadre, hauteur_cadre, decalageY_joueur, posX_huttes_finPartie, posX_temples_finPartie, posX_tours_finPartie;
-    public static boolean select_options, select_menu_options, select_save, select_load, select_annuler, select_refaire, tuto_on, select_quitter, select_fin_partie,
-            ecran_fin_partie;
+    public static boolean ecran_fin_partie;
     public static BufferedImage grassTile_0_Red, grassTile_1_Red, grassTile_2_Red;
     public static BufferedImage volcanTile_0_Red, volcanTile_1_Red, volcanTile_2_Red;
     public static BufferedImage foretTile_0_Red, foretTile_1_Red, foretTile_2_Red;
