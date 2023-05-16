@@ -83,8 +83,8 @@ public class Jeu extends Observable implements Serializable{
         doit_placer_tuile = true;
         doit_placer_batiment = false;
         if(type_jeu == GRAPHIQUE) {
-            musicPlayer = new MusicPlayer("Musiques\\A_Story_You_Wont_Believe.wav");
-            musicPlayer.setVolume(-13.0f);
+            musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
+            musicPlayer.setVolume(-28.0f);
             musicPlayer.loop();
         }
 

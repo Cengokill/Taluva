@@ -3,6 +3,7 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
+import Modele.Jeu.MusicPlayer;
 import Modele.Jeu.Plateau.Plateau;
 
 import javax.swing.*;

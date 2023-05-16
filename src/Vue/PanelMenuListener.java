@@ -1,5 +1,7 @@
 package Vue;
 
+import Modele.Jeu.MusicPlayer;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -190,6 +192,7 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
             //efface tout le contenu de la frame
             panelMenu.layeredPane.removeAll();
+            panelMenu.musicPlayer.stop();
 
             // On passe du menu au jeu
             ImageLoader.loadImages();
@@ -241,6 +244,17 @@ public class PanelMenuListener implements MouseListener  {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(estCurseurSurBouton_Local(e)) System.out.println("local");
+        if(estCurseurSurBouton_Reseau(e)) System.out.println("reseau");
+        if(estCurseurSurBouton_Options(e)) System.out.println("options");
+        if(estCurseurSurBouton_Quitter(e)) System.out.println("quitter");
+        try {
+            verif(e);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } catch (CloneNotSupportedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override

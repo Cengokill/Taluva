@@ -2,6 +2,7 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
+import Modele.Jeu.MusicPlayer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class PanelMenu extends JPanel {
     FenetreJeu fenetre;
     Jeu jeu;
     ControleurMediateur controleur;
+    public MusicPlayer musicPlayer;
 
     final BufferedImage[] sliders = new BufferedImage[6];
 
@@ -105,6 +107,10 @@ public class PanelMenu extends JPanel {
         frameWidth=tailleFenetre.width;
         frameHeight=tailleFenetre.width;
         posX_menu_options = frameWidth;
+        //musique
+        musicPlayer = new MusicPlayer("Musiques\\Merchants_of_Novigrad.wav");
+        musicPlayer.setVolume(-22.0f);
+        musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
         boucle();//Timer
