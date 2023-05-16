@@ -23,6 +23,9 @@ import static Vue.Camera.*;
 import static Modele.Jeu.Plateau.EtatPlateau.*;
 import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 
 public class PanelPlateau extends JPanel {
     /////////////////////////////////////////////////////
@@ -43,9 +46,27 @@ public class PanelPlateau extends JPanel {
     public final int HAUTEUR_OCEAN = 50;
     public int posX_selecteur_vert_depart = -10;
     public int posX_selecteur_vert;
-    public int vitesse = 30;
+    //vitesse en fonction des performances du PC
+    Runtime runtime = Runtime.getRuntime();
+    public int nombreCoeurs;
+    public double memoireLibre;
+    public int vitesse;
 
     public PanelPlateau(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
+        nombreCoeurs = runtime.availableProcessors();
+        // Obtenir la référence à l'objet MemoryMXBean
+        MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+        // Obtenir les informations sur l'utilisation de la mémoire
+        memoireLibre = memoryMXBean.getHeapMemoryUsage().getUsed()/1000000.0;
+        if(nombreCoeurs <= 4 || memoireLibre <= 128){
+            vitesse = 90;
+        }else if(nombreCoeurs <= 6 || memoireLibre <= 256){
+            vitesse = 60;
+        }else{
+            vitesse = 30;
+        }
+        System.out.println("Nombre de coeurs : " + nombreCoeurs);
+        System.out.println("Memoire libre : " + memoireLibre + " Mo");
         this.fenetreJeu = t;
         this.controleur = controleur;
         this.jeu = jeu;
