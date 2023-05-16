@@ -42,6 +42,10 @@ public class InstanceJeu {
         return jCourant;
     }
 
+    public Joueur getJoueurCourantClasse(){
+        return joueurs[jCourant];
+    }
+
     public Plateau getPlateau() {
         Plateau p = plateau;
         return p;

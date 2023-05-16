@@ -3,6 +3,7 @@ package Modele.IA;
 import Modele.Jeu.Coup;
 import Modele.Jeu.CoupValeur;
 import Modele.Jeu.Joueur;
+import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Structures.Position.Point2D;
@@ -252,16 +253,17 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     private int evaluationScoreInstance(InstanceJeu instanceCourante){
+        // idée potentielle faire un calcul sur un coeur et l'autre sur un autre coeur multithreadé ca
         int scoreJoueur = evaluationInstance(instanceCourante,true);
-        int scoreAdverse = evaluationInstance(instanceCourante,false);
+        //int scoreAdverse = evaluationInstance(instanceCourante,false);
 
-        return scoreJoueur-scoreAdverse;
+        return scoreJoueur;//-scoreAdverse;
     }
 
     private int evaluationInstance(InstanceJeu instanceCourante, boolean joueurCourant){
         Joueur joueur;
-        if(joueurCourant) joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
-        else joueur = instanceCourante.getJoueur((instanceCourante.getJoueurCourant()+1%2));
+        if(!joueurCourant) instanceCourante.changeJoueur();
+        joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
 
         //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
         if((joueur.getNbHuttes() == 0 && joueur.getNbTemples() == 0)||(joueur.getNbTemples() ==0 && joueur.getNbTours() ==0)||(joueur.getNbHuttes()==0 && joueur.getNbTours()==0)){
@@ -272,15 +274,29 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             return 0;
         }
 
-        //sinon on calcule le score du joueur
-        int score_joueur = joueur.getNbHuttesPlacees() * poids_hutte;
-        score_joueur += joueur.getNbToursPlacees() * poids_tour;
-        score_joueur += joueur.getNbTemplesPlaces() * poids_temple;
+        int score = evaluerVillages(instanceCourante,joueur);
 
-        return score_joueur;
+        if(!joueurCourant) instanceCourante.changeJoueur();
+        return score;
+    }
+
+    private int tailleVillage(InstanceJeu instanceJeu, byte numJoueur, int i, int j){
+        int taille = 0;
+        Plateau plateau = instanceJeu.getPlateau();
+        // Les positions de chaque hutte du village
+        ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,numJoueur);
+        for(Point2D posCourante : pointsVillage){
+            if(plateau.getTuile(posCourante.getPointX(), posCourante.getPointY()).getNumJoueur()==numJoueur){
+                System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
+                taille++;
+            }
+        }
+        //System.out.println("pointsVillage: "+pointsVillage.size());
+        return taille;
     }
 
     private int evaluerVillages(InstanceJeu instanceJeu,Joueur joueurAEvaluer){
+        System.out.println("Numero joueur a evaluer : "+joueurAEvaluer.getNumero());
         int nombreVillages = joueurAEvaluer.getNbVillages();
         int score = nombreVillages;
         int nbHuttesPlacables = 0;
@@ -290,15 +306,35 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         // On regarde tous les batiments placables par le joueurAEvaluer sur l'instance courante
         for(int i=0;i<instanceJeu.getPlateau().getLIGNES();i++){
             for(int j=0;j<instanceJeu.getPlateau().getCOLONNES();j++){
-                int hauteurCourante = instanceJeu.getPlateau().getHauteurTuile(i,j);
-                int[] batimentsPlacables = instanceJeu.getPlateau().getBatimentPlacable(i,j,joueurAEvaluer.getNumero());
-                if(batimentsPlacables[0]==1) nbTemplesPlacables++;
-                if(batimentsPlacables[1]==1) nbHuttesPlacables = nbHuttesPlacables+hauteurCourante;
-                if(batimentsPlacables[2]==1) nbToursPlacables++;
+                if(instanceJeu.getPlateau().getTuile(i,j).getBiomeTerrain()!= Hexagone.VIDE){
+                    // On calcul les batiments possables
+                    int hauteurCourante = instanceJeu.getPlateau().getHauteurTuile(i,j);
+                    int[] batimentsPlacables = instanceJeu.getPlateau().getBatimentPlacable(i,j,joueurAEvaluer.getNumero());
+                    if(batimentsPlacables[0]==1) nbTemplesPlacables++;
+                    if(batimentsPlacables[1]==1) nbHuttesPlacables = nbHuttesPlacables+hauteurCourante;
+                    if(batimentsPlacables[2]==1) nbToursPlacables++;
+
+                    // On calcul la taille du village
+                    // !! Attention ici faut faire une verification pour pas verifier plusieurs fois le meme village
+                    if(instanceJeu.getPlateau().getBatiment(i,j)!=0){
+                       if((tailleVillage(instanceJeu,joueurAEvaluer.getNumero(),i,j))>1){
+                           score = 90000;
+                           //instanceJeu.getPlateau().affiche();
+                       }
+                    }
+                }
             }
         }
 
+        // Score de previsualisation (en prévision du futur)
+        score += (nbTemplesPlacables*joueurAEvaluer.getNbTemples())*poids_temple;
+        score += nbHuttesPlacables*joueurAEvaluer.getNbHuttes()*poids_hutte;
+        score += (nbToursPlacables*joueurAEvaluer.getNbTours())*poids_tour;
 
+        // Score de placement
+        score += joueurAEvaluer.getNbHuttesPlacees() * poids_hutte;
+        score += joueurAEvaluer.getNbToursPlacees() * poids_tour;
+        score += joueurAEvaluer.getNbTemplesPlaces() * poids_temple;
 
         return score;
     }
