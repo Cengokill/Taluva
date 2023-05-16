@@ -287,7 +287,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,numJoueur);
         for(Point2D posCourante : pointsVillage){
             if(plateau.getTuile(posCourante.getPointX(), posCourante.getPointY()).getNumJoueur()==numJoueur){
-                System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
+                //System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
                 taille++;
             }
         }
@@ -296,7 +296,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     private int evaluerVillages(InstanceJeu instanceJeu,Joueur joueurAEvaluer){
-        System.out.println("Numero joueur a evaluer : "+joueurAEvaluer.getNumero());
+        //System.out.println("Numero joueur a evaluer : "+joueurAEvaluer.getNumero());
         int nombreVillages = joueurAEvaluer.getNbVillages();
         int score = nombreVillages;
         int nbHuttesPlacables = 0;

@@ -29,7 +29,7 @@ public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est 
     public static AbstractIA nouvelle(Jeu j, byte n) {
         AbstractIA resultat = null;
         pioche = new LinkedList<>();
-        type_IA = INTELLIGENTE;
+        type_IA = ALEATOIRE;
         if(type_IA == ALEATOIRE) {
             resultat = new IAAleatoire(n);
         }else if(type_IA == INTELLIGENTE) {

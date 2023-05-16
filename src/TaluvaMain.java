@@ -10,7 +10,7 @@ public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
-        byte type_jeu = GRAPHIQUE;
+        byte type_jeu = CONSOLE;
         /*
         Serveur serveur = new Serveur(42113);
         Client client = new Client("localhost", 42113);
@@ -18,9 +18,10 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
          */
-        int nb_parties = 100;
+        int nb_parties = 500;
         Jeu jeu = new Jeu(type_jeu);
-        jeu.AFFICHAGE = false;
+        int[] victoires_defaites = new int[2];
+        jeu.AFFICHAGE = true;
 
         if(type_jeu == GRAPHIQUE) {
             ControleurMediateur controler = new ControleurMediateur(jeu);
@@ -28,6 +29,7 @@ public class TaluvaMain {
             fenetre.panelMenu.metAJour();
             fenetre.panelMenu.setFenetre(fenetre);
         }else{
+
             for(int i = 0; i < nb_parties; i++) {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
                 jeu.initPartie();
@@ -35,7 +37,14 @@ public class TaluvaMain {
                     jeu.pioche();
                     jeu.joueIA();
                 }
+                if(jeu.jVainqueur == 0){
+                    victoires_defaites[0]++;
+                }else{
+                    victoires_defaites[1]++;
+                }
             }
+            System.out.println("Victoires joueur 0 : " + victoires_defaites[0]);
+            System.out.println("Victoires joueur 1 : " + victoires_defaites[1]);
         }
     }
 }

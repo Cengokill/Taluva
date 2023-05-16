@@ -254,7 +254,7 @@ public class Plateau implements Serializable, Cloneable {
 
 
     private void ajouterHuttesVoisines(byte idjoueur, ArrayList<Point2D> listeDesHutesVoisines, Point2D HuteCourant) {
-        System.out.println("IDJOUEUR: "+idjoueur);
+        //System.out.println("IDJOUEUR: "+idjoueur);
         if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY(), idjoueur)){
             Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY());
             if(notIn(listeDesHutesVoisines,p1))

@@ -33,7 +33,6 @@ public class Jeu extends Observable implements Serializable{
     private Joueur[] joueurs;
     Parametres p;
     final int[]score = new int[2];
-    public Joueur[] score_victoires = new Joueur[2];
     byte[] tuileAPoser = new byte[5];
 
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
@@ -68,8 +67,8 @@ public class Jeu extends Observable implements Serializable{
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
-        //joueurs[1] = IA2;
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
+        joueurs[1] = IA2;
         joueurs[0] = IA1;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
@@ -302,12 +301,12 @@ public class Jeu extends Observable implements Serializable{
             if(type_jeu==CONSOLE && AFFICHAGE){
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
-            System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             return true;
         }
         if(pioche.isEmpty()){
             calculScore();
             if(type_jeu==CONSOLE && AFFICHAGE){
+                System.out.println("Partie terminee, pioche vide !");
                 afficheScore();
             }
             return true;
@@ -402,7 +401,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void pioche() {
-        if(type_jeu==CONSOLE && AFFICHAGE) {
+        if(type_jeu==CONSOLE && AFFICHAGE && debug) {
             System.out.println("Tuiles dans la pioche : " + pioche.size());
             plateau.affiche();
         }
