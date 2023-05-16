@@ -33,6 +33,11 @@ public class Historique implements Serializable {
         h.futur = (LinkedList<Coup>) futur.clone();
         return h;
     }
+    private static void afficheTabPosition(ArrayList<Position> positions){
+        for(Position posCourante: positions){
+            System.out.println("x: "+posCourante.ligne()+" y: "+posCourante.colonne());
+        }
+    }
 
     public static Stock annuler(Hexagone[][] carte, ArrayList<ArrayList<TripletDePosition>>  ListetripletDePosition,ArrayList<Position>positions_libres_batiments,ArrayList<ArrayList<Position>>ListePositions_libres) {
         //System.out.println("passé : "+passe.size());

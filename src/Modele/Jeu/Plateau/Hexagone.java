@@ -81,6 +81,9 @@ public class Hexagone implements Serializable {
     public int getBatiment() {return batiment;}
 
     public void affiche(){
+        //if(getHauteur()==1) System.out.print("1");
+        //if(getHauteur()==2) System.out.print("2");
+        //if(getHauteur()==3) System.out.print("3");
         switch(biomeTerrain){
             case VOLCAN:
                 System.out.print("V");
