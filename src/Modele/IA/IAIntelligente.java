@@ -165,11 +165,14 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     augmenteBatimentsJoueur(HUTTE,joueurAEvaluer,instanceAEvaluer.getPlateau().getHauteurTuile(coupPropager.batimentLigne,coupPropager.batimentColonne));
                 }
             }else{ // Tour ou Temple
+                //System.out.println("TEMPLE");
                 instanceAEvaluer.getPlateau().joueCoup(coupCourant);
                 if(coupCourant.typePlacement==2) batiment = TEMPLE;
                 else if (coupCourant.typePlacement==3) batiment = TOUR;
                 augmenteBatimentsJoueur(batiment,joueurAEvaluer,0);
+                //System.out.println("nbTemplesAvant: "+joueurAEvaluer.getNbTemplesPlaces());
             }
+
             // On evalue la nouvelle instance
             score_courant = evaluationScoreInstance(instanceAEvaluer);
             if(score_courant == score_max){
@@ -186,6 +189,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                 }
             }else{
                 diminueBatimentsJoueur(batiment,joueurAEvaluer,0);
+                //System.out.println("nbTemplesApres: "+joueurAEvaluer.getNbTemplesPlaces());
             }
             i++;
         }
@@ -287,11 +291,11 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,numJoueur);
         for(Point2D posCourante : pointsVillage){
             if(plateau.getTuile(posCourante.getPointX(), posCourante.getPointY()).getNumJoueur()==numJoueur){
-                //System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
+                System.out.println("numJoueur: "+numJoueur);
+                System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
                 taille++;
             }
         }
-        //System.out.println("pointsVillage: "+pointsVillage.size());
         return taille;
     }
 
@@ -314,27 +318,32 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     if(batimentsPlacables[1]==1) nbHuttesPlacables = nbHuttesPlacables+hauteurCourante;
                     if(batimentsPlacables[2]==1) nbToursPlacables++;
 
+
                     // On calcul la taille du village
                     // !! Attention ici faut faire une verification pour pas verifier plusieurs fois le meme village
-                    if(instanceJeu.getPlateau().getBatiment(i,j)!=0){
+                    /*if(instanceJeu.getPlateau().getBatiment(i,j)!=0){
                        if((tailleVillage(instanceJeu,joueurAEvaluer.getNumero(),i,j))>1){
                            score = 90000;
                            //instanceJeu.getPlateau().affiche();
                        }
-                    }
+                    }*/
                 }
             }
         }
 
         // Score de previsualisation (en prévision du futur)
-        score += (nbTemplesPlacables*joueurAEvaluer.getNbTemples())*poids_temple;
-        score += nbHuttesPlacables*joueurAEvaluer.getNbHuttes()*poids_hutte;
-        score += (nbToursPlacables*joueurAEvaluer.getNbTours())*poids_tour;
+        score += (nbTemplesPlacables*joueurAEvaluer.getNbTemples())*(poids_temple/5);
+        score += nbHuttesPlacables*joueurAEvaluer.getNbHuttes()*(poids_hutte/5);
+        score += (nbToursPlacables*joueurAEvaluer.getNbTours())*(poids_tour/5);
 
         // Score de placement
         score += joueurAEvaluer.getNbHuttesPlacees() * poids_hutte;
         score += joueurAEvaluer.getNbToursPlacees() * poids_tour;
-        score += joueurAEvaluer.getNbTemplesPlaces() * poids_temple;
+        score += joueurAEvaluer.getNbTemplesPlaces() * 100000000; // j'avais mis 1000 ca poser plus de temple
+
+        if(joueurAEvaluer.getNbToursPlacees()!=0){
+            //System.out.println("Temple placé");
+        }
 
         return score;
     }

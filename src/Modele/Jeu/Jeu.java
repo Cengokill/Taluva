@@ -66,9 +66,9 @@ public class Jeu extends Observable implements Serializable{
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
-        joueurs[0] = IA0;
-        joueurs[1] = IA1;
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
+        joueurs[0] = IA1;
+        //joueurs[1] = IA1;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
@@ -200,7 +200,6 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void joueIA() throws CloneNotSupportedException {
-        //System.out.println("L'IA joue");
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
