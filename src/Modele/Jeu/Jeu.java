@@ -7,6 +7,7 @@ import Patterns.Observable;
 import Structures.Position.Position;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Collections;
@@ -30,6 +31,7 @@ public class Jeu extends Observable implements Serializable{
     public byte jCourant;
     public byte jVainqueur;
     private Joueur[] joueurs;
+    private int nb_joueurs;
     Parametres p;
     final int[]score = new int[2];
     byte[] tuileAPoser = new byte[5];
@@ -54,7 +56,7 @@ public class Jeu extends Observable implements Serializable{
 
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
-        int nb_joueurs = 2;
+        nb_joueurs = 2;
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
@@ -69,8 +71,8 @@ public class Jeu extends Observable implements Serializable{
         joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
         joueurs[0] = IA1;
         //joueurs[1] = IA1;
-        joueurs[1].setCouleur("Rouge");
-        joueurs[0].setCouleur("Bleu");
+        joueurs[1].setCouleur(Color.RED);
+        joueurs[0].setCouleur(Color.BLUE);
         pioche = new LinkedList<>();
         lancePartie();
         if(type_jeu == GRAPHIQUE) {
@@ -480,6 +482,10 @@ public class Jeu extends Observable implements Serializable{
 
     public Plateau getPlateau() {
         return plateau;
+    }
+
+    public int getNbJoueurs(){
+        return nb_joueurs;
     }
 
     public void changePhase(){

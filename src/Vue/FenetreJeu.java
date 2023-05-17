@@ -34,13 +34,16 @@ public class FenetreJeu extends Container {
     public static Jeu jeu;
     final JFrame frame;
     public static ArrayList<Joueur> joueurs_tries;
+    public static boolean estFenetreScoreChargee = false;
+    public static BufferedImage fenetre_score_courante;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         joueurs_tries = new ArrayList<>();
         FenetreJeu.jeu = jeu;
-        this.frame = getFMenu();
+        frame = getFMenu();
+        frame.setMinimumSize(new Dimension(800, 700));
         initFrame();
         initLayeredPanel();
         initMenu();
@@ -192,7 +195,7 @@ public class FenetreJeu extends Container {
                 largeur = getWidth();
                 hauteur = getHeight();
                 double rapport = 492.0 / 847.0;
-                double rapport_fenetre_score = 621.0/533.0;
+                double rapport_fenetre_score = 1400.0/872.0;
                 double rapport_joueur_courant = 131.0/603.0;
                 double rapport_bouton_dans_options = 207.0/603.0;
                 double rapport_fin_partie = 816.0/1456.0;
@@ -225,17 +228,17 @@ public class FenetreJeu extends Container {
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
                 posX_fenetre_score = 2;
                 posY_fenetre_score = 2;
-                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.18);
+                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.15);
                 posX_prenom_j1 = posX_prenom_j0;
-                posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.16);
-                posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.47);
-                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.29);
-                posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.515);
-                posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.77);
-                posY_scores_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.30);
-                posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.62);
-                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.69);
-                posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
+                posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.07);
+                posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.25);
+                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.28);
+                posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.53);
+                posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.78);
+                posY_scores_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.15);
+                posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.33);
+                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.71);
+                posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.48);
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = 24;
                 //timer
@@ -248,7 +251,9 @@ public class FenetreJeu extends Container {
                 posY_refaire = (int) (hauteur_fenetre_score * 1.0);
                 //tuiles
                 posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.25);
-                posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.72);
+                if(jeu.getNbJoueurs()==2) posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.40);
+                else if(jeu.getNbJoueurs()==3) posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.50);
+                else posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.60);
                 largeur_tuile = (int) (largeur_fenetre_score*0.20);
                 hauteur_tuile = largeur_tuile;
                 //fin de partie
@@ -314,7 +319,9 @@ public class FenetreJeu extends Container {
         bouton_options = lisImageBuf("Options");
         menu_options = lisImageBuf("Menu_options");
         menu_dark_filter = lisImageBuf("Menu_dark_filter");
-        fenetre_score = lisImageBuf("fenetre_score");
+        fenetre_score_2 = lisImageBuf("fenetre_score_2");
+        fenetre_score_3 = lisImageBuf("fenetre_score_3");
+        fenetre_score_4 = lisImageBuf("fenetre_score_4");
         timer = lisImageBuf("Timer");
         joueur_courant = lisImageBuf("Joueur_courant");
         tuile_derriere = lisImageBuf("Tuile_derriere");
@@ -376,16 +383,25 @@ public class FenetreJeu extends Container {
 
 
     public static void afficheFenetreScore(Graphics g) {
-        g.drawImage(fenetre_score, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
+        if(!estFenetreScoreChargee) {
+            int nb_joueurs = jeu.getJoueurs().length;
+            if(nb_joueurs==2) fenetre_score_courante = fenetre_score_2;
+            else if(nb_joueurs==3) fenetre_score_courante = fenetre_score_3;
+            else fenetre_score_courante = fenetre_score_4;
+            estFenetreScoreChargee = true;
+        }
+        g.drawImage(fenetre_score_courante, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
         Font font = new Font("Bookman Old Style", Font.BOLD, 29);
         g.setFont(font);
-        g.setColor(Color.RED);
         String joueur_0 = jeu.getJoueurs()[0].getPrenom();
+        Color couleur_0 = jeu.getJoueurs()[0].getCouleur();
+        g.setColor(couleur_0);
         g.drawString(joueur_0, posX_prenom_j0, posY_prenom_j0);
-        g.setColor(new Color(0, 128, 255));
+
         String joueur_1 = jeu.getJoueurs()[1].getPrenom();
+        Color couleur_1 = jeu.getJoueurs()[1].getCouleur();
+        g.setColor(couleur_1);
         g.drawString(joueur_1, posX_prenom_j1, posY_prenom_j1);
-        g.setColor(Color.WHITE);
         font = new Font("Roboto", Font.BOLD, 20);
         g.setFont(font);
         String huttes_j0 = Integer.toString(jeu.getJoueurs()[0].getNbHuttes());
@@ -447,15 +463,15 @@ public class FenetreJeu extends Container {
             g.setFont(font);
             g.setColor(Color.BLACK);
             for(int i=0; i<joueurs_tries.size(); i++){
-                String couleur_courante = joueurs_tries.get(i).getCouleur();
+                Color couleur_courante = joueurs_tries.get(i).getCouleur();
                 BufferedImage img = null;
-                if(couleur_courante.equals("Rouge")){
+                if(couleur_courante.equals(Color.RED)){
                     img = cadreRouge;
-                }else if(couleur_courante.equals("Bleu")){
+                }else if(couleur_courante.equals(Color.BLUE)){
                     img = cadreBleu;
-                }else if(couleur_courante.equals("Vert")){
+                }else if(couleur_courante.equals(Color.GREEN)){
                     img = cadreVert;
-                }else if(couleur_courante.equals("Violet")){
+                }else if(couleur_courante.equals(Color.MAGENTA)){
                     img = cadreViolet;
                 }
                 g.drawImage(img, posX_cadre, posY_cadre+decalageY_cadre*i, largeur_cadre, hauteur_cadre, null);

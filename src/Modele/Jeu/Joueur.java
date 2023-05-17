@@ -1,6 +1,7 @@
 package Modele.Jeu;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class Joueur implements Serializable {
     public final static byte IA = 1;
     byte type_joueur;
     private String prenom;
-    private String couleur;
+    private Color couleur;
     private int nb_victoires;
     //définit le nombre de bâtiments initial
     private int nbHuttes;
@@ -131,7 +132,7 @@ public class Joueur implements Serializable {
         return prenom;
     }
 
-    public String getCouleur(){
+    public Color getCouleur(){
         return couleur;
     }
 
@@ -172,7 +173,7 @@ public class Joueur implements Serializable {
         return score;
     }
 
-    public void setCouleur(String couleur){
+    public void setCouleur(Color couleur){
         this.couleur = couleur;
     }
 

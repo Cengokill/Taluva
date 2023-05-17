@@ -16,7 +16,7 @@ public class ImageLoader {
     public static final BufferedImage[] choisirBat = new BufferedImage[12], temples = new BufferedImage[4],templesColor1 = new BufferedImage[4],templesColor2 = new BufferedImage[4],
             tours = new BufferedImage[4],toursColor1 = new BufferedImage[4],toursColor2 = new BufferedImage[4];
     public static final BufferedImage[][] hutteTile = new BufferedImage[3][4],maisonTileColor1 = new BufferedImage[3][4],maisonTileColor2 = new BufferedImage[3][4];
-    public static BufferedImage waterTile, fenetre_score, background, joueur_courant, tuile_derriere;
+    public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, tuile_derriere;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2;
