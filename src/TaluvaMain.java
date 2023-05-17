@@ -1,4 +1,5 @@
 import Controleur.ControleurMediateur;
+import Modele.Jeu.Joueur;
 import Modele.Reseau.Client;
 import Modele.Reseau.Serveur;
 import Modele.Jeu.Jeu;
@@ -10,7 +11,7 @@ public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
-        byte type_jeu = GRAPHIQUE;
+        byte type_jeu = CONSOLE;
         /*
         Serveur serveur = new Serveur(42113);
         Client client = new Client("localhost", 42113);
@@ -29,10 +30,15 @@ public class TaluvaMain {
             fenetre.panelMenu.metAJour();
             fenetre.panelMenu.setFenetre(fenetre);
         }else{
-
             for(int i = 0; i < nb_parties; i++) {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
                 jeu.initPartie();
+                for(Joueur joueur : jeu.getJoueurs()){
+                    if(joueur.getTypeJoueur()!=Joueur.IA) {
+                        System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE ne peut etre active uniquement si tous les joueurs sont des IA.");
+                        System.exit(1);
+                    }
+                }
                 while (!jeu.estFinPartie()) {
                     jeu.pioche();
                     jeu.joueIA();
