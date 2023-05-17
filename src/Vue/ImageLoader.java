@@ -25,7 +25,7 @@ public class ImageLoader {
     public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
     public static BufferedImage lacTile_0, lacTile_1, lacTile_2;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
-    public static BufferedImage joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
+    public static BufferedImage timer, joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
@@ -33,7 +33,7 @@ public class ImageLoader {
             menu_options, menu_dark_filter;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save,
             posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
-            posX_Echap, posY_Echap,
+            posX_Echap, posY_Echap, posX_timer, posY_timer, largeur_timer, hauteur_timer,
             posX_joueur_courant, posY_joueur_courant, posX_prenom_j0, posX_prenom_j1, posY_prenom_j0, posY_prenom_j1, posX_huttes, posX_tours, posX_temples,
             posY_scores_j0, posY_scores_j1, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
             posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie;

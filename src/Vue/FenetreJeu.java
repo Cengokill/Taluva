@@ -8,6 +8,8 @@ import Modele.Jeu.Plateau.Plateau;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -78,6 +80,7 @@ public class FenetreJeu extends Container {
         initPanels(controleur);
         initKeyBoardAndMouseListener();
         setBackgroundColor();
+        boucle();
     }
 
     public void setHandCursor(){
@@ -174,7 +177,7 @@ public class FenetreJeu extends Container {
                 super.paint(g2d);
                 calculeRapports();
                 afficheFenetreScore(g2d);
-                //afficheBoutonOptions(g2d);
+                afficheTimer(g2d);
                 afficheBoutonEchap(g);
                 afficheBoutonTuto(g);
                 afficheMessageErreur(g2d);
@@ -194,6 +197,7 @@ public class FenetreJeu extends Container {
                 double rapport_bouton_dans_options = 207.0/603.0;
                 double rapport_fin_partie = 816.0/1456.0;
                 double rapport_cadre = 76.0/1180.0;
+                double rapport_timer = 131.0/603.0;
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
@@ -234,11 +238,15 @@ public class FenetreJeu extends Container {
                 posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = 24;
-
+                //timer
+                posX_timer = (int) (posX_fenetre_score + largeur_fenetre_score*1.0);
+                posY_timer = (int) (posY_fenetre_score + hauteur_fenetre_score*0.16);
+                largeur_timer = (int) (largeur_fenetre_score*0.80);
+                hauteur_timer = (int) (largeur_timer * rapport_timer);
+                //boutons annuler et refaire
                 posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
                 posY_refaire = (int) (hauteur_fenetre_score * 1.0);
-
-
+                //tuiles
                 posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.25);
                 posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.72);
                 largeur_tuile = (int) (largeur_fenetre_score*0.20);
@@ -307,6 +315,7 @@ public class FenetreJeu extends Container {
         menu_options = lisImageBuf("Menu_options");
         menu_dark_filter = lisImageBuf("Menu_dark_filter");
         fenetre_score = lisImageBuf("fenetre_score");
+        timer = lisImageBuf("Timer");
         joueur_courant = lisImageBuf("Joueur_courant");
         tuile_derriere = lisImageBuf("Tuile_derriere");
         echap_button = lisImageBuf("Menu/echap_icon");
@@ -348,6 +357,21 @@ public class FenetreJeu extends Container {
                 panelPlateau.resetIndexMessageErreur();
             }
         }
+    }
+
+    public static void afficheTimer(Graphics g) {
+        g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
+        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurCourant().getTempsTemp();
+        if(tempsEcoule>=20000000){
+            tempsEcoule = 0.0;
+        }
+        double tempsArrondi = tempsEcoule / 1000;// Convertir en secondes
+        tempsArrondi = Math.round(tempsArrondi * 10)/10.0;// Arrondir au dixième
+        String temps = String.valueOf(tempsArrondi);
+        g.drawString(temps, posX_timer, posY_timer + hauteur_timer/2);
     }
 
 
@@ -556,5 +580,19 @@ public class FenetreJeu extends Container {
         } catch (Exception e) {
             throw new RuntimeException("Impossible de charger cette sauvegarde.\n" + e);
         }
+    }
+
+    public void metAJour(){
+        repaint();
+    }
+
+    public void boucle(){
+        Timer timer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                metAJour();
+            }
+        });
+        timer.start();
     }
 }

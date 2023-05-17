@@ -66,13 +66,18 @@ public class Jeu extends Observable implements Serializable{
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
         //joueurs[0] = IA1;
         //joueurs[1] = IA2;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
+        if(type_jeu == GRAPHIQUE) {
+            musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
+            musicPlayer.setVolume(-50.0f);
+            musicPlayer.loop();
+        }
         lancePartie();
     }
 
@@ -82,11 +87,6 @@ public class Jeu extends Observable implements Serializable{
         estPartieFinie = false;
         doit_placer_tuile = true;
         doit_placer_batiment = false;
-        if(type_jeu == GRAPHIQUE) {
-            musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
-            musicPlayer.setVolume(-28.0f);
-            musicPlayer.loop();
-        }
 
         if (estJoueurCourantUneIA()) {
             if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
@@ -120,6 +120,7 @@ public class Jeu extends Observable implements Serializable{
         int nbHuttesPlacees = joueurs[n].getNbHuttesPlacees();
         int nbTemplesPlaces = joueurs[n].getNbTemplesPlaces();
         int nbToursPlacees = joueurs[n].getNbToursPlacees();
+        double tempsTotal = joueurs[n].getTempsTotal();
         if(joueurs[n].type_joueur == Joueur.IA){
             joueurs[n] = new Joueur(Joueur.HUMAIN, numero, "Joueur "+numero);
         }else{
@@ -131,6 +132,7 @@ public class Jeu extends Observable implements Serializable{
         joueurs[n].setNbHuttesPlacees(nbHuttesPlacees);
         joueurs[n].setNbTemplesPlaces(nbTemplesPlaces);
         joueurs[n].setNbToursPlacees(nbToursPlacees);
+        joueurs[n].setTempsTotal(tempsTotal);
     }
 
     public Joueur[] getJoueurs() {
@@ -197,7 +199,10 @@ public class Jeu extends Observable implements Serializable{
 
     public void joueIA() throws CloneNotSupportedException {
         if(type_jeu==CONSOLE) joueSansThread();
-        else joueMultiThread();
+        else{
+            joueMultiThread();
+            joueurs[jCourant].stopChrono();
+        }
     }
 
     public void calculScore(){
@@ -259,6 +264,7 @@ public class Jeu extends Observable implements Serializable{
     public boolean joueurPlaceBatiment(int ligne, int colonne, byte type_bat){
         if (doit_placer_tuile) {
             System.err.println("Erreur : le joueur doit placer une tuile");
+            joueurs[jCourant].stopChrono();
             return false;
         }
         plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
@@ -276,12 +282,6 @@ public class Jeu extends Observable implements Serializable{
             }
             doit_placer_batiment = false;
             doit_placer_tuile = true;
-        }else{
-            if(!estFinPartie()) {
-                changeJoueur();
-            }else{
-                return true;
-            }
         }
         return false;
     }
@@ -405,6 +405,9 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu==CONSOLE && AFFICHAGE && debug) {
             System.out.println("Tuiles dans la pioche : " + pioche.size());
             plateau.affiche();
+        }else if(type_jeu==GRAPHIQUE){//chono uniquement en mode GRAPHIQUE
+            System.out.println("pioche : Joueur courant : " + joueurs[jCourant].getPrenom());
+            joueurs[jCourant].startChrono();
         }
         tuile_courante = pioche.get(0);
         pioche.remove(0);

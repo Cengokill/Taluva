@@ -30,8 +30,10 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void placeBatiment(int ligne, int colonne, byte type_bat) {
-        if(jeu.joueurPlaceBatiment(ligne, colonne, type_bat)){//si fin de partie
+        jeu.joueurPlaceBatiment(ligne, colonne, type_bat);
+        if(jeu.estFinPartie()){
             select_fin_partie = true;
+            System.out.println("Controleur : fin de partie");
         }
     }
 

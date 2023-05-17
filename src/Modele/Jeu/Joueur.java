@@ -23,7 +23,8 @@ public class Joueur implements Serializable {
     private int nbTemplesPlaces;
     private int nbVillages;//nombre de villages construits
     //Image de profil
-
+    //Temps de jeu
+    double tempsTotal, tempsTemp;
     private boolean doitJouer;
     private BufferedImage image;
     private int score = 0;
@@ -33,6 +34,7 @@ public class Joueur implements Serializable {
         this.type_joueur = type;
         this.numero = numero;
         this.prenom = prenom;
+        tempsTotal = 0.0;
         doitJouer = false;
         nbHuttesPlacees = 0;
         nbToursPlacees = 0;
@@ -100,6 +102,29 @@ public class Joueur implements Serializable {
 
     public void setNumero(byte n){
         numero = numero;
+    }
+
+    public void setTempsTotal(double temps){
+        tempsTotal = temps;
+    }
+
+    public void startChrono(){
+        System.out.println("start chrono");
+        tempsTemp = System.currentTimeMillis();
+    }
+
+    public void stopChrono(){
+        System.out.println("stop chrono");
+        tempsTotal += (System.currentTimeMillis() - tempsTemp);
+        tempsTemp = 0.0;
+    }
+
+    public double getTempsTotal() {
+        return tempsTotal;
+    }
+
+    public double getTempsTemp() {
+        return tempsTemp;
     }
 
     public String getPrenom(){

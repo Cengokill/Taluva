@@ -25,7 +25,6 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
 
 public class PanelPlateau extends JPanel {
     /////////////////////////////////////////////////////
@@ -876,7 +875,11 @@ public class PanelPlateau extends JPanel {
         }
     }
 
-    public void placerMaison(int i, int j) {
+    public void placerBatiment(int i, int j) {
+        if(jeu.estFinPartie()){
+            jeu.getJoueurCourant().stopChrono();
+            return;
+        }
         int s = scrollValue%3;
         int[] coupsJouable = coupJouable(i,j);
         if(updateScrollValue(s, coupsJouable)) {
@@ -886,6 +889,7 @@ public class PanelPlateau extends JPanel {
                 decomptePropagation();
                 controleur.placeBatiment(i, j, (byte) 1);
             } else if (s == 2) { // place une tour
+                System.out.println("PLACE UNE TOUR");
                 if (peutPoserTour(i, j)) { // on verifie la condition pour poser une tour
                     enSelection = false;
                     controleur.placeBatiment(i, j, (byte) 3);
@@ -897,6 +901,10 @@ public class PanelPlateau extends JPanel {
                 }
             }
             scrollValue = 1;//on met la valeur de scrollValue à 1 car si elle est à 0 la prochaine tuile ne s'affichera pas
+            jeu.getJoueurCourant().stopChrono();
+            if(!jeu.estFinPartie()){
+                jeu.changeJoueur();
+            }
         }
     }
 
@@ -925,12 +933,13 @@ public class PanelPlateau extends JPanel {
 
         if(poseTile) placerTuiles(i,j);
         else placeBatiment(i, j);
-
         //jeu.unefoisIA=true; // POUR IA mettre en commentaire
     }
 
 
     private void placeBatiment(int i, int j) {
+        jeu.isJoueurCourantPerdu();
+        if(jeu.estFinPartie()) return;
         if(!enSelection){
             int[] coups = coupJouable(i,j);
             if (controleur.peutPlacerBatiment(i, j)&&(coups[0]!=0||coups[1]!=0||coups[2]!=0)) {
@@ -938,9 +947,11 @@ public class PanelPlateau extends JPanel {
                 posBat_y = j;
                 enSelection = true;
                 controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+            }else{//pas de bâtiment à placer, le joueur a perdu
+                jeu.getJoueurCourant().stopChrono();
             }
         }else{
-            placerMaison(posBat_x,posBat_y);
+            placerBatiment(posBat_x,posBat_y);
             resetPrevisualisationPropagation();
         }
     }
