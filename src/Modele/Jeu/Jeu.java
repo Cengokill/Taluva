@@ -26,12 +26,12 @@ public class Jeu extends Observable implements Serializable{
     Plateau plateau;
     private Tuile tuile_courante;
     private int delai_avant_pioche = 500;
-    AbstractIA IA0 =null;
-    AbstractIA IA1 =null;
+    AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
     public byte jCourant;
     public byte jVainqueur;
     private Joueur[] joueurs;
     private int nb_joueurs;
+    private double temps_tour;
     Parametres p;
     final int[]score = new int[2];
     byte[] tuileAPoser = new byte[5];
@@ -56,23 +56,30 @@ public class Jeu extends Observable implements Serializable{
 
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
-        nb_joueurs = 2;
+        nb_joueurs = 4;
+        temps_tour = 20000;
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
         IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
+        IA2 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
+        IA3 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA0.setPrenom("IA0");
         IA1.setPrenom("IA1");
-        //Thread ia1Thread = new Thread(IA1);
-        //Thread ia2Thread = new Thread(IA2);
-        //ia1Thread.start();
-        //ia2Thread.start();
+        IA2.setPrenom("IA2");
+        IA3.setPrenom("IA3");
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
         //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
-        joueurs[0] = IA1;
+        //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
+        //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
+        joueurs[0] = IA0;
         joueurs[1] = IA1;
-        joueurs[1].setCouleur(Color.RED);
-        joueurs[0].setCouleur(Color.BLUE);
+        joueurs[2] = IA2;
+        joueurs[3] = IA3;
+        joueurs[0].setCouleur(Color.GREEN);
+        joueurs[1].setCouleur(Color.MAGENTA);
+        joueurs[2].setCouleur(Color.BLUE);
+        joueurs[3].setCouleur(Color.RED);
         pioche = new LinkedList<>();
         lancePartie();
         if(type_jeu == GRAPHIQUE) {
@@ -325,11 +332,7 @@ public class Jeu extends Observable implements Serializable{
 
     public void changeJoueur() {
         //System.out.println("Changement de joueur");
-        if (jCourant == (byte) 0) {
-            jCourant = (byte) 1;
-        } else {
-            jCourant = (byte) 0;
-        }
+        jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
         if(type_jeu==GRAPHIQUE){
             if(estFinPartie()){
@@ -404,11 +407,11 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void pioche() {
-        if(type_jeu==CONSOLE && AFFICHAGE && debug) {
+        if(AFFICHAGE && debug) {
             System.out.println("Tuiles dans la pioche : " + pioche.size());
             plateau.affiche();
-        }else if(type_jeu==GRAPHIQUE){//chono uniquement en mode GRAPHIQUE
-            System.out.println("pioche : Joueur courant : " + joueurs[jCourant].getPrenom());
+        }
+        if(type_jeu==GRAPHIQUE){//chono uniquement en mode GRAPHIQUE
             joueurs[jCourant].startChrono();
         }
         tuile_courante = pioche.get(0);

@@ -3,8 +3,6 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
-import Modele.Jeu.MusicPlayer;
-import Modele.Jeu.Plateau.Plateau;
 
 import javax.swing.*;
 import java.awt.*;
@@ -228,34 +226,43 @@ public class FenetreJeu extends Container {
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
                 posX_fenetre_score = 2;
                 posY_fenetre_score = 2;
-                posX_prenom_j0 = (int) (posX_fenetre_score + largeur_fenetre_score*0.15);
-                posX_prenom_j1 = posX_prenom_j0;
+                posX_prenom = (int) (posX_fenetre_score + largeur_fenetre_score*0.15);
                 posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.07);
                 posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.25);
-                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.28);
+                posY_prenom_j2 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.42);
+                posY_prenom_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.61);
+                posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.27);
                 posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.53);
                 posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.78);
                 posY_scores_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.15);
                 posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.33);
-                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.71);
-                posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.48);
+                posY_scores_j2 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.505);
+                posY_scores_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.685);
                 posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
                 posY_joueur_courant = 24;
+                //boutons annuler et refaire
+                posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
+                posY_refaire = (int) (hauteur_fenetre_score * 1.0);
+                //pioche
+                largeur_tuile = (int) (largeur_fenetre_score*0.20);
+                hauteur_tuile = largeur_tuile;
+                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.70);
+                posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.25);
+                if(jeu.getNbJoueurs()==2){
+                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.40);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.48);
+                }else if(jeu.getNbJoueurs()==3){
+                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.58);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
+                }else{
+                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.76);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
+                }
                 //timer
                 posX_timer = (int) (posX_fenetre_score + largeur_fenetre_score*1.0);
                 posY_timer = (int) (posY_fenetre_score + hauteur_fenetre_score*0.16);
                 largeur_timer = (int) (largeur_fenetre_score*0.80);
                 hauteur_timer = (int) (largeur_timer * rapport_timer);
-                //boutons annuler et refaire
-                posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
-                posY_refaire = (int) (hauteur_fenetre_score * 1.0);
-                //tuiles
-                posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.25);
-                if(jeu.getNbJoueurs()==2) posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.40);
-                else if(jeu.getNbJoueurs()==3) posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.50);
-                else posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.60);
-                largeur_tuile = (int) (largeur_fenetre_score*0.20);
-                hauteur_tuile = largeur_tuile;
                 //fin de partie
                 if((double)hauteur/(double)largeur > rapport_fin_partie){
                     largeur_fin_partie = largeur;
@@ -391,19 +398,24 @@ public class FenetreJeu extends Container {
             estFenetreScoreChargee = true;
         }
         g.drawImage(fenetre_score_courante, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
+        //prénom des joueurs 0 et 1
         Font font = new Font("Bookman Old Style", Font.BOLD, 29);
         g.setFont(font);
+
         String joueur_0 = jeu.getJoueurs()[0].getPrenom();
         Color couleur_0 = jeu.getJoueurs()[0].getCouleur();
         g.setColor(couleur_0);
-        g.drawString(joueur_0, posX_prenom_j0, posY_prenom_j0);
+        g.drawString(joueur_0, posX_prenom, posY_prenom_j0);
 
         String joueur_1 = jeu.getJoueurs()[1].getPrenom();
         Color couleur_1 = jeu.getJoueurs()[1].getCouleur();
         g.setColor(couleur_1);
-        g.drawString(joueur_1, posX_prenom_j1, posY_prenom_j1);
-        font = new Font("Roboto", Font.BOLD, 20);
+        g.drawString(joueur_1, posX_prenom, posY_prenom_j1);
+
+        //nombre de huttes, tours, temples des joueurs 0 et 1
+        font = new Font("Bookman Old Style", Font.BOLD, 20);
         g.setFont(font);
+        g.setColor(Color.WHITE);
         String huttes_j0 = Integer.toString(jeu.getJoueurs()[0].getNbHuttes());
         g.drawString(huttes_j0, posX_huttes, posY_scores_j0);
         String huttes_j1 = Integer.toString(jeu.getJoueurs()[1].getNbHuttes());
@@ -416,7 +428,47 @@ public class FenetreJeu extends Container {
         g.drawString(temples_j0, posX_temples, posY_scores_j0);
         String temples_j1 = Integer.toString(jeu.getJoueurs()[1].getNbTemples());
         g.drawString(temples_j1, posX_temples, posY_scores_j1);
-        font = new Font("Roboto", Font.BOLD, 25);
+
+        if(jeu.getNbJoueurs()>=3){
+            //prénom du joueur 2
+            font = new Font("Bookman Old Style", Font.BOLD, 29);
+            g.setFont(font);
+            String joueur_2 = jeu.getJoueurs()[2].getPrenom();
+            Color couleur_2 = jeu.getJoueurs()[2].getCouleur();
+            g.setColor(couleur_2);
+            g.drawString(joueur_2, posX_prenom, posY_prenom_j2);
+            //nombre de huttes, tours, temples du joueur 2
+            font = new Font("Bookman Old Style", Font.BOLD, 20);
+            g.setFont(font);
+            g.setColor(Color.WHITE);
+            String huttes_j2 = Integer.toString(jeu.getJoueurs()[2].getNbHuttes());
+            g.drawString(huttes_j2, posX_huttes, posY_scores_j2);
+            String tours_j2 = Integer.toString(jeu.getJoueurs()[2].getNbTours());
+            g.drawString(tours_j2, posX_tours, posY_scores_j2);
+            String temples_j2 = Integer.toString(jeu.getJoueurs()[2].getNbTemples());
+            g.drawString(temples_j2, posX_temples, posY_scores_j2);
+        }
+        if(jeu.getNbJoueurs()==4){
+            //prénom du joueur 3
+            font = new Font("Bookman Old Style", Font.BOLD, 29);
+            g.setFont(font);
+            String joueur_3 = jeu.getJoueurs()[3].getPrenom();
+            Color couleur_3 = jeu.getJoueurs()[3].getCouleur();
+            g.setColor(couleur_3);
+            g.drawString(joueur_3, posX_prenom, posY_prenom_j3);
+            //nombre de huttes, tours, temples du joueur 3
+            font = new Font("Bookman Old Style", Font.BOLD, 20);
+            g.setFont(font);
+            g.setColor(Color.WHITE);
+            String huttes_j3 = Integer.toString(jeu.getJoueurs()[3].getNbHuttes());
+            g.drawString(huttes_j3, posX_huttes, posY_scores_j3);
+            String tours_j3 = Integer.toString(jeu.getJoueurs()[3].getNbTours());
+            g.drawString(tours_j3, posX_tours, posY_scores_j3);
+            String temples_j3 = Integer.toString(jeu.getJoueurs()[3].getNbTemples());
+            g.drawString(temples_j3, posX_temples, posY_scores_j3);
+        }
+        //pioche
+        font = new Font("Bookman Old Style", Font.BOLD, 25);
         g.setFont(font);
         g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());

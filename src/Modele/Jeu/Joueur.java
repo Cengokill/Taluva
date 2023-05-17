@@ -136,6 +136,10 @@ public class Joueur implements Serializable {
         return couleur;
     }
 
+    public void setCouleur(Color couleur){
+        this.couleur = couleur;
+    }
+
     public byte getNumero(){
         return numero;
     }
@@ -171,10 +175,6 @@ public class Joueur implements Serializable {
     public int calculScore(){
         score = nbTemplesPlaces*1000 + nbToursPlacees*100 + nbHuttesPlacees;
         return score;
-    }
-
-    public void setCouleur(Color couleur){
-        this.couleur = couleur;
     }
 
     public void incrementeHutte(){
