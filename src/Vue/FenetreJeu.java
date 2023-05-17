@@ -230,7 +230,7 @@ public class FenetreJeu extends Container {
                 posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.07);
                 posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.25);
                 posY_prenom_j2 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.42);
-                posY_prenom_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.61);
+                posY_prenom_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.60);
                 posX_huttes = (int) (posX_fenetre_score + largeur_fenetre_score*0.27);
                 posX_tours = (int) (posX_fenetre_score + largeur_fenetre_score*0.53);
                 posX_temples = (int) (posX_fenetre_score + largeur_fenetre_score*0.78);
@@ -475,7 +475,7 @@ public class FenetreJeu extends Container {
         g.drawString(nb_tuiles_pioche, posX_pioche, posY_pioche);
         int decalage = 65;
         if(jeu.getPioche().size() <= 48) {
-            for (int i = jeu.getPioche().size(); i>=0; i--) {
+            for (int i = jeu.getPioche().size(); i>0; i--) {
                 g.drawImage(tuile_derriere, posX_tuile_derriere + decalage, posY_tuile_derriere, largeur_tuile, hauteur_tuile, null);
                 decalage -= 2;
             }
