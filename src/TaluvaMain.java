@@ -18,7 +18,7 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
          */
-        int nb_parties = 500;
+        int nb_parties = 1000;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
         jeu.AFFICHAGE = true;

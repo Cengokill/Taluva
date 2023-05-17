@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
@@ -26,8 +25,8 @@ public class Jeu extends Observable implements Serializable{
     Plateau plateau;
     private Tuile tuile_courante;
     private int delai_avant_pioche = 500;
-    AbstractIA IA1=null;
-    AbstractIA IA2=null;
+    AbstractIA IA0 =null;
+    AbstractIA IA1 =null;
     public byte jCourant;
     public byte jVainqueur;
     private Joueur[] joueurs;
@@ -57,19 +56,19 @@ public class Jeu extends Observable implements Serializable{
         //jCourant = (byte) new Random().nextInt(1);
         int nb_joueurs = 2;
         joueurs = new Joueur[nb_joueurs];
-        jCourant = 1;
-        IA1 = AbstractIA.nouvelle(this, (byte)1);
-        IA2 = AbstractIA.nouvelle(this, (byte)0);
+        jCourant = 0;
+        IA0 = AbstractIA.nouvelle(this, (byte)1);
+        IA1 = AbstractIA.nouvelle(this, (byte)0);
+        IA0.setPrenom("IA0");
         IA1.setPrenom("IA1");
-        IA2.setPrenom("IA2");
         //Thread ia1Thread = new Thread(IA1);
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
         //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
-        joueurs[0] = IA1;
-        joueurs[1] = IA2;
+        joueurs[0] = IA0;
+        joueurs[1] = IA1;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
@@ -200,7 +199,7 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void joueIA() throws CloneNotSupportedException {
-        System.out.println("L'IA joue");
+        //System.out.println("L'IA joue");
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
@@ -326,7 +325,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void changeJoueur() {
-        System.out.println("Changement de joueur");
+        //System.out.println("Changement de joueur");
         if (jCourant == (byte) 0) {
             jCourant = (byte) 1;
         } else {
