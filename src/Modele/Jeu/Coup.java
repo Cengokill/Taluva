@@ -1,14 +1,15 @@
 package Modele.Jeu;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public class Coup implements Serializable {
 
     public static final byte TUILE = 64;
     public static final byte BATIMENT = 1;
-
     public final byte typePlacement;
     final byte num_joueur;
+    public Color color_joueur;
 
     public int volcanLigne;
     public int volcanColonne;
@@ -41,8 +42,9 @@ public class Coup implements Serializable {
         this.IDdeJoueur=-1;
 
     }
-    public Coup(byte num_joueur, int batimentLigne, int batimentColonne, byte typeBatiment) {// placement BATIMENT
+    public Coup(byte num_joueur, Color color_joueur, int batimentLigne, int batimentColonne, byte typeBatiment) {// placement BATIMENT
         this.num_joueur = num_joueur;
+        this.color_joueur = color_joueur;
         this.typePlacement = typeBatiment;
         this.batimentLigne = batimentLigne;
         this.batimentColonne = batimentColonne;
@@ -58,6 +60,10 @@ public class Coup implements Serializable {
 
     public byte getNumJoueur() {
         return num_joueur;
+    }
+
+    public Color getCouleurJoueur() {
+        return color_joueur;
     }
 
     public byte getOldTerrain1() {

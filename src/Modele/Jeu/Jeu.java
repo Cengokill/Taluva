@@ -60,7 +60,7 @@ public class Jeu extends Observable implements Serializable{
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
-        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA0.setPrenom("IA0");
         IA1.setPrenom("IA1");
         //Thread ia1Thread = new Thread(IA1);
@@ -68,9 +68,9 @@ public class Jeu extends Observable implements Serializable{
         //ia1Thread.start();
         //ia2Thread.start();
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
         joueurs[0] = IA1;
-        //joueurs[1] = IA1;
+        joueurs[1] = IA1;
         joueurs[1].setCouleur(Color.RED);
         joueurs[0].setCouleur(Color.BLUE);
         pioche = new LinkedList<>();
@@ -154,7 +154,6 @@ public class Jeu extends Observable implements Serializable{
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
         if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
-            joueurs[jCourant].stopChrono();
             estPartieFinie = true;
             jVainqueur = (byte) ((jCourant + 1) % 2);
             return;
@@ -164,7 +163,6 @@ public class Jeu extends Observable implements Serializable{
         joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
         doit_placer_batiment = false;
         doit_placer_tuile = true;
-        joueurs[jCourant].stopChrono();
         changeJoueur();
     }
 
@@ -219,7 +217,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public int[] coupJouable(int i,int j){
-        int[] coups = getPlateau().getBatimentPlacable(i,j, getNumJoueurCourant());
+        int[] coups = getPlateau().getBatimentPlacable(i,j, getJoueurCourant().getCouleur());
 
         int hauteurTuile = getPlateau().getHauteurTuile(i,j);
         if(getJoueurCourantClasse().getNbTemples()<=0) coups[0] = 0;
@@ -270,7 +268,7 @@ public class Jeu extends Observable implements Serializable{
             joueurs[jCourant].stopChrono();
             return false;
         }
-        plateau.placeBatiment(jCourant, ligne,colonne, type_bat);
+        plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=4){
             if(type_bat == 1){
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
@@ -332,7 +330,7 @@ public class Jeu extends Observable implements Serializable{
         } else {
             jCourant = (byte) 0;
         }
-        getPlateau().nbHutteDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+        getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
         if(type_jeu==GRAPHIQUE){
             if(estFinPartie()){
                 return;

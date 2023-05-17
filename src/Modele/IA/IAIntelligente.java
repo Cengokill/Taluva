@@ -10,8 +10,8 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
+import java.awt.*;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class IAIntelligente extends AbstractIA implements Serializable {
@@ -37,8 +37,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         r = new Random();
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
-        plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
+        plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
+        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur(), false);
         return choisirCoupTuile(jeu.getTuileCourante());
     }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -69,7 +69,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<TripletDePosition> coupsTuilePossibles = instance.getPlateau().getTripletsPossibles();
         while(i < coupsTuilePossibles.size()){
             TripletDePosition tripletCourant = coupsTuilePossibles.get(i);
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant,instance.estFinJeu);
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
             Plateau plateauCopie = instanceCourante.getPlateau();
             Coup coupT = new Coup(instanceCourante.getJoueurCourant(),tripletCourant.getVolcan().ligne(),tripletCourant.getVolcan().colonne(),tripletCourant.getTile1().ligne(),tripletCourant.getTile1().colonne(),tuile.biome0,tripletCourant.getTile2().ligne(),tripletCourant.getTile2().colonne(),tuile.biome1);
             plateauCopie.joueCoup(coupT);
@@ -130,7 +130,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         int i=0, score_max = Integer.MIN_VALUE;
         int score_courant;
         ArrayList<Coup> coupsBatimentARenvoyer = new ArrayList<>();
-        InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant,instance.estFinJeu);
+        InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
         ArrayList<Coup> coupsBatimentPossible = getTousLesCoupsPossiblesDesBatiments(instanceCourante);
 
         while(i < coupsBatimentPossible.size()){
@@ -140,22 +140,22 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<Coup> coupPropagation = new ArrayList<>();
             if (coupCourant.typePlacement == HUTTE){
                 //On créer un tableau contenant toutes les coordonées où l'on doit propager
-                ArrayList<Point2D> aPropager = instance.getPlateau().previsualisePropagation(coupCourant.batimentLigne, coupCourant.batimentColonne, instance.getJoueurCourant());
+                ArrayList<Point2D> aPropager = instance.getPlateau().previsualisePropagation(coupCourant.batimentLigne, coupCourant.batimentColonne, instance.getCouleurJoueur());
                 //On place la hutte classique sans propagation
-                coupPropagation.add(new Coup(instance.getJoueurCourant(), coupCourant.batimentLigne, coupCourant.batimentColonne, (byte) HUTTE));
+                coupPropagation.add(new Coup(instance.getJoueurCourant(), instance.getCouleurJoueur(), coupCourant.batimentLigne, coupCourant.batimentColonne, (byte) HUTTE));
                 // On récupère le nombre de huttes disponibles pour le joueur courant
-                int nbHuttesDispo = instance.getPlateau().nbHutteDisponiblesJoueur - (instance.getPlateau().getHauteurTuile(coupCourant.batimentLigne, coupCourant.batimentColonne));
+                int nbHuttesDispo = instance.getPlateau().nbHuttesDisponiblesJoueur - (instance.getPlateau().getHauteurTuile(coupCourant.batimentLigne, coupCourant.batimentColonne));
 
                 while (aPropager.size() != 0) {
                     Point2D posCourantePropagation = aPropager.remove(0);
                     int hauteurCourante = instance.getPlateau().getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
                     if (nbHuttesDispo >= hauteurCourante) {
-                        coupPropagation.add(new Coup(instance.getJoueurCourant(), posCourantePropagation.getPointX(),posCourantePropagation.getPointY(), (byte) HUTTE));
+                        coupPropagation.add(new Coup(instance.getJoueurCourant(), instance.getCouleurJoueur(), posCourantePropagation.getPointX(),posCourantePropagation.getPointY(), (byte) HUTTE));
                         nbHuttesDispo -= hauteurCourante;
                     }
                 }
             }
-            InstanceJeu instanceAEvaluer = new InstanceJeu(null,plateauCopie2,instance.getJoueurs(), instance.jCourant,instance.estFinJeu);
+            InstanceJeu instanceAEvaluer = new InstanceJeu(null,plateauCopie2,instance.getJoueurs(), instance.jCourant, instance.couleur_joueur, instance.estFinJeu);
             Joueur joueurAEvaluer = instanceAEvaluer.getJoueur(instanceAEvaluer.jCourant);
             int batiment = 1;
 
@@ -204,11 +204,12 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<Coup> coupsPossiblesARenvoyer = new ArrayList<>();
         ArrayList<Position> positionsPossiblesBatiment = plateauCopie.getPositions_libres_batiments();
         byte joueur_courant = instanceCourante.getJoueurCourant();
+        Color color_joueur_courant = instanceCourante.getJoueur(joueur_courant).getCouleur();
         // On parcours toutes les positions possibles
         for (int position = 0; position < positionsPossiblesBatiment.size(); position++) {
             Coup coupB = null;
             Position positionCourante = positionsPossiblesBatiment.get(position);
-            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
+            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), color_joueur_courant);
             //On parcourt tous les choix de bâtiments possibles
             for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
                 //si le bâtiment est plaçable
@@ -219,22 +220,22 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     //si HUTTE (propagation potentielle)
                     if (batimentChoisit == HUTTE){
                         //On créer un tableau contenant toutes les coordonées où l'on doit propager
-                        ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
+                        ArrayList<Point2D> aPropager = plateauCopie2.previsualisePropagation(positionCourante.ligne(), positionCourante.colonne(), color_joueur_courant);
                         //On place la hutte classique sans propagation
-                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
-                        plateauCopie2.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
+                        coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
+                        plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) HUTTE);
                         //La position actuelle n'est plus libre
                         Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
                         plateauCopie2.supprimeElementNew(posASupprimer);
                         //On met a jour le nombre de hutte restantes
                         int hauteurCourante = instance.getPlateau().getHauteurTuile(positionCourante.ligne(), positionCourante.colonne());
                         // On récupère le nombre de huttes disponibles pour le joueur courant
-                        int nbHuttesDispo = plateauCopie2.nbHutteDisponiblesJoueur - (plateauCopie2.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne()));
+                        int nbHuttesDispo = plateauCopie2.nbHuttesDisponiblesJoueur - (plateauCopie2.getHauteurTuile(positionCourante.ligne(), positionCourante.colonne()));
                         while (aPropager.size() != 0) {
                             Point2D posCourantePropagation = aPropager.remove(0);
                             hauteurCourante = plateauCopie2.getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
                             if (nbHuttesDispo >= hauteurCourante) {
-                                plateauCopie2.placeBatiment(joueur_courant, posCourantePropagation.getPointX(), posCourantePropagation.getPointY(), (byte) HUTTE);
+                                plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, posCourantePropagation.getPointX(), posCourantePropagation.getPointY(), (byte) HUTTE);
                                 // On place une hutte dessus, donc plus disponible
                                 posASupprimer = new Position(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
                                 plateauCopie2.supprimeElementNew(posASupprimer);
@@ -242,8 +243,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                             }
                         }
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                        coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
-                        plateauCopie2.placeBatiment(joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
+                        coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
+                        plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
                         //on supprime la position du bâtiment qui n'est plus libre
                         Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
                         plateauCopie2.supprimeElementNew(posASupprimer);
@@ -284,14 +285,14 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return score;
     }
 
-    private int tailleVillage(InstanceJeu instanceJeu, byte numJoueur, int i, int j){
+    private int tailleVillage(InstanceJeu instanceJeu, Color color_joueur, int i, int j){
         int taille = 0;
         Plateau plateau = instanceJeu.getPlateau();
         // Les positions de chaque hutte du village
-        ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,numJoueur);
+        ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,color_joueur);
         for(Point2D posCourante : pointsVillage){
-            if(plateau.getTuile(posCourante.getPointX(), posCourante.getPointY()).getNumJoueur()==numJoueur){
-                System.out.println("numJoueur: "+numJoueur);
+            if(plateau.getHexagone(posCourante.getPointX(), posCourante.getPointY()).getColorJoueur()==color_joueur){
+                System.out.println("numJoueur: "+color_joueur);
                 System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
                 taille++;
             }
@@ -310,10 +311,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         // On regarde tous les batiments placables par le joueurAEvaluer sur l'instance courante
         for(int i=0;i<instanceJeu.getPlateau().getLIGNES();i++){
             for(int j=0;j<instanceJeu.getPlateau().getCOLONNES();j++){
-                if(instanceJeu.getPlateau().getTuile(i,j).getBiomeTerrain()!= Hexagone.VIDE){
+                if(instanceJeu.getPlateau().getHexagone(i,j).getBiomeTerrain()!= Hexagone.VIDE){
                     // On calcul les batiments possables
                     int hauteurCourante = instanceJeu.getPlateau().getHauteurTuile(i,j);
-                    int[] batimentsPlacables = instanceJeu.getPlateau().getBatimentPlacable(i,j,joueurAEvaluer.getNumero());
+                    int[] batimentsPlacables = instanceJeu.getPlateau().getBatimentPlacable(i,j,joueurAEvaluer.getCouleur());
                     if(batimentsPlacables[0]==1) nbTemplesPlacables++;
                     if(batimentsPlacables[1]==1) nbHuttesPlacables = nbHuttesPlacables+hauteurCourante;
                     if(batimentsPlacables[2]==1) nbToursPlacables++;

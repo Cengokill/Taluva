@@ -13,9 +13,9 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class ImageLoader {
     public static boolean loaded = false;
     public static BufferedImage constructionMode;
-    public static final BufferedImage[] choisirBat = new BufferedImage[12], temples = new BufferedImage[4],templesColor1 = new BufferedImage[4],templesColor2 = new BufferedImage[4],
-            tours = new BufferedImage[4],toursColor1 = new BufferedImage[4],toursColor2 = new BufferedImage[4];
-    public static final BufferedImage[][] hutteTile = new BufferedImage[3][4],maisonTileColor1 = new BufferedImage[3][4],maisonTileColor2 = new BufferedImage[3][4];
+    public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[4], temples_bleus = new BufferedImage[4], temples_verts = new BufferedImage[4], temples_violets = new BufferedImage[4];
+    public static final BufferedImage[] huttes_rouges = new BufferedImage[7], huttes_bleues = new BufferedImage[7], huttes_vertes = new BufferedImage[7], huttes_violettes = new BufferedImage[7];
+    public static final BufferedImage[] tours_rouges = new BufferedImage[4], tours_bleues = new BufferedImage[4], tours_vertes = new BufferedImage[4], tours_violettes = new BufferedImage[4];
     public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, tuile_derriere;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
@@ -148,62 +148,78 @@ public class ImageLoader {
         hoverTile = lisImageBuf(imageFolder + "Hover_Tile");
     }
 
-    public static BufferedImage getBatimentFromPlayerId(byte id_player, byte batiment_id,int typeTerrain, int hauteurTerrain) {
+    public static BufferedImage getBatimentFromPlayerId(Color color_player, byte batiment_id,int typeTerrain, int hauteurTerrain) {
         if (batiment_id == HUTTE) {
-            return getMaison(id_player,hauteurTerrain,typeTerrain);
+            return getMaison(color_player,hauteurTerrain);//les maisons ne sont plus liées au type de terrain
         }
         if (batiment_id == TEMPLE) {
-            return getTemple(id_player,typeTerrain);
+            return getTemple(color_player,typeTerrain);
         }
         if (batiment_id == TOUR) {
-            return getTour(id_player,typeTerrain);
+            return getTour(color_player,typeTerrain);
         }
         return null;
     }
 
-    private static BufferedImage getTour(byte id_player,int typeTerrain) {
-        if (id_player == 0) {
-            if(typeTerrain==GRASS) return toursColor1[2];
-            if(typeTerrain==MONTAGNE) return toursColor1[1];
-            if(typeTerrain==DESERT) return toursColor1[3];
-            return toursColor1[0];
-        } else {
-            if(typeTerrain==GRASS) return toursColor2[2];
-            if(typeTerrain==MONTAGNE) return toursColor2[1];
-            if(typeTerrain==DESERT) return toursColor2[3];
-            return toursColor2[0];
+    private static BufferedImage getTour(Color color_player,int typeTerrain) {
+        if(color_player == Color.RED) {
+            if (typeTerrain == DESERT) return tours_rouges[0];
+            else if (typeTerrain == FORET) return tours_rouges[1];
+            else if (typeTerrain == MONTAGNE) return tours_rouges[2];
+            else if (typeTerrain == GRASS) return tours_rouges[3];
+        }else if(color_player == Color.BLUE) {
+            if (typeTerrain == DESERT) return tours_bleues[0];
+            else if (typeTerrain == FORET) return tours_bleues[1];
+            else if (typeTerrain == MONTAGNE) return tours_bleues[2];
+            else if (typeTerrain == GRASS) return tours_bleues[3];
+        }else if(color_player == Color.GREEN) {
+            if (typeTerrain == DESERT) return tours_vertes[0];
+            else if (typeTerrain == FORET) return tours_vertes[1];
+            else if (typeTerrain == MONTAGNE) return tours_vertes[2];
+            else if (typeTerrain == GRASS) return tours_vertes[3];
+        }else if(color_player == Color.MAGENTA) {
+            if (typeTerrain == DESERT) return tours_violettes[0];
+            else if (typeTerrain == FORET) return tours_violettes[1];
+            else if (typeTerrain == MONTAGNE) return tours_violettes[2];
+            else if (typeTerrain == GRASS) return tours_violettes[3];
         }
+        return null;
     }
 
-    private static BufferedImage getTemple(byte id_player,int typeTerrain) {
-        if (id_player == 0) {
-            if(typeTerrain==GRASS) return templesColor1[2];
-            if(typeTerrain==MONTAGNE) return templesColor1[1];
-            if(typeTerrain==DESERT) return templesColor1[3];
-            return templesColor1[0];
-        } else {
-            if(typeTerrain==GRASS) return templesColor2[2];
-            if(typeTerrain==MONTAGNE) return templesColor2[1];
-            if(typeTerrain==DESERT) return templesColor2[3];
-            return templesColor2[0];
+    private static BufferedImage getTemple(Color color_player,int typeTerrain) {
+        if(color_player == Color.RED) {
+            if(typeTerrain==DESERT) return temples_rouges[0];
+            else if(typeTerrain==FORET) return temples_rouges[1];
+            else if(typeTerrain==MONTAGNE) return temples_rouges[2];
+            else if(typeTerrain==GRASS) return temples_rouges[3];
+        }else if(color_player == Color.BLUE) {
+            if(typeTerrain==DESERT) return temples_bleus[0];
+            else if(typeTerrain==FORET) return temples_bleus[1];
+            else if(typeTerrain==MONTAGNE) return temples_bleus[2];
+            else if(typeTerrain==GRASS) return temples_bleus[3];
+        }else if(color_player == Color.GREEN) {
+            if(typeTerrain==DESERT) return temples_verts[0];
+            else if(typeTerrain==FORET) return temples_verts[1];
+            else if(typeTerrain==MONTAGNE) return temples_verts[2];
+            else if(typeTerrain==GRASS) return temples_verts[3];
+        }else if(color_player == Color.MAGENTA) {
+            if(typeTerrain==DESERT) return temples_violets[0];
+            else if(typeTerrain==FORET) return temples_violets[1];
+            else if(typeTerrain==MONTAGNE) return temples_violets[2];
+            else if(typeTerrain==GRASS) return temples_violets[3];
         }
+        return null;
     }
 
-    private static BufferedImage getMaison(byte id_player, int hauteurTerrain,int typeTerrain) {
+    private static BufferedImage getMaison(Color color_player, int hauteurTerrain) {
         int nbMaison;
-        if(hauteurTerrain>=3) nbMaison = 3;
+        if(hauteurTerrain>=7) nbMaison = 7;
         else nbMaison = hauteurTerrain;
-        if (id_player == 0) {
-            if(typeTerrain==GRASS) return maisonTileColor1[nbMaison-1][0];
-            if(typeTerrain==MONTAGNE) return maisonTileColor1[nbMaison-1][1];
-            if(typeTerrain==DESERT) return maisonTileColor1[nbMaison-1][2];
-            return maisonTileColor1[nbMaison-1][3];
-        } else {
-            if(typeTerrain==GRASS) return maisonTileColor2[nbMaison-1][0];
-            if(typeTerrain==MONTAGNE) return maisonTileColor2[nbMaison-1][1];
-            if(typeTerrain==DESERT) return maisonTileColor2[nbMaison-1][2];
-            return maisonTileColor2[nbMaison-1][3];
-        }
+        if(color_player == Color.RED) return huttes_rouges[nbMaison-1];
+        else if (color_player == Color.BLUE) return huttes_bleues[nbMaison-1];
+        else if (color_player == Color.GREEN) return huttes_vertes[nbMaison-1];
+        else if (color_player == Color.MAGENTA) return huttes_violettes[nbMaison-1];
+        else return null;
     }
 
     private static void readPlayableTilesImages() {
@@ -237,80 +253,26 @@ public class ImageLoader {
 
     private static void readBatimentsImages() {
         String imageFolder = "/Plateau/Batiments/";
-
-        hutteTile[0][0] = lisImageBuf(imageFolder + "hutte_prairie_1");
-        hutteTile[1][0] = lisImageBuf(imageFolder + "hutte_prairie_2");
-        hutteTile[2][0] = lisImageBuf(imageFolder + "hutte_prairie_3");
-
-        hutteTile[0][1] = lisImageBuf(imageFolder + "hutte_pierre_1");
-        hutteTile[1][1] = lisImageBuf(imageFolder + "hutte_pierre_2");
-        hutteTile[2][1] = lisImageBuf(imageFolder + "hutte_pierre_3");
-
-        hutteTile[0][2] = lisImageBuf(imageFolder + "hutte_desert_1");
-        hutteTile[1][2] = lisImageBuf(imageFolder + "hutte_desert_2");
-        hutteTile[2][2] = lisImageBuf(imageFolder + "hutte_desert_3");
-
-        hutteTile[0][3] = lisImageBuf(imageFolder + "hutte_jungle_1");
-        hutteTile[1][3] = lisImageBuf(imageFolder + "hutte_jungle_2");
-        hutteTile[2][3] = lisImageBuf(imageFolder + "hutte_jungle_3");
-
-        temples[0] = lisImageBuf(imageFolder + "temple_jungle");
-        temples[1] = lisImageBuf(imageFolder + "temple_pierre");
-        temples[2] = lisImageBuf(imageFolder + "temple_prairie");
-        temples[3] = lisImageBuf(imageFolder + "temple_desert");
-
-        tours[0] = lisImageBuf(imageFolder + "tour_jungle");
-        tours[1] = lisImageBuf(imageFolder + "tour_pierre");
-        tours[2] = lisImageBuf(imageFolder + "tour_prairie");
-        tours[3] = lisImageBuf(imageFolder + "tour_desert");
-
-        filtreCouleurBatiments();
-    }
-
-    private static void filtreCouleurBatiments() {
-        // Joueur 1
-        // Prairie
-        maisonTileColor1[0][0] = applyColorFilter(hutteTile[0][0], (byte) 0);
-        maisonTileColor1[1][0] = applyColorFilter(hutteTile[1][0], (byte) 0);
-        maisonTileColor1[2][0] = applyColorFilter(hutteTile[2][0], (byte) 0);
-        // Pierre
-        maisonTileColor1[0][1] = applyColorFilter(hutteTile[0][1], (byte) 0);
-        maisonTileColor1[1][1] = applyColorFilter(hutteTile[1][1], (byte) 0);
-        maisonTileColor1[2][1] = applyColorFilter(hutteTile[2][1], (byte) 0);
-        // Desert
-        maisonTileColor1[0][2] = applyColorFilter(hutteTile[0][2], (byte) 0);
-        maisonTileColor1[1][2] = applyColorFilter(hutteTile[1][2], (byte) 0);
-        maisonTileColor1[2][2] = applyColorFilter(hutteTile[2][2], (byte) 0);
-        // Jungle
-        maisonTileColor1[0][3] = applyColorFilter(hutteTile[0][3], (byte) 0);
-        maisonTileColor1[1][3] = applyColorFilter(hutteTile[1][3], (byte) 0);
-        maisonTileColor1[2][3] = applyColorFilter(hutteTile[2][3], (byte) 0);
-
-        // Joueur 2
-        // Prairie
-        maisonTileColor2[0][0] = applyColorFilter(hutteTile[0][0], (byte) 1);
-        maisonTileColor2[1][0] = applyColorFilter(hutteTile[1][0], (byte) 1);
-        maisonTileColor2[2][0] = applyColorFilter(hutteTile[2][0], (byte) 1);
-        // Pierre
-        maisonTileColor2[0][1] = applyColorFilter(hutteTile[0][1], (byte) 1);
-        maisonTileColor2[1][1] = applyColorFilter(hutteTile[1][1], (byte) 1);
-        maisonTileColor2[2][1] = applyColorFilter(hutteTile[2][1], (byte) 1);
-        // Desert
-        maisonTileColor2[0][2] = applyColorFilter(hutteTile[0][2], (byte) 1);
-        maisonTileColor2[1][2] = applyColorFilter(hutteTile[1][2], (byte) 1);
-        maisonTileColor2[2][2] = applyColorFilter(hutteTile[2][2], (byte) 1);
-        // Jungle
-        maisonTileColor2[0][3] = applyColorFilter(hutteTile[0][3], (byte) 1);
-        maisonTileColor2[1][3] = applyColorFilter(hutteTile[1][3], (byte) 1);
-        maisonTileColor2[2][3] = applyColorFilter(hutteTile[2][3], (byte) 1);
-
-        for(int i=0;i<temples.length;i++){
-            templesColor1[i] = applyColorFilter(temples[i], (byte) 0);
-            templesColor2[i] = applyColorFilter(temples[i], (byte) 1);
-            toursColor1[i] = applyColorFilter(tours[i], (byte) 0);
-            toursColor2[i] = applyColorFilter(tours[i], (byte) 1);
+        String dossier_rouge = imageFolder + "Rouge/";
+        String dossier_bleu = imageFolder + "Bleu/";
+        String dossier_vert = imageFolder + "Vert/";
+        String dossier_violet = imageFolder + "Violet/";
+        for(int i=0; i<6; i++) {
+            huttes_rouges[i] = lisImageBuf(dossier_rouge + "hutte_" + (i+1));
+            huttes_bleues[i] = lisImageBuf(dossier_bleu + "hutte_" + (i+1));
+            huttes_vertes[i] = lisImageBuf(dossier_vert + "hutte_" + (i+1));
+            huttes_violettes[i] = lisImageBuf(dossier_violet + "hutte_" + (i+1));
         }
+        temples_rouges[0] = lisImageBuf(dossier_rouge + "temple_desert");
+        temples_rouges[1] = lisImageBuf(dossier_rouge + "temple_jungle");
+        temples_rouges[2] = lisImageBuf(dossier_rouge + "temple_pierre");
+        temples_rouges[3] = lisImageBuf(dossier_rouge + "temple_prairie");
+        tours_rouges[0] = lisImageBuf(dossier_rouge + "tour_desert");
+        tours_rouges[1] = lisImageBuf(dossier_rouge + "tour_jungle");
+        tours_rouges[2] = lisImageBuf(dossier_rouge + "tour_pierre");
+        tours_rouges[3] = lisImageBuf(dossier_rouge + "tour_prairie");
     }
+
 
     private static void readTileOrientationImages() {
         String sourceFolder = "/Plateau/Hexagones/DirectionsPlacables/";

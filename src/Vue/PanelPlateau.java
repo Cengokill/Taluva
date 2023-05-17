@@ -168,8 +168,8 @@ public class PanelPlateau extends JPanel {
         for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
             Plateau plateauCopie = jeu.getPlateau().copie();
             boolean affiche = false;
-            if(plateauCopie.getTuile(t.getVolcan().ligne(),t.getVolcan().colonne()).getBiomeTerrain() == VOLCAN || plateauCopie.getTuile(t.getTile1().ligne(),t.getTile1().colonne()).getBiomeTerrain() == VOLCAN
-                    || plateauCopie.getTuile(t.getTile2().ligne(),t.getTile2().colonne()).getBiomeTerrain() == VOLCAN){
+            if(plateauCopie.getHexagone(t.getVolcan().ligne(),t.getVolcan().colonne()).getBiomeTerrain() == VOLCAN || plateauCopie.getHexagone(t.getTile1().ligne(),t.getTile1().colonne()).getBiomeTerrain() == VOLCAN
+                    || plateauCopie.getHexagone(t.getTile2().ligne(),t.getTile2().colonne()).getBiomeTerrain() == VOLCAN){
                 plateauCopie.affiche();
                 affiche=true;
             }
@@ -338,7 +338,7 @@ public class PanelPlateau extends JPanel {
     private void afficheBatiments(Graphics g, Hexagone[][] map, int ligne, int colonne, int x, int y, int heightoffset) {
         BufferedImage tile;
         if (map[ligne][colonne].getBatiment() != CHOISIR_BATIMENT) {
-            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getNumJoueur(), (byte) map[ligne][colonne].getBatiment(),jeu.getPlateau().getTuile(ligne,colonne).getBiomeTerrain(),jeu.getPlateau().getHauteurTuile(ligne,colonne)), x, y - heightoffset, null);
+            g.drawImage(getBatimentFromPlayerId(map[ligne][colonne].getColorJoueur(), (byte) map[ligne][colonne].getBatiment(),jeu.getPlateau().getHexagone(ligne,colonne).getBiomeTerrain(),jeu.getPlateau().getHauteurTuile(ligne,colonne)), x, y - heightoffset, null);
 
         } else if (map[ligne][colonne].getBatiment() == CHOISIR_BATIMENT) {
             int pos_x = x-choisirBat[0].getWidth()/2;
@@ -355,7 +355,7 @@ public class PanelPlateau extends JPanel {
             if(peutPlacerBatiment && s==0){
                 emplacementPropagation = new ArrayList<>();
                 emplacementPropagation.add(new Position(ligne,colonne));
-                ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getNumJoueurCourant());
+                ArrayList<Point2D> aPropager = jeu.getPlateau().previsualisePropagation(ligne,colonne, jeu.getJoueurCourant().getCouleur());
                 while(aPropager.size()!=0) {
                     Point2D PosCourante = aPropager.remove(0);
                     int posPrevX = PosCourante.getPointY() * voidTile.getWidth() - (PosCourante.getPointX() % 2 == 1 ? voidTile.getWidth() / 2 : 0);
@@ -376,7 +376,7 @@ public class PanelPlateau extends JPanel {
     private void affichePrevisualisationPropagation(Graphics g){
         if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
         Position posBasic = emplacementPropagation.get(0);
-        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
+        int nbHuttesDispo = jeu.getPlateau().nbHuttesDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
 
         for(int i=0;i<emplacementPropagation.size();i++){
             Position posCourante = emplacementPropagation.get(i);
@@ -561,15 +561,15 @@ public class PanelPlateau extends JPanel {
     }
 
     private boolean peutPoserTemple(int i,int j){
-        return jeu.getPlateau().peutPoserTemple(i,j,jeu.getNumJoueurCourant());
+        return jeu.getPlateau().peutPoserTemple(i,j,jeu.getJoueurCourant().getCouleur());
     }
 
     private boolean peutPoserTour(int i,int j){
-        return jeu.getPlateau().peutPoserTour(i,j, jeu.getNumJoueurCourant());
+        return jeu.getPlateau().peutPoserTour(i,j, jeu.getJoueurCourant().getCouleur());
     }
 
     public int[] coupJouable(int i,int j){
-        int[] coups = jeu.getPlateau().getBatimentPlacable(i,j, jeu.getNumJoueurCourant());
+        int[] coups = jeu.getPlateau().getBatimentPlacable(i,j, jeu.getJoueurCourant().getCouleur());
 
         int hauteurTuile = jeu.getPlateau().getHauteurTuile(i,j);
         if(jeu.getJoueurCourantClasse().getNbTemples()<=0) coups[0] = 0;
@@ -777,7 +777,7 @@ public class PanelPlateau extends JPanel {
 
             if(!enSelection){
                 if(coupJouable(i,j)[0]==0 && coupJouable(i,j)[1]==0 && coupJouable(i,j)[2]==0) return;
-                if(jeu.getPlateau().getTuile(i,j).getBatiment()==0 && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VOLCAN && jeu.getPlateau().getTuile(i,j).getBiomeTerrain() != VIDE){
+                if(jeu.getPlateau().getHexagone(i,j).getBatiment()==0 && jeu.getPlateau().getHexagone(i,j).getBiomeTerrain() != VOLCAN && jeu.getPlateau().getHexagone(i,j).getBiomeTerrain() != VIDE){
                     g.drawImage(constructionMode, x+50 , y - heightoffset1+50, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
                 }
             }
@@ -822,7 +822,8 @@ public class PanelPlateau extends JPanel {
     }
 
     private boolean possedeBatiment(int i,int j){
-        return ((jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE)&&(jeu.getPlateau().getTuile(i,j).getNumJoueur()==jeu.getNumJoueurCourant()));
+        //return ((jeu.getPlateau().getBatiment(i,j)==TOUR||jeu.getPlateau().getBatiment(i,j)==HUTTE ||jeu.getPlateau().getBatiment(i,j)==TEMPLE)&&(jeu.getPlateau().getHexagone(i,j).getNumJoueur()==jeu.getNumJoueurCourant()));
+        return ((jeu.getPlateau().getBatiment(i,j)!=0)&&(jeu.getPlateau().getHexagone(i,j).getColorJoueur()==jeu.getJoueurCourant().getCouleur()));
     }
 
     private boolean aCiteAutour(int i,int j){
@@ -848,7 +849,7 @@ public class PanelPlateau extends JPanel {
     private void decomptePropagation(){
         if(emplacementPropagation==null || emplacementPropagation.size()<=1) return;
         Position posBasic = emplacementPropagation.get(0);
-        int nbHuttesDispo = jeu.getPlateau().nbHutteDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
+        int nbHuttesDispo = jeu.getPlateau().nbHuttesDisponiblesJoueur -(jeu.getPlateau().getHauteurTuile(posBasic.ligne(),posBasic.colonne()));
 
         for(int i=0;i<emplacementPropagation.size();i++){
             Position posCourante = emplacementPropagation.get(i);
@@ -972,12 +973,12 @@ public class PanelPlateau extends JPanel {
     }
 
     private void annulationConstruction() {
-        byte numJoueur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getNumJoueur();
+        Color color_joueur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getColorJoueur();
         byte hauteur = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getHauteur();
         byte terrain = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getBiomeTerrain();
         int volcan_i = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getLigneVolcan();
         int volcan_j = jeu.getPlateau().getCarte()[posBat_x][posBat_y].getColonneVolcan();
-        jeu.getPlateau().getCarte()[posBat_x][posBat_y] = new Hexagone(numJoueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
+        jeu.getPlateau().getCarte()[posBat_x][posBat_y] = new Hexagone(color_joueur,hauteur,terrain,Hexagone.VIDE,(byte) volcan_i,(byte) volcan_j);
         resetPrevisualisationPropagation();
         enSelection=false;
     }

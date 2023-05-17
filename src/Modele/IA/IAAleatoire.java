@@ -2,16 +2,13 @@ package Modele.IA;
 
 import Modele.Jeu.Coup;
 import Modele.Jeu.CoupValeur;
-import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
-import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
-import java.sql.SQLOutput;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
@@ -40,8 +37,8 @@ class IAAleatoire extends AbstractIA {
         ArrayList<Tuile> pioche = new ArrayList<>();
         pioche.add(tuile_pioche);
         Plateau plateauIA = jeu.getPlateau();
-        plateauIA.nbHutteDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),false);
+        plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
+        InstanceJeu instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur(), false);
         //on choisit un coup au hasard dans la liste des coups
         CoupValeur coupValeur = choisitCoup(instance);
         /*System.out.println("duree_getTripletsPossibles : " + duree_getTripletsPossibles);
@@ -107,25 +104,26 @@ class IAAleatoire extends AbstractIA {
         ArrayList<Coup> coups_possibles = new ArrayList<>();
         Plateau plateauCopie = instance.getPlateau().copie();
         byte joueur_courant = instance.getJoueurCourant();
+        Color couleur_joueur = instance.getCouleurJoueur();
         plateauCopie.joueCoup(coupT);
         ArrayList<Position> positionsLibresBatiments = plateauCopie.getPositions_libres_batiments();
         //On parcourt toutes les positions libres des bâtiments
         for (int position = 0; position < positionsLibresBatiments.size(); position++) {
             Coup coupB = null;
             Position positionCourante = positionsLibresBatiments.get(position);
-            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), joueur_courant);
+            int[] batimentsPlacable = plateauCopie.getBatimentPlacable(positionCourante.ligne(), positionCourante.colonne(), couleur_joueur);
             //On parcourt tous les choix de bâtiments possibles
             for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
                 //si le bâtiment est plaçable
                 if (batimentsPlacable[batimentChoisit] == 1) {
                     if (batimentChoisit == HUTTE) {
                         //On place une hutte si il nous en reste
-                        if(instance.getJoueur(instance.jCourant).getNbHuttes()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) HUTTE);
+                        if(instance.getJoueur(instance.jCourant).getNbHuttes()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(),(byte) HUTTE);
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
                         if(batimentChoisit==TEMPLE){
-                            if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TEMPLE+2));
+                            if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(),(byte) (TEMPLE+2));
                         }else{
-                            if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TOUR+1));
+                            if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(),(byte) (TOUR+1));
                         }
                     }
                     coups_possibles.add(coupB);

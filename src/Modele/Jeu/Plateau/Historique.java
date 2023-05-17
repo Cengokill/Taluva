@@ -66,7 +66,7 @@ public class Historique implements Serializable {
                 int rendbatiment = 0;
                 byte typeDeBatiment = tete.typePlacement;
                 while (passe.size() != 0 && tete.typePlacement != Coup.TUILE) {
-                    carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone((byte) -1, (byte) (hauteur),
+                    carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone(null, (byte) (hauteur),
                             carte[tete.batimentLigne][tete.batimentColonne].getBiomeTerrain(), (byte) 0,
                             (byte) carte[tete.batimentColonne][tete.batimentColonne].getLigneVolcan(),
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getColonneVolcan());
@@ -122,7 +122,7 @@ public class Historique implements Serializable {
                     } else if (tete.typePlacement == 3) {
                         batiment = Hexagone.TOUR;
                     }
-                    carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone(tete.getNumJoueur(), (byte) (hauteur),
+                    carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone(tete.getCouleurJoueur(), (byte) (hauteur),
                             carte[tete.batimentLigne][tete.batimentColonne].getBiomeTerrain(), batiment,
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getLigneVolcan(),
                             (byte) carte[tete.batimentLigne][tete.batimentColonne].getColonneVolcan());

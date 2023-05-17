@@ -6,6 +6,7 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 import Structures.Position.TripletDePosition;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class Plateau implements Serializable, Cloneable {
     protected byte[] quantitePionJoueur1;
     protected byte[] quantitePionJoueur2;
 
-    public int nbHutteDisponiblesJoueur =0; // Pour eviter d'aller dans le negatif lors de la propagation
+    public int nbHuttesDisponiblesJoueur = 0; // Pour eviter d'aller dans le negatif lors de la propagation
     private Historique historique;
     private ArrayList<Position> positions_libres;
 
@@ -42,7 +43,7 @@ public class Plateau implements Serializable, Cloneable {
         p.historique = this.historique.copie();
         p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
         p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
-        p.nbHutteDisponiblesJoueur = this.nbHutteDisponiblesJoueur; // putain kiki oublie pas ca
+        p.nbHuttesDisponiblesJoueur = this.nbHuttesDisponiblesJoueur; // putain kiki oublie pas ca
         p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
         p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
         p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
@@ -148,7 +149,7 @@ public class Plateau implements Serializable, Cloneable {
     private boolean estTour(int ligne,int colonne){
         return getBatiment(ligne, colonne) == TOUR;
     }
-    public ArrayList<Point2D> positionsBatsVillage(int x, int y, byte idjoueur){
+    public ArrayList<Point2D> positionsBatsVillage(int x, int y, Color color_joueur){
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
         Point2D positionHutte = new Point2D(x,y);
         listeDesHutesVoisines.add(positionHutte);
@@ -156,7 +157,7 @@ public class Plateau implements Serializable, Cloneable {
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
             Point2D HuteCourant = listeDesHutesVoisines.get(i);
-            ajouterHuttesVoisines(idjoueur, listeDesHutesVoisines, HuteCourant);
+            ajouterHuttesVoisines(color_joueur, listeDesHutesVoisines, HuteCourant);
             i++;
         }
         return listeDesHutesVoisines;
@@ -165,7 +166,7 @@ public class Plateau implements Serializable, Cloneable {
     private boolean estBatiment(int i,int j){
         return carte[i][j].getBatiment()==HUTTE||carte[i][j].getBatiment()==TEMPLE||carte[i][j].getBatiment()==TOUR;
     }
-    private ArrayList<ArrayList<Point2D>> getTousLesVillagesVoisins(int x, int y, byte idjoueur){
+    private ArrayList<ArrayList<Point2D>> getTousLesVillagesVoisins(int x, int y, Color color_joueur){
         ArrayList<ArrayList<Point2D>> listeVillages = new ArrayList<>();
         ArrayList<Point2D> listeDesHutesVoisines_1 = new ArrayList<>();
         ArrayList<Point2D> listeDesHutesVoisines_2 = new ArrayList<>();
@@ -179,17 +180,17 @@ public class Plateau implements Serializable, Cloneable {
         Point2D positionHutte_4 = null;
         Point2D positionHutte_5 = null;
         Point2D positionHutte_6 = null;
-        if(estBatiment(x-1,y) && carte[x-1][y].getNumJoueur()==idjoueur) positionHutte_1 = new Point2D(x-1,y);
-        if(estBatiment(x+1,y) && carte[x+1][y].getNumJoueur()==idjoueur) positionHutte_2 = new Point2D(x+1,y);
-        if(estBatiment(x,y-1) && carte[x][y-1].getNumJoueur()==idjoueur) positionHutte_3 = new Point2D(x,y-1);
-        if(estBatiment(x,y+1) && carte[x][y+1].getNumJoueur()==idjoueur) positionHutte_4 = new Point2D(x,y+1);
+        if(estBatiment(x-1,y) && carte[x-1][y].getColorJoueur()==color_joueur) positionHutte_1 = new Point2D(x-1,y);
+        if(estBatiment(x+1,y) && carte[x+1][y].getColorJoueur()==color_joueur) positionHutte_2 = new Point2D(x+1,y);
+        if(estBatiment(x,y-1) && carte[x][y-1].getColorJoueur()==color_joueur) positionHutte_3 = new Point2D(x,y-1);
+        if(estBatiment(x,y+1) && carte[x][y+1].getColorJoueur()==color_joueur) positionHutte_4 = new Point2D(x,y+1);
 
         if(x%2==1){
-            if(estBatiment(x-1,y-1) && carte[x-1][y-1].getNumJoueur()==idjoueur ) positionHutte_5 = new Point2D(x-1,y-1);
-            if(estBatiment(x+1,y-1) && carte[x+1][y-1].getNumJoueur()==idjoueur) positionHutte_6 = new Point2D(x+1,y-1);
+            if(estBatiment(x-1,y-1) && carte[x-1][y-1].getColorJoueur()==color_joueur) positionHutte_5 = new Point2D(x-1,y-1);
+            if(estBatiment(x+1,y-1) && carte[x+1][y-1].getColorJoueur()==color_joueur) positionHutte_6 = new Point2D(x+1,y-1);
         }else{
-            if(estBatiment(x-1,y+1) && carte[x-1][y+1].getNumJoueur()==idjoueur) positionHutte_5 = new Point2D(x-1,y+1);
-            if(estBatiment(x+1,y+1) && carte[x+1][y+1].getNumJoueur()==idjoueur) positionHutte_6 = new Point2D(x+1,y+1);
+            if(estBatiment(x-1,y+1) && carte[x-1][y+1].getColorJoueur()==color_joueur) positionHutte_5 = new Point2D(x-1,y+1);
+            if(estBatiment(x+1,y+1) && carte[x+1][y+1].getColorJoueur()==color_joueur) positionHutte_6 = new Point2D(x+1,y+1);
         }
 
         listeDesHutesVoisines_1.add(positionHutte_1);
@@ -199,12 +200,12 @@ public class Plateau implements Serializable, Cloneable {
         listeDesHutesVoisines_5.add(positionHutte_5);
         listeDesHutesVoisines_6.add(positionHutte_6);
 
-        listeDesHutesVoisines_1 = positionBatVillageCourant(listeDesHutesVoisines_1,idjoueur);
-        listeDesHutesVoisines_2 = positionBatVillageCourant(listeDesHutesVoisines_2,idjoueur);
-        listeDesHutesVoisines_3 = positionBatVillageCourant(listeDesHutesVoisines_3,idjoueur);
-        listeDesHutesVoisines_4 = positionBatVillageCourant(listeDesHutesVoisines_4,idjoueur);
-        listeDesHutesVoisines_5 = positionBatVillageCourant(listeDesHutesVoisines_5,idjoueur);
-        listeDesHutesVoisines_6 = positionBatVillageCourant(listeDesHutesVoisines_6,idjoueur);
+        listeDesHutesVoisines_1 = positionBatVillageCourant(listeDesHutesVoisines_1,color_joueur);
+        listeDesHutesVoisines_2 = positionBatVillageCourant(listeDesHutesVoisines_2,color_joueur);
+        listeDesHutesVoisines_3 = positionBatVillageCourant(listeDesHutesVoisines_3,color_joueur);
+        listeDesHutesVoisines_4 = positionBatVillageCourant(listeDesHutesVoisines_4,color_joueur);
+        listeDesHutesVoisines_5 = positionBatVillageCourant(listeDesHutesVoisines_5,color_joueur);
+        listeDesHutesVoisines_6 = positionBatVillageCourant(listeDesHutesVoisines_6,color_joueur);
 
         if(listeDesHutesVoisines_1!=null)
             listeDesHutesVoisines_1.add(positionHutte_1);
@@ -232,11 +233,11 @@ public class Plateau implements Serializable, Cloneable {
 
         return listeVillages;
     }
-    private ArrayList<Point2D> positionBatVillageCourant(ArrayList<Point2D> listeDesHutesVoisines, byte idjoueur){
+    private ArrayList<Point2D> positionBatVillageCourant(ArrayList<Point2D> listeDesHutesVoisines, Color color_joueur){
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
             Point2D HuteCourant = listeDesHutesVoisines.get(i);
-            if(HuteCourant!=null) ajouterHuttesVoisines(idjoueur, listeDesHutesVoisines, HuteCourant);
+            if(HuteCourant!=null) ajouterHuttesVoisines(color_joueur, listeDesHutesVoisines, HuteCourant);
             i++;
         }
         return listeDesHutesVoisines;
@@ -253,46 +254,46 @@ public class Plateau implements Serializable, Cloneable {
     }
 
 
-    private void ajouterHuttesVoisines(byte idjoueur, ArrayList<Point2D> listeDesHutesVoisines, Point2D HuteCourant) {
+    private void ajouterHuttesVoisines(Color color_joueur, ArrayList<Point2D> listeDesHutesVoisines, Point2D HuteCourant) {
         //System.out.println("IDJOUEUR: "+idjoueur);
-        if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY(), idjoueur)){
+        if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY(), color_joueur)){
             Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY());
             if(notIn(listeDesHutesVoisines,p1))
                 listeDesHutesVoisines.add(p1);
         }
-        if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY(), idjoueur)){
+        if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY(), color_joueur)){
             Point2D p1 = new Point2D(HuteCourant.getPointX()+1 , HuteCourant.getPointY());
             if(notIn(listeDesHutesVoisines,p1))
                 listeDesHutesVoisines.add(p1);
         }
-        if(check(HuteCourant.getPointX() , HuteCourant.getPointY()-1, idjoueur)){
+        if(check(HuteCourant.getPointX() , HuteCourant.getPointY()-1, color_joueur)){
             Point2D p1 = new Point2D(HuteCourant.getPointX() , HuteCourant.getPointY()-1);
             if(notIn(listeDesHutesVoisines,p1))
                 listeDesHutesVoisines.add(p1);
         }
-        if(check(HuteCourant.getPointX() , HuteCourant.getPointY()+1, idjoueur)){
+        if(check(HuteCourant.getPointX() , HuteCourant.getPointY()+1, color_joueur)){
             Point2D p1 = new Point2D(HuteCourant.getPointX() , HuteCourant.getPointY()+1);
             if(notIn(listeDesHutesVoisines,p1))
                 listeDesHutesVoisines.add(p1);
         }
         if(HuteCourant.getPointX()%2==1){
-            if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY()-1, idjoueur)){
+            if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY()-1, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY()-1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
-            if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY()-1, idjoueur)){
+            if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY()-1, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.getPointX()+1 , HuteCourant.getPointY()-1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
         }else{
-            if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY()+1, idjoueur)){
+            if(check(HuteCourant.getPointX()-1 , HuteCourant.getPointY()+1, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.getPointX()-1 , HuteCourant.getPointY()+1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
-            if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY()+1, idjoueur)){
+            if(check(HuteCourant.getPointX()+1 , HuteCourant.getPointY()+1, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.getPointX()+1 , HuteCourant.getPointY()+1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
@@ -302,17 +303,17 @@ public class Plateau implements Serializable, Cloneable {
 
     private boolean effaceUnVillageEntier(int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2){
         if(getBatiment(ligneTile1,colonneTile1)==HUTTE){                            // une hutte sur la premiere tuile
-            byte idBat_1 = getCarte()[ligneTile1][colonneTile1].getNumJoueur();
+            Color colorBat_1 = getCarte()[ligneTile1][colonneTile1].getColorJoueur();
             if(getBatiment(ligneTile2,colonneTile2)==HUTTE){                        // sur la deuxieme aussi
-                byte idBat_2 = getCarte()[ligneTile2][colonneTile2].getNumJoueur();
-                if(idBat_1==idBat_2){                                               // les 2 appartiennent au même joueur
-                    return positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() <= 2 && positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() > 0; // on efface tout le village qui contient 2 huttes
+                Color colorBat_2 = getCarte()[ligneTile2][colonneTile2].getColorJoueur();
+                if(colorBat_1==colorBat_2){                                               // les 2 appartiennent au même joueur
+                    return positionsBatsVillage(ligneTile1, colonneTile1, colorBat_1).size() <= 2 && positionsBatsVillage(ligneTile1, colonneTile1, colorBat_1).size() > 0; // on efface tout le village qui contient 2 huttes
                 }else{                                                              // les 2 appartiennet à des joueurs differents
-                    if(positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,idBat_1).size()>0) return true; // on efface tout le village de idBat_1 qui contient 1 hutte
-                    return positionsBatsVillage(ligneTile2, colonneTile2, idBat_2).size() <= 1 && positionsBatsVillage(ligneTile1, colonneTile1, idBat_2).size() > 0; // on efface tout le village de idBat_2 qui contient 1 hutte
+                    if(positionsBatsVillage(ligneTile1,colonneTile1,colorBat_1).size()<=1 && positionsBatsVillage(ligneTile1,colonneTile1,colorBat_1).size()>0) return true; // on efface tout le village de idBat_1 qui contient 1 hutte
+                    return positionsBatsVillage(ligneTile2, colonneTile2, colorBat_2).size() <= 1 && positionsBatsVillage(ligneTile1, colonneTile1, colorBat_2).size() > 0; // on efface tout le village de idBat_2 qui contient 1 hutte
                 }
             }else{ // il n'y a pas de batiment sur la deuxieme hutte
-                return positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() <= 1 && positionsBatsVillage(ligneTile1, colonneTile1, idBat_1).size() > 0; // on efface tout le village qui contient 1 hutte
+                return positionsBatsVillage(ligneTile1, colonneTile1, colorBat_1).size() <= 1 && positionsBatsVillage(ligneTile1, colonneTile1, colorBat_1).size() > 0; // on efface tout le village qui contient 1 hutte
             }
         }
         return false;
@@ -345,19 +346,22 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public int[] getNbBatEcrase(int volcan_i, int volcan_j, int tile1_i, int tile1_j, int tile2_i, int tile2_j){
+        /*
         int nb_bat_1 = 0,nb_bat_2 = 0;
-        if(carte[volcan_i][volcan_j].getBatiment()!=0 && carte[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
-        if(carte[tile1_i][tile1_j].getBatiment()!=0 && carte[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
-        if(carte[tile2_i][tile2_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 0) nb_bat_1++;
+        if(carte[volcan_i][volcan_j].getBatiment()!=0 && carte[volcan_i][volcan_j].getColorJoueur() == 0) nb_bat_1++;
+        if(carte[tile1_i][tile1_j].getBatiment()!=0 && carte[volcan_i][volcan_j].getColorJoueur() == 0) nb_bat_1++;
+        if(carte[tile2_i][tile2_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getColorJoueur() == 0) nb_bat_1++;
 
-        if(carte[volcan_i][volcan_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
-        if(carte[tile1_i][tile1_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
-        if(carte[tile2_i][tile2_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getNumJoueur() == 1) nb_bat_2++;
+        if(carte[volcan_i][volcan_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getColorJoueur() == 1) nb_bat_2++;
+        if(carte[tile1_i][tile1_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getColorJoueur() == 1) nb_bat_2++;
+        if(carte[tile2_i][tile2_j].getBatiment()!=0  && carte[volcan_i][volcan_j].getColorJoueur() == 1) nb_bat_2++;
 
         int[] tab =  new int[2];
         tab[0] = nb_bat_1;
         tab[1] = nb_bat_2;
         return tab;
+         */
+        return null;
     }
 
     public int peutPlacerTuile(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {    // renvoie 0 si OK
@@ -591,6 +595,7 @@ public class Plateau implements Serializable, Cloneable {
 
     public void joueCoup(Coup coup) {
         byte num_joueur = coup.getNumJoueur();
+        Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
             coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
@@ -634,8 +639,7 @@ public class Plateau implements Serializable, Cloneable {
                 Position aSupprimer = new Position(coup.batimentLigne,coup.batimentColonne);
                 positions_libres_batiments.remove(aSupprimer);
             }
-
-            carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(num_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
+            carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(color_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
             if(coup.typePlacement!=4){
                 historique.ajoute(coup);
             }
@@ -643,13 +647,13 @@ public class Plateau implements Serializable, Cloneable {
         }
     }
 
-    public ArrayList<Point2D> previsualisePropagation(int hutteX, int hutteY,byte joueurCourant){
+    public ArrayList<Point2D> previsualisePropagation(int hutteX, int hutteY, Color color_joueur){
         ArrayList<Point2D> nlh ;
-        return propagation(hutteX,hutteY,joueurCourant);
+        return propagation(hutteX,hutteY,color_joueur);
     }
 
 
-    // N?cessite un appel ? peutPlacerEtage
+    // nécessite un appel à peutPlacerEtage
     public void placeEtage(byte joueurCourant, int volcanLigne, int volcanColonne, int tile1Ligne, int tile1Colonne, byte biome1, int tile2Ligne, int tile2Colonne, byte biome2) {
         Coup coup = new Coup(joueurCourant, volcanLigne, volcanColonne, tile1Ligne, tile1Colonne, biome1, tile2Ligne, tile2Colonne, biome2);
         //historique.ajoute(coup);
@@ -659,22 +663,22 @@ public class Plateau implements Serializable, Cloneable {
     public boolean peutPlacerMaison(int ligne,int colonne){
         return (carte[ligne][colonne].getBiomeTerrain()!=Hexagone.VOLCAN && carte[ligne][colonne].getBatiment()==VIDE && carte[ligne][colonne].getBiomeTerrain()!=Hexagone.VIDE);
     }
-    public void placeBatiment(byte joueurCourant, int ligne, int colonne, byte type_bat){
-        Coup coup = new Coup(joueurCourant, ligne,colonne,type_bat);
+    public void placeBatiment(byte joueurCourant, Color color_joueur, int ligne, int colonne, byte type_bat){
+        Coup coup = new Coup(joueurCourant, color_joueur, ligne,colonne,type_bat);
         //todo historique.ajoute(coup);
         joueCoup(coup);
 
         if (type_bat == (byte)1){
-            nbHutteDisponiblesJoueur -=getHauteurTuile(ligne,colonne);
+            nbHuttesDisponiblesJoueur -=getHauteurTuile(ligne,colonne);
             ArrayList<Point2D> nlh ;
-            nlh = propagation(ligne,colonne,joueurCourant);
+            nlh = propagation(ligne,colonne,color_joueur);
             while(nlh.size()!=0) {
                 Point2D a = nlh.remove(0);
-                Coup Coup_propagation = new Coup(joueurCourant,a.x,a.y,(byte)1);
-                if(nbHutteDisponiblesJoueur >=getHauteurTuile(a.x,a.y) && nbHutteDisponiblesJoueur !=0){
+                Coup Coup_propagation = new Coup(joueurCourant, color_joueur, a.x, a.y, (byte)1);
+                if(nbHuttesDisponiblesJoueur >=getHauteurTuile(a.x,a.y) && nbHuttesDisponiblesJoueur !=0){
                     if(coup.typePlacement!=4) {
                         joueCoup(Coup_propagation);
-                        nbHutteDisponiblesJoueur -=(getHauteurTuile(a.x,a.y));
+                        nbHuttesDisponiblesJoueur -=(getHauteurTuile(a.x,a.y));
                     }
                 }
             }
@@ -689,65 +693,65 @@ public class Plateau implements Serializable, Cloneable {
         }
         return true;
     }
-    public boolean check (int x, int y,int IDjoueurs) {
-        return getTuile(x,y).getNumJoueur()==IDjoueurs && (getTuile(x,y).getBatiment()==HUTTE||estTemple(x,y)||estTour(x,y));
+    public boolean check (int x, int y, Color color_joueur) {
+        return getHexagone(x,y).getColorJoueur()==color_joueur && (getHexagone(x,y).getBatiment()==HUTTE||estTemple(x,y)||estTour(x,y));
     }
     public boolean check2 (int x, int y,byte TypeTerrain) {
-        return estDansPlateau(x, y) && getTuile(x,y).getBatiment()==(byte)0&&getTuile(x,y).getBiomeTerrain()==TypeTerrain;
+        return estDansPlateau(x, y) && getHexagone(x,y).getBatiment()==(byte)0&& getHexagone(x,y).getBiomeTerrain()==TypeTerrain;
     }
     public boolean estDansPlateau (int x , int y ){
         return (x<COLONNES)&&(x>-1)&&(y>-1)&&(y<LIGNES);
     }
-    public ArrayList<Point2D> propagation (int hutteX, int hutteY, byte joueurCourant ){
+    public ArrayList<Point2D> propagation (int hutteX, int hutteY, Color color_joueur ){
         ArrayList<Point2D> listeDecases = new ArrayList<>();
-        byte biome = getTuile(hutteX,hutteY).getBiomeTerrain();
+        byte biome = getHexagone(hutteX,hutteY).getBiomeTerrain();
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
         Point2D positionHutte = new Point2D(hutteX,hutteY);
         listeDesHutesVoisines.add(positionHutte);
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
             Point2D HuteCourant = listeDesHutesVoisines.get(i);
-            if(check (HuteCourant.x-1 ,HuteCourant.y, joueurCourant)){
+            if(check (HuteCourant.x-1 ,HuteCourant.y, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.x-1 ,HuteCourant.y);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
-            if(check (HuteCourant.x+1 ,HuteCourant.y, joueurCourant)){
+            if(check (HuteCourant.x+1 ,HuteCourant.y, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.x+1,HuteCourant.y);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
-            if(check (HuteCourant.x ,HuteCourant.y-1, joueurCourant)){
+            if(check (HuteCourant.x ,HuteCourant.y-1, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.x ,HuteCourant.y-1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
 
             }
-            if(check(HuteCourant.x ,HuteCourant.y+1, joueurCourant)){
+            if(check(HuteCourant.x ,HuteCourant.y+1, color_joueur)){
                 Point2D p1 = new Point2D(HuteCourant.x ,HuteCourant.y+1);
                 if(notIn(listeDesHutesVoisines,p1))
                     listeDesHutesVoisines.add(p1);
             }
             if(HuteCourant.x%2==1){
-                if(check (HuteCourant.x-1 ,HuteCourant.y-1, joueurCourant)){
+                if(check (HuteCourant.x-1 ,HuteCourant.y-1, color_joueur)){
                     Point2D p1 = new Point2D(HuteCourant.x-1,HuteCourant.y-1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
                 }
-                if(check (HuteCourant.x+1 ,HuteCourant.y-1, joueurCourant)){
+                if(check (HuteCourant.x+1 ,HuteCourant.y-1, color_joueur)){
                     Point2D p1 = new Point2D(HuteCourant.x+1 ,HuteCourant.y-1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
 
                 }
             }else{
-                if(check (HuteCourant.x-1 ,HuteCourant.y+1, joueurCourant)){
+                if(check (HuteCourant.x-1 ,HuteCourant.y+1, color_joueur)){
                     Point2D p1 = new Point2D(HuteCourant.x-1 ,HuteCourant.y+1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
 
                 }
-                if(check (HuteCourant.x+1 ,HuteCourant.y+1, joueurCourant)){
+                if(check (HuteCourant.x+1 ,HuteCourant.y+1, color_joueur)){
                     Point2D p1 = new Point2D(HuteCourant.x+1,HuteCourant.y+1);
                     if(notIn(listeDesHutesVoisines,p1))
                         listeDesHutesVoisines.add(p1);
@@ -818,18 +822,18 @@ public class Plateau implements Serializable, Cloneable {
         return carte[i][j].getBatiment();
     }
 
-    public boolean peutPoserTemple(int i,int j,byte numJoueur){
+    public boolean peutPoserTemple(int i,int j,Color color_joueur){
         // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUN TEMPLE ET VILLAGE ASSEZ GRAND)
         boolean PeutClassique = true;
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,numJoueur);
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
         if(pointsVillage.size()<=3) PeutClassique =  false;                             // On verifie que la hauteur est d'au moins 3
         for(Point2D p : pointsVillage){                                                 // On verifie que la cité ne possède pas déjà une tour
             if(estTemple(p.getPointX(),p.getPointY())) PeutClassique =  false;
         }
-        if(PeutClassique && aCiteAutour(i,j,numJoueur)) return true;
+        if(PeutClassique && aCiteAutour(i,j,color_joueur)) return true;
 
         // CAS POUR GERER ISOLATION DE TEMPLE
-        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,numJoueur);
+        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,color_joueur);
         boolean[] peut = new boolean[Villages.size()];
         for(int k=0;k<Villages.size();k++){
             peut[k]=true;
@@ -841,23 +845,23 @@ public class Plateau implements Serializable, Cloneable {
                 if(p==null) peut[k]=false;
                 else if(estTemple(p.getPointX(),p.getPointY())) peut[k]=false;
             }
-            if(peut[k] && aCiteAutour(i,j,numJoueur)) return true;
+            if(peut[k] && aCiteAutour(i,j,color_joueur)) return true;
         }
         return false;
     }
 
-    public boolean peutPoserTour(int i,int j,byte numJoueur){
+    public boolean peutPoserTour(int i,int j,Color color_joueur){
         // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUNE TOUR ET HAUTEUR>=3)
         boolean PeutClassique = true;
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,numJoueur);
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
         if(getHauteurTuile(i,j)<3) PeutClassique = false;                            // On verifie que la hauteur est d'au moins 3
         for(Point2D p : pointsVillage){                                              // On verifie que la cité ne possède pas déjà une tour
             if(estTour(p.getPointX(),p.getPointY())) PeutClassique = false;
         }
-        if(PeutClassique && aCiteAutour(i,j,numJoueur)) return true;
+        if(PeutClassique && aCiteAutour(i,j,color_joueur)) return true;
 
         // CAS POUR GERER ISOLATION DE TOUR
-        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,numJoueur);
+        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,color_joueur);
         boolean[] peut = new boolean[Villages.size()];
         for(int k=0;k<Villages.size();k++){
             peut[k]=true;
@@ -869,41 +873,41 @@ public class Plateau implements Serializable, Cloneable {
                     else if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
                 }
             }
-            if(peut[k] && aCiteAutour(i,j,numJoueur)) return true;
+            if(peut[k] && aCiteAutour(i,j,color_joueur)) return true;
         }
         return false;
     }
 
     // TOUJOURS verifier qu'il reste le batiment dans l'inventaire du joueur avant de la poser
-    public int[] getBatimentPlacable(int i,int j, byte numJoueur){
+    public int[] getBatimentPlacable(int i,int j, Color color_joueur){
         int[] coups = new int[3];
-        if(getTuile(i,j).getBiomeTerrain()==VOLCAN) return coups;
+        if(getHexagone(i,j).getBiomeTerrain()==VOLCAN) return coups;
         if(getBatiment(i,j)!=0 && getBatiment(i,j)!=CHOISIR_BATIMENT) return coups; // S'il y a deja un batiment, ce n'est pas construisible
         if(getHauteurTuile(i,j)>0) coups[1] = 1;
-        if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,numJoueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
-        if(peutPoserTour(i,j,numJoueur)) coups[2] = 1;
-        if(peutPoserTemple(i,j,numJoueur)) coups[0] = 1;
+        if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,color_joueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
+        if(peutPoserTour(i,j,color_joueur)) coups[2] = 1;
+        if(peutPoserTemple(i,j,color_joueur)) coups[0] = 1;
         return coups;
     }
 
-    private boolean possedeBatiment(int i,int j,int numJoueur){
-        return (getBatiment(i,j) != 0 && getTuile(i,j).getNumJoueur()==numJoueur);
+    private boolean possedeBatiment(int i,int j, Color color_joueur){
+        return (getBatiment(i,j) != 0 && getHexagone(i,j).getColorJoueur()==color_joueur);
     }
 
-    public boolean aCiteAutour(int i,int j,int numJoueur){
-        boolean bool = possedeBatiment(i-1,j,numJoueur)||possedeBatiment(i+1,j,numJoueur)||possedeBatiment(i,j-1,numJoueur)||possedeBatiment(i,j+1,numJoueur);
+    public boolean aCiteAutour(int i, int j, Color color_joueur){
+        boolean bool = possedeBatiment(i-1,j,color_joueur)||possedeBatiment(i+1,j,color_joueur)||possedeBatiment(i,j-1,color_joueur)||possedeBatiment(i,j+1,color_joueur);
         if(i%2==1){
-            if(possedeBatiment(i-1,j-1,numJoueur)) {
+            if(possedeBatiment(i-1,j-1,color_joueur)) {
                 bool = true;
             }
-            if(possedeBatiment(i+1,j-1,numJoueur)) {
+            if(possedeBatiment(i+1,j-1,color_joueur)) {
                 bool = true;
             }
         }else{
-            if(possedeBatiment(i-1,j+1,numJoueur)) {
+            if(possedeBatiment(i-1,j+1,color_joueur)) {
                 bool = true;
             }
-            if(possedeBatiment(i+1,j+1,numJoueur)) {
+            if(possedeBatiment(i+1,j+1,color_joueur)) {
                 bool = true;
             }
         }
@@ -915,7 +919,7 @@ public class Plateau implements Serializable, Cloneable {
         return carte[i][j].getHauteur();
     }
 
-    public Hexagone getTuile(int i, int j){
+    public Hexagone getHexagone(int i, int j){
         return carte[i][j];
     }
     public void joueHexagone(){}

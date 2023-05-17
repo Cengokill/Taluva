@@ -1,5 +1,6 @@
 package Modele.Jeu.Plateau;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public class Hexagone implements Serializable {
@@ -26,12 +27,12 @@ public class Hexagone implements Serializable {
     private final byte numeroTexture;
     private final byte volcan_j;
     private final byte volcan_i;
-    private final byte num_joueur;
+    private Color couleur_joueur;
 
     public boolean placable = false;
 
     public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j) {
-        this.num_joueur = -1;
+        this.couleur_joueur = null;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
         this.numeroTexture = (byte) ((int)(Math.random() * 2) + 1);
@@ -39,8 +40,8 @@ public class Hexagone implements Serializable {
         this.volcan_j = volcan_j;
     }
 
-    public Hexagone(byte numero_joueur, byte hauteur, byte biomeTerrain, byte batiment, byte volcan_i, byte volcan_j) {
-        this.num_joueur = numero_joueur;
+    public Hexagone(Color color, byte hauteur, byte biomeTerrain, byte batiment, byte volcan_i, byte volcan_j) {
+        this.couleur_joueur = color;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
         this.batiment = batiment;
@@ -50,7 +51,6 @@ public class Hexagone implements Serializable {
     }
 
     public Hexagone(byte hauteur, byte biomeTerrain, byte volcan_i, byte volcan_j, byte numeroTexture) {
-        this.num_joueur = -1;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
         this.numeroTexture = numeroTexture;
@@ -58,7 +58,7 @@ public class Hexagone implements Serializable {
         this.volcan_j = volcan_j;
     }
 
-    public byte getNumJoueur(){return num_joueur;}
+    public Color getColorJoueur(){return couleur_joueur;}
 
     public byte getHauteur() {
         return hauteur;
@@ -133,6 +133,6 @@ public class Hexagone implements Serializable {
 
 
     public Hexagone copy() {
-        return new Hexagone(num_joueur, hauteur, biomeTerrain, batiment, volcan_i, volcan_j);
+        return new Hexagone(couleur_joueur, hauteur, biomeTerrain, batiment, volcan_i, volcan_j);
     }
 }
