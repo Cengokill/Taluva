@@ -13,12 +13,12 @@ import Structures.Position.TripletDePosition;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est exécutée par un nouveau thread
+public class AbstractIA extends Joueur implements Runnable{
     protected Jeu jeu;
     public static LinkedList<Tuile> pioche;
     private static int type_IA;
-    private static int INTELLIGENTE = 0;
-    private static int ALEATOIRE = 1;
+    public static final byte INTELLIGENTE = 0;
+    public static final byte ALEATOIRE = 1;
     private byte numero;
 
     public AbstractIA(byte type, byte n, String prenom) {
@@ -26,10 +26,10 @@ public class AbstractIA extends Joueur implements Runnable{//une AbstractIA est 
         numero = n;
     }
 
-    public static AbstractIA nouvelle(Jeu j, byte n) {
+    public static AbstractIA nouvelle(Jeu j, byte n, byte difficulte) {
         AbstractIA resultat = null;
         pioche = new LinkedList<>();
-        type_IA = ALEATOIRE;
+        type_IA = difficulte;
         if(type_IA == ALEATOIRE) {
             resultat = new IAAleatoire(n);
         }else if(type_IA == INTELLIGENTE) {

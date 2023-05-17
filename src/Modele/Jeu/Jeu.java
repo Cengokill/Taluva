@@ -57,8 +57,8 @@ public class Jeu extends Observable implements Serializable{
         int nb_joueurs = 2;
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
-        IA0 = AbstractIA.nouvelle(this, (byte)1);
-        IA1 = AbstractIA.nouvelle(this, (byte)0);
+        IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
+        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
         IA0.setPrenom("IA0");
         IA1.setPrenom("IA1");
         //Thread ia1Thread = new Thread(IA1);
@@ -123,7 +123,7 @@ public class Jeu extends Observable implements Serializable{
         if(joueurs[n].type_joueur == Joueur.IA){
             joueurs[n] = new Joueur(Joueur.HUMAIN, numero, "Joueur "+numero);
         }else{
-            joueurs[n] = AbstractIA.nouvelle(this, numero);
+            joueurs[n] = AbstractIA.nouvelle(this, numero, AbstractIA.INTELLIGENTE);
         }
         joueurs[n].setNbHuttes(nbHuttes);
         joueurs[n].setNbTemples(nbTemples);
