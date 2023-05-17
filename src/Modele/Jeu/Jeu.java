@@ -152,19 +152,18 @@ public class Jeu extends Observable implements Serializable{
         Coup coupTuile = coupValeur.getCoupT();
         Coup coupBatiment = coupValeur.getCoupB();
         if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
+            joueurs[jCourant].stopChrono();
             estPartieFinie = true;
             jVainqueur = (byte) ((jCourant + 1) % 2);
             return;
         }
-        getPlateau().joueCoup(coupTuile);
         doit_placer_batiment = true;
         doit_placer_tuile = false;
-        if (type_jeu == CONSOLE) {
-            joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
-            doit_placer_batiment = false;
-            doit_placer_tuile = true;
-            changeJoueur();
-        }
+        joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
+        doit_placer_batiment = false;
+        doit_placer_tuile = true;
+        joueurs[jCourant].stopChrono();
+        changeJoueur();
     }
 
     private void joueMultiThread(){
@@ -178,6 +177,7 @@ public class Jeu extends Observable implements Serializable{
             Coup coupTuile = coupValeur.getCoupT();
             Coup coupBatiment = coupValeur.getCoupB();
             if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
+                joueurs[jCourant].stopChrono();
                 estPartieFinie = true;
                 jVainqueur = (byte) ((jCourant + 1) % 2);
                 return;
@@ -189,6 +189,7 @@ public class Jeu extends Observable implements Serializable{
                 joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
                 doit_placer_batiment = false;
                 doit_placer_tuile = true;
+                joueurs[jCourant].stopChrono();
                 changeJoueur();
             });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
@@ -203,7 +204,6 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
-            joueurs[jCourant].stopChrono();
         }
     }
 
