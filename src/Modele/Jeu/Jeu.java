@@ -66,19 +66,19 @@ public class Jeu extends Observable implements Serializable{
         //Thread ia2Thread = new Thread(IA2);
         //ia1Thread.start();
         //ia2Thread.start();
-        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
-        //joueurs[0] = IA1;
-        //joueurs[1] = IA2;
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Joueur 1");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Joueur 2");
+        joueurs[0] = IA1;
+        joueurs[1] = IA2;
         joueurs[1].setCouleur("Rouge");
         joueurs[0].setCouleur("Bleu");
         pioche = new LinkedList<>();
+        lancePartie();
         if(type_jeu == GRAPHIQUE) {
             musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
             musicPlayer.setVolume(-50.0f);
             musicPlayer.loop();
         }
-        lancePartie();
     }
 
     public void lancePartie() throws CloneNotSupportedException {
@@ -164,6 +164,7 @@ public class Jeu extends Observable implements Serializable{
             joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
             doit_placer_batiment = false;
             doit_placer_tuile = true;
+            changeJoueur();
         }
     }
 
@@ -189,6 +190,7 @@ public class Jeu extends Observable implements Serializable{
                 joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
                 doit_placer_batiment = false;
                 doit_placer_tuile = true;
+                changeJoueur();
             });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
                 timer.start(); // Démarrez le timer
@@ -198,6 +200,7 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void joueIA() throws CloneNotSupportedException {
+        System.out.println("L'IA joue");
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
@@ -323,6 +326,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void changeJoueur() {
+        System.out.println("Changement de joueur");
         if (jCourant == (byte) 0) {
             jCourant = (byte) 1;
         } else {
