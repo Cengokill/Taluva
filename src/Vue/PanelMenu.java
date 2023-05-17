@@ -109,7 +109,7 @@ public class PanelMenu extends JPanel {
         posX_menu_options = frameWidth;
         //musique
         musicPlayer = new MusicPlayer("Musiques\\Merchants_of_Novigrad.wav");
-        musicPlayer.setVolume(-22.0f);
+        musicPlayer.setVolume(-50.0f);
         musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
