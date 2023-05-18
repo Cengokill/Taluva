@@ -9,7 +9,7 @@ public class EtatPlateau {
     public static int hoveredTile_x;
     public static int hoveredTile_y;
     public static int typeAConstruire = 0, posBat_x, posBat_y;
-    public static boolean poseTile, mode_plateau = true, mode_numero = false;
+    public static boolean poseTile, mode_plateau = false, mode_numero = false;
     public static boolean clicDroiteEnfonce = false;
     public static boolean enSelection = false;
     public static Color[] couleurs_joueurs;

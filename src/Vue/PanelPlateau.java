@@ -689,32 +689,80 @@ public class PanelPlateau extends JPanel {
             g.drawImage(tile2, drawX - tileWidth /2, drawY - verticalOffset -  heightoffset2, null);
             g.drawImage(tile3, drawX + tileWidth /2, drawY - verticalOffset - heightoffset3, null);
             g.drawImage(tile1, drawX, drawY - heightoffset1, null);
+
+            if (tile1 == tileErreur) {
+                return;
+            }
+
+            g.drawImage(placable, drawX - tileWidth /2, drawY - verticalOffset -  heightoffset2 + 50, null);
+            g.drawImage(placable, drawX + tileWidth /2, drawY - verticalOffset - heightoffset3 + 50, null);
+            g.drawImage(placable, drawX, drawY - heightoffset1 + 50, null);
         }
         else if (scrollValue == 2){
             g.drawImage(tile2, drawX + tileWidth /2, drawY - verticalOffset -  heightoffset2, null);
             g.drawImage(tile3, drawX + tileWidth, drawY - heightoffset3, null);
             g.drawImage(tile1, drawX, drawY - heightoffset1, null);
 
+            if (tile1 == tileErreur) {
+                return;
+            }
+
+            g.drawImage(placable, drawX + tileWidth /2, drawY - verticalOffset -  heightoffset2 + 50, null);
+            g.drawImage(placable, drawX + tileWidth, drawY - heightoffset3 + 50, null);
+            g.drawImage(placable, drawX, drawY - heightoffset1 + 50, null);
+
         }
         else if (scrollValue == 3){
             g.drawImage(tile1, drawX, drawY - heightoffset1, null);
             g.drawImage(tile2, drawX + tileWidth, drawY -  heightoffset2, null);
             g.drawImage(tile3, drawX +  tileWidth /2, drawY + verticalOffset - heightoffset3, null);
+
+            if (tile1 == tileErreur) {
+                return;
+            }
+
+            g.drawImage(placable, drawX, drawY - heightoffset1 + 50, null);
+            g.drawImage(placable, drawX + tileWidth, drawY -  heightoffset2 + 50, null);
+            g.drawImage(placable, drawX +  tileWidth /2, drawY + verticalOffset - heightoffset3 + 50, null);
         }
         else if (scrollValue == 4){
             g.drawImage(tile1, drawX, drawY - heightoffset1, null);
             g.drawImage(tile2, drawX + tileWidth /2, drawY + verticalOffset -  heightoffset2, null);
             g.drawImage(tile3, drawX - tileWidth /2, drawY + verticalOffset - heightoffset3, null);
+
+            if (tile1 == tileErreur) {
+                return;
+            }
+
+            g.drawImage(placable, drawX, drawY - heightoffset1 + 50, null);
+            g.drawImage(placable, drawX + tileWidth /2, drawY + verticalOffset -  heightoffset2 + 50, null);
+            g.drawImage(placable, drawX - tileWidth /2, drawY + verticalOffset - heightoffset3 + 50, null);
         }
         else if (scrollValue == 5){
             g.drawImage(tile1, drawX, drawY - heightoffset1, null);
             g.drawImage(tile3, drawX - tileWidth, drawY - heightoffset3, null);
             g.drawImage(tile2, drawX - tileWidth /2, drawY + verticalOffset -  heightoffset2, null);
+
+            if (tile1 == tileErreur) {
+                return;
+            }
+
+            g.drawImage(placable, drawX, drawY - heightoffset1 + 50, null);
+            g.drawImage(placable, drawX - tileWidth, drawY - heightoffset3 + 50, null);
+            g.drawImage(placable, drawX - tileWidth /2, drawY + verticalOffset -  heightoffset2 + 50, null);
         }
         else if (scrollValue == 6){
             g.drawImage(tile3, drawX - tileWidth /2, drawY - verticalOffset - heightoffset3, null);
             g.drawImage(tile2, drawX - tileWidth, drawY -  heightoffset2, null);
             g.drawImage(tile1, drawX, drawY - heightoffset1, null);
+
+            if (tile1 == tileErreur) {
+                return;
+            }
+
+            g.drawImage(placable, drawX - tileWidth /2, drawY - verticalOffset - heightoffset3 + 50, null);
+            g.drawImage(placable, drawX - tileWidth, drawY -  heightoffset2 + 50, null);
+            g.drawImage(placable, drawX, drawY - heightoffset1 + 50, null);
         }
     }
 

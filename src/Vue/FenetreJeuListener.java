@@ -41,7 +41,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 poseTile = !poseTile;
             }
             if (keyCode == KeyEvent.VK_CONTROL) {
-                mode_plateau = !mode_plateau;
+                mode_plateau = false;
             }
             if (keyCode == KeyEvent.VK_A) {
                 mode_plateau = !mode_plateau;

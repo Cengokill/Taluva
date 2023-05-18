@@ -88,8 +88,7 @@ public class ImageLoader {
         background = lisImageBuf("/Plateau/background_plateau_x4_carre_2");
         readTilesImages();
         readPlayableTilesImages();
-        readHeightImages(lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_1_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_2_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_3_hex"));
-        readHeightImages(getReducedOpacityImage(wrongTile1, 0.5f), getReducedOpacityImage(wrongTile2, 0.5f), getReducedOpacityImage(wrongTile3, 0.5f));
+        readHeightImages();
         readTileOrientationImages();
         readBatimentsImages();
         readAndFilterContoursImages();
@@ -285,10 +284,10 @@ public class ImageLoader {
         beacon_6 = lisImageBuf(sourceFolder + "Beacon_6");
     }
 
-    private static void readHeightImages(BufferedImage wrong_height_1_hex, BufferedImage wrong_height_2_hex, BufferedImage wrong_height_3_hex) {
-        wrongTile1 = wrong_height_1_hex;
-        wrongTile2 = wrong_height_2_hex;
-        wrongTile3 = wrong_height_3_hex;
+    private static void readHeightImages() {
+        wrongTile1 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_1");
+        wrongTile2 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_2");
+        wrongTile3 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_3");
     }
 
     private static void readAndFilterContoursImages() {
