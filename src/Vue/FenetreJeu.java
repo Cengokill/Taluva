@@ -35,6 +35,7 @@ public class FenetreJeu extends Container {
     public static boolean estFenetreScoreChargee = false;
     public static BufferedImage fenetre_score_courante;
     public static int indice_chrono;
+    public static String tempsFixe;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
@@ -267,7 +268,7 @@ public class FenetreJeu extends Container {
                 posX_aiguille = posX_chrono + (largeur_chrono/2) - (largeur_aiguille/2);
                 posY_aiguille = (int) (posY_chrono + (largeur_chrono*0.55) - (largeur_aiguille/2));
                 //timer
-                posX_timer = (int) (posX_chrono + largeur_chrono*0.75);
+                posX_timer = (int) (posX_chrono + largeur_chrono*0.77);
                 posY_timer = (int) (posY_chrono + largeur_chrono*0.18);
                 largeur_timer = (int) (largeur_fenetre_score*0.30);
                 hauteur_timer = (int) (largeur_timer * rapport_timer);
@@ -392,11 +393,16 @@ public class FenetreJeu extends Container {
         }
         double tempsArrondi = tempsEcoule / 1000;// Convertir en secondes
         tempsArrondi = Math.round(tempsArrondi * 10)/10.0;// Arrondir au dixième
-        String temps = String.valueOf(tempsArrondi);
-        g.drawString(temps, (int) (posX_timer+largeur_timer*0.15), (int) (posY_timer + hauteur_timer*0.65));
-        if(tempsArrondi>=jeu.getTempsTour()*0.75){
+        if(tempsArrondi<=jeu.getTempsTour()) {
+            tempsFixe = String.valueOf(tempsArrondi);
+        }
+        if (tempsArrondi >= jeu.getTempsTour() * 0.75) {
+            g.setColor(Color.RED);
+            g.drawString(tempsFixe, (int) (posX_timer + largeur_timer * 0.15), (int) (posY_timer + hauteur_timer * 0.65));
             g.drawImage(chronoRouge, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
-        }else{
+        } else {
+            g.setColor(Color.WHITE);
+            g.drawString(tempsFixe, (int) (posX_timer + largeur_timer * 0.15), (int) (posY_timer + hauteur_timer * 0.65));
             g.drawImage(chronoBleu, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
         }
         g.drawImage(chrono[indice_chrono], posX_aiguille, posY_aiguille, largeur_aiguille, largeur_aiguille, null);
@@ -677,12 +683,15 @@ public class FenetreJeu extends Container {
             public void actionPerformed(ActionEvent e) {
                 metAJour();
                 //indice_chrono doit être incrémente de 1 et s'il atteint la valeur2, il doit être remis à 0
-                if(indice_chrono == nb_aiguilles-1){
+                double tempsTour = jeu.getTempsTour();
+                double tempsEcoule = (System.currentTimeMillis()-jeu.getJoueurCourant().getTempsTemp()) / 1000;// Convertir en secondes;
+                int indice_chrono_2 = (int) (nb_aiguilles / tempsTour * tempsEcoule);
+                if(indice_chrono_2<nb_aiguilles){
+                    indice_chrono = indice_chrono_2;
+                }else{
                     indice_chrono = 0;
                 }
-                else{
-                    indice_chrono++;
-                }
+                System.out.println("indice_chrono = " + indice_chrono);
             }
         });
         timer.start();

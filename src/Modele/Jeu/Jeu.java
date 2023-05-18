@@ -57,7 +57,7 @@ public class Jeu extends Observable implements Serializable{
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
         nb_joueurs = 2;
-        temps_tour = 8.0;//secondes avant la limite de fin de tour du joueur
+        temps_tour = 4.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
