@@ -35,7 +35,7 @@ public class ImageLoader {
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on, bouton_options, bouton_options_select,
             menu_options, menu_dark_filter;
-    public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save,
+    public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posX_options, posY_options_echap,
             posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
             posX_Echap, posY_Echap, posX_timer, posY_timer, largeur_timer, hauteur_timer,
             posX_joueur_courant, posY_joueur_courant, posX_prenom, posY_prenom_j0, posY_prenom_j1, posY_prenom_j2, posY_prenom_j3, posX_huttes, posX_tours, posX_temples,
