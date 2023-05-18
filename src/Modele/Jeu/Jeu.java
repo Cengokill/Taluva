@@ -57,26 +57,26 @@ public class Jeu extends Observable implements Serializable{
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
         nb_joueurs = 2;
-        temps_tour = 4.0;//secondes avant la limite de fin de tour du joueur
+        temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
-        IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
-        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA2 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA3 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
+        IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
+        IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
         IA0.setPrenom("IA0");
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
-        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
         joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        //joueurs[0] = IA0;
+        joueurs[0] = IA0;
         //joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
-        joueurs[0].setCouleur(Color.BLUE);
+        joueurs[0].setCouleur(Color.GREEN);
         joueurs[1].setCouleur(Color.MAGENTA);
         //joueurs[2].setCouleur(Color.BLUE);
         //joueurs[3].setCouleur(Color.RED);
