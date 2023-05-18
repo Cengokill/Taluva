@@ -5,7 +5,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
 import java.io.File;
 import java.io.IOException;
 
@@ -44,7 +43,10 @@ public class ImageLoader {
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options, largeur_chrono, posX_chrono, posY_chrono, largeur_aiguille, posX_aiguille, posY_aiguille;
-    public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
+    public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre,
+    largeur_hutte_score, largeur_tour_score, largeur_temple_score, posX_huttes_score, posX_tours_score, posX_temples_score, posY_huttes_score_j0,
+            posY_huttes_score_j1, posY_huttes_score_j2, posY_huttes_score_j3, posY_tours_score_j0, posY_tours_score_j1, posY_tours_score_j2, posY_tours_score_j3,
+            posY_temples_score_j0, posY_temples_score_j1, posY_temples_score_j2, posY_temples_score_j3;
     public static boolean select_options;
     public static boolean select_menu_options;
     public static boolean select_save;
@@ -293,14 +295,45 @@ public class ImageLoader {
             huttes_vertes[i] = lisImageBuf(dossier_vert + "hutte_" + (i+1));
             huttes_violettes[i] = lisImageBuf(dossier_violet + "hutte_" + (i+1));
         }
-        temples_rouges[0] = lisImageBuf(dossier_rouge + "temple_desert");
-        temples_rouges[1] = lisImageBuf(dossier_rouge + "temple_jungle");
-        temples_rouges[2] = lisImageBuf(dossier_rouge + "temple_pierre");
-        temples_rouges[3] = lisImageBuf(dossier_rouge + "temple_prairie");
-        tours_rouges[0] = lisImageBuf(dossier_rouge + "tour_desert");
-        tours_rouges[1] = lisImageBuf(dossier_rouge + "tour_jungle");
-        tours_rouges[2] = lisImageBuf(dossier_rouge + "tour_pierre");
-        tours_rouges[3] = lisImageBuf(dossier_rouge + "tour_prairie");
+        for(int i=0; i<4; i++) {
+            if(i==0){
+                temples_rouges[i] = lisImageBuf(dossier_rouge + "temple_desert");
+                temples_bleus[i] = lisImageBuf(dossier_bleu + "temple_desert");
+                temples_verts[i] = lisImageBuf(dossier_vert + "temple_desert");
+                temples_violets[i] = lisImageBuf(dossier_violet + "temple_desert");
+                tours_rouges[i] = lisImageBuf(dossier_rouge + "tour_desert");
+                tours_bleues[i] = lisImageBuf(dossier_bleu + "tour_desert");
+                tours_vertes[i] = lisImageBuf(dossier_vert + "tour_desert");
+                tours_violettes[i] = lisImageBuf(dossier_violet + "tour_desert");
+            }else if(i==1){
+                temples_rouges[i] = lisImageBuf(dossier_rouge + "temple_jungle");
+                temples_bleus[i] = lisImageBuf(dossier_bleu + "temple_jungle");
+                temples_verts[i] = lisImageBuf(dossier_vert + "temple_jungle");
+                temples_violets[i] = lisImageBuf(dossier_violet + "temple_jungle");
+                tours_rouges[i] = lisImageBuf(dossier_rouge + "tour_jungle");
+                tours_bleues[i] = lisImageBuf(dossier_bleu + "tour_jungle");
+                tours_vertes[i] = lisImageBuf(dossier_vert + "tour_jungle");
+                tours_violettes[i] = lisImageBuf(dossier_violet + "tour_jungle");
+            }else if(i==2){
+                temples_rouges[i] = lisImageBuf(dossier_rouge + "temple_pierre");
+                temples_bleus[i] = lisImageBuf(dossier_bleu + "temple_pierre");
+                temples_verts[i] = lisImageBuf(dossier_vert + "temple_pierre");
+                temples_violets[i] = lisImageBuf(dossier_violet + "temple_pierre");
+                tours_rouges[i] = lisImageBuf(dossier_rouge + "tour_pierre");
+                tours_bleues[i] = lisImageBuf(dossier_bleu + "tour_pierre");
+                tours_vertes[i] = lisImageBuf(dossier_vert + "tour_pierre");
+                tours_violettes[i] = lisImageBuf(dossier_violet + "tour_pierre");
+            }else if(i==3){
+                temples_rouges[i] = lisImageBuf(dossier_rouge + "temple_prairie");
+                temples_bleus[i] = lisImageBuf(dossier_bleu + "temple_prairie");
+                temples_verts[i] = lisImageBuf(dossier_vert + "temple_prairie");
+                temples_violets[i] = lisImageBuf(dossier_violet + "temple_prairie");
+                tours_rouges[i] = lisImageBuf(dossier_rouge + "tour_prairie");
+                tours_bleues[i] = lisImageBuf(dossier_bleu + "tour_prairie");
+                tours_vertes[i] = lisImageBuf(dossier_vert + "tour_prairie");
+                tours_violettes[i] = lisImageBuf(dossier_violet + "tour_prairie");
+            }
+        }
     }
 
 

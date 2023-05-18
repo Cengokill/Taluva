@@ -36,6 +36,18 @@ public class FenetreJeu extends Container {
     public static BufferedImage fenetre_score_courante;
     public static int indice_chrono;
     public static String tempsFixe;
+    static BufferedImage hutte_j0 = null;
+    static BufferedImage hutte_j1 = null;
+    static BufferedImage tour_j0 = null;
+    static BufferedImage tour_j1 = null;
+    static BufferedImage temple_j0 = null;
+    static BufferedImage temple_j1 = null;
+    static BufferedImage hutte_j2 = null;
+    static BufferedImage hutte_j3 = null;
+    static BufferedImage tour_j2 = null;
+    static BufferedImage tour_j3 = null;
+    static BufferedImage temple_j2 = null;
+    static BufferedImage temple_j3 = null;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
@@ -244,6 +256,25 @@ public class FenetreJeu extends Container {
                 posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.33);
                 posY_scores_j2 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.505);
                 posY_scores_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.685);
+                //bâtiments sur la fenêtre de score
+                largeur_hutte_score = (int) (largeur_fenetre_score * 0.35);
+                largeur_tour_score = (int) (largeur_fenetre_score * 0.24);
+                largeur_temple_score = largeur_tour_score;
+                posX_huttes_score = (int) (posX_fenetre_score+largeur_fenetre_score*0.03);
+                posX_tours_score = (int) (posX_fenetre_score+largeur_fenetre_score*0.33);
+                posX_temples_score = (int) (posX_fenetre_score+largeur_fenetre_score*0.56);
+                posY_huttes_score_j0 = posY_scores_j0-largeur_hutte_score/2;
+                posY_huttes_score_j1 = posY_scores_j1-largeur_hutte_score/2;
+                posY_huttes_score_j2 = posY_scores_j2-largeur_hutte_score/2;
+                posY_huttes_score_j3 = posY_scores_j3-largeur_hutte_score/2;
+                posY_temples_score_j0 = (int) (posY_scores_j0-largeur_temple_score*0.46);
+                posY_temples_score_j1 = (int) (posY_scores_j1-largeur_temple_score*0.47);
+                posY_temples_score_j2 = (int) (posY_scores_j2-largeur_temple_score*0.47);
+                posY_temples_score_j3 = (int) (posY_scores_j3-largeur_temple_score*0.47);
+                posY_tours_score_j0 = (int) (posY_scores_j0-largeur_tour_score*0.47);
+                posY_tours_score_j1 = (int) (posY_scores_j1-largeur_tour_score*0.47);
+                posY_tours_score_j2 = (int) (posY_scores_j2-largeur_tour_score*0.47);
+                posY_tours_score_j3 = (int) (posY_scores_j3-largeur_tour_score*0.47);
                 //boutons annuler et refaire
                 posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
                 posY_refaire = (int) (hauteur_fenetre_score * 1.0);
@@ -413,10 +444,87 @@ public class FenetreJeu extends Container {
 
     public static void afficheFenetreScore(Graphics g) {
         if(!estFenetreScoreChargee) {
+            Color couleur_0 = null, couleur_1 = null, couleur_2 = null, couleur_3 = null;
             int nb_joueurs = jeu.getJoueurs().length;
-            if(nb_joueurs==2) fenetre_score_courante = fenetre_score_2;
-            else if(nb_joueurs==3) fenetre_score_courante = fenetre_score_3;
-            else fenetre_score_courante = fenetre_score_4;
+            if(nb_joueurs==2){
+                fenetre_score_courante = fenetre_score_2;
+                couleur_0 = jeu.getJoueurs()[0].getCouleur();
+                couleur_1 = jeu.getJoueurs()[1].getCouleur();
+                if(couleur_0 == Color.RED){
+                    hutte_j0 = huttes_rouges[0];
+                    tour_j0 = tours_rouges[0];
+                    temple_j0 = temples_rouges[0];
+                }else if(couleur_0 == Color.BLUE) {
+                    hutte_j0 = huttes_bleues[0];
+                    tour_j0 = tours_bleues[0];
+                    temple_j0 = temples_bleus[0];
+                }else if(couleur_0 == Color.GREEN) {
+                    hutte_j0 = huttes_vertes[0];
+                    tour_j0 = tours_vertes[0];
+                    temple_j0 = temples_verts[0];
+                }else{
+                    hutte_j0 = huttes_violettes[0];
+                    tour_j0 = tours_violettes[0];
+                    temple_j0 = temples_violets[0];
+                }
+                if(couleur_1 == Color.RED) {
+                    hutte_j1 = huttes_rouges[0];
+                    tour_j1 = tours_rouges[0];
+                    temple_j1 = temples_rouges[0];
+                }else if(couleur_1 == Color.BLUE) {
+                    hutte_j1 = huttes_bleues[0];
+                    tour_j1 = tours_bleues[0];
+                    temple_j1 = temples_bleus[0];
+                }else if(couleur_1 == Color.GREEN) {
+                    hutte_j1 = huttes_vertes[0];
+                    tour_j1 = tours_vertes[0];
+                    temple_j1 = temples_verts[0];
+                }else{
+                    hutte_j1 = huttes_violettes[0];
+                    tour_j1 = tours_violettes[0];
+                    temple_j1 = temples_violets[0];
+                }
+            }else if(nb_joueurs==3){
+                couleur_2 = jeu.getJoueurs()[2].getCouleur();
+                if(couleur_2 == Color.RED) {
+                    hutte_j2 = huttes_rouges[0];
+                    tour_j2 = tours_rouges[0];
+                    temple_j2 = temples_rouges[0];
+                }else if(couleur_2 == Color.BLUE) {
+                    hutte_j2 = huttes_bleues[0];
+                    tour_j2 = tours_bleues[0];
+                    temple_j2 = temples_bleus[0];
+                }else if(couleur_2 == Color.GREEN) {
+                    hutte_j2 = huttes_vertes[0];
+                    tour_j2 = tours_vertes[0];
+                    temple_j2 = temples_verts[0];
+                }else{
+                    hutte_j2 = huttes_violettes[0];
+                    tour_j2 = tours_violettes[0];
+                    temple_j2 = temples_violets[0];
+                }
+                fenetre_score_courante = fenetre_score_3;
+            }else{
+                couleur_3 = jeu.getJoueurs()[3].getCouleur();
+                if(couleur_3 == Color.RED) {
+                    hutte_j3 = huttes_rouges[0];
+                    tour_j3 = tours_rouges[0];
+                    temple_j3 = temples_rouges[0];
+                }else if(couleur_3 == Color.BLUE) {
+                    hutte_j3 = huttes_bleues[0];
+                    tour_j3 = tours_bleues[0];
+                    temple_j3 = temples_bleus[0];
+                }else if(couleur_3 == Color.GREEN) {
+                    hutte_j3 = huttes_vertes[0];
+                    tour_j3 = tours_vertes[0];
+                    temple_j3 = temples_verts[0];
+                }else{
+                    hutte_j3 = huttes_violettes[0];
+                    tour_j3 = tours_violettes[0];
+                    temple_j3 = temples_violets[0];
+                }
+                fenetre_score_courante = fenetre_score_4;
+            }
             estFenetreScoreChargee = true;
         }
         g.drawImage(fenetre_score_courante, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
@@ -438,6 +546,9 @@ public class FenetreJeu extends Container {
         font = new Font("Bookman Old Style", Font.BOLD, 20);
         g.setFont(font);
         g.setColor(Color.WHITE);
+        g.drawImage(hutte_j0, posX_huttes_score, posY_huttes_score_j0, largeur_hutte_score, largeur_hutte_score, null);
+        g.drawImage(tour_j0, posX_tours_score, posY_tours_score_j0, largeur_tour_score, largeur_tour_score, null);
+        g.drawImage(temple_j0, posX_temples_score, posY_temples_score_j0, largeur_temple_score, largeur_temple_score, null);
         String huttes_j0 = Integer.toString(jeu.getJoueurs()[0].getNbHuttes());
         g.drawString(huttes_j0, posX_huttes, posY_scores_j0);
         String huttes_j1 = Integer.toString(jeu.getJoueurs()[1].getNbHuttes());
@@ -694,7 +805,6 @@ public class FenetreJeu extends Container {
                 }else{
                     indice_chrono = 0;
                 }
-                System.out.println("indice_chrono = " + indice_chrono);
             }
         });
         timer.start();
