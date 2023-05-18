@@ -287,16 +287,12 @@ public class FenetreJeu extends Container {
                 largeur_tuile = (int) (largeur_fenetre_score*0.28);
                 hauteur_tuile = largeur_tuile;
                 posX_nb_tuiles_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.71);
-                posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.07);
                 if(jeu.getNbJoueurs()==2){
-                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.38);
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.49);
                     posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.37);
                 }else if(jeu.getNbJoueurs()==3){
-                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.58);
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
                 }else{
-                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.76);
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
                 }
                 //image chronomètre
@@ -379,7 +375,6 @@ public class FenetreJeu extends Container {
         fenetre_score_4 = lisImageBuf("fenetre_score_4");
         timer = lisImageBuf("Timer");
         joueur_courant = lisImageBuf("Joueur_courant");
-        tuile_derriere = lisImageBuf("Tuile_derriere");
         echap_button = lisImageBuf("Menu/echap_icon");
         return new JFrame() {
             @Override
@@ -620,7 +615,6 @@ public class FenetreJeu extends Container {
         g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
         g.drawString(nb_tuiles_pioche, posX_nb_tuiles_pioche, posY_nb_tuiles_pioche);
-        int decalage = 65;
         if(jeu.getPioche().size() > jeu.getTaillePioche()*0.75) {
             g.drawImage(pioche[8], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
         }else if(jeu.getPioche().size() > jeu.getTaillePioche()*0.50) {
