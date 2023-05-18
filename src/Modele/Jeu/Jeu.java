@@ -70,16 +70,16 @@ public class Jeu extends Observable implements Serializable{
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        joueurs[0] = IA0;
-        joueurs[1] = IA1;
+        //[0] = IA0;
+        //joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
         joueurs[0].setCouleur(Color.RED);
-        joueurs[1].setCouleur(Color.GREEN);
+        joueurs[1].setCouleur(Color.BLUE);
         //joueurs[2].setCouleur(Color.BLUE);
         //joueurs[3].setCouleur(Color.RED);
         pioche = new LinkedList<>();
@@ -219,13 +219,11 @@ public class Jeu extends Observable implements Serializable{
         }
     }
 
-    public void calculScore(){
-    }
-
     public void afficheScore(){
         System.out.println("Score :");
         for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
-            System.out.println(joueurs[joueurIndex].getPrenom() + " : " + score[joueurIndex]);
+            System.out.println(joueurs[joueurIndex].getPrenom()+" : "+joueurs[joueurIndex].calculScore()+" points");
+            System.out.println("Tours : "+joueurs[joueurIndex].getNbToursPlacees()+"\tTemples : "+joueurs[joueurIndex].getNbTemplesPlaces());
         }
     }
 
@@ -319,7 +317,6 @@ public class Jeu extends Observable implements Serializable{
             return true;
         }
         if(pioche.isEmpty()){
-            calculScore();
             if(AFFICHAGE){
                 System.out.println("Partie terminee, pioche vide !");
                 afficheScore();
