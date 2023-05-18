@@ -836,33 +836,34 @@ public class PanelPlateau extends JPanel {
         int j_modified = convertionTileMapToHexagonal(i, j);
 
         if (scrollValue == 1) {
-            placeEtageSiPossible(i, j, j_modified, i - 1, i - 1, j_modified + 1);
+            if (placeEtageSiPossible(i, j, j_modified, i - 1, i - 1, j_modified + 1)) scrollValue = 0;
         }
         else if (scrollValue == 2){
-            placeEtageSiPossible(i, j, j_modified + 1, i - 1, i, j + 1);
+            if (placeEtageSiPossible(i, j, j_modified + 1, i - 1, i, j + 1)) scrollValue = 0;
         }
         else if (scrollValue == 3){
-            placeEtageSiPossible(i, j, j + 1, i, i + 1, j_modified + 1);
+            if (placeEtageSiPossible(i, j, j + 1, i, i + 1, j_modified + 1)) scrollValue = 0;
         }
         else if (scrollValue == 4){
-            placeEtageSiPossible(i, j, j_modified + 1, i + 1, i + 1, j_modified);
+            if (placeEtageSiPossible(i, j, j_modified + 1, i + 1, i + 1, j_modified)) scrollValue = 0;
         }
         else if (scrollValue == 5){
-            placeEtageSiPossible(i, j, j_modified, i + 1, i, j - 1);
+            if (placeEtageSiPossible(i, j, j_modified, i + 1, i, j - 1)) scrollValue = 0;
         }
         else if (scrollValue == 6){
-            placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified);
+            if(placeEtageSiPossible(i, j, j - 1, i, i - 1, j_modified)) scrollValue = 0;
         }
-        scrollValue = 0;//on met la valeur de scrollValue à 0 pour que la sélection se fasse sur la hutte juste après
     }
 
-    private void placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
+    private boolean placeEtageSiPossible(int i, int j, int j_modified, int i2, int i3, int i4) {
         indexMessageErreur = controleur.peutPlacerTuile(i, j, i2, j_modified, i3, i4);
         timerValue=0;
         if (indexMessageErreur==0) {
             controleur.placeEtage(i, j, i2, j_modified, tuileAPoser[1][0], i3, i4, tuileAPoser[2][0]);
             detectionPlusAucunCoupAJouer();
+            return true;
         }
+        return false;
     }
 
     public int getTimerValue(){
