@@ -15,9 +15,9 @@ public class ImageLoader {
     public static boolean loaded = false;
     public static int nb_aiguilles = 60;
     public static BufferedImage constructionMode;
-    public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[4], temples_bleus = new BufferedImage[4], temples_verts = new BufferedImage[4], temples_violets = new BufferedImage[4];
+    public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[5], temples_bleus = new BufferedImage[5], temples_verts = new BufferedImage[5], temples_violets = new BufferedImage[5];
     public static final BufferedImage[] huttes_rouges = new BufferedImage[7], huttes_bleues = new BufferedImage[7], huttes_vertes = new BufferedImage[7], huttes_violettes = new BufferedImage[7];
-    public static final BufferedImage[] tours_rouges = new BufferedImage[4], tours_bleues = new BufferedImage[4], tours_vertes = new BufferedImage[4], tours_violettes = new BufferedImage[4];
+    public static final BufferedImage[] tours_rouges = new BufferedImage[5], tours_bleues = new BufferedImage[5], tours_vertes = new BufferedImage[5], tours_violettes = new BufferedImage[5];
     public static final BufferedImage[] chrono = new BufferedImage[nb_aiguilles];
     public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, tuile_derriere, chronoBleu, chronoRouge;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
@@ -182,7 +182,7 @@ public class ImageLoader {
 
     public static BufferedImage getBatimentFromPlayerId(Color color_player, byte batiment_id,int typeTerrain, int hauteurTerrain) {
         if (batiment_id == HUTTE) {
-            return getMaison(color_player,hauteurTerrain);//les maisons ne sont plus liées au type de terrain
+            return getHutte(color_player,hauteurTerrain);//les maisons ne sont plus liées au type de terrain
         }
         if (batiment_id == TEMPLE) {
             return getTemple(color_player,typeTerrain);
@@ -199,22 +199,27 @@ public class ImageLoader {
             else if (typeTerrain == FORET) return tours_rouges[1];
             else if (typeTerrain == MONTAGNE) return tours_rouges[2];
             else if (typeTerrain == GRASS) return tours_rouges[3];
+            else if (typeTerrain == LAC) return tours_rouges[4];
         }else if(color_player == Color.BLUE) {
             if (typeTerrain == DESERT) return tours_bleues[0];
             else if (typeTerrain == FORET) return tours_bleues[1];
             else if (typeTerrain == MONTAGNE) return tours_bleues[2];
             else if (typeTerrain == GRASS) return tours_bleues[3];
+            else if (typeTerrain == LAC) return tours_bleues[4];
         }else if(color_player == Color.GREEN) {
             if (typeTerrain == DESERT) return tours_vertes[0];
             else if (typeTerrain == FORET) return tours_vertes[1];
             else if (typeTerrain == MONTAGNE) return tours_vertes[2];
             else if (typeTerrain == GRASS) return tours_vertes[3];
+            else if (typeTerrain == LAC) return tours_vertes[4];
         }else if(color_player == Color.MAGENTA) {
             if (typeTerrain == DESERT) return tours_violettes[0];
             else if (typeTerrain == FORET) return tours_violettes[1];
             else if (typeTerrain == MONTAGNE) return tours_violettes[2];
             else if (typeTerrain == GRASS) return tours_violettes[3];
+            else if (typeTerrain == LAC) return tours_violettes[4];
         }
+        System.err.println("Erreur : aucune tour ne correspond au type de terrain "+typeTerrain+" et à la couleur "+color_player+".");
         return null;
     }
 
@@ -224,26 +229,31 @@ public class ImageLoader {
             else if(typeTerrain==FORET) return temples_rouges[1];
             else if(typeTerrain==MONTAGNE) return temples_rouges[2];
             else if(typeTerrain==GRASS) return temples_rouges[3];
+            else if (typeTerrain == LAC) return temples_rouges[4];
         }else if(color_player == Color.BLUE) {
             if(typeTerrain==DESERT) return temples_bleus[0];
             else if(typeTerrain==FORET) return temples_bleus[1];
             else if(typeTerrain==MONTAGNE) return temples_bleus[2];
             else if(typeTerrain==GRASS) return temples_bleus[3];
+            else if (typeTerrain == LAC) return temples_bleus[4];
         }else if(color_player == Color.GREEN) {
             if(typeTerrain==DESERT) return temples_verts[0];
             else if(typeTerrain==FORET) return temples_verts[1];
             else if(typeTerrain==MONTAGNE) return temples_verts[2];
             else if(typeTerrain==GRASS) return temples_verts[3];
+            else if (typeTerrain == LAC) return temples_verts[4];
         }else if(color_player == Color.MAGENTA) {
             if(typeTerrain==DESERT) return temples_violets[0];
             else if(typeTerrain==FORET) return temples_violets[1];
             else if(typeTerrain==MONTAGNE) return temples_violets[2];
             else if(typeTerrain==GRASS) return temples_violets[3];
+            else if (typeTerrain == LAC) return temples_violets[4];
         }
+        System.err.println("Erreur : aucun temple ne correspond au type de terrain "+typeTerrain+" et à la couleur "+color_player+".");
         return null;
     }
 
-    private static BufferedImage getMaison(Color color_player, int hauteurTerrain) {
+    private static BufferedImage getHutte(Color color_player, int hauteurTerrain) {
         int nbMaison;
         if(hauteurTerrain>=7) nbMaison = 7;
         else nbMaison = hauteurTerrain;
@@ -251,7 +261,10 @@ public class ImageLoader {
         else if (color_player == Color.BLUE) return huttes_bleues[nbMaison-1];
         else if (color_player == Color.GREEN) return huttes_vertes[nbMaison-1];
         else if (color_player == Color.MAGENTA) return huttes_violettes[nbMaison-1];
-        else return null;
+        else{
+            System.err.println("Erreur : aucune hutte ne correspond à la couleur "+color_player+".");
+            return null;
+        }
     }
 
     private static void readPlayableTilesImages() {
@@ -295,7 +308,7 @@ public class ImageLoader {
             huttes_vertes[i] = lisImageBuf(dossier_vert + "hutte_" + (i+1));
             huttes_violettes[i] = lisImageBuf(dossier_violet + "hutte_" + (i+1));
         }
-        for(int i=0; i<4; i++) {
+        for(int i=0; i<5; i++) {
             if(i==0){
                 temples_rouges[i] = lisImageBuf(dossier_rouge + "temple_desert");
                 temples_bleus[i] = lisImageBuf(dossier_bleu + "temple_desert");
@@ -332,6 +345,15 @@ public class ImageLoader {
                 tours_bleues[i] = lisImageBuf(dossier_bleu + "tour_prairie");
                 tours_vertes[i] = lisImageBuf(dossier_vert + "tour_prairie");
                 tours_violettes[i] = lisImageBuf(dossier_violet + "tour_prairie");
+            }else if(i==4){
+                temples_rouges[i] = lisImageBuf(dossier_rouge + "temple_pierre");
+                temples_bleus[i] = lisImageBuf(dossier_bleu + "temple_pierre");
+                temples_verts[i] = lisImageBuf(dossier_vert + "temple_pierre");
+                temples_violets[i] = lisImageBuf(dossier_violet + "temple_pierre");
+                tours_rouges[i] = lisImageBuf(dossier_rouge + "tour_pierre");
+                tours_bleues[i] = lisImageBuf(dossier_bleu + "tour_pierre");
+                tours_vertes[i] = lisImageBuf(dossier_vert + "tour_pierre");
+                tours_violettes[i] = lisImageBuf(dossier_violet + "tour_pierre");
             }
         }
     }
