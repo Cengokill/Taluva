@@ -24,18 +24,24 @@ public class InstanceJeu {
     public byte jCourant;
     public Color couleur_joueur;
     public boolean estFinJeu;
+    public int nb_joueurs;
 
     public static int TEMPLE = 2;
     public static int HUTTE = 1;
     public static int TOUR = 3;
 
-    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs, byte jCourant, Color color_joueur, boolean estFinJeu){
+    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs,int nbjoueurs, byte jCourant, Color color_joueur, boolean estFinJeu){
         this.pioche = pioche;
         this.plateau = plateau;
         this.joueurs = joueurs;
         this.jCourant = jCourant;
+        this.nb_joueurs = nbjoueurs;
         this.couleur_joueur = color_joueur;
         this.estFinJeu = estFinJeu;
+    }
+
+    public int getNb_joueurs(){
+        return nb_joueurs;
     }
 
     public byte getJoueurCourant(){
@@ -84,32 +90,28 @@ public class InstanceJeu {
     }
 
     public void changeJoueur() {
-        if (jCourant == (byte) 0) {
-            jCourant = (byte) 1;
-        } else {
-            jCourant = (byte) 0;
-        }
+        jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
     }
 
-    public InstanceJeu simulerCoup(CoupValeur coupValeur){
+    /*public InstanceJeu simulerCoup(CoupValeur coupValeur){
         InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,couleur_joueur,estFinJeu);
         joueTuile(coupValeur.getCoupT(),instanceNew);
         joueBatiment(coupValeur.getCoupB(),instanceNew);
         return instanceNew;
-    }
+    }*/
 
-    public InstanceJeu simulerTuile(Coup coupT){
+    /*public InstanceJeu simulerTuile(Coup coupT){
         InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,couleur_joueur,estFinJeu);
         joueTuile(coupT,instanceNew);
         return instanceNew;
-    }
+    }*/
 
-    public InstanceJeu simulerBatiment(Coup coupB){
+    /*public InstanceJeu simulerBatiment(Coup coupB){
         InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,couleur_joueur,estFinJeu);
         joueBatiment(coupB,instanceNew);
         return instanceNew;
-    }
+    }*/
 
     private void joueTuile(Coup coupTuile,InstanceJeu instanceCourante){
         instanceCourante.plateau.placeEtage(getJoueurCourant(), coupTuile.volcanLigne, coupTuile.volcanColonne, coupTuile.tile1Ligne, coupTuile.tile1Colonne, coupTuile.biome1, coupTuile.tile2Ligne, coupTuile.tile2Colonne, coupTuile.biome2);

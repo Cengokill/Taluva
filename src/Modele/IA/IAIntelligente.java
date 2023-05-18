@@ -39,7 +39,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     // TODO -> QU'ELLE PREFERE AGRANDIR UN VILLAGE AU LIEU DE S'EPARPILLER JUSQU'A UNE CERTAINE CONDITION // (!) faut qu'elle arette au bout d'un moment
     // TODO -> TROUVER UNE VALEUR DE COUP POUR LAQUELLE ON SE DIT QU'ON LA RETURN (coup de tuile et coup de bat)
     // TODO -> METTRE UN MINITEUR DYNAMIQUE par exemple au debut 1 secondes puis 2 puis ... jusqu'a 5-10 à voir
-    // TODO -> CONSIDERER TOUS LES ADVERSAIRES COMME UNE SEULE ENTITE.
+    // TODO -> CONSIDERER TOUS LES ADVERSAIRES COMME UNE SEULE ENTITE (si c'est pas lourd on peut faire pour chaque joueur et valoriser la pénalisation du plus en avance)
 
     InstanceJeu instance;
     @Override
@@ -48,7 +48,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<Tuile> pioche = ajoutTuilesPioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
-        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur(), false);
+        this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur(), false);
         return choisirCoupTuile(jeu.getTuileCourante());
     }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -80,58 +80,69 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
         return scoreJoueur-scoreAdverse;
     }
-    private int evaluationTuile(InstanceJeu instanceCourante, boolean joueurCourant){
-        Joueur joueur;
-        if(!joueurCourant) instanceCourante.changeJoueur();
-        joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
+    private int evaluationTuile(InstanceJeu instanceCourante, boolean estJoueurCourant){
+        ArrayList<Joueur> joueurs = new ArrayList<>();
+        Joueur joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
+        if(!estJoueurCourant){
+            // On evalue les adversaires de l'IA
+            for(int i=0;i<instanceCourante.getNb_joueurs();i++){
+                Joueur joueurCourantBoucle = instanceCourante.getJoueur(i);
+                if(joueurCourantBoucle!=joueur) joueurs.add(joueurCourantBoucle);
+            }
+        }else{
+            // On evalue l'IA
+            joueurs.add(joueur);
+        }
 
-        // TODO si le joueur peut directement gagner, return MAXVALUE
+        // TODO si le ou un des joueurs peut directement gagner, return MAXVALUE
 
         //sinon on evalue le score de l'instance avec cette tuile
-        int score = EvaluerInstanceTuile(instanceCourante,joueur);
+        int score = EvaluerInstanceTuile(instanceCourante,joueurs);
 
-        if(!joueurCourant) instanceCourante.changeJoueur();
         return score;
     }
-    private int EvaluerInstanceTuile(InstanceJeu instanceCourante,Joueur joueur){
+    private int EvaluerInstanceTuile(InstanceJeu instanceCourante, ArrayList<Joueur> joueurs){
         // On regarde ce que cette nouvelle tuile nous permet de construire
-        int[] batimentsPlacablesNombre = getNombreBatimentsPlacable(instanceCourante,joueur);
+        int[] batimentsPlacablesNombre = getNombreBatimentsPlacable(instanceCourante,joueurs);
         int score = 0;
         // batimentsPlacablesNombre[0] -> nombre de temples placables par les joueurs adverses
         // batimentsPlacablesNombre[1] -> nombre de huttes placables par les joueurs adverses
         // batimentsPlacablesNombre[2] -> nombre de tours placables par les joueurs adverses
-        score += (batimentsPlacablesNombre[0]*joueur.getNbTemples())*(poids_temple);
-        score += batimentsPlacablesNombre[1]*joueur.getNbHuttes()*(poids_hutte);
-        score += (batimentsPlacablesNombre[2]*joueur.getNbTours())*(poids_tour);
+        for(Joueur joueurCourant: joueurs){
+            score += (batimentsPlacablesNombre[0]*joueurCourant.getNbTemples())*(poids_temple);
+            score += batimentsPlacablesNombre[1]*joueurCourant.getNbHuttes()*(poids_hutte);
+            score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour);
+        }
 
         // TODO à completer
 
-        return score;
+        return score/joueurs.size();
     }
 
-    private int[] getNombreBatimentsPlacable(InstanceJeu instanceCourante, Joueur joueurAEvaluer){
+    private int[] getNombreBatimentsPlacable(InstanceJeu instanceCourante, ArrayList<Joueur> joueursAEvaluer){
         int[] batPlacables = new int[3];
 
         // On regarde tous les batiments placables par le joueurAEvaluer sur l'instance courante
         for(int i=0;i<instanceCourante.getPlateau().getLIGNES();i++) {
             for (int j = 0; j < instanceCourante.getPlateau().getCOLONNES(); j++) {
                 if (instanceCourante.getPlateau().getHexagone(i, j).getBiomeTerrain() != Hexagone.VIDE) {
-                    // On calcul les batiments possables
-                    int hauteurCourante = instanceCourante.getPlateau().getHauteurTuile(i, j);
-                    int[] batimentsPlacables = instanceCourante.getPlateau().getBatimentPlacable(i, j, joueurAEvaluer.getCouleur());
-                    if (batimentsPlacables[0] == 1) batPlacables[0]++;
-                    if (batimentsPlacables[1] == 1) batPlacables[1] = batPlacables[1] + hauteurCourante;
-                    if (batimentsPlacables[2] == 1) batPlacables[2]++;
+                    for(Joueur joueurCourant : joueursAEvaluer){
+                        // On calcul les batiments possables
+                        int hauteurCourante = instanceCourante.getPlateau().getHauteurTuile(i, j);
+                        int[] batimentsPlacables = instanceCourante.getPlateau().getBatimentPlacable(i, j, joueurCourant.getCouleur());
+                        if (batimentsPlacables[0] == 1) batPlacables[0]++;
+                        if (batimentsPlacables[1] == 1) batPlacables[1] = batPlacables[1] + hauteurCourante;
+                        if (batimentsPlacables[2] == 1) batPlacables[2]++;
 
-
-                    // On calcul la taille du village
-                    // !! Attention ici faut faire une verification pour pas verifier plusieurs fois le meme village
-                    /*if(instanceJeu.getPlateau().getBatiment(i,j)!=0){
-                       if((tailleVillage(instanceJeu,joueurAEvaluer.getNumero(),i,j))>1){
-                           score = 90000;
-                           //instanceJeu.getPlateau().affiche();
-                       }
-                    }*/
+                        // On calcul la taille du village
+                        // !! Attention ici faut faire une verification pour pas verifier plusieurs fois le meme village
+                        /*if(instanceJeu.getPlateau().getBatiment(i,j)!=0){
+                           if((tailleVillage(instanceJeu,joueurAEvaluer.getNumero(),i,j))>1){
+                               score = 90000;
+                               //instanceJeu.getPlateau().affiche();
+                           }
+                        }*/
+                    }
                 }
             }
         }
@@ -150,7 +161,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         // On parcours toutes les tuiles pour trouver les meilleures.
         while(i < coupsTuilePossibles.size()){
             TripletDePosition tripletCourant = coupsTuilePossibles.get(i);
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNb_joueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
             Plateau plateauCopie = instanceCourante.getPlateau();
             Coup coupT = new Coup(instanceCourante.getJoueurCourant(),tripletCourant.getVolcan().ligne(),tripletCourant.getVolcan().colonne(),tripletCourant.getTile1().ligne(),tripletCourant.getTile1().colonne(),tuile.biome0,tripletCourant.getTile2().ligne(),tripletCourant.getTile2().colonne(),tuile.biome1);
             plateauCopie.joueCoup(coupT);
@@ -173,7 +184,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
         // Pour toutes les meilleures tuiles trouvées :
         for(Coup coupCourant: coupTuileBatimentsAEvaluer){
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNb_joueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
             Plateau plateauCopie = instanceCourante.getPlateau();
             plateauCopie.joueCoup(coupCourant);
             coupAFaire = choisirCoupBatiment(coupCourant,instanceCourante);
@@ -235,7 +246,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         int i=0, score_max = Integer.MIN_VALUE;
         int score_courant;
         ArrayList<Coup> coupsBatimentARenvoyer = new ArrayList<>();
-        InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
+        InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.pioche),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNb_joueurs(), instance.jCourant, instance.getCouleurJoueur(), instance.estFinJeu);
         ArrayList<Coup> coupsBatimentPossible = getTousLesCoupsPossiblesDesBatiments(instanceCourante);
 
         while(i < coupsBatimentPossible.size()){
@@ -259,7 +270,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     }
                 }
             }
-            InstanceJeu instanceAEvaluer = new InstanceJeu(null,plateauCopie2,instance.getJoueurs(), instance.jCourant, instance.couleur_joueur, instance.estFinJeu);
+            InstanceJeu instanceAEvaluer = new InstanceJeu(null,plateauCopie2,instance.getJoueurs(),instance.getNb_joueurs(), instance.jCourant, instance.couleur_joueur, instance.estFinJeu);
             Joueur joueurAEvaluer = instanceAEvaluer.getJoueur(instanceAEvaluer.jCourant);
             int batiment = 1;
 
@@ -370,23 +381,36 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return scoreJoueur;//-scoreAdverse;
     }
 
-    private int evaluationInstance(InstanceJeu instanceCourante, boolean joueurCourant){
-        Joueur joueur;
-        if(!joueurCourant) instanceCourante.changeJoueur();
-        joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
-
-        //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
-        if((joueur.getNbHuttes() == 0 && joueur.getNbTemples() == 0)||(joueur.getNbTemples() ==0 && joueur.getNbTours() ==0)||(joueur.getNbHuttes()==0 && joueur.getNbTours()==0)){
-            return Integer.MAX_VALUE;
+    private int evaluationInstance(InstanceJeu instanceCourante, boolean estJoueurCourant){
+        ArrayList<Joueur> joueurs = new ArrayList<>();
+        Joueur joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
+        if(!estJoueurCourant){
+            // On evalue les adversaires de l'IA
+            for(int i=0;i<instanceCourante.getNb_joueurs();i++){
+                Joueur joueurCourantBoucle = instanceCourante.getJoueur(i);
+                if(joueurCourantBoucle!=joueur) joueurs.add(joueurCourantBoucle);
+            }
+        }else{
+            // On evalue l'IA
+            joueurs.add(joueur);
         }
-        // On veut eviter le cas où le joueur n'a plus de hutte
-        if(joueur.getNbHuttes() == 0){
-            return 0;
+
+        for(Joueur joueurCourant: joueurs){
+            //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
+            if((joueur.getNbHuttes() == 0 && joueur.getNbTemples() == 0)||(joueur.getNbTemples() ==0 && joueur.getNbTours() ==0)||(joueur.getNbHuttes()==0 && joueur.getNbTours()==0)){
+                return Integer.MAX_VALUE;
+            }
+
+            // On veut eviter le cas où le joueur n'a plus de hutte
+            if(joueur.getNbHuttes() == 0){
+                return 0;
+            }
         }
 
-        int score = evaluerVillages(instanceCourante,joueur);
+        // on evalue pas dans la boucle pour eviter de parcour nbJoueurs fois la carte
+        int score = evaluerVillages(instanceCourante,joueurs);
 
-        if(!joueurCourant) instanceCourante.changeJoueur();
+        //if(!joueurCourant) instanceCourante.changeJoueur();
         return score;
     }
 
@@ -405,32 +429,32 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return taille;
     }
 
-    private int evaluerVillages(InstanceJeu instanceJeu,Joueur joueurAEvaluer){
-        // TODO savoir quels villages il faut agrandir ou pas.
+    private int evaluerVillages(InstanceJeu instanceJeu,ArrayList<Joueur> joueursAEvaluer){
+        // TODO savoir quels villages il faut agrandir ou pas
         // TODO à partir de quel moment un village n'est plus interessant a agrandir
-
-        //System.out.println("Numero joueur a evaluer : "+joueurAEvaluer.getNumero());
-        int nombreVillages = joueurAEvaluer.getNbVillages();
-        int score = nombreVillages;
+        int score=0;
 
         // On regarde les batiments placables maintenant que nous avons posé le batiment
-        int[] batimentsPlacables = getNombreBatimentsPlacable(instanceJeu,joueurAEvaluer);
+        int[] batimentsPlacables = getNombreBatimentsPlacable(instanceJeu,joueursAEvaluer);
 
-        // Score de previsualisation (en prévision du futur)
-        score += (batimentsPlacables[0]*joueurAEvaluer.getNbTemples())*(poids_temple/5);
-        score += batimentsPlacables[1]*joueurAEvaluer.getNbHuttes()*(poids_hutte/5);
-        score += (batimentsPlacables[2]*joueurAEvaluer.getNbTours())*(poids_tour/5);
+        for(Joueur joueurCourant: joueursAEvaluer){
+            score += joueurCourant.getNbVillages();
 
-        // Score de placement
-        score += joueurAEvaluer.getNbHuttesPlacees() * poids_hutte;
-        score += joueurAEvaluer.getNbToursPlacees() * poids_tour;
-        score += joueurAEvaluer.getNbTemplesPlaces() * 100000000; // j'avais mis 1000 ca poser plus de temple
+            // Score de previsualisation (en prévision du futur)
+            score += (batimentsPlacables[0]*joueurCourant.getNbTemples())*(poids_temple/5);
+            score += batimentsPlacables[1]*joueurCourant.getNbHuttes()*(poids_hutte/5);
+            score += (batimentsPlacables[2]*joueurCourant.getNbTours())*(poids_tour/5);
 
-        if(joueurAEvaluer.getNbToursPlacees()!=0){
-            //System.out.println("Temple placé");
+            // Score de placement
+            score += joueurCourant.getNbHuttesPlacees() * poids_hutte;
+            score += joueurCourant.getNbToursPlacees() * poids_tour;
+            score += joueurCourant.getNbTemplesPlaces() * 100000000; // j'avais mis 1000 ca poser plus de temple
+
+            if(joueurCourant.getNbToursPlacees()!=0){
+                //System.out.println("Temple placé");
+            }
         }
-
-        return score;
+        return score/joueursAEvaluer.size();
     }
 
 }
