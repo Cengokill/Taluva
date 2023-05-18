@@ -3,7 +3,9 @@ package Vue;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
 import java.io.File;
 import java.io.IOException;
 
@@ -12,11 +14,13 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class ImageLoader {
     public static boolean loaded = false;
+    public static int nb_aiguilles = 60;
     public static BufferedImage constructionMode;
     public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[4], temples_bleus = new BufferedImage[4], temples_verts = new BufferedImage[4], temples_violets = new BufferedImage[4];
     public static final BufferedImage[] huttes_rouges = new BufferedImage[7], huttes_bleues = new BufferedImage[7], huttes_vertes = new BufferedImage[7], huttes_violettes = new BufferedImage[7];
     public static final BufferedImage[] tours_rouges = new BufferedImage[4], tours_bleues = new BufferedImage[4], tours_vertes = new BufferedImage[4], tours_violettes = new BufferedImage[4];
-    public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, tuile_derriere;
+    public static final BufferedImage[] chrono = new BufferedImage[nb_aiguilles];
+    public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, tuile_derriere, chronoBleu, chronoRouge;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2;
@@ -39,7 +43,7 @@ public class ImageLoader {
             posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
-            hauteur_menu_options;
+            hauteur_menu_options, largeur_chrono, posX_chrono, posY_chrono, largeur_aiguille, posX_aiguille, posY_aiguille;
     public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre;
     public static boolean select_options;
     public static boolean select_menu_options;
@@ -87,6 +91,7 @@ public class ImageLoader {
         joueurCourant = lisImageBuf("Joueur_Courant");
         background = lisImageBuf("/Plateau/background_plateau_x4_carre_2");
         readTilesImages();
+        readChronoImages();
         readPlayableTilesImages();
         readHeightImages(lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_1_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_2_hex"), lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_3_hex"));
         readHeightImages(getReducedOpacityImage(wrongTile1, 0.5f), getReducedOpacityImage(wrongTile2, 0.5f), getReducedOpacityImage(wrongTile3, 0.5f));
@@ -97,6 +102,30 @@ public class ImageLoader {
         posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
+    }
+
+    private static void readChronoImages(){
+        String imageFolder = "Chronometre/";
+        chronoBleu = lisImageBuf(imageFolder + "chrono_bleu");
+        chronoRouge = lisImageBuf(imageFolder + "chrono_rouge");
+        BufferedImage image = lisImageBuf(imageFolder + 0);
+        int width = image.getWidth();
+        int height = image.getHeight();
+        double angle = 0.0;
+        double angle_incremente = 360.0/(double)nb_aiguilles;
+        for(int i=0;i<nb_aiguilles;i++){
+            // Créez une nouvelle image pour stocker l'image tournée
+            BufferedImage rotatedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            // Créez une transformation AffineTransform pour effectuer la rotation
+            AffineTransform transform = new AffineTransform();
+            transform.rotate(Math.toRadians(angle), width / 2, height / 2);
+            // Obtenir le contexte graphique 2D de l'image tournée
+            Graphics2D g2d = rotatedImage.createGraphics();
+            g2d.drawImage(image, transform, null);
+            g2d.dispose();
+            chrono[i] = rotatedImage;
+            angle += angle_incremente;
+        }
     }
 
     private static void readSelectionBatimentImage() {

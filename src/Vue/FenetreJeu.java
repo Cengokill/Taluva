@@ -34,6 +34,7 @@ public class FenetreJeu extends Container {
     public static ArrayList<Joueur> joueurs_tries;
     public static boolean estFenetreScoreChargee = false;
     public static BufferedImage fenetre_score_courante;
+    public static int indice_chrono;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
@@ -178,13 +179,13 @@ public class FenetreJeu extends Container {
                 super.paint(g2d);
                 calculeRapports();
                 afficheFenetreScore(g2d);
+                afficheJoueurCourant(g2d);
                 afficheTimer(g2d);
                 afficheBoutonEchap(g);
                 afficheBoutonTuto(g);
                 afficheMessageErreur(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
-                afficheJoueurCourant(g2d);
                 afficheFinPartie(g2d);
                 afficheMenuOptions(g2d);
             }
@@ -194,11 +195,11 @@ public class FenetreJeu extends Container {
                 hauteur = getHeight();
                 double rapport = 492.0 / 847.0;
                 double rapport_fenetre_score = 1400.0/872.0;
-                double rapport_joueur_courant = 131.0/603.0;
+                double rapport_joueur_courant = 280.0/950.0;
                 double rapport_bouton_dans_options = 207.0/603.0;
                 double rapport_fin_partie = 816.0/1456.0;
                 double rapport_cadre = 76.0/1180.0;
-                double rapport_timer = 131.0/603.0;
+                double rapport_timer = 205.0/335.0;
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
@@ -222,10 +223,12 @@ public class FenetreJeu extends Container {
                 //fenêtre de score
                 largeur_fenetre_score = (int) (largeur_bouton * 3.6);
                 hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
-                largeur_joueur_courant = (int) ((largeur_bouton * 1.8) * 1.5);
+                largeur_joueur_courant = largeur_fenetre_score;
                 hauteur_joueur_courant = (int) (largeur_joueur_courant * rapport_joueur_courant);
+                posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
+                posY_joueur_courant = 2;
                 posX_fenetre_score = 2;
-                posY_fenetre_score = 2;
+                posY_fenetre_score = hauteur_joueur_courant/2;
                 posX_prenom = (int) (posX_fenetre_score + largeur_fenetre_score*0.15);
                 posY_prenom_j0 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.07);
                 posY_prenom_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.25);
@@ -238,8 +241,6 @@ public class FenetreJeu extends Container {
                 posY_scores_j1 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.33);
                 posY_scores_j2 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.505);
                 posY_scores_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.685);
-                posX_joueur_courant = (largeur/2 - largeur_joueur_courant/2);
-                posY_joueur_courant = 24;
                 //boutons annuler et refaire
                 posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
                 posY_refaire = (int) (hauteur_fenetre_score * 1.0);
@@ -258,10 +259,17 @@ public class FenetreJeu extends Container {
                     posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.76);
                     posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
                 }
+                //image chronomètre
+                largeur_chrono = (int) (largeur_bouton*0.90);
+                posX_chrono = (int) (posX_joueur_courant + largeur_joueur_courant*0.92);
+                posY_chrono = (int) (posY_joueur_courant + hauteur_joueur_courant*0.09);
+                largeur_aiguille = (int) (largeur_bouton*0.70);
+                posX_aiguille = posX_chrono + (largeur_chrono/2) - (largeur_aiguille/2);
+                posY_aiguille = (int) (posY_chrono + (largeur_chrono*0.55) - (largeur_aiguille/2));
                 //timer
-                posX_timer = (int) (posX_fenetre_score + largeur_fenetre_score*1.0);
-                posY_timer = (int) (posY_fenetre_score + hauteur_fenetre_score*0.16);
-                largeur_timer = (int) (largeur_fenetre_score*0.80);
+                posX_timer = (int) (posX_chrono + largeur_chrono*0.75);
+                posY_timer = (int) (posY_chrono + largeur_chrono*0.18);
+                largeur_timer = (int) (largeur_fenetre_score*0.30);
                 hauteur_timer = (int) (largeur_timer * rapport_timer);
                 //fin de partie
                 if((double)hauteur/(double)largeur > rapport_fin_partie){
@@ -385,7 +393,13 @@ public class FenetreJeu extends Container {
         double tempsArrondi = tempsEcoule / 1000;// Convertir en secondes
         tempsArrondi = Math.round(tempsArrondi * 10)/10.0;// Arrondir au dixième
         String temps = String.valueOf(tempsArrondi);
-        g.drawString(temps, posX_timer, posY_timer + hauteur_timer/2);
+        g.drawString(temps, (int) (posX_timer+largeur_timer*0.15), (int) (posY_timer + hauteur_timer*0.65));
+        if(tempsArrondi>=jeu.getTempsTour()*0.75){
+            g.drawImage(chronoRouge, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
+        }else{
+            g.drawImage(chronoBleu, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
+        }
+        g.drawImage(chrono[indice_chrono], posX_aiguille, posY_aiguille, largeur_aiguille, largeur_aiguille, null);
     }
 
 
@@ -610,10 +624,13 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheJoueurCourant(Graphics g) {
-        Font font = new Font("Roboto", Font.BOLD, 20);
+        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
         g.setFont(font);
+        g.setColor(jeu.getJoueurCourant().getCouleur());
+        int longueur_prenom = jeu.getPrenomJoueurCourant().length();
+        int decalage = longueur_prenom*8;
         g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);
-        g.drawString(jeu.getPrenomJoueurCourant(), posX_joueur_courant+13, posY_joueur_courant+hauteur_joueur_courant/2+6);
+        g.drawString(jeu.getPrenomJoueurCourant(), (int) (posX_joueur_courant+largeur_joueur_courant/2-decalage), posY_joueur_courant+hauteur_joueur_courant/2+6);
     }
 
     public void metAjour(){
@@ -655,10 +672,17 @@ public class FenetreJeu extends Container {
     }
 
     public void boucle(){
-        Timer timer = new Timer(10, new ActionListener() {
+        Timer timer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
+                //indice_chrono doit être incrémente de 1 et s'il atteint la valeur2, il doit être remis à 0
+                if(indice_chrono == nb_aiguilles-1){
+                    indice_chrono = 0;
+                }
+                else{
+                    indice_chrono++;
+                }
             }
         });
         timer.start();
