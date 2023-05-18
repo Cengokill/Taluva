@@ -13,7 +13,7 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 
 public class ImageLoader {
     public static boolean loaded = false;
-    public static int nb_aiguilles = 60, taille_tuile_piochee = 30;
+    public static int nb_aiguilles = 60, taille_tuile_piochee = 15;
     public static BufferedImage constructionMode;
     public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[5], temples_bleus = new BufferedImage[5], temples_verts = new BufferedImage[5], temples_violets = new BufferedImage[5];
     public static final BufferedImage[] huttes_rouges = new BufferedImage[7], huttes_bleues = new BufferedImage[7], huttes_vertes = new BufferedImage[7], huttes_violettes = new BufferedImage[7];
@@ -44,7 +44,7 @@ public class ImageLoader {
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options, largeur_chrono, posX_chrono, posY_chrono, largeur_aiguille, posX_aiguille, posY_aiguille, posX_tuilePiochee, posY_tuilePiochee, largeur_tuilePiochee,
-            posX_tuilePiochee_init, posY_tuilePiochee_init, largeur_tuilePiochee_init, posX_tuilePiochee_final, posY_tuilePiochee_final;
+            posX_tuilePiochee_init, posY_tuilePiochee_init, largeur_tuilePiochee_init;
     public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre,
     largeur_hutte_score, largeur_tour_score, largeur_temple_score, posX_huttes_score, posX_tours_score, posX_temples_score, posY_huttes_score_j0,
             posY_huttes_score_j1, posY_huttes_score_j2, posY_huttes_score_j3, posY_tours_score_j0, posY_tours_score_j1, posY_tours_score_j2, posY_tours_score_j3,
@@ -154,12 +154,10 @@ public class ImageLoader {
         float opacity = 1.0F;
         double angle_incremente = 900.0/(double)nb_aiguilles;
         for(int i=0;i<taille_tuile_piochee;i++){
-            if(i >= taille_tuile_piochee/2){
-                double a = (-10/1.5*(double)i)+200.0;
-                opacity = (float) (a/100.0);
-                //System.out.println("opacity = "+opacity);
-                //System.out.println("(-10/1.5 * "+i+") + 200 = "+a);
-            }
+            double a = 1.0-(double)i/(double)(taille_tuile_piochee-1.0);
+            opacity = (float) a;
+            //System.out.println("opacity = "+opacity);
+            //System.out.println(a);
             // Créez une nouvelle image pour stocker l'image tournée
             BufferedImage rotatedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             // Créez une transformation AffineTransform pour effectuer la rotation

@@ -71,15 +71,15 @@ public class Jeu extends Observable implements Serializable{
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
         joueurs[0] = IA0;
-        joueurs[1] = IA1;
+        //joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
-        joueurs[0].setCouleur(Color.BLUE);
-        joueurs[1].setCouleur(Color.MAGENTA);
+        joueurs[0].setCouleur(Color.RED);
+        joueurs[1].setCouleur(Color.GREEN);
         //joueurs[2].setCouleur(Color.BLUE);
         //joueurs[3].setCouleur(Color.RED);
         pioche = new LinkedList<>();
@@ -459,11 +459,9 @@ public class Jeu extends Observable implements Serializable{
         tuile_courante = pioche.get(0);
         pioche.remove(0);
         if(type_jeu==GRAPHIQUE) {
-            System.out.println("1 estPiochee = true");
             estPiochee = true;
             Timer timer = new Timer(1200, e -> {
                 estPiochee = false;
-                System.out.println("estPiochee = false");
             });
             timer.setRepeats(false); // Sert à ne pas répéter l'action
             timer.start();
