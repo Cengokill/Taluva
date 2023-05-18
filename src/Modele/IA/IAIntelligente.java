@@ -36,10 +36,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     // TODO -> NB TEMPLES INFINI ? (peut être pareil pour les joueurs à verifier)
 
     // TODO IMPLEMENTATIONS //
+    // TODO -> QU'ELLE PREFERE AGRANDIR UN VILLAGE AU LIEU DE S'EPARPILLER JUSQU'A UNE CERTAINE CONDITION // (!) faut qu'elle arette au bout d'un moment
     // TODO -> TROUVER UNE VALEUR DE COUP POUR LAQUELLE ON SE DIT QU'ON LA RETURN (coup de tuile et coup de bat)
     // TODO -> METTRE UN MINITEUR DYNAMIQUE par exemple au debut 1 secondes puis 2 puis ... jusqu'a 5-10 à voir
-    // TODO -> IL FAUT QU'ELLE ARETTE D'AGRANDIR SES VILLAGES AU BOUT D'UNE CERTAINE CONDITION
-
+    // TODO -> CONSIDERER TOUS LES ADVERSAIRES COMME UNE SEULE ENTITE.
 
     InstanceJeu instance;
     @Override
