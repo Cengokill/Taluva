@@ -34,7 +34,7 @@ public class FenetreJeu extends Container {
     public static ArrayList<Joueur> joueurs_tries;
     public static boolean estFenetreScoreChargee = false;
     public static BufferedImage fenetre_score_courante;
-    public static int indice_chrono;
+    public static int indice_chrono, indice_tuilePiochee;
     public static String tempsFixe;
     static BufferedImage hutte_j0 = null;
     static BufferedImage hutte_j1 = null;
@@ -199,6 +199,7 @@ public class FenetreJeu extends Container {
                 afficheMessageErreur(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
+                afficheTuilePiochee(g2d);
                 afficheFinPartie(g2d);
                 afficheMenuOptions(g2d);
             }
@@ -294,6 +295,16 @@ public class FenetreJeu extends Container {
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
                 }else{
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
+                }
+                //animation tuile piochée
+                largeur_tuilePiochee_init = (int) (largeur_fenetre_score*0.32);
+                posX_tuilePiochee_init = (int) (posX_fenetre_score+largeur_fenetre_score*0.35);
+                posY_tuilePiochee_init = posY_pioche;
+                posX_tuilePiochee_final = largeur/2;
+                if(posX_tuilePiochee==0) {
+                    posX_tuilePiochee = posX_tuilePiochee_init;
+                    posY_tuilePiochee = posY_tuilePiochee_init;
+                    largeur_tuilePiochee = largeur_tuilePiochee_init;
                 }
                 //image chronomètre
                 largeur_chrono = (int) (largeur_bouton*0.90);
@@ -414,6 +425,11 @@ public class FenetreJeu extends Container {
                 panelPlateau.resetIndexMessageErreur();
             }
         }
+    }
+
+    public static void afficheTuilePiochee(Graphics g) {
+        if(jeu.getEstPiochee())
+            g.drawImage(tuile_piochee[indice_tuilePiochee], posX_tuilePiochee, posY_tuilePiochee, largeur_tuilePiochee, largeur_tuilePiochee, null);
     }
 
     public static void afficheTimer(Graphics g) {
@@ -810,11 +826,11 @@ public class FenetreJeu extends Container {
     }
 
     public void boucle(){
-        Timer timer = new Timer(40, new ActionListener() {
+        Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
-                //indice_chrono doit être incrémente de 1 et s'il atteint la valeur2, il doit être remis à 0
+                //animation chronomètre
                 double tempsTour = jeu.getTempsTour();
                 double tempsEcoule = (System.currentTimeMillis()-jeu.getJoueurCourant().getTempsTemp()) / 1000;// Convertir en secondes;
                 int indice_chrono_2 = (int) (nb_aiguilles / tempsTour * tempsEcoule);
@@ -822,6 +838,22 @@ public class FenetreJeu extends Container {
                     indice_chrono = indice_chrono_2;
                 }else{
                     indice_chrono = 0;
+                }
+                //animation tuile piochée
+                if(posX_tuilePiochee < posX_tuilePiochee_final) {
+                    posX_tuilePiochee += largeur_fenetre_score*0.08;
+                    posY_tuilePiochee += largeur_fenetre_score*0.06;
+                    largeur_tuilePiochee += largeur_fenetre_score*0.02;
+                    if(indice_tuilePiochee == taille_tuile_piochee-1){
+                        indice_tuilePiochee = 0;
+                    }else{
+                        indice_tuilePiochee ++;
+                    }
+                }else{//position de départ
+                    posX_tuilePiochee = posX_tuilePiochee_init;
+                    posY_tuilePiochee = posY_tuilePiochee_init;
+                    largeur_tuilePiochee = largeur_tuilePiochee_init;
+                    indice_tuilePiochee = 0;
                 }
             }
         });

@@ -34,6 +34,7 @@ public class Jeu extends Observable implements Serializable{
     Parametres p;
     final int[]score = new int[2];
     byte[] tuileAPoser = new byte[5];
+    private boolean estPiochee = false;
 
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
     boolean estFinPartie;
@@ -49,7 +50,7 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 10;
+            delai = 200;
         }
         debug = false;
     }
@@ -69,12 +70,12 @@ public class Jeu extends Observable implements Serializable{
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        joueurs[0] = IA0;
-        joueurs[1] = IA1;
+        //joueurs[0] = IA0;
+        //joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
         joueurs[0].setCouleur(Color.BLUE);
@@ -455,16 +456,26 @@ public class Jeu extends Observable implements Serializable{
             System.out.println("Tuiles dans la pioche : " + pioche.size());
             plateau.affiche();
         }
-        if(type_jeu==GRAPHIQUE){//chono uniquement en mode GRAPHIQUE
-            joueurs[jCourant].startChrono();
-        }
         tuile_courante = pioche.get(0);
         pioche.remove(0);
+        if(type_jeu==GRAPHIQUE) {
+            estPiochee = true;
+            Timer timer = new Timer(1200, e -> {
+                estPiochee = true;
+                System.out.println("estPiochee = true");
+            });
+            timer.setRepeats(false); // Sert à ne pas répéter l'action
+            timer.start();
+            System.out.println("estPiochee = false");
+        }
         tuileAPoser[0] = tuile_courante.biome0;
         tuileAPoser[1] = tuile_courante.biome1;
         tuileAPoser[2] = (byte) tuile_courante.numero0;
         tuileAPoser[3] = (byte) tuile_courante.numero1;
         tuileAPoser[4] = (byte) tuile_courante.numero2;
+        if(type_jeu==GRAPHIQUE){//chono uniquement en mode GRAPHIQUE
+            joueurs[jCourant].startChrono();
+        }
     }
 
     public Tuile getTuileCourante() {
@@ -535,6 +546,10 @@ public class Jeu extends Observable implements Serializable{
 
     public int getNbJoueurs(){
         return nb_joueurs;
+    }
+
+    public boolean getEstPiochee(){
+        return estPiochee;
     }
 
     public void changePhase(){
