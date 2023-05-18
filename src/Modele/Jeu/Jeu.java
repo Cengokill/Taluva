@@ -460,7 +460,7 @@ public class Jeu extends Observable implements Serializable{
         pioche.remove(0);
         if(type_jeu==GRAPHIQUE) {
             estPiochee = true;
-            Timer timer = new Timer(1200, e -> {
+            Timer timer = new Timer(600, e -> {
                 estPiochee = false;
             });
             timer.setRepeats(false); // Sert à ne pas répéter l'action
