@@ -258,7 +258,7 @@ public class FenetreJeu extends Container {
                 posY_scores_j3 = (int) (posY_fenetre_score + hauteur_fenetre_score*0.685);
                 //bâtiments sur la fenêtre de score
                 largeur_hutte_score = (int) (largeur_fenetre_score * 0.35);
-                largeur_tour_score = (int) (largeur_fenetre_score * 0.24);
+                largeur_tour_score = (int) (largeur_fenetre_score * 0.22);
                 largeur_temple_score = largeur_tour_score;
                 posX_huttes_score = (int) (posX_fenetre_score+largeur_fenetre_score*0.03);
                 posX_tours_score = (int) (posX_fenetre_score+largeur_fenetre_score*0.33);
@@ -271,10 +271,10 @@ public class FenetreJeu extends Container {
                 posY_temples_score_j1 = (int) (posY_scores_j1-largeur_temple_score*0.47);
                 posY_temples_score_j2 = (int) (posY_scores_j2-largeur_temple_score*0.47);
                 posY_temples_score_j3 = (int) (posY_scores_j3-largeur_temple_score*0.47);
-                posY_tours_score_j0 = (int) (posY_scores_j0-largeur_tour_score*0.47);
-                posY_tours_score_j1 = (int) (posY_scores_j1-largeur_tour_score*0.47);
-                posY_tours_score_j2 = (int) (posY_scores_j2-largeur_tour_score*0.47);
-                posY_tours_score_j3 = (int) (posY_scores_j3-largeur_tour_score*0.47);
+                posY_tours_score_j0 = (int) (posY_scores_j0-largeur_tour_score*0.48);
+                posY_tours_score_j1 = (int) (posY_scores_j1-largeur_tour_score*0.50);
+                posY_tours_score_j2 = (int) (posY_scores_j2-largeur_tour_score*0.49);
+                posY_tours_score_j3 = (int) (posY_scores_j3-largeur_tour_score*0.51);
                 //boutons annuler et refaire
                 posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
                 posY_refaire = (int) (hauteur_fenetre_score * 1.0);
@@ -446,45 +446,44 @@ public class FenetreJeu extends Container {
         if(!estFenetreScoreChargee) {
             Color couleur_0 = null, couleur_1 = null, couleur_2 = null, couleur_3 = null;
             int nb_joueurs = jeu.getJoueurs().length;
-            if(nb_joueurs==2){
-                fenetre_score_courante = fenetre_score_2;
-                couleur_0 = jeu.getJoueurs()[0].getCouleur();
-                couleur_1 = jeu.getJoueurs()[1].getCouleur();
-                if(couleur_0 == Color.RED){
-                    hutte_j0 = huttes_rouges[0];
-                    tour_j0 = tours_rouges[0];
-                    temple_j0 = temples_rouges[0];
-                }else if(couleur_0 == Color.BLUE) {
-                    hutte_j0 = huttes_bleues[0];
-                    tour_j0 = tours_bleues[0];
-                    temple_j0 = temples_bleus[0];
-                }else if(couleur_0 == Color.GREEN) {
-                    hutte_j0 = huttes_vertes[0];
-                    tour_j0 = tours_vertes[0];
-                    temple_j0 = temples_verts[0];
-                }else{
-                    hutte_j0 = huttes_violettes[0];
-                    tour_j0 = tours_violettes[0];
-                    temple_j0 = temples_violets[0];
-                }
-                if(couleur_1 == Color.RED) {
-                    hutte_j1 = huttes_rouges[0];
-                    tour_j1 = tours_rouges[0];
-                    temple_j1 = temples_rouges[0];
-                }else if(couleur_1 == Color.BLUE) {
-                    hutte_j1 = huttes_bleues[0];
-                    tour_j1 = tours_bleues[0];
-                    temple_j1 = temples_bleus[0];
-                }else if(couleur_1 == Color.GREEN) {
-                    hutte_j1 = huttes_vertes[0];
-                    tour_j1 = tours_vertes[0];
-                    temple_j1 = temples_verts[0];
-                }else{
-                    hutte_j1 = huttes_violettes[0];
-                    tour_j1 = tours_violettes[0];
-                    temple_j1 = temples_violets[0];
-                }
-            }else if(nb_joueurs==3){
+            fenetre_score_courante = fenetre_score_2;
+            couleur_0 = jeu.getJoueurs()[0].getCouleur();
+            couleur_1 = jeu.getJoueurs()[1].getCouleur();
+            if(couleur_0 == Color.RED){
+                hutte_j0 = huttes_rouges[0];
+                tour_j0 = tours_rouges[0];
+                temple_j0 = temples_rouges[0];
+            }else if(couleur_0 == Color.BLUE) {
+                hutte_j0 = huttes_bleues[0];
+                tour_j0 = tours_bleues[0];
+                temple_j0 = temples_bleus[0];
+            }else if(couleur_0 == Color.GREEN) {
+                hutte_j0 = huttes_vertes[0];
+                tour_j0 = tours_vertes[0];
+                temple_j0 = temples_verts[0];
+            }else{
+                hutte_j0 = huttes_violettes[0];
+                tour_j0 = tours_violettes[0];
+                temple_j0 = temples_violets[0];
+            }
+            if(couleur_1 == Color.RED) {
+                hutte_j1 = huttes_rouges[0];
+                tour_j1 = tours_rouges[0];
+                temple_j1 = temples_rouges[0];
+            }else if(couleur_1 == Color.BLUE) {
+                hutte_j1 = huttes_bleues[0];
+                tour_j1 = tours_bleues[0];
+                temple_j1 = temples_bleus[0];
+            }else if(couleur_1 == Color.GREEN) {
+                hutte_j1 = huttes_vertes[0];
+                tour_j1 = tours_vertes[0];
+                temple_j1 = temples_verts[0];
+            }else{
+                hutte_j1 = huttes_violettes[0];
+                tour_j1 = tours_violettes[0];
+                temple_j1 = temples_violets[0];
+            }
+            if(nb_joueurs>=3){
                 couleur_2 = jeu.getJoueurs()[2].getCouleur();
                 if(couleur_2 == Color.RED) {
                     hutte_j2 = huttes_rouges[0];
@@ -504,7 +503,7 @@ public class FenetreJeu extends Container {
                     temple_j2 = temples_violets[0];
                 }
                 fenetre_score_courante = fenetre_score_3;
-            }else{
+            }if(nb_joueurs==4){
                 couleur_3 = jeu.getJoueurs()[3].getCouleur();
                 if(couleur_3 == Color.RED) {
                     hutte_j3 = huttes_rouges[0];
@@ -551,14 +550,17 @@ public class FenetreJeu extends Container {
         g.drawImage(temple_j0, posX_temples_score, posY_temples_score_j0, largeur_temple_score, largeur_temple_score, null);
         String huttes_j0 = Integer.toString(jeu.getJoueurs()[0].getNbHuttes());
         g.drawString(huttes_j0, posX_huttes, posY_scores_j0);
-        String huttes_j1 = Integer.toString(jeu.getJoueurs()[1].getNbHuttes());
-        g.drawString(huttes_j1, posX_huttes, posY_scores_j1);
         String tours_j0 = Integer.toString(jeu.getJoueurs()[0].getNbTours());
         g.drawString(tours_j0, posX_tours, posY_scores_j0);
-        String tours_j1 = Integer.toString(jeu.getJoueurs()[1].getNbTours());
-        g.drawString(tours_j1, posX_tours, posY_scores_j1);
         String temples_j0 = Integer.toString(jeu.getJoueurs()[0].getNbTemples());
         g.drawString(temples_j0, posX_temples, posY_scores_j0);
+        g.drawImage(hutte_j1, posX_huttes_score, posY_huttes_score_j1, largeur_hutte_score, largeur_hutte_score, null);
+        g.drawImage(tour_j1, posX_tours_score, posY_tours_score_j1, largeur_tour_score, largeur_tour_score, null);
+        g.drawImage(temple_j1, posX_temples_score, posY_temples_score_j1, largeur_temple_score, largeur_temple_score, null);
+        String huttes_j1 = Integer.toString(jeu.getJoueurs()[1].getNbHuttes());
+        g.drawString(huttes_j1, posX_huttes, posY_scores_j1);
+        String tours_j1 = Integer.toString(jeu.getJoueurs()[1].getNbTours());
+        g.drawString(tours_j1, posX_tours, posY_scores_j1);
         String temples_j1 = Integer.toString(jeu.getJoueurs()[1].getNbTemples());
         g.drawString(temples_j1, posX_temples, posY_scores_j1);
 
@@ -574,6 +576,9 @@ public class FenetreJeu extends Container {
             font = new Font("Bookman Old Style", Font.BOLD, 20);
             g.setFont(font);
             g.setColor(Color.WHITE);
+            g.drawImage(hutte_j2, posX_huttes_score, posY_huttes_score_j2, largeur_hutte_score, largeur_hutte_score, null);
+            g.drawImage(tour_j2, posX_tours_score, posY_tours_score_j2, largeur_tour_score, largeur_tour_score, null);
+            g.drawImage(temple_j2, posX_temples_score, posY_temples_score_j2, largeur_temple_score, largeur_temple_score, null);
             String huttes_j2 = Integer.toString(jeu.getJoueurs()[2].getNbHuttes());
             g.drawString(huttes_j2, posX_huttes, posY_scores_j2);
             String tours_j2 = Integer.toString(jeu.getJoueurs()[2].getNbTours());
@@ -593,6 +598,9 @@ public class FenetreJeu extends Container {
             font = new Font("Bookman Old Style", Font.BOLD, 20);
             g.setFont(font);
             g.setColor(Color.WHITE);
+            g.drawImage(hutte_j3, posX_huttes_score, posY_huttes_score_j3, largeur_hutte_score, largeur_hutte_score, null);
+            g.drawImage(tour_j3, posX_tours_score, posY_tours_score_j3, largeur_tour_score, largeur_tour_score, null);
+            g.drawImage(temple_j3, posX_temples_score, posY_temples_score_j3, largeur_temple_score, largeur_temple_score, null);
             String huttes_j3 = Integer.toString(jeu.getJoueurs()[3].getNbHuttes());
             g.drawString(huttes_j3, posX_huttes, posY_scores_j3);
             String tours_j3 = Integer.toString(jeu.getJoueurs()[3].getNbTours());

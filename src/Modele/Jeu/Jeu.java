@@ -56,7 +56,7 @@ public class Jeu extends Observable implements Serializable{
 
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
-        nb_joueurs = 4;
+        nb_joueurs = 3;
         temps_tour = 4.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
@@ -71,7 +71,7 @@ public class Jeu extends Observable implements Serializable{
         joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
         joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
         joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
-        joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
+        //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
         //joueurs[0] = IA0;
         //joueurs[1] = IA1;
         //joueurs[2] = IA2;
@@ -79,7 +79,7 @@ public class Jeu extends Observable implements Serializable{
         joueurs[0].setCouleur(Color.GREEN);
         joueurs[1].setCouleur(Color.MAGENTA);
         joueurs[2].setCouleur(Color.BLUE);
-        joueurs[3].setCouleur(Color.RED);
+        //joueurs[3].setCouleur(Color.RED);
         pioche = new LinkedList<>();
         lancePartie();
         if(type_jeu == GRAPHIQUE) {

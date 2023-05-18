@@ -110,12 +110,12 @@ public class Joueur implements Serializable {
     }
 
     public void startChrono(){
-        System.out.println("start chrono");
+        //System.out.println("start chrono");
         tempsTemp = System.currentTimeMillis();
     }
 
     public void stopChrono(){
-        System.out.println("stop chrono");
+        //System.out.println("stop chrono");
         tempsTotal += (System.currentTimeMillis() - tempsTemp);
         tempsTemp = 0.0;
     }
