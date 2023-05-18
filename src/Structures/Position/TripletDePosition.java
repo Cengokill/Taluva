@@ -41,4 +41,10 @@ public class TripletDePosition implements Serializable {
     public TripletDePosition copy() {
         return new TripletDePosition(this.volcan, this.tile1, this.tile2);
     }
+
+    public boolean contientPosition (Position position){
+        return volcan.ligne()==position.ligne()&& volcan.colonne()==position.colonne()||
+                tile1.ligne()==position.ligne()&& tile1.colonne()==position.colonne() ||
+                tile2.ligne()==position.ligne()&& tile2.colonne()==position.colonne();
+    }
 }

@@ -137,7 +137,7 @@ public class Joueur implements Serializable {
     }
 
     public void setCouleur(Color couleur){
-        this.couleur = couleur;
+        this.couleur= couleur;
     }
 
     public byte getNumero(){
@@ -238,6 +238,7 @@ public class Joueur implements Serializable {
         this.score=joueur.score;
         this.numero=joueur.numero;
     }
+
 }
 
 

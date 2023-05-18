@@ -539,7 +539,9 @@ public class Plateau implements Serializable, Cloneable {
                 triplets.add(new TripletDePosition(courant, droite, enHautDroite));
             }
         }
+
         tripletsPossible.addAll(triplets);
+
     }
 
 
@@ -594,6 +596,7 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public void joueCoup(Coup coup) {
+
         byte num_joueur = coup.getNumJoueur();
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
@@ -638,12 +641,23 @@ public class Plateau implements Serializable, Cloneable {
             if(batiment!=Hexagone.CHOISIR_BATIMENT){
                 Position aSupprimer = new Position(coup.batimentLigne,coup.batimentColonne);
                 positions_libres_batiments.remove(aSupprimer);
+                supPoseVillageTripletsPossibles(new Position(coup.batimentLigne, coup.batimentColonne));
             }
+
             carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(color_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
             if(coup.typePlacement!=4){
                 historique.ajoute(coup);
             }
 
+        }
+    }
+
+    private void supPoseVillageTripletsPossibles(Position posVillage){
+        for(int i= 0;i< tripletsPossible.size();i++){
+            if(tripletsPossible.get(i).contientPosition(posVillage)){
+                tripletsPossible.remove(i);
+                i--;
+            }
         }
     }
 

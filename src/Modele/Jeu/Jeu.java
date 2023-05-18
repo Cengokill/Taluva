@@ -48,7 +48,7 @@ public class Jeu extends Observable implements Serializable{
     public Jeu(byte type_jeu){
         this.type_jeu = type_jeu;
         if(type_jeu == CONSOLE) {
-            delai = 0;
+            delai = 200;
         }else{
             delai = 200;
         }
@@ -63,7 +63,7 @@ public class Jeu extends Observable implements Serializable{
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
-        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
+        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
         IA2 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA3 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA0.setPrenom("IA0");
@@ -71,11 +71,11 @@ public class Jeu extends Observable implements Serializable{
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
         //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
         joueurs[0] = IA0;
-        //joueurs[1] = IA1;
+        joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
         joueurs[0].setCouleur(Color.BLUE);
