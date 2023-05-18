@@ -850,7 +850,6 @@ public class FenetreJeu extends Container {
                         }
                     }
                 }else{//position de départ
-                    indice_tuilePiochee = 0;
                     estImageTuilePiocheeFinale = false;
                     posX_tuilePiochee = posX_tuilePiochee_init;
                     posY_tuilePiochee = posY_tuilePiochee_init;
