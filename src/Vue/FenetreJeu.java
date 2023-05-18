@@ -213,6 +213,8 @@ public class FenetreJeu extends Container {
                 largeur_bouton_dans_options = (int) (largeur_menu_options * 0.4);
                 hauteur_bouton_dans_options = (int) (largeur_bouton_dans_options * rapport_bouton_dans_options);
                 posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2 + 20;
+                posX_options = posX_menu_options + largeur_menu_options/2 - bouton_options.getWidth()/16;
+                posY_options_echap = (int) (posY_menu_options + hauteur_menu_options/2);
                 posY_save = (int) (posY_menu_options + hauteur_menu_options * 0.15);
                 posY_load = (int) (posY_save + hauteur_menu_options * 0.20);
                 posX_tuto = (int) (largeur / 1.2);
@@ -561,6 +563,7 @@ public class FenetreJeu extends Container {
         if (select_menu_options) {
             g.drawImage(menu_dark_filter, 0, 0, 3000, 3000, null);
             g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
+            afficheBoutonOptions(g);
             afficheBoutonLoad(g);
             afficheBoutonSave(g);
             afficheBoutonQuitter(g);
@@ -569,9 +572,9 @@ public class FenetreJeu extends Container {
 
     public static void afficheBoutonOptions(Graphics g) {
         if(select_options)
-            g.drawImage(bouton_options_select, posX_save, posY_tuto, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
+            g.drawImage(bouton_options_select, posX_options, posY_options_echap, bouton_options_select.getWidth()/8, bouton_options_select.getHeight()/8,null);
         else
-            g.drawImage(bouton_options, posX_save, posY_tuto, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
+            g.drawImage(bouton_options, posX_options, posY_options_echap, bouton_options.getWidth()/8, bouton_options.getHeight()/8,null);
     }
 
     public static void afficheBoutonLoad(Graphics g) {
