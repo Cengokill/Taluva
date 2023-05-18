@@ -36,6 +36,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     // TODO BUGS //
     // TODO -> l'IA PEUT POSER DES TEMPLES CÔTE A CÔTES
     // TODO -> NB TEMPLES INFINI ? (peut être pareil pour les joueurs à verifier)
+    // TODO -> l'IA PEUT EFFACER UN VILLAGE ENTIER (rodolphe est dessus)
 
     // TODO IMPLEMENTATIONS //
     // TODO -> QU'ELLE PREFERE AGRANDIR UN VILLAGE AU LIEU DE S'EPARPILLER JUSQU'A UNE CERTAINE CONDITION // (!) faut qu'elle arette au bout d'un moment
@@ -75,13 +76,32 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     private int evaluationScoreTuile(InstanceJeu instanceCourante){
         // TODO si c'est pas trop lourd, on peut rajouter de la profondeur
+        final int[] scoreJoueur = new int[1];
+        final int[] scoreAdverse = new int[1];
 
-        // idée potentielle faire un calcul multithreadé
-        int scoreJoueur = evaluationTuile(instanceCourante,true);
-        int scoreAdverse = evaluationTuile(instanceCourante,false);
+        // On regarde les points pour l'IA sur un thread
+        Thread iaThread = new Thread(() -> {
+            scoreJoueur[0] = evaluationTuile(instanceCourante, true);
+        });
 
-        return scoreJoueur-scoreAdverse;
+        // On regarde les points pour le joueur adverse sur un autre thread
+        Thread iaThread2 = new Thread(() -> {
+            scoreAdverse[0] = evaluationTuile(instanceCourante, false);
+        });
+
+        iaThread.start();
+        iaThread2.start();
+
+        try { // On attends la fin des calculs des threads
+            iaThread.join();
+            iaThread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return scoreJoueur[0] - scoreAdverse[0];
     }
+
     private int evaluationTuile(InstanceJeu instanceCourante, boolean estJoueurCourant){
         ArrayList<Joueur> joueurs = new ArrayList<>();
         Joueur joueur = instanceCourante.getJoueur(instanceCourante.getJoueurCourant());
@@ -155,7 +175,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     public void affichetripletpossible(){
         System.out.println("on affiche");
         for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
-            Plateau plateauCopie = jeu.getPlateau().copie();
             System.out.println("("+ t.getVolcan().ligne()+", "+t.getVolcan().colonne()+") "+"("+ t.getTile1().ligne()+", "+t.getTile1().colonne()+") "+"("+ t.getTile2().ligne()+", "+t.getTile2().colonne()+") ");
         }
     }
@@ -386,11 +405,30 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     private int evaluationScoreInstance(InstanceJeu instanceCourante){
-        // idée potentielle faire un calcul multithreadé
-        int scoreJoueur = evaluationInstance(instanceCourante,true);
-        //int scoreAdverse = evaluationInstance(instanceCourante,false);
+        final int[] scoreJoueur = new int[1];
+        final int[] scoreAdverse = new int[1];
 
-        return scoreJoueur;//-scoreAdverse;
+        // On regarde les points pour l'IA sur un thread
+        Thread iaThread = new Thread(() -> {
+            scoreJoueur[0] = evaluationInstance(instanceCourante,true);
+        });
+
+        // On regarde les points pour le joueur adverse sur un autre thread
+        Thread iaThread2 = new Thread(() -> {
+            scoreAdverse[0] = evaluationInstance(instanceCourante,false);
+        });
+
+        iaThread.start();
+        iaThread2.start();
+
+        try { // On attends la fin des calculs des threads
+            iaThread.join();
+            iaThread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return scoreJoueur[0] - scoreAdverse[0];
     }
 
     private int evaluationInstance(InstanceJeu instanceCourante, boolean estJoueurCourant){

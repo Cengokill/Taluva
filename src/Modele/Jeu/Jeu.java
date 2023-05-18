@@ -62,7 +62,7 @@ public class Jeu extends Observable implements Serializable{
         temps_tour = 10.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
-        IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
+        IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
         IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA2 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA3 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
