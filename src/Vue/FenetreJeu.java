@@ -840,9 +840,9 @@ public class FenetreJeu extends Container {
                 }
                 if(jeu.getEstPiochee()) {
                     if(!estImageTuilePiocheeFinale){
-                        posX_tuilePiochee += largeur_fenetre_score*0.08;
-                        posY_tuilePiochee += largeur_fenetre_score*0.06;
-                        largeur_tuilePiochee = (int) Math.min(largeur_tuilePiochee + largeur_fenetre_score*0.05,largeur_fenetre_score*0.7);
+                        posX_tuilePiochee += largeur_fenetre_score*0.003;
+                        posY_tuilePiochee += largeur_fenetre_score*0.02;
+                        largeur_tuilePiochee = (int) Math.min(largeur_tuilePiochee + largeur_fenetre_score*0.05,largeur_fenetre_score*0.5);
                         if(indice_tuilePiochee == taille_tuile_piochee-1){
                             estImageTuilePiocheeFinale = true;
                         }else{

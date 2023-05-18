@@ -152,7 +152,7 @@ public class ImageLoader {
         int height = image.getHeight();
         double angle = 0.0;
         float opacity = 1.0F;
-        double angle_incremente = 900.0/(double)nb_aiguilles;
+        double angle_incremente = 80.0/(double)taille_tuile_piochee;
         for(int i=0;i<taille_tuile_piochee;i++){
             double a = 1.0-(double)i/(double)(taille_tuile_piochee-1.0);
             opacity = (float) a;
