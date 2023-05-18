@@ -32,7 +32,7 @@ public class FenetreJeu extends Container {
     public static Jeu jeu;
     final JFrame frame;
     public static ArrayList<Joueur> joueurs_tries;
-    public static boolean estFenetreScoreChargee = false;
+    public static boolean estFenetreScoreChargee = false, estImageTuilePiocheeFinale=false;
     public static BufferedImage fenetre_score_courante;
     public static int indice_chrono, indice_tuilePiochee;
     public static String tempsFixe;
@@ -305,14 +305,6 @@ public class FenetreJeu extends Container {
                     posY_tuilePiochee = posY_tuilePiochee_init;
                     largeur_tuilePiochee = largeur_tuilePiochee_init;
                 }
-                // Récupère les informations du curseur
-                PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-                // Obtenir la position du curseur
-                java.awt.Point point = pointerInfo.getLocation();
-                int x = (int) point.getX();
-                int y = (int) point.getY();
-                posX_tuilePiochee_final = x - (largeur_tuilePiochee/2);
-                posY_tuilePiochee_final = y - (largeur_tuilePiochee/2);
                 //image chronomètre
                 largeur_chrono = (int) (largeur_bouton*0.90);
                 posX_chrono = (int) (posX_joueur_courant + largeur_joueur_courant*0.92);
@@ -435,7 +427,7 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheTuilePiochee(Graphics g) {
-        if(true)//jeu.getEstPiochee()
+        if(jeu.getEstPiochee())
             g.drawImage(tuile_piochee[indice_tuilePiochee], posX_tuilePiochee, posY_tuilePiochee, largeur_tuilePiochee, largeur_tuilePiochee, null);
     }
 
@@ -833,7 +825,7 @@ public class FenetreJeu extends Container {
     }
 
     public void boucle(){
-        Timer timer = new Timer(50, new ActionListener() {
+        Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
@@ -846,27 +838,19 @@ public class FenetreJeu extends Container {
                 }else{
                     indice_chrono = 0;
                 }
-                // Récupère les informations du curseur
-                PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-                // Obtenir la position du curseur
-                java.awt.Point point = pointerInfo.getLocation();
-                int x = (int) point.getX();
-                int y = (int) point.getY();
-                //animation tuile piochée
-                int decalage_x = (int) (largeur_fenetre_score*0.16);
-                int decalage_y = (int) (largeur_fenetre_score*0.13);
                 if(jeu.getEstPiochee()) {
-                    int x2 = (x - posX_tuilePiochee)/decalage_x;
-                    int y2 = (y - posY_tuilePiochee)/decalage_y;
-                    posX_tuilePiochee = posX_tuilePiochee+x2*2;
-                    posY_tuilePiochee = posY_tuilePiochee+y2*2;
-                    largeur_tuilePiochee += largeur_fenetre_score*0.05;
-                    if(indice_tuilePiochee == taille_tuile_piochee-1){
-                        indice_tuilePiochee = 0;
-                    }else{
-                        indice_tuilePiochee ++;
+                    if(!estImageTuilePiocheeFinale){
+                        posX_tuilePiochee += largeur_fenetre_score*0.08;
+                        posY_tuilePiochee += largeur_fenetre_score*0.06;
+                        largeur_tuilePiochee = (int) Math.min(largeur_tuilePiochee + largeur_fenetre_score*0.05,largeur_fenetre_score*0.7);
+                        if(indice_tuilePiochee == taille_tuile_piochee-1){
+                            estImageTuilePiocheeFinale = true;
+                        }else{
+                            indice_tuilePiochee ++;
+                        }
                     }
                 }else{//position de départ
+                    estImageTuilePiocheeFinale = false;
                     posX_tuilePiochee = posX_tuilePiochee_init;
                     posY_tuilePiochee = posY_tuilePiochee_init;
                     largeur_tuilePiochee = largeur_tuilePiochee_init;
