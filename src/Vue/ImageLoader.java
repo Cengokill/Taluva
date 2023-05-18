@@ -63,6 +63,8 @@ public class ImageLoader {
     public static BufferedImage lacTile_0_Red, lacTile_1_Red, lacTile_2_Red;
     public static BufferedImage tileErreur, placable;
 
+    public static BufferedImage configPartieBackground;
+
     public static BufferedImage
             plateau_hautGauche_etage1,
             plateau_hautDroite_etage1,
