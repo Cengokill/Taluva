@@ -44,7 +44,7 @@ public class ImageLoader {
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options, largeur_chrono, posX_chrono, posY_chrono, largeur_aiguille, posX_aiguille, posY_aiguille, posX_tuilePiochee, posY_tuilePiochee, largeur_tuilePiochee,
-            posX_tuilePiochee_init, posY_tuilePiochee_init, largeur_tuilePiochee_init;
+            posX_tuilePiochee_init, posY_tuilePiochee_init, largeur_tuilePiochee_init, posX_tuilePiochee_final, posY_tuilePiochee_final;
     public static int posX_score_fin_partie, posX_joueur_victoire, posY_joueur_victoire, posY_joueur_silver, posY_joueur_bronze, posY_joueur_quatre,
     largeur_hutte_score, largeur_tour_score, largeur_temple_score, posX_huttes_score, posX_tours_score, posX_temples_score, posY_huttes_score_j0,
             posY_huttes_score_j1, posY_huttes_score_j2, posY_huttes_score_j3, posY_tours_score_j0, posY_tours_score_j1, posY_tours_score_j2, posY_tours_score_j3,
