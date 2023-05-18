@@ -41,7 +41,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 poseTile = !poseTile;
             }
             if (keyCode == KeyEvent.VK_CONTROL) {
-                mode_plateau = !mode_plateau;
+                mode_plateau = false;
             }
             if (keyCode == KeyEvent.VK_A) {
                 mode_plateau = !mode_plateau;
@@ -179,6 +179,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         @Override
         public void mouseDragged(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e) || SwingUtilities.isMiddleMouseButton(e)) {
+                if (select_menu_options) {
+                    return;
+                }
                 clicDroiteEnfonce = true;
                 int dx = e.getX() - lastMousePosition.x;
                 int dy = e.getY() - lastMousePosition.y;

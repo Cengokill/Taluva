@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static Vue.ImageLoader.applyRedFilter;
+import static Vue.ImageLoader.*;
 
 public class PanelMenu extends JPanel {
 
@@ -41,6 +41,8 @@ public class PanelMenu extends JPanel {
     boolean select_local,select_reseau,select_options,select_quitter,clicOptions,select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
             select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler;
 
+    boolean estConfigPartie = false;
+
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
         background = lisImage("ocean");
@@ -63,6 +65,8 @@ public class PanelMenu extends JPanel {
         ecriture_PleinEcran = lisImage("/Options/plein_ecran");
         ecriture_Daltonien = lisImage("/Options/Mode_daltonien");
         ecriture_Extension = lisImage("/Options/Activer_extension");
+        configPartieBackground = lisImageBuf("start_game_menu");
+
 
         // hover
         bouton_Local_hover = applyRedFilter(bouton_Local);
@@ -281,7 +285,9 @@ public class PanelMenu extends JPanel {
         afficheBackground(g2d);
         if(clicOptions){
             afficheParametre(g2d);
-        }else{
+        } else if (estConfigPartie) {
+            g2d.drawImage(configPartieBackground, getWidth()/2 - configPartieBackground.getWidth()/4, getHeight()/2 - configPartieBackground.getHeight()/4, configPartieBackground.getWidth()/2, configPartieBackground.getHeight()/2, null);
+        } else{
             afficheBoutonLocal(g2d);
             afficheBoutonReseau(g2d);
             afficheBoutonOptions(g2d);
