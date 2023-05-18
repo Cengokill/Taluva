@@ -213,6 +213,7 @@ public class FenetreJeu extends Container {
                 double rapport_fin_partie = 816.0/1456.0;
                 double rapport_cadre = 76.0/1180.0;
                 double rapport_timer = 205.0/335.0;
+                double rapport_pioche = 650.0/880.0;
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
@@ -278,20 +279,25 @@ public class FenetreJeu extends Container {
                 //boutons annuler et refaire
                 posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
                 posY_refaire = (int) (hauteur_fenetre_score * 1.0);
-                //pioche
-                largeur_tuile = (int) (largeur_fenetre_score*0.20);
+                //images de la pioche
+                largeur_pioche = (int) (largeur_fenetre_score*0.44);
+                hauteur_pioche = (int) (largeur_pioche*rapport_pioche);
+                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.20);
+                //6 dernières tuiles de la pioche
+                largeur_tuile = (int) (largeur_fenetre_score*0.28);
                 hauteur_tuile = largeur_tuile;
-                posX_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.70);
-                posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.25);
+                posX_nb_tuiles_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.71);
+                posX_tuile_derriere = (int) (posX_fenetre_score + largeur_fenetre_score*0.07);
                 if(jeu.getNbJoueurs()==2){
-                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.40);
-                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.48);
+                    posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.38);
+                    posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.49);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.37);
                 }else if(jeu.getNbJoueurs()==3){
                     posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.58);
-                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
+                    posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
                 }else{
                     posY_tuile_derriere = (int) (posY_fenetre_score + hauteur_fenetre_score*0.76);
-                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
+                    posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
                 }
                 //image chronomètre
                 largeur_chrono = (int) (largeur_bouton*0.90);
@@ -609,18 +615,28 @@ public class FenetreJeu extends Container {
             g.drawString(temples_j3, posX_temples, posY_scores_j3);
         }
         //pioche
-        font = new Font("Bookman Old Style", Font.BOLD, 25);
+        font = new Font("Bookman Old Style", Font.BOLD, 28);
         g.setFont(font);
         g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
-        g.drawString(nb_tuiles_pioche, posX_pioche, posY_pioche);
+        g.drawString(nb_tuiles_pioche, posX_nb_tuiles_pioche, posY_nb_tuiles_pioche);
         int decalage = 65;
-        if(jeu.getPioche().size() <= 48) {
-            for (int i = jeu.getPioche().size(); i>0; i--) {
-                g.drawImage(tuile_derriere, posX_tuile_derriere + decalage, posY_tuile_derriere, largeur_tuile, hauteur_tuile, null);
-                decalage -= 2;
+        if(jeu.getPioche().size() > jeu.getTaillePioche()*0.75) {
+            g.drawImage(pioche[8], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
+        }else if(jeu.getPioche().size() > jeu.getTaillePioche()*0.50) {
+            g.drawImage(pioche[7], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
+        }else if(jeu.getPioche().size() > jeu.getTaillePioche()*0.33) {
+            g.drawImage(pioche[6], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
+        }else{
+            if(jeu.getPioche().size() > 6){
+                g.drawImage(pioche[5], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
+            }else{
+                if(jeu.getPioche().size()>0)
+                    g.drawImage(pioche[jeu.getPioche().size()-1], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
             }
+
         }
+
     }
 
     public static void afficheFinPartie(Graphics g) {

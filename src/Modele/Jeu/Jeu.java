@@ -18,7 +18,6 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class Jeu extends Observable implements Serializable{
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
-    private static final int TAILLE_PIOCHE = 24;
     public static boolean AFFICHAGE;
     public byte type_jeu;
     public int delai;
@@ -40,6 +39,7 @@ public class Jeu extends Observable implements Serializable{
     boolean estFinPartie;
     public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
+    private static int taille_pioche;
 
     public MusicPlayer musicPlayer;
 
@@ -57,7 +57,8 @@ public class Jeu extends Observable implements Serializable{
     public void initPartie() throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
         nb_joueurs = 2;
-        temps_tour = 4.0;//secondes avant la limite de fin de tour du joueur
+        taille_pioche = 12 * nb_joueurs;
+        temps_tour = 2.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
@@ -68,12 +69,12 @@ public class Jeu extends Observable implements Serializable{
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
-        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Sacha");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        //joueurs[0] = IA0;
-        //joueurs[1] = IA1;
+        joueurs[0] = IA0;
+        joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
         joueurs[0].setCouleur(Color.BLUE);
@@ -378,25 +379,64 @@ public class Jeu extends Observable implements Serializable{
         pioche.add(new Tuile(foret, foret));
         pioche.add(new Tuile(montagne, montagne));
         pioche.add(new Tuile(lac, lac));
-        for(int i=0; i<2; i++){
+        if(nb_joueurs == 4) {//48 en tout
+            for (int i = 0; i < 2; i++) {
+                pioche.add(new Tuile(lac, prairie));
+                pioche.add(new Tuile(lac, desert));
+                pioche.add(new Tuile(lac, montagne));
+            }
+            for (int i = 0; i < 3; i++) {
+                pioche.add(new Tuile(lac, foret));
+                pioche.add(new Tuile(montagne, desert));
+            }
+            for (int i = 0; i < 4; i++) {
+                pioche.add(new Tuile(montagne, prairie));
+                pioche.add(new Tuile(montagne, foret));
+                pioche.add(new Tuile(prairie, desert));
+            }
+            for (int i = 0; i < 8; i++) {
+                pioche.add(new Tuile(desert, foret));
+            }
+            for (int i = 0; i < 11; i++) {
+                pioche.add(new Tuile(prairie, foret));
+            }
+        }else if(nb_joueurs == 3){//36 en tout
             pioche.add(new Tuile(lac, prairie));
             pioche.add(new Tuile(lac, desert));
-            pioche.add(new Tuile(lac, montagne));
+            pioche.add(new Tuile(lac, montagne));//8
+            for (int i = 0; i < 2; i++) {
+                pioche.add(new Tuile(lac, foret));
+                pioche.add(new Tuile(montagne, desert));
+            }//12
+            for (int i = 0; i < 3; i++) {
+                pioche.add(new Tuile(montagne, prairie));
+                pioche.add(new Tuile(montagne, foret));
+                pioche.add(new Tuile(prairie, desert));
+            }//21
+            for (int i = 0; i < 6; i++) {
+                pioche.add(new Tuile(desert, foret));
+            }//27
+            for (int i = 0; i < 9; i++) {
+                pioche.add(new Tuile(prairie, foret));
+            }//36
         }
-        for(int i=0; i<3; i++){
-            pioche.add(new Tuile(lac, foret));
-            pioche.add(new Tuile(montagne, desert));
-        }
-        for(int i=0; i<4; i++){
+        else if(nb_joueurs == 2){//24 en tout
+            pioche.add(new Tuile(lac, prairie));
+            pioche.add(new Tuile(lac, desert));
+            pioche.add(new Tuile(lac, montagne));//8
+            for (int i = 0; i < 2; i++) {
+                pioche.add(new Tuile(lac, foret));
+                pioche.add(new Tuile(montagne, desert));
+            }//12
             pioche.add(new Tuile(montagne, prairie));
             pioche.add(new Tuile(montagne, foret));
-            pioche.add(new Tuile(prairie, desert));
-        }
-        for(int i=0; i<8; i++){
-            pioche.add(new Tuile(desert, foret));
-        }
-        for(int i=0; i<11; i++){
-            pioche.add(new Tuile(prairie, foret));
+            pioche.add(new Tuile(prairie, desert));//15
+            for (int i = 0; i < 4; i++) {
+                pioche.add(new Tuile(desert, foret));
+            }//19
+            for (int i = 0; i < 5; i++) {
+                pioche.add(new Tuile(prairie, foret));
+            }//24
         }
         //mélange la pioche
         Collections.shuffle(pioche);
@@ -429,6 +469,10 @@ public class Jeu extends Observable implements Serializable{
 
     public Tuile getTuileCourante() {
         return tuile_courante;
+    }
+
+    public int getTaillePioche(){
+        return taille_pioche;
     }
 
     public void annuler() {

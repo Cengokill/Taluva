@@ -18,7 +18,7 @@ public class ImageLoader {
     public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[5], temples_bleus = new BufferedImage[5], temples_verts = new BufferedImage[5], temples_violets = new BufferedImage[5];
     public static final BufferedImage[] huttes_rouges = new BufferedImage[7], huttes_bleues = new BufferedImage[7], huttes_vertes = new BufferedImage[7], huttes_violettes = new BufferedImage[7];
     public static final BufferedImage[] tours_rouges = new BufferedImage[5], tours_bleues = new BufferedImage[5], tours_vertes = new BufferedImage[5], tours_violettes = new BufferedImage[5];
-    public static final BufferedImage[] chrono = new BufferedImage[nb_aiguilles];
+    public static final BufferedImage[] chrono = new BufferedImage[nb_aiguilles]; public static final BufferedImage[] pioche = new BufferedImage[9];
     public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, tuile_derriere, chronoBleu, chronoRouge;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
@@ -38,7 +38,7 @@ public class ImageLoader {
             posY_load, posY_save, posY_annuler, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
             posX_Echap, posY_Echap, posX_timer, posY_timer, largeur_timer, hauteur_timer,
             posX_joueur_courant, posY_joueur_courant, posX_prenom, posY_prenom_j0, posY_prenom_j1, posY_prenom_j2, posY_prenom_j3, posX_huttes, posX_tours, posX_temples,
-            posY_scores_j0, posY_scores_j1, posY_scores_j2, posY_scores_j3, posX_pioche, posY_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
+            posY_scores_j0, posY_scores_j1, posY_scores_j2, posY_scores_j3, posX_nb_tuiles_pioche, posY_nb_tuiles_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
             posX_tuile_derriere, posY_tuile_derriere, largeur_tuile, hauteur_tuile, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
@@ -47,6 +47,7 @@ public class ImageLoader {
     largeur_hutte_score, largeur_tour_score, largeur_temple_score, posX_huttes_score, posX_tours_score, posX_temples_score, posY_huttes_score_j0,
             posY_huttes_score_j1, posY_huttes_score_j2, posY_huttes_score_j3, posY_tours_score_j0, posY_tours_score_j1, posY_tours_score_j2, posY_tours_score_j3,
             posY_temples_score_j0, posY_temples_score_j1, posY_temples_score_j2, posY_temples_score_j3;
+    public static int posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche;
     public static boolean select_options;
     public static boolean select_menu_options;
     public static boolean select_save;
@@ -96,6 +97,7 @@ public class ImageLoader {
         background = lisImageBuf("/Plateau/background_plateau_x4_carre_2");
         readTilesImages();
         readChronoImages();
+        readPiocheImages();
         readPlayableTilesImages();
         readHeightImages();
         readTileOrientationImages();
@@ -105,6 +107,16 @@ public class ImageLoader {
         posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
+    }
+
+    private static void readPiocheImages() {
+        for(int i=0;i<6;i++){
+            pioche[i] = lisImageBuf("Pioche/pioche_"+(i+1));
+        }
+        pioche[6] = lisImageBuf("Pioche/pioche_50");
+        pioche[7] = lisImageBuf("Pioche/pioche_75");
+        pioche[8] = lisImageBuf("Pioche/pioche_100");
+
     }
 
     private static void readChronoImages(){
