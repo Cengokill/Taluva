@@ -14,6 +14,8 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
 
+import static Modele.Jeu.Plateau.Hexagone.*;
+
 public class IAIntelligente extends AbstractIA implements Serializable {
 
     public byte num_joueur_ia;
@@ -150,12 +152,22 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return batPlacables;
     }
 
+    public void affichetripletpossible(){
+        System.out.println("on affiche");
+        for(TripletDePosition t : jeu.getPlateau().getTripletsPossibles()){
+            Plateau plateauCopie = jeu.getPlateau().copie();
+            System.out.println("("+ t.getVolcan().ligne()+", "+t.getVolcan().colonne()+") "+"("+ t.getTile1().ligne()+", "+t.getTile1().colonne()+") "+"("+ t.getTile2().ligne()+", "+t.getTile2().colonne()+") ");
+        }
+    }
+
+
     private CoupValeur choisirCoupTuile(Tuile tuile){
         int i=0, scoreBatiment_max = Integer.MIN_VALUE, scoreTuile_max = Integer.MIN_VALUE;
         int score_courant;
         ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
         CoupValeur coupAFaire;
         ArrayList<TripletDePosition> coupsTuilePossibles = instance.getPlateau().getTripletsPossibles();
+        affichetripletpossible();
         ArrayList<Coup> coupTuileBatimentsAEvaluer = new ArrayList<>();
 
         // On parcours toutes les tuiles pour trouver les meilleures.
