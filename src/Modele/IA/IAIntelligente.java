@@ -42,7 +42,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     // TODO -> QU'ELLE ARETTE DE FAIRE DES VILLAGES IMMENSES (?)
     // TODO -> TROUVER UNE VALEUR DE COUP POUR LAQUELLE ON SE DIT QU'ON LA RETURN (coup de tuile et coup de bat)
     // TODO -> METTRE UN MINITEUR DYNAMIQUE par exemple au debut 1 secondes puis 2 puis ... jusqu'a 5-10 à voir
-    // TODO -> CONSIDERER TOUS LES ADVERSAIRES COMME UNE SEULE ENTITE (si c'est pas lourd on peut faire pour chaque joueur et valoriser la pénalisation du plus en avance)
+    // TODO -> POUR L'INSTANT 3 JOUEURS C'EST UNE SEULE ENTITE (si c'est pas lourd on peut faire pour chaque joueur et valoriser la pénalisation du plus en avance)
 
     InstanceJeu instance;
     @Override
