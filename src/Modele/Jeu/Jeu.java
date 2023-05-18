@@ -59,7 +59,7 @@ public class Jeu extends Observable implements Serializable{
         //jCourant = (byte) new Random().nextInt(1);
         nb_joueurs = 2;
         taille_pioche = 12 * nb_joueurs;
-        temps_tour = 2.0;//secondes avant la limite de fin de tour du joueur
+        temps_tour = 10.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
@@ -86,7 +86,7 @@ public class Jeu extends Observable implements Serializable{
         lancePartie();
         if(type_jeu == GRAPHIQUE) {
             musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
-            musicPlayer.setVolume(-50.0f);
+            musicPlayer.setVolume(-70.0f);
             musicPlayer.loop();
         }
     }
@@ -459,14 +459,14 @@ public class Jeu extends Observable implements Serializable{
         tuile_courante = pioche.get(0);
         pioche.remove(0);
         if(type_jeu==GRAPHIQUE) {
+            System.out.println("1 estPiochee = true");
             estPiochee = true;
             Timer timer = new Timer(1200, e -> {
-                estPiochee = true;
-                System.out.println("estPiochee = true");
+                estPiochee = false;
+                System.out.println("estPiochee = false");
             });
             timer.setRepeats(false); // Sert à ne pas répéter l'action
             timer.start();
-            System.out.println("estPiochee = false");
         }
         tuileAPoser[0] = tuile_courante.biome0;
         tuileAPoser[1] = tuile_courante.biome1;

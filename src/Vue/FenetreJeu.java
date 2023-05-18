@@ -300,7 +300,6 @@ public class FenetreJeu extends Container {
                 largeur_tuilePiochee_init = (int) (largeur_fenetre_score*0.32);
                 posX_tuilePiochee_init = (int) (posX_fenetre_score+largeur_fenetre_score*0.35);
                 posY_tuilePiochee_init = posY_pioche;
-                posX_tuilePiochee_final = largeur/2;
                 if(posX_tuilePiochee==0) {
                     posX_tuilePiochee = posX_tuilePiochee_init;
                     posY_tuilePiochee = posY_tuilePiochee_init;
@@ -840,10 +839,10 @@ public class FenetreJeu extends Container {
                     indice_chrono = 0;
                 }
                 //animation tuile piochée
-                if(posX_tuilePiochee < posX_tuilePiochee_final) {
-                    posX_tuilePiochee += largeur_fenetre_score*0.08;
-                    posY_tuilePiochee += largeur_fenetre_score*0.06;
-                    largeur_tuilePiochee += largeur_fenetre_score*0.02;
+                if(jeu.getEstPiochee()) {
+                    posX_tuilePiochee += largeur_fenetre_score*0.16;
+                    posY_tuilePiochee += largeur_fenetre_score*0.13;
+                    largeur_tuilePiochee += largeur_fenetre_score*0.05;
                     if(indice_tuilePiochee == taille_tuile_piochee-1){
                         indice_tuilePiochee = 0;
                     }else{

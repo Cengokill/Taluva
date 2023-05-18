@@ -64,8 +64,8 @@ public class PanelPlateau extends JPanel {
         }else{
             vitesse = 30;
         }
-        System.out.println("Nombre de coeurs : " + nombreCoeurs);
-        System.out.println("Memoire libre : " + memoireLibre + " Mo");
+        //System.out.println("Nombre de coeurs : " + nombreCoeurs);
+        //System.out.println("Memoire libre : " + memoireLibre + " Mo");
         this.fenetreJeu = t;
         this.controleur = controleur;
         this.jeu = jeu;
