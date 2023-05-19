@@ -439,29 +439,31 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheTimer(Graphics g) {
-        g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
-        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
-        g.setFont(font);
-        g.setColor(Color.WHITE);
-        double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurCourant().getTempsTemp();
-        if(tempsEcoule>=20000000){
-            tempsEcoule = 0.0;
-        }
-        double tempsArrondi = tempsEcoule / 1000;// Convertir en secondes
-        tempsArrondi = Math.round(tempsArrondi * 10)/10.0;// Arrondir au dixième
-        if(tempsArrondi<=jeu.getTempsTour()) {
-            tempsFixe = String.valueOf(tempsArrondi);
-        }
-        if (tempsArrondi >= jeu.getTempsTour() * 0.75) {
-            g.setColor(Color.RED);
-            g.drawString(tempsFixe, (int) (posX_timer + largeur_timer * 0.15), (int) (posY_timer + hauteur_timer * 0.65));
-            g.drawImage(chronoRouge, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
-        } else {
+        if(jeu.getTimerActif()) {
+            g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
+            Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            g.setFont(font);
             g.setColor(Color.WHITE);
-            g.drawString(tempsFixe, (int) (posX_timer + largeur_timer * 0.15), (int) (posY_timer + hauteur_timer * 0.65));
-            g.drawImage(chronoBleu, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
+            double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurCourant().getTempsTemp();
+            if (tempsEcoule >= 20000000) {
+                tempsEcoule = 0.0;
+            }
+            double tempsArrondi = tempsEcoule / 1000;// Convertir en secondes
+            tempsArrondi = Math.round(tempsArrondi * 10) / 10.0;// Arrondir au dixième
+            if (tempsArrondi <= jeu.getTempsTour()) {
+                tempsFixe = String.valueOf(tempsArrondi);
+            }
+            if (tempsArrondi >= jeu.getTempsTour() * 0.75) {
+                g.setColor(Color.RED);
+                g.drawString(tempsFixe, (int) (posX_timer + largeur_timer * 0.15), (int) (posY_timer + hauteur_timer * 0.65));
+                g.drawImage(chronoRouge, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
+            } else {
+                g.setColor(Color.WHITE);
+                g.drawString(tempsFixe, (int) (posX_timer + largeur_timer * 0.15), (int) (posY_timer + hauteur_timer * 0.65));
+                g.drawImage(chronoBleu, posX_chrono, posY_chrono, largeur_chrono, largeur_chrono, null);
+            }
+            g.drawImage(chrono[indice_chrono], posX_aiguille, posY_aiguille, largeur_aiguille, largeur_aiguille, null);
         }
-        g.drawImage(chrono[indice_chrono], posX_aiguille, posY_aiguille, largeur_aiguille, largeur_aiguille, null);
     }
 
 
@@ -851,13 +853,15 @@ public class FenetreJeu extends Container {
             public void actionPerformed(ActionEvent e) {
                 metAJour();
                 //animation chronomètre
-                double tempsTour = jeu.getTempsTour();
-                double tempsEcoule = (System.currentTimeMillis()-jeu.getJoueurCourant().getTempsTemp()) / 1000;// Convertir en secondes;
-                int indice_chrono_2 = (int) (nb_aiguilles / tempsTour * tempsEcoule);
-                if(indice_chrono_2<nb_aiguilles){
-                    indice_chrono = indice_chrono_2;
-                }else{
-                    indice_chrono = 0;
+                if(jeu.getTimerActif()) {
+                    double tempsTour = jeu.getTempsTour();
+                    double tempsEcoule = (System.currentTimeMillis() - jeu.getJoueurCourant().getTempsTemp()) / 1000;// Convertir en secondes;
+                    int indice_chrono_2 = (int) (nb_aiguilles / tempsTour * tempsEcoule);
+                    if (indice_chrono_2 < nb_aiguilles) {
+                        indice_chrono = indice_chrono_2;
+                    } else {
+                        indice_chrono = 0;
+                    }
                 }
                 if(jeu.getEstPiochee()) {
                     if(!estImageTuilePiocheeFinale){

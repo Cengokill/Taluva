@@ -32,6 +32,7 @@ public class Jeu extends Observable implements Serializable{
     private Joueur[] joueurs;
     private int nb_joueurs;
     private double temps_tour;
+    private boolean timerActif;
     Parametres p;
     final int[]score = new int[2];
     byte[] tuileAPoser = new byte[5];
@@ -64,6 +65,7 @@ public class Jeu extends Observable implements Serializable{
         taille_pioche = 12 * nb_joueurs;
         int nbIA = 0;
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
+        timerActif = false;
         joueurs = new Joueur[nb_joueurs];
         IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
@@ -589,6 +591,10 @@ public class Jeu extends Observable implements Serializable{
 
     public boolean getEstPiochee(){
         return estPiochee;
+    }
+
+    public boolean getTimerActif(){
+        return timerActif;
     }
 
     public void changePhase(){
