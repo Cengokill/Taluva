@@ -472,6 +472,8 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.jeu.initialiseMusique();
+            }else{
+                panelMenu.afficheErreur = true;
             }
             return true;
         }

@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static Vue.ImageLoader.*;
+import static Vue.ImageLoader.largeur_bouton;
 
 public class PanelMenu extends JPanel {
 
@@ -41,9 +42,10 @@ public class PanelMenu extends JPanel {
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
 
+    private int timerValue;
     private JTextField field_joueur1;
     boolean select_local,select_reseau,select_options,select_quitter,clicOptions,select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
-            select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler;
+            select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler,afficheErreur;
 
     boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
@@ -101,6 +103,7 @@ public class PanelMenu extends JPanel {
         //entier
         index_son = 3;
         index_musique = 3;
+        timerValue=0;
         //bool�ens
         select_local = false;
         select_options = false;
@@ -112,6 +115,7 @@ public class PanelMenu extends JPanel {
         select_valider = false;
         select_annuler = false;
         clicOptions = false;
+        afficheErreur = false;
 
         // Eléments de l'interface
         frame = f;
@@ -406,6 +410,7 @@ public class PanelMenu extends JPanel {
             afficheParametre(g2d);
         } else if (estConfigPartie) {
             afficherConfigPartie(g2d);
+            afficheMessageErreur(g2d);
         } else{
             afficheBoutonLocal(g2d);
             afficheBoutonReseau(g2d);
@@ -476,6 +481,24 @@ public class PanelMenu extends JPanel {
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
     }
 
+    private void afficheMessageErreur(Graphics g) {
+        Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        String message = null;
+        if(afficheErreur){
+            message="Il doit y avoir au moins 2 joueurs";
+            largeurMessageErreur = (int)(message.length()*font.getSize());
+            g.drawImage(applyColorFilter(joueur_courant,(byte) 9),(int) (xConfigPanel-largeurMessageErreur/11.5),frameHeight-(frameHeight/4),largeurMessageErreur,(int) (largeurMessageErreur*0.1),null);
+            g.drawString(message,(int) (xConfigPanel+largeurMessageErreur/5.5), (int) frameHeight-(frameHeight/4)+50);
+            if(timerValue>=20){
+                afficheErreur = false;
+                timerValue=0;
+            }
+        }
+    }
+
+
     public void boucle(){
         Timer timer = new Timer(2, new ActionListener() {
             @Override
@@ -487,6 +510,7 @@ public class PanelMenu extends JPanel {
     }
 
     public void metAJour() {
+        if(afficheErreur) timerValue++;
         repaint();
     }
 
