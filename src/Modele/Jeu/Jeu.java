@@ -69,7 +69,7 @@ public class Jeu extends Observable implements Serializable{
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.INTELLIGENTE);
         IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.INTELLIGENTE);
         if (nomJoueur0.compareTo("IA") == 0) {
@@ -198,6 +198,7 @@ public class Jeu extends Observable implements Serializable{
             jVainqueur = (byte) ((jCourant + 1) % nb_joueurs);
             return;
         }
+        getPlateau().joueCoup(coupTuile);
         doit_placer_batiment = true;
         doit_placer_tuile = false;
         joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
@@ -240,6 +241,7 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void joueIA() throws CloneNotSupportedException {
+
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
@@ -516,7 +518,7 @@ public class Jeu extends Observable implements Serializable{
         tuileAPoser[2] = (byte) tuile_courante.numero0;
         tuileAPoser[3] = (byte) tuile_courante.numero1;
         tuileAPoser[4] = (byte) tuile_courante.numero2;
-        if(type_jeu==GRAPHIQUE){//chono uniquement en mode GRAPHIQUE
+        if(type_jeu==GRAPHIQUE){//chrono uniquement en mode GRAPHIQUE
             joueurs[jCourant].startChrono();
         }
     }

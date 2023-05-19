@@ -490,7 +490,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                             taille++;
                         }
                     }
-                    System.out.println("taille : " + taille + " couleur : "+color_joueur);
+                    //System.out.println("taille : " + taille + " couleur : "+color_joueur);
                 }
             }
         }

@@ -11,7 +11,7 @@ public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
-        byte type_jeu = GRAPHIQUE;
+        byte type_jeu = CONSOLE;
         /*
         Serveur serveur = new Serveur(42113);
         Client client = new Client("localhost", 42113);
@@ -19,7 +19,7 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
          */
-        int nb_parties = 1;
+        int nb_parties = 100;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
         jeu.AFFICHAGE = true;
@@ -35,7 +35,7 @@ public class TaluvaMain {
                 jeu.initPartie("IA", "IA", "IA", "IA", 2);
                 for(Joueur joueur : jeu.getJoueurs()){
                     if(joueur.getTypeJoueur()!=Joueur.IA) {
-                        System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE ne peut etre active uniquement si tous les joueurs sont des IA.");
+                        System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE doit etre active uniquement si tous les joueurs sont des IA.");
                         System.exit(1);
                     }
                 }
