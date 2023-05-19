@@ -279,8 +279,8 @@ public class FenetreJeu extends Container {
                 posY_tours_score_j2 = (int) (posY_scores_j2-largeur_tour_score*0.49);
                 posY_tours_score_j3 = (int) (posY_scores_j3-largeur_tour_score*0.51);
                 //boutons annuler et refaire
-                posY_annuler =  (int) (hauteur_fenetre_score * 1.0);
-                posY_refaire = (int) (hauteur_fenetre_score * 1.0);
+                posY_annuler =  (int) (hauteur_fenetre_score * 1.21);
+                posY_refaire = posY_annuler;
                 //images de la pioche
                 largeur_pioche = (int) (largeur_fenetre_score*0.44);
                 hauteur_pioche = (int) (largeur_pioche*rapport_pioche);
@@ -370,13 +370,16 @@ public class FenetreJeu extends Container {
         cadreVert = lisImageBuf("cadre_vert");
         cadreViolet = lisImageBuf("cadre_violet");
         bouton_save = lisImageBuf("Sauvegarder");
+        bouton_save_select = lisImageBuf("Sauvegarder_select");
         bouton_load = lisImageBuf("Charger");
+        bouton_load_select = lisImageBuf("Charger_select");
         bouton_quitter = lisImageBuf("Quitter");
         bouton_annuler = lisImageBuf("Annuler");
         //bouton_load_select = lisImageBuf("Charger_select");
         bouton_annuler = lisImageBuf("Annuler");
         bouton_annuler_select = lisImageBuf("Annuler_select");
         bouton_refaire = lisImageBuf("Refaire");
+        bouton_refaire_select = lisImageBuf("Refaire_select");
         //bouton_refaire_select = lisImageBuf("Refaire_select");
         bouton_tuto_on = lisImageBuf("Tuto_on");
         bouton_tuto_off = lisImageBuf("Tuto_off");
@@ -781,6 +784,14 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_refaire_select, posX_fenetre_score - 10 + largeur_fenetre_score/2, posY_refaire, largeur_bouton * 2, hauteur_bouton * 2,null);
         else
             g.drawImage(bouton_refaire, posX_fenetre_score - 10 + largeur_fenetre_score/2, posY_refaire, largeur_bouton * 2, hauteur_bouton * 2,null);
+    }
+
+    public static void annuler(){
+        jeu.annuler();
+    }
+
+    public static void refaire(){
+        jeu.refaire();
     }
 
     public static void afficheJoueurCourant(Graphics g) {

@@ -43,9 +43,6 @@ public class Jeu extends Observable implements Serializable{
     public LinkedList<Tuile> pioche;
     private static int taille_pioche;
 
-    public MusicPlayer musicPlayer;
-
-
     public Jeu(byte type_jeu){
         this.type_jeu = type_jeu;
         if(type_jeu == CONSOLE) {
@@ -112,7 +109,7 @@ public class Jeu extends Observable implements Serializable{
         pioche = new LinkedList<>();
         lancePartie();
         if(type_jeu == GRAPHIQUE) {
-            musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
+            MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
             musicPlayer.setVolume(-70.0f);
             musicPlayer.loop();
         }
