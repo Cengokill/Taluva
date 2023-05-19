@@ -508,9 +508,9 @@ public class Jeu extends Observable implements Serializable{
         if(stock!=null) {
             if (stock.typeBatiment == Coup.TUILE) {
                 pioche.removeFirst();
-            } else if (stock.typeBatiment == TEMPLE) {
+            } else if (stock.typeBatiment == Coup.TEMPLE) {
                 joueurs[jCourant].incrementeTemple();
-            } else if (stock.typeBatiment == TOUR) {
+            } else if (stock.typeBatiment == Coup.TOUR) {
                 joueurs[jCourant].incrementeTour();
             } else {
                 for (int i = 0; i <= stock.nbBatiment; i++) {
