@@ -519,17 +519,21 @@ public class PanelMenuListener implements MouseListener  {
 
     private void setFullscreen(){
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
         if(panelMenu.estPleinEcran){
             panelMenu.fenetre.setSize(dim);
             panelMenu.setSize(dim);
             panelMenu.frame.setSize(dim);
             panelMenu.frame.setDefaultCloseOperation(panelMenu.frame.EXIT_ON_CLOSE);
             panelMenu.frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+            gd.setFullScreenWindow(panelMenu.frame);
         }else{
             panelMenu.fenetre.setSize(panelMenu.tailleFenetre);
             panelMenu.setSize(panelMenu.tailleFenetre);
             panelMenu.frame.setSize(panelMenu.tailleFenetre);
             panelMenu.frame.setDefaultCloseOperation(panelMenu.frame.EXIT_ON_CLOSE);
+            gd.setFullScreenWindow(null);
             panelMenu.frame.setExtendedState(Frame.NORMAL);
             panelMenu.frame.setLocationRelativeTo(null);
         }
