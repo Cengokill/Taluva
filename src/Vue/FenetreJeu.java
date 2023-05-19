@@ -296,7 +296,7 @@ public class FenetreJeu extends Container {
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
                     posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.56);
                 }else{
-                    posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
+                    posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.85);
                     posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.74);
                 }
                 //animation tuile piochée
