@@ -32,7 +32,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     // TODO BUGS //
-    // TODO -> l'IA PEUT POSER DES TEMPLES CÔTE A CÔTES
     // TODO -> NB TEMPLES INFINI ? (peut être pareil pour les joueurs à verifier)
 
     // TODO IMPLEMENTATIONS //
@@ -192,7 +191,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
         CoupValeur coupAFaire;
         ArrayList<TripletDePosition> coupsTuilePossibles = instance.getPlateau().getTripletsPossibles();
-        affichetripletpossible();
+        //affichetripletpossible();
         ArrayList<Coup> coupTuileBatimentsAEvaluer = new ArrayList<>();
 
         // On parcourt toutes les tuiles pour trouver les meilleures.
@@ -404,8 +403,16 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                             }
                         }
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                        coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
-                        plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
+                        if(batimentChoisit==0){ // Temple
+                            System.out.println("TEMPLE");
+                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TEMPLE+2));
+                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (TEMPLE+2));
+                        }else{ // TOUR
+                            System.out.println("TOUR batimentChoisit: "+batimentChoisit);
+                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TOUR+1));
+                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (TOUR+1));
+                        }
+
                         //on supprime la position du bâtiment qui n'est plus libre
                         Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
                         plateauCopie2.supprimeElementNew(posASupprimer);
