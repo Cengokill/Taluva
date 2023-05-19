@@ -48,6 +48,7 @@ public class FenetreJeu extends Container {
     static BufferedImage tour_j3 = null;
     static BufferedImage temple_j2 = null;
     static BufferedImage temple_j3 = null;
+    static Color couleur_bleue = new Color(0, 166, 255, 255);
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
@@ -551,12 +552,14 @@ public class FenetreJeu extends Container {
 
         String joueur_0 = jeu.getJoueurs()[0].getPrenom();
         Color couleur_0 = jeu.getJoueurs()[0].getCouleur();
-        g.setColor(couleur_0);
+        if(couleur_0==Color.BLUE) g.setColor(couleur_bleue);
+        else g.setColor(couleur_0);
         g.drawString(joueur_0, posX_prenom, posY_prenom_j0);
 
         String joueur_1 = jeu.getJoueurs()[1].getPrenom();
         Color couleur_1 = jeu.getJoueurs()[1].getCouleur();
-        g.setColor(couleur_1);
+        if(couleur_1==Color.BLUE) g.setColor(couleur_bleue);
+        else g.setColor(couleur_1);
         g.drawString(joueur_1, posX_prenom, posY_prenom_j1);
 
         //nombre de huttes, tours, temples des joueurs 0 et 1
@@ -588,7 +591,8 @@ public class FenetreJeu extends Container {
             g.setFont(font);
             String joueur_2 = jeu.getJoueurs()[2].getPrenom();
             Color couleur_2 = jeu.getJoueurs()[2].getCouleur();
-            g.setColor(couleur_2);
+            if(couleur_2==Color.BLUE) g.setColor(couleur_bleue);
+            else g.setColor(couleur_2);
             g.drawString(joueur_2, posX_prenom, posY_prenom_j2);
             //nombre de huttes, tours, temples du joueur 2
             font = new Font("Bookman Old Style", Font.BOLD, 20);
@@ -610,7 +614,8 @@ public class FenetreJeu extends Container {
             g.setFont(font);
             String joueur_3 = jeu.getJoueurs()[3].getPrenom();
             Color couleur_3 = jeu.getJoueurs()[3].getCouleur();
-            g.setColor(couleur_3);
+            if(couleur_3==Color.BLUE) g.setColor(couleur_bleue);
+            else g.setColor(couleur_3);
             g.drawString(joueur_3, posX_prenom, posY_prenom_j3);
             //nombre de huttes, tours, temples du joueur 3
             font = new Font("Bookman Old Style", Font.BOLD, 20);
@@ -781,7 +786,9 @@ public class FenetreJeu extends Container {
     public static void afficheJoueurCourant(Graphics g) {
         Font font = new Font("Bookman Old Style", Font.BOLD, 29);
         g.setFont(font);
-        g.setColor(jeu.getJoueurCourant().getCouleur());
+        Color couleur_joueur = jeu.getJoueurCourant().getCouleur();
+        if(couleur_joueur == Color.BLUE) couleur_joueur = couleur_bleue;
+            g.setColor(couleur_joueur);
         int longueur_prenom = jeu.getPrenomJoueurCourant().length();
         int decalage = longueur_prenom*8;
         g.drawImage(joueur_courant, posX_joueur_courant, posY_joueur_courant, largeur_joueur_courant, hauteur_joueur_courant, null);

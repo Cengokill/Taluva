@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
+import static Vue.ImageLoader.select_fin_partie;
 
 public class Jeu extends Observable implements Serializable{
     public final static byte CONSOLE = 0;
@@ -330,6 +331,7 @@ public class Jeu extends Observable implements Serializable{
                 System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
+            select_fin_partie = true;
             return true;
         }
         int nb_temples_j = joueurs[jCourant].getNbTemples();
@@ -340,39 +342,9 @@ public class Jeu extends Observable implements Serializable{
             if(AFFICHAGE){
                 System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
             }
+            select_fin_partie = true;
             return true;
         }
-        /*
-        if(pioche.isEmpty()){
-            System.out.println("Partie terminee, pioche vide !");
-            ArrayList<Joueur> joueurs_copie = new ArrayList<>();
-            ArrayList<Joueur> joueurs_tries = new ArrayList<>();
-            for (int i = 0; i < getJoueurs().length; i++) {
-                joueurs_copie.add(getJoueurs()[i]);
-            }
-            int score_meilleur = Integer.MIN_VALUE;
-            int indice_meilleur_joueur = -1;
-            int score_courant;
-            while (joueurs_copie.size() > 1) {
-                for (int i = 0; i < joueurs_copie.size(); i++) {
-                    score_courant = joueurs_copie.get(i).calculScore();
-                    if (score_courant > score_meilleur) {
-                        score_meilleur = score_courant;
-                        indice_meilleur_joueur = i;
-                        jVainqueur = (byte) indice_meilleur_joueur;
-                    }
-                }
-                joueurs_tries.add(joueurs_copie.get(indice_meilleur_joueur));
-                joueurs_copie.remove(indice_meilleur_joueur);
-                indice_meilleur_joueur = -1;
-                score_meilleur = Integer.MIN_VALUE;
-            }
-            if(AFFICHAGE){
-                afficheScore();
-            }
-            return true;
-        }
-         */
         return false;
     }
 
