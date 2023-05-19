@@ -103,9 +103,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurAnnuler(MouseEvent e) {
-            int largeur = posX_boutons + largeur_bouton;
-            int hauteur = posY_annuler+ hauteur_bouton;
-            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur){
+            int largeur = posX_fenetre_score - 10 + largeur_bouton * 2;
+            int hauteur = posY_annuler + hauteur_bouton * 2;
+            if(e.getX() >= posX_fenetre_score - 10 && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur){
+                select_refaire = false;
                 select_annuler = true;
                 return true;
             }
@@ -114,9 +115,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurRefaire(MouseEvent e) {
-            int largeur = posX_boutons + largeur_bouton;
-            int hauteur = posY_refaire+ hauteur_bouton;
-            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur){
+            int largeur = posX_fenetre_score - 10 + largeur_fenetre_score/2 + largeur_bouton * 2;
+            int hauteur = posY_refaire+ hauteur_bouton * 2;
+            if(e.getX() >= posX_fenetre_score - 10 + largeur_fenetre_score/2 && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur){
+                select_annuler = false;
                 select_refaire = true;
                 return true;
             }
@@ -134,6 +136,17 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             select_quitter = false;
             return false;
         }
+
+        public boolean estSurEchap(MouseEvent e) {
+            int largeur = posX_Echap + largeur_bouton * 2;
+            int hauteur = posY_Echap + hauteur_bouton * 2;
+            if(e.getX() >= posX_Echap && e.getX() <= largeur && e.getY() >= posY_Echap && e.getY() <= hauteur){
+                select_menu_options = true;
+                return true;
+            }
+            return false;
+        }
+
         @Override
         public void mouseClicked(MouseEvent e) {
             if(estSurTuto(e)) {
@@ -141,11 +154,11 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             if(estSurAnnuler(e)) {
                 System.out.println("Annuler");
-                fenetreJeu.sauvegarder();
+                fenetreJeu.annuler();
 
             }
             if(estSurRefaire(e)) {
-                fenetreJeu.charger();
+                fenetreJeu.refaire();
             }
             if(estSurQuitter(e)){
                 fenetreJeu.layeredPane.removeAll();
@@ -162,6 +175,8 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             fenetreJeu.panelPlateau.addToCursor(e);
             fenetreJeu.panelPlateau.annuleConstruction(e);
+
+            estSurEchap(e);
         }
 
         @Override
