@@ -492,11 +492,9 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBoutonAnnuler(e)) panelMenu.clicOptions=false;
         // TODO SAUVEGARDER LES PARAMETRES
         if(estCurseurSurBoutonValider(e)){
-            if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
-            else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*17);
-            if(panelMenu.index_musique==0) panelMenu.jeu.volumeSons = -100000;
-            else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*17);
-            panelMenu.clicOptions=false;
+            setFullscreen();
+            setVolume();
+            panelMenu.clicOptions = false;
         }
 
         estCurseurSurBoutonFermer(e);
@@ -507,6 +505,31 @@ public class PanelMenuListener implements MouseListener  {
         estCurseurSurBoutonMoins3(e);
         estCurseurSurBoutonMoins4(e);
         estCurseurSurBoutonValiderConfig(e);
+    }
+
+    private void setFullscreen(){
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        if(panelMenu.estPleinEcran){
+            panelMenu.fenetre.setSize(dim);
+            panelMenu.setSize(dim);
+            panelMenu.frame.setSize(dim);
+            panelMenu.frame.setDefaultCloseOperation(panelMenu.frame.EXIT_ON_CLOSE);
+            panelMenu.frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        }else{
+            panelMenu.fenetre.setSize(panelMenu.tailleFenetre);
+            panelMenu.setSize(panelMenu.tailleFenetre);
+            panelMenu.frame.setSize(panelMenu.tailleFenetre);
+            panelMenu.frame.setDefaultCloseOperation(panelMenu.frame.EXIT_ON_CLOSE);
+            panelMenu.frame.setExtendedState(Frame.NORMAL);
+            panelMenu.frame.setLocationRelativeTo(null);
+        }
+    }
+
+    private void setVolume(){
+        if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
+        else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*17);
+        if(panelMenu.index_musique==0) panelMenu.jeu.volumeSons = -100000;
+        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*17);
     }
 
     @Override

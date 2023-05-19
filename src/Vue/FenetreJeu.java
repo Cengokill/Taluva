@@ -358,7 +358,8 @@ public class FenetreJeu extends Container {
         //récupère la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        frame.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        if(panelMenu!=null) frame.setSize(panelMenu.getSize());
+        else frame.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
     }
