@@ -103,7 +103,7 @@ public class PanelPlateau extends JPanel {
         g2d.scale(zoomFactor, zoomFactor);
         displayHexagonMap(g);
         //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
-        if (!select_menu_options || jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA) {
+        if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA) {
             affichePrevisualisationPropagation(g);
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
