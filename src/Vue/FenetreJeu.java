@@ -767,9 +767,9 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheBoutonQuitter(Graphics g) {
-        if(select_quitter)
+        /*if(select_quitter)
             g.drawImage(bouton_quitter_select, (int)(posX_save*1.12), posY_quitter, bouton_quitter_select.getWidth() / 6, bouton_quitter_select.getHeight() / 6,null);
-        else
+        else*/
             g.drawImage(bouton_quitter, (int)(posX_save*1.12), posY_quitter, bouton_quitter.getWidth() / 6, bouton_quitter.getHeight() / 6,null);
     }
 

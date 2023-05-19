@@ -127,9 +127,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurQuitter(MouseEvent e) {
-            int largeur = posX_boutons + largeur_bouton;
+            int largeur = (int)(posX_save*1.12) + largeur_bouton;
             int hauteur = posY_quitter + hauteur_bouton;
-            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
+            if(e.getX() >= (int)(posX_save*1.12) && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
                 select_quitter = true;
                 return true;
             }
@@ -215,7 +215,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 fenetreJeu.revalidate();
                 //fenetreJeu.panelMenu.setBounds();
                 fenetreJeu.panelMenu.metAJour();
-
             }
             fenetreJeu.panelPlateau.addToCursor(e);
             fenetreJeu.panelPlateau.annuleConstruction(e);
