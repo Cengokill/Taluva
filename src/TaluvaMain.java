@@ -40,14 +40,16 @@ public class TaluvaMain {
                     }
                 }
                 while (!jeu.estFinPartie()) {
-                    jeu.pioche();
-                    jeu.joueIA();
+                    if(!jeu.pioche()) {//si pioche non vide, l'IA joue, sinon la partie est finie
+                        jeu.joueIA();
+                    }
                 }
                 if(jeu.jVainqueur == 0){
                     victoires_defaites[0]++;
                 }else{
                     victoires_defaites[1]++;
                 }
+                System.exit(0);
             }
             System.out.println("Victoires joueur 0 : " + victoires_defaites[0]);
             System.out.println("Victoires joueur 1 : " + victoires_defaites[1]);

@@ -68,7 +68,7 @@ public class Jeu extends Observable implements Serializable{
         int nbIA = 0;
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.INTELLIGENTE);
         IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.INTELLIGENTE);
@@ -472,7 +472,7 @@ public class Jeu extends Observable implements Serializable{
         plateau.joueCoup(coup);
     }
 
-    public void pioche() {
+    public boolean pioche() {
         if(pioche.isEmpty()){
             System.out.println("Partie terminee, pioche vide !");
             ArrayList<Joueur> joueurs_copie = new ArrayList<>();
@@ -500,6 +500,7 @@ public class Jeu extends Observable implements Serializable{
             if(AFFICHAGE){
                 afficheScore();
             }
+            return true;
         }
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
@@ -521,6 +522,7 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu==GRAPHIQUE){//chrono uniquement en mode GRAPHIQUE
             joueurs[jCourant].startChrono();
         }
+        return false;
     }
 
     public Tuile getTuileCourante() {
