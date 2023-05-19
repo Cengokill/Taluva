@@ -238,7 +238,6 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void joueIA() throws CloneNotSupportedException {
-
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
@@ -246,9 +245,8 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void afficheScore(){
-        System.out.println("Score :");
         for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
-            System.out.println(joueurs[joueurIndex].getPrenom()+" : "+joueurs[joueurIndex].calculScore()+" points");
+            System.out.print(joueurs[joueurIndex].getPrenom()+" : "+joueurs[joueurIndex].calculScore()+" points :\t");
             System.out.println("Huttes : "+joueurs[joueurIndex].getNbHuttesPlacees()+"\tTours : "+joueurs[joueurIndex].getNbToursPlacees()+"\tTemples : "+joueurs[joueurIndex].getNbTemplesPlaces());
         }
     }
@@ -491,7 +489,6 @@ public class Jeu extends Observable implements Serializable{
                 indice_meilleur_joueur = -1;
                 score_meilleur = Integer.MIN_VALUE;
             }
-            System.out.println("jVainqueur : " + jVainqueur);
             if(AFFICHAGE){
                 afficheScore();
             }

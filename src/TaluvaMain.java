@@ -11,7 +11,7 @@ public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
-        byte type_jeu = GRAPHIQUE;
+        byte type_jeu = CONSOLE;
         /*
         Serveur serveur = new Serveur(42113);
         Client client = new Client("localhost", 42113);
@@ -19,7 +19,7 @@ public class TaluvaMain {
         Thread t2 = new Thread(client);
         t.start();
          */
-        int nb_parties = 10;
+        int nb_parties = 100;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
         jeu.AFFICHAGE = true;
@@ -30,6 +30,8 @@ public class TaluvaMain {
             fenetre.panelMenu.metAJour();
             fenetre.panelMenu.setFenetre(fenetre);
         }else{// CONSOLE
+            //démarre le calcul du temps
+            long startTime = System.currentTimeMillis();
             for(int i = 0; i < nb_parties; i++) {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
                 jeu.initPartie("IA", "IA", "IA", "IA", 2);
@@ -44,14 +46,20 @@ public class TaluvaMain {
                         jeu.joueIA();
                     }
                 }
-                if(jeu.jVainqueur == 0){
+                if(jeu.jVainqueur == 0 && jeu.getJoueurs()[0].calculScore() != jeu.getJoueurs()[1].calculScore()){
                     victoires_defaites[0]++;
                 }else{
+                    if(jeu.getJoueurs()[0].calculScore() != jeu.getJoueurs()[1].calculScore())
                     victoires_defaites[1]++;
-                }
+                }//sinon égalité
+                System.out.println("Victoires IA 1 : " + victoires_defaites[0]);
+                System.out.println("Victoires IA 2 : " + victoires_defaites[1]);
+                long endTime = System.currentTimeMillis();
+                long timeElapsed = endTime - startTime;
+                System.out.println("Temps ecoule en secondes : " + timeElapsed/1000);
             }
-            System.out.println("Victoires joueur 0 : " + victoires_defaites[0]);
-            System.out.println("Victoires joueur 1 : " + victoires_defaites[1]);
+            //System.out.println("Victoires joueur 1 : " + victoires_defaites[0]);
+            //System.out.println("Victoires joueur 2 : " + victoires_defaites[1]);
         }
     }
 }
