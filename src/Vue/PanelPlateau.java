@@ -822,13 +822,12 @@ public class PanelPlateau extends JPanel {
             int x = j * tileWidth - (i % 2 == 1 ? tileWidth / 2 : 0);
             int y = i * verticalOffset;
 
-            int heightoffset1 = tuileAPoser[0][1];
-            heightoffset1 *= 30;
+            int heightoffset1 = jeu.getPlateau().getCarte()[i][j].getHauteur() * 60;
 
             if(!enSelection){
                 if(coupJouable(i,j)[0]==0 && coupJouable(i,j)[1]==0 && coupJouable(i,j)[2]==0) return;
                 if(jeu.getPlateau().getHexagone(i,j).getBatiment()==0 && jeu.getPlateau().getHexagone(i,j).getBiomeTerrain() != VOLCAN && jeu.getPlateau().getHexagone(i,j).getBiomeTerrain() != VIDE){
-                    g.drawImage(constructionMode, x+50 , y - heightoffset1+50, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
+                    g.drawImage(constructionMode, x+50 , y - heightoffset1, (int)(tileWidth/1.2), (int) (tileWidth/1.2) ,null);
                 }
             }
         }

@@ -33,9 +33,6 @@ class IAAleatoire extends AbstractIA {
 
     @Override
     public CoupValeur joue() {
-        if(jeu.getPioche().size()==0){
-            return null;
-        }
         Tuile tuile_pioche = jeu.getPioche().get(0);
         ArrayList<Tuile> pioche = new ArrayList<>();
         pioche.add(tuile_pioche);
@@ -128,7 +125,7 @@ class IAAleatoire extends AbstractIA {
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
                         if(batimentChoisit==TEMPLE){
                             if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.TEMPLE);
-                        }else{
+                        }else{//TOUR
                             if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.TOUR);
                         }
                     }

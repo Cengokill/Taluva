@@ -6,6 +6,10 @@ import Modele.Jeu.MusicPlayer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +46,9 @@ public class PanelMenu extends JPanel {
             select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler;
 
     boolean estConfigPartie = false;
+    int xConfigPanel, yConfigPanel;
+    JTextField nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4;
+    int nbJoueurs = 0;
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
@@ -66,6 +73,15 @@ public class PanelMenu extends JPanel {
         ecriture_Daltonien = lisImage("/Options/Mode_daltonien");
         ecriture_Extension = lisImage("/Options/Activer_extension");
         configPartieBackground = lisImageBuf("start_game_menu");
+        plus = lisImageBuf("plus");
+        moins = lisImageBuf("moins");
+        rouge = lisImageBuf("rouge");
+        vert = lisImageBuf("vert");
+        bleu = lisImageBuf("bleu");
+        violet = lisImageBuf("violet");
+
+        valider = lisImageBuf("valider");
+        fermer = lisImageBuf("fermer");
 
 
         // hover
@@ -111,6 +127,46 @@ public class PanelMenu extends JPanel {
         frameWidth=tailleFenetre.width;
         frameHeight=tailleFenetre.width;
         posX_menu_options = frameWidth;
+
+        nomJoueur1 = new JTextField(15);
+        nomJoueur1.setVisible(true);
+        nomJoueur1.setBackground(Color.WHITE);
+        nomJoueur1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(nomJoueur1, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        repaint();
+
+        nomJoueur2 = new JTextField(15);
+        nomJoueur2.setVisible(true);
+        nomJoueur2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur2.setBackground(Color.WHITE);
+        layeredPane.add(nomJoueur2, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        repaint();
+
+        nomJoueur3 = new JTextField(15);
+        nomJoueur3.setVisible(true);
+        nomJoueur3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur3.setBackground(Color.WHITE);
+        layeredPane.add(nomJoueur3, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        repaint();
+
+        nomJoueur4 = new JTextField(15);
+        nomJoueur4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur4.setVisible(true);
+        nomJoueur4.setBackground(Color.WHITE);
+        layeredPane.add(nomJoueur4, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        repaint();
+
+        nomJoueur1.setVisible(false);
+        nomJoueur2.setVisible(false);
+        nomJoueur3.setVisible(false);
+        nomJoueur4.setVisible(false);
+
+        limiterNombreCaractereNomJoueur();
+
         //musique
         musicPlayer = new MusicPlayer("Musiques\\Merchants_of_Novigrad.wav");
         musicPlayer.setVolume(-50.0f);
@@ -118,6 +174,68 @@ public class PanelMenu extends JPanel {
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
         boucle();//Timer
+    }
+
+    private void limiterNombreCaractereNomJoueur() {
+        ((AbstractDocument) nomJoueur1.getDocument()).setDocumentFilter(new DocumentFilter() {
+            private int max = 15;
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                int overLimit = (currentLength + text.length()) - max - length;
+                if (overLimit <= 0) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else if (overLimit < text.length()) {
+                    String cuttedString = text.substring(0, text.length() - overLimit);
+                    super.replace(fb, offset, length, cuttedString, attrs);
+                }
+            }
+        });
+
+        ((AbstractDocument) nomJoueur2.getDocument()).setDocumentFilter(new DocumentFilter() {
+            private int max = 15;
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                int overLimit = (currentLength + text.length()) - max - length;
+                if (overLimit <= 0) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else if (overLimit < text.length()) {
+                    String cuttedString = text.substring(0, text.length() - overLimit);
+                    super.replace(fb, offset, length, cuttedString, attrs);
+                }
+            }
+        });
+
+        ((AbstractDocument) nomJoueur3.getDocument()).setDocumentFilter(new DocumentFilter() {
+            private int max = 15;
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                int overLimit = (currentLength + text.length()) - max - length;
+                if (overLimit <= 0) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else if (overLimit < text.length()) {
+                    String cuttedString = text.substring(0, text.length() - overLimit);
+                    super.replace(fb, offset, length, cuttedString, attrs);
+                }
+            }
+        });
+
+        ((AbstractDocument) nomJoueur4.getDocument()).setDocumentFilter(new DocumentFilter() {
+            private int max = 15;
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                int overLimit = (currentLength + text.length()) - max - length;
+                if (overLimit <= 0) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else if (overLimit < text.length()) {
+                    String cuttedString = text.substring(0, text.length() - overLimit);
+                    super.replace(fb, offset, length, cuttedString, attrs);
+                }
+            }
+        });
     }
 
     public void setFenetre(FenetreJeu fenetre) {
@@ -279,6 +397,7 @@ public class PanelMenu extends JPanel {
     }
 
     public void paint(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         calculeRapportsEtPositions();
@@ -286,13 +405,60 @@ public class PanelMenu extends JPanel {
         if(clicOptions){
             afficheParametre(g2d);
         } else if (estConfigPartie) {
-            g2d.drawImage(configPartieBackground, getWidth()/2 - configPartieBackground.getWidth()/4, getHeight()/2 - configPartieBackground.getHeight()/4, configPartieBackground.getWidth()/2, configPartieBackground.getHeight()/2, null);
+            afficherConfigPartie(g2d);
         } else{
             afficheBoutonLocal(g2d);
             afficheBoutonReseau(g2d);
             afficheBoutonOptions(g2d);
             afficheBoutonQuitter(g2d);
         }
+    }
+
+    private void afficherConfigPartie(Graphics2D g2d) {
+        xConfigPanel = getWidth()/2 - configPartieBackground.getWidth()/4;
+        yConfigPanel = getHeight()/2 - configPartieBackground.getHeight()/4;
+
+
+        g2d.drawImage(configPartieBackground, xConfigPanel ,yConfigPanel , configPartieBackground.getWidth()/2, configPartieBackground.getHeight()/2, null);
+        g2d.drawImage(plus, xConfigPanel + 220, yConfigPanel + 240, plus.getWidth(), plus.getHeight(), null);
+        g2d.drawImage(plus, xConfigPanel + 440, yConfigPanel + 240, plus.getWidth(), plus.getHeight(), null);
+
+        if (nbJoueurs >= 1) {
+            nomJoueur1.setVisible(true);
+            g2d.drawImage(rouge, xConfigPanel + 440, yConfigPanel + 340, plus.getWidth(), plus.getHeight(), null);
+        }
+        if (nbJoueurs >= 2) {
+            nomJoueur2.setVisible(true);
+            g2d.drawImage(bleu, xConfigPanel + 440, yConfigPanel + 440, plus.getWidth(), plus.getHeight(), null);
+        }
+        if (nbJoueurs >= 3) {
+            nomJoueur3.setVisible(true);
+            g2d.drawImage(violet, xConfigPanel + 440, yConfigPanel + 540, plus.getWidth(), plus.getHeight(), null);
+        }
+        if (nbJoueurs == 4) {
+            nomJoueur4.setVisible(true);
+            g2d.drawImage(vert, xConfigPanel + 440, yConfigPanel + 640, plus.getWidth(), plus.getHeight(), null);
+            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 660, plus.getWidth()/2, plus.getHeight()/2, null);
+        }
+
+        if (nbJoueurs == 1) {
+            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 360, plus.getWidth()/2, plus.getHeight()/2, null);
+        }
+        if (nbJoueurs == 2) {
+            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 460, plus.getWidth()/2, plus.getHeight()/2, null);
+        }
+        if (nbJoueurs == 3) {
+            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 560, plus.getWidth()/2, plus.getHeight()/2, null);
+        }
+
+
+        g2d.drawImage(fermer, xConfigPanel + 40, yConfigPanel + 700, plus.getWidth(), plus.getHeight(), null);
+        g2d.drawImage(valider, xConfigPanel + 610, yConfigPanel + 700, plus.getWidth(), plus.getHeight(), null);
+
+        nomJoueur1.setBounds(xConfigPanel + 180, yConfigPanel + 360, 200, 40);
+        nomJoueur2.setBounds(xConfigPanel + 180, yConfigPanel + 460, 200, 40);
+        nomJoueur3.setBounds(xConfigPanel + 180, yConfigPanel + 560, 200, 40);
+        nomJoueur4.setBounds(xConfigPanel + 180, yConfigPanel + 660, 200, 40);
     }
 
     private void calculeRapportsEtPositions() {
