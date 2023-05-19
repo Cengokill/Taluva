@@ -282,10 +282,10 @@ public class Jeu extends Observable implements Serializable{
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=Coup.SELECTEUR_BATIMENT){
             if(type_bat == Coup.HUTTE){
-                if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
-                if(plateau.getHauteurTuile(ligne,colonne)>=3) joueurs[jCourant].incrementeHutte();
-                joueurs[jCourant].incrementeHutte();
-            }
+                for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
+                    joueurs[jCourant].incrementeHutte();
+                    }
+                }
             if(type_bat == Coup.TEMPLE) {
                 joueurs[jCourant].incrementeTemple();
             }
@@ -329,9 +329,9 @@ public class Jeu extends Observable implements Serializable{
     public void incrementePropagation(int ligne, int colonne){
         //TODO : A modifier pour corriger le bu de propagation
         if(ligne==0||colonne==0) return;
-        if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
-        if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
-        joueurs[jCourant].incrementeHutte();
+        for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++){
+            joueurs[jCourant].incrementeHutte();
+        }
     }
 
     public void changeJoueur() {
