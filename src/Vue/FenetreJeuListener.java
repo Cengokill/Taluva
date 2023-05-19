@@ -285,8 +285,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public void mouseMoved(MouseEvent e) {
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e) || estSurEchap(e) || estSurSauvegarder(e) || estSurCharger(e) || estSurOption(e)) {
                 fenetreJeu.setHandCursor();
+                fenetreJeu.panelPlateau.estSurBouton = true;
             }else{
                 fenetreJeu.setStandardCursor();
+                fenetreJeu.panelPlateau.estSurBouton = false;
             }
             hoverTilePosition = e.getPoint();
             fenetreJeu.panelPlateau.updateCursorPosOnTiles(e);

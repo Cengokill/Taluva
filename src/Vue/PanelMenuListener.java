@@ -543,9 +543,9 @@ public class PanelMenuListener implements MouseListener  {
 
     private void setVolume(){
         if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
-        else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*17);
+        else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*13);
         if(panelMenu.index_musique==0) panelMenu.jeu.volumeSons = -100000;
-        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*17);
+        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*13);
     }
 
     @Override
