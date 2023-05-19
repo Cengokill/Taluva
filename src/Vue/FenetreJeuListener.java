@@ -205,6 +205,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 fenetreJeu.refaire();
             }
             if(estSurQuitter(e)){
+                fenetreJeu.getJeu().musicPlayer.stop();
                 fenetreJeu.layeredPane.removeAll();
                 // On passe du menu au jeu
                 try {

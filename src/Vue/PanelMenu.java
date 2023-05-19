@@ -25,7 +25,7 @@ public class PanelMenu extends JPanel {
     JLayeredPane layeredPane;
 
     FenetreJeu fenetre;
-    Jeu jeu;
+    public Jeu jeu;
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
 

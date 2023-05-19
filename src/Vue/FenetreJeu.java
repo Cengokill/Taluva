@@ -829,6 +829,10 @@ public class FenetreJeu extends Container {
         }
     }
 
+    public Jeu getJeu(){
+        return jeu;
+    }
+
     public static void charger() {
         try {
             FileInputStream fichier = new FileInputStream("sauvegarde.txt");

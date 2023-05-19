@@ -461,6 +461,7 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.fenetre.panelPlateau.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.jeu.initialiseMusique();
             }
             return true;
         }
@@ -490,7 +491,13 @@ public class PanelMenuListener implements MouseListener  {
         // Choix Confirmer/Annuler
         if(estCurseurSurBoutonAnnuler(e)) panelMenu.clicOptions=false;
         // TODO SAUVEGARDER LES PARAMETRES
-        if(estCurseurSurBoutonValider(e)) panelMenu.clicOptions=false;
+        if(estCurseurSurBoutonValider(e)){
+            if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
+            else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*17);
+            if(panelMenu.index_musique==0) panelMenu.jeu.volumeSons = -100000;
+            else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*17);
+            panelMenu.clicOptions=false;
+        }
 
         estCurseurSurBoutonFermer(e);
         estCurseurSurBoutonAddJoueur(e);

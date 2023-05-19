@@ -17,6 +17,8 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.select_fin_partie;
 
 public class Jeu extends Observable implements Serializable{
+
+    public int volumeSons = 50, volumeMusiques = 50;
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static boolean AFFICHAGE;
@@ -24,6 +26,7 @@ public class Jeu extends Observable implements Serializable{
     public int delai;
     public boolean debug;
     Plateau plateau;
+    public MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     private Tuile tuile_courante;
     private int delai_avant_pioche = 50;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
@@ -110,9 +113,11 @@ public class Jeu extends Observable implements Serializable{
 
         pioche = new LinkedList<>();
         lancePartie();
+    }
+
+    public void initialiseMusique(){
         if(type_jeu == GRAPHIQUE) {
-            MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
-            musicPlayer.setVolume(-70.0f);
+            musicPlayer.setVolume(volumeMusiques);
             musicPlayer.loop();
         }
     }
