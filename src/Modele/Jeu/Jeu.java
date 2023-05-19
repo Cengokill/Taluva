@@ -55,38 +55,43 @@ public class Jeu extends Observable implements Serializable{
         debug = false;
     }
 
-    public void initPartie(String nomJoueur1, String nomJoueur2, String nomJoueur3, String nomJoueur4, int nbJoueur) throws CloneNotSupportedException {
-        //jCourant = (byte) new Random().nextInt(1);
-        nb_joueurs = nbJoueur;
+    public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs) throws CloneNotSupportedException {
+        //jCourant = (byte) new Random().nextInt(nb_joueurs-1);
+        if(nomJoueur0.isBlank()) nomJoueur0 = "Joueur 1";
+        if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
+        if(nomJoueur2.isBlank()) nomJoueur2 = "Joueur 3";
+        if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
+        System.out.println("nomJoueur1 : "+nomJoueur1);
+        jCourant = 0;
+        nb_joueurs = nbJoueurs;
         taille_pioche = 12 * nb_joueurs;
-
         int nbIA = 0;
-
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
-        jCourant = 0;
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
         IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
-
-        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, nomJoueur1);
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, nomJoueur2);
-
-        if (nomJoueur1.compareTo("IA") == 0) {
+        IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
+        IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
+        if (nomJoueur0.compareTo("IA") == 0) {
             IA0.setPrenom("IA" + (nbIA + 1));
             nbIA++;
             joueurs[0] = IA0;
+        }else{
+            joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, nomJoueur0);
         }
         joueurs[0].setCouleur(Color.RED);
-        if (nomJoueur2.compareTo("IA") == 0) {
+        if (nomJoueur1.compareTo("IA") == 0) {
             IA1.setPrenom("IA" + (nbIA + 1));
             nbIA++;
             joueurs[1] = IA1;
+        }else{
+            joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, nomJoueur1);
         }
         joueurs[1].setCouleur(Color.BLUE);
 
-        if (nbJoueur >= 3) {
-            joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, nomJoueur3);
-            if (nomJoueur3.compareTo("IA") == 0) {
+        if (nbJoueurs >= 3) {
+            joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, nomJoueur2);
+            if (nomJoueur2.compareTo("IA") == 0) {
                 IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
                 IA2.setPrenom("IA" + (nbIA + 1));
                 nbIA++;
@@ -94,9 +99,9 @@ public class Jeu extends Observable implements Serializable{
             }
             joueurs[2].setCouleur(Color.MAGENTA);
         }
-        if (nbJoueur == 4) {
-            joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, nomJoueur4);
-            if (nomJoueur4.compareTo("IA") == 0) {
+        if (nbJoueurs == 4) {
+            joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, nomJoueur3);
+            if (nomJoueur3.compareTo("IA") == 0) {
                 IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
                 IA3.setPrenom("IA" + (nbIA + 1));
                 joueurs[3] = IA3;
@@ -338,6 +343,7 @@ public class Jeu extends Observable implements Serializable{
             }
             return true;
         }
+        /*
         if(pioche.isEmpty()){
             System.out.println("Partie terminee, pioche vide !");
             ArrayList<Joueur> joueurs_copie = new ArrayList<>();
@@ -367,6 +373,7 @@ public class Jeu extends Observable implements Serializable{
             }
             return true;
         }
+         */
         return false;
     }
 
@@ -379,12 +386,11 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void changeJoueur() {
-        //System.out.println("Changement de joueur");
-        jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
         if(estFinPartie()){
             return;
         }
+        jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         if(type_jeu==GRAPHIQUE){
             Timer timer = new Timer(delai_avant_pioche, e -> {
                 if(getJoueurCourant().type_joueur==Joueur.IA) {
@@ -494,10 +500,38 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void pioche() {
-        if(AFFICHAGE) System.out.println("Tuiles dans la pioche : " + pioche.size());
+        if(pioche.isEmpty()){
+            System.out.println("Partie terminee, pioche vide !");
+            ArrayList<Joueur> joueurs_copie = new ArrayList<>();
+            ArrayList<Joueur> joueurs_tries = new ArrayList<>();
+            for (int i = 0; i < getJoueurs().length; i++) {
+                joueurs_copie.add(getJoueurs()[i]);
+            }
+            int score_meilleur = Integer.MIN_VALUE;
+            int indice_meilleur_joueur = -1;
+            int score_courant;
+            while (joueurs_copie.size() > 1) {
+                for (int i = 0; i < joueurs_copie.size(); i++) {
+                    score_courant = joueurs_copie.get(i).calculScore();
+                    if (score_courant > score_meilleur) {
+                        score_meilleur = score_courant;
+                        indice_meilleur_joueur = i;
+                        jVainqueur = (byte) indice_meilleur_joueur;
+                    }
+                }
+                joueurs_tries.add(joueurs_copie.get(indice_meilleur_joueur));
+                joueurs_copie.remove(indice_meilleur_joueur);
+                indice_meilleur_joueur = -1;
+                score_meilleur = Integer.MIN_VALUE;
+            }
+            if(AFFICHAGE){
+                afficheScore();
+            }
+        }
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
         pioche.remove(0);
+        if(AFFICHAGE) System.out.println("Tuiles dans la pioche : " + pioche.size());
         if(type_jeu==GRAPHIQUE) {
             estPiochee = true;
             Timer timer = new Timer(600, e -> {
