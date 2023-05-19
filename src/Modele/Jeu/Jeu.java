@@ -25,7 +25,7 @@ public class Jeu extends Observable implements Serializable{
     public boolean debug;
     Plateau plateau;
     private Tuile tuile_courante;
-    private int delai_avant_pioche = 800;
+    private int delai_avant_pioche = 50;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
     public byte jCourant;
     public byte jVainqueur;
@@ -51,7 +51,7 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 1000;
+            delai = 50;
         }
         debug = false;
     }
@@ -252,7 +252,7 @@ public class Jeu extends Observable implements Serializable{
         System.out.println("Score :");
         for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
             System.out.println(joueurs[joueurIndex].getPrenom()+" : "+joueurs[joueurIndex].calculScore()+" points");
-            System.out.println("Tours : "+joueurs[joueurIndex].getNbToursPlacees()+"\tTemples : "+joueurs[joueurIndex].getNbTemplesPlaces());
+            System.out.println("Huttes : "+joueurs[joueurIndex].getNbHuttesPlacees()+"\tTours : "+joueurs[joueurIndex].getNbToursPlacees()+"\tTemples : "+joueurs[joueurIndex].getNbTemplesPlaces());
         }
     }
 
@@ -329,10 +329,6 @@ public class Jeu extends Observable implements Serializable{
 
     public boolean estFinPartie() {
         if(estPartieFinie){// Si le joueur courant n'a pas pu jouer
-            if(AFFICHAGE){
-                System.out.println(joueurs[((jVainqueur+1)%2)].getPrenom() + " ne peut plus placer de batiment !");
-                System.out.println(joueurs[jVainqueur].getPrenom() + " a gagne !");
-            }
             select_fin_partie = true;
             return true;
         }
@@ -474,7 +470,8 @@ public class Jeu extends Observable implements Serializable{
 
     public boolean pioche() {
         if(pioche.isEmpty()){
-            System.out.println("Partie terminee, pioche vide !");
+            estPartieFinie = true;
+            if(AFFICHAGE) System.out.println("Partie terminee, pioche vide !");
             ArrayList<Joueur> joueurs_copie = new ArrayList<>();
             ArrayList<Joueur> joueurs_tries = new ArrayList<>();
             for (int i = 0; i < getJoueurs().length; i++) {
@@ -497,6 +494,7 @@ public class Jeu extends Observable implements Serializable{
                 indice_meilleur_joueur = -1;
                 score_meilleur = Integer.MIN_VALUE;
             }
+            System.out.println("jVainqueur : " + jVainqueur);
             if(AFFICHAGE){
                 afficheScore();
             }
