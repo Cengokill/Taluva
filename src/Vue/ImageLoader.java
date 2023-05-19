@@ -70,9 +70,9 @@ public class ImageLoader {
     public static BufferedImage desertTile_0_Red, desertTile_1_Red, desertTile_2_Red;
     public static BufferedImage montagneTile_0_Red, montagneTile_1_Red, montagneTile_2_Red;
     public static BufferedImage lacTile_0_Red, lacTile_1_Red, lacTile_2_Red;
-    public static BufferedImage tileErreur, placable;
+    public static BufferedImage tileErreur, placable, plus, moins;
 
-    public static BufferedImage configPartieBackground;
+    public static BufferedImage configPartieBackground, rouge, vert, violet, bleu, fermer, valider;
 
     public static BufferedImage
             plateau_hautGauche_etage1,

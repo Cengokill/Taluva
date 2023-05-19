@@ -32,7 +32,7 @@ public class TaluvaMain {
         }else{
             for(int i = 0; i < nb_parties; i++) {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
-                jeu.initPartie();
+                jeu.initPartie("A", "B", "C", "D", 4);
                 for(Joueur joueur : jeu.getJoueurs()){
                     if(joueur.getTypeJoueur()!=Joueur.IA) {
                         System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE ne peut etre active uniquement si tous les joueurs sont des IA.");

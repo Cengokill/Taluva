@@ -55,33 +55,54 @@ public class Jeu extends Observable implements Serializable{
         debug = false;
     }
 
-    public void initPartie() throws CloneNotSupportedException {
+    public void initPartie(String nomJoueur1, String nomJoueur2, String nomJoueur3, String nomJoueur4, int nbJoueur) throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(1);
-        nb_joueurs = 2;
+        nb_joueurs = nbJoueur;
         taille_pioche = 12 * nb_joueurs;
+
+        int nbIA = 0;
+
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
-        IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
-        IA1 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA2 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA3 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA0.setPrenom("IA0");
-        IA1.setPrenom("IA1");
-        IA2.setPrenom("IA2");
-        IA3.setPrenom("IA3");
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
-        //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
-        //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        joueurs[0] = IA0;
-        joueurs[1] = IA1;
-        //joueurs[2] = IA2;
-        //joueurs[3] = IA3;
-        joueurs[0].setCouleur(Color.RED);
-        joueurs[1].setCouleur(Color.BLUE);
-        //joueurs[2].setCouleur(Color.BLUE);
-        //joueurs[3].setCouleur(Color.RED);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
+
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, nomJoueur1);
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, nomJoueur2);
+
+        if (nomJoueur1.compareTo("IA") == 0) {
+            IA0.setPrenom("IA" + (nbIA + 1));
+            nbIA++;
+            joueurs[0] = IA0;
+            joueurs[0].setCouleur(Color.RED);
+        }
+        if (nomJoueur2.compareTo("IA") == 0) {
+            IA1.setPrenom("IA" + (nbIA + 1));
+            nbIA++;
+            joueurs[1] = IA1;
+            joueurs[1].setCouleur(Color.BLUE);
+        }
+        if (nbJoueur >= 3) {
+            joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, nomJoueur3);
+            if (nomJoueur3.compareTo("IA") == 0) {
+                IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
+                IA2.setPrenom("IA" + (nbIA + 1));
+                nbIA++;
+                joueurs[2] = IA2;
+            }
+            joueurs[2].setCouleur(Color.MAGENTA);
+        }
+        if (nbJoueur == 4) {
+            joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, nomJoueur4);
+            if (nomJoueur4.compareTo("IA") == 0) {
+                IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
+                IA3.setPrenom("IA" + (nbIA + 1));
+                joueurs[3] = IA3;
+            }
+            joueurs[3].setCouleur(Color.GREEN);
+        }
+
         pioche = new LinkedList<>();
         lancePartie();
         if(type_jeu == GRAPHIQUE) {

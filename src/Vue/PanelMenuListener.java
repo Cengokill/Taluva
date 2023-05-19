@@ -8,6 +8,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 
+import static Vue.ImageLoader.*;
+
 public class PanelMenuListener implements MouseListener  {
 
     final Cursor idle_cursor;
@@ -32,6 +34,9 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Local(MouseEvent e){
+        if (panelMenu.estConfigPartie) {
+            return false;
+        }
         int startx = panelMenu.posX_boutons-(panelMenu.largeur_background/9) ;
         int starty = 0;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
@@ -47,6 +52,9 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Reseau(MouseEvent e){
+        if (panelMenu.estConfigPartie) {
+            return false;
+        }
         int startx = panelMenu.posX_boutons+(panelMenu.largeur_background/9);
         int starty = 0;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
@@ -62,6 +70,9 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Options(MouseEvent e){
+        if (panelMenu.estConfigPartie) {
+            return false;
+        }
         int startx = panelMenu.posX_boutons;
         int starty = panelMenu.posY_Options;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
@@ -76,6 +87,9 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
+        if (panelMenu.estConfigPartie) {
+            return false;
+        }
         int startx = panelMenu.posX_boutons;
         int starty = panelMenu.posY_Quitter;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
@@ -90,6 +104,7 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBoutonGauche_1(MouseEvent e){
+
         int startx = panelMenu.posX_gauche1;
         int starty = panelMenu.posY_slider1;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
@@ -188,19 +203,275 @@ public class PanelMenuListener implements MouseListener  {
         return false;
     }
 
+    public boolean estCurseurSurBoutonFermer(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 40;
+        int starty = panelMenu.yConfigPanel + 700;
+        if(e.getX() >= startx && e.getX() <= startx+ fermer.getWidth() && e.getY() >= starty && e.getY() <= starty+ fermer.getHeight() && !panelMenu.clicOptions) {
+            panelMenu.estConfigPartie = false;
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonAddJoueur(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 220;
+        int starty = panelMenu.yConfigPanel + 240;
+        if(e.getX() >= startx && e.getX() <= startx+ plus.getWidth() && e.getY() >= starty && e.getY() <= starty+ plus.getHeight() && !panelMenu.clicOptions) {
+
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+            if (panelMenu.nbJoueurs == 0) {
+                panelMenu.nomJoueur1.setEnabled(true);
+                panelMenu.nomJoueur1.setText("");
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur2.setEnabled(true);
+                panelMenu.nomJoueur2.setText("");
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur3.setEnabled(true);
+                panelMenu.nomJoueur3.setText("");
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur4.setEnabled(true);
+                panelMenu.nomJoueur4.setText("");
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+
+
+            panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonAddIA(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 440;
+        int starty = panelMenu.yConfigPanel + 240;
+        if(e.getX() >= startx && e.getX() <= startx+ plus.getWidth() && e.getY() >= starty && e.getY() <= starty+ plus.getHeight() && !panelMenu.clicOptions) {
+            System.out.println(e.getButton());
+
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+            if (panelMenu.nbJoueurs == 0) {
+                panelMenu.nomJoueur1.setEnabled(false);
+                panelMenu.nomJoueur1.setText("IA");
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur2.setEnabled(false);
+                panelMenu.nomJoueur2.setText("IA");
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur3.setEnabled(false);
+                panelMenu.nomJoueur3.setText("IA");
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur4.setEnabled(false);
+                panelMenu.nomJoueur4.setText("IA");
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+
+            panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonMoins1(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+
+        int startx = panelMenu.xConfigPanel + 440 + 80;
+        int starty = panelMenu.yConfigPanel + 360;
+        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nbJoueurs = 0;
+            }
+
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonMoins2(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 440 + 80;
+        int starty = panelMenu.yConfigPanel + 460;
+        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nbJoueurs = 1;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonMoins3(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 440 + 80;
+        int starty = panelMenu.yConfigPanel + 560;
+        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nbJoueurs = 2;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonMoins4(MouseEvent e){
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 440 + 80;
+        int starty = panelMenu.yConfigPanel + 660;
+        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nbJoueurs = 3;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estCurseurSurBoutonValiderConfig(MouseEvent e)  throws CloneNotSupportedException{
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.xConfigPanel + 610;
+        int starty = panelMenu.yConfigPanel + 700;
+        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+            if (panelMenu.nbJoueurs >= 2) {
+                String nomJoueur1 = panelMenu.nomJoueur1.getText();
+                String nomJoueur2 = panelMenu.nomJoueur1.getText();
+                String nomJoueur3 = panelMenu.nomJoueur1.getText();
+                String nomJoueur4 = panelMenu.nomJoueur1.getText();
+                int nbJoueur = panelMenu.nbJoueurs;
+
+
+                //efface tout le contenu de la frame
+                panelMenu.layeredPane.removeAll();
+                panelMenu.musicPlayer.stop();
+
+                // On passe du menu au jeu
+                ImageLoader.loadImages();
+                panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur);
+                panelMenu.fenetre.panelPlateau.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
+            }
+            return true;
+        }
+        return false;
+    }
+
     public void verif(MouseEvent e) throws IOException, CloneNotSupportedException {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
-            //efface tout le contenu de la frame
-            panelMenu.layeredPane.removeAll();
-            panelMenu.musicPlayer.stop();
-
-            // On passe du menu au jeu
-            ImageLoader.loadImages();
-            panelMenu.fenetre.initRenduJeu();
-            panelMenu.fenetre.panelPlateau.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
-            panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
-            panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
-
+            panelMenu.nbJoueurs = 0;
+            panelMenu.estConfigPartie = true;
         }
         if(estCurseurSurBouton_Options(e)){
             panelMenu.clicOptions = !panelMenu.clicOptions;
@@ -221,21 +492,20 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBoutonAnnuler(e)) panelMenu.clicOptions=false;
         // TODO SAUVEGARDER LES PARAMETRES
         if(estCurseurSurBoutonValider(e)) panelMenu.clicOptions=false;
+
+        estCurseurSurBoutonFermer(e);
+        estCurseurSurBoutonAddJoueur(e);
+        estCurseurSurBoutonAddIA(e);
+        estCurseurSurBoutonMoins1(e);
+        estCurseurSurBoutonMoins2(e);
+        estCurseurSurBoutonMoins3(e);
+        estCurseurSurBoutonMoins4(e);
+        estCurseurSurBoutonValiderConfig(e);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(estCurseurSurBouton_Local(e)) System.out.println("local");
-        if(estCurseurSurBouton_Reseau(e)) System.out.println("reseau");
-        if(estCurseurSurBouton_Options(e)) System.out.println("options");
-        if(estCurseurSurBouton_Quitter(e)) System.out.println("quitter");
-        try {
-            verif(e);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        } catch (CloneNotSupportedException ex) {
-            throw new RuntimeException(ex);
-        }
+
     }
 
     @Override
