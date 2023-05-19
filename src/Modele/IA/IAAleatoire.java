@@ -33,7 +33,7 @@ class IAAleatoire extends AbstractIA {
 
     @Override
     public CoupValeur joue() {
-        Tuile tuile_pioche = jeu.getPioche().get(0);
+        Tuile tuile_pioche = jeu.getTuileCourante();
         ArrayList<Tuile> pioche = new ArrayList<>();
         pioche.add(tuile_pioche);
         Plateau plateauIA = jeu.getPlateau();
