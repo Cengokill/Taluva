@@ -596,8 +596,6 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public void joueCoup(Coup coup) {
-
-        byte num_joueur = coup.getNumJoueur();
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
@@ -621,21 +619,22 @@ public class Plateau implements Serializable, Cloneable {
             listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(positions_libres);
-            if(coup.typePlacement!=4) {
+            if(coup.typePlacement!=Coup.SELECTEUR_BATIMENT ) {
                 historique.ajoute(coup);
             }
 
 
-        } else if (coup.typePlacement == Coup.BATIMENT || coup.typePlacement == 2 || coup.typePlacement == 3 || coup.typePlacement == 4){
+        } else if (coup.typePlacement == Coup.SELECTEUR_BATIMENT || coup.typePlacement == Coup.HUTTE || coup.typePlacement == Coup.TOUR || coup.typePlacement == Coup.TEMPLE){
             hauteur = carte[coup.batimentLigne][coup.batimentColonne].getHauteur();
             byte batiment = 0;
-            if (coup.typePlacement == 1) {
+            if (coup.typePlacement == Coup.HUTTE) {
                 batiment = Hexagone.HUTTE;
-            } else if (coup.typePlacement == 2) {
+            } else if (coup.typePlacement == Coup.TEMPLE) {
                 batiment = TEMPLE;
-            } else if (coup.typePlacement == 3) {
+            } else if (coup.typePlacement == Coup.TOUR) {
                 batiment = Hexagone.TOUR;
-            } else if (coup.typePlacement == 4){
+            } else if (coup.typePlacement == Coup.SELECTEUR_BATIMENT){
+                System.out.println("Hexagone.CHOISIR_BATIMENT");
                 batiment = Hexagone.CHOISIR_BATIMENT;
             }
             if(batiment!=Hexagone.CHOISIR_BATIMENT){
@@ -645,10 +644,9 @@ public class Plateau implements Serializable, Cloneable {
             }
 
             carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(color_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
-            if(coup.typePlacement!=4){
+            if(coup.typePlacement!=Coup.SELECTEUR_BATIMENT ){
                 historique.ajoute(coup);
             }
-
         }
     }
 
@@ -892,11 +890,14 @@ public class Plateau implements Serializable, Cloneable {
         return false;
     }
 
-    // TOUJOURS verifier qu'il reste le batiment dans l'inventaire du joueur avant de la poser
+    // TOUJOURS verifier qu'il reste le bâtiment dans l'inventaire du joueur avant de la poser
     public int[] getBatimentPlacable(int i,int j, Color color_joueur){
+        //coups[0] = 1 si on peut poser un temple, 0 sinon
+        //coups[1] = 1 si on peut poser une hutte, 0 sinon
+        //coups[2] = 1 si on peut poser une tour, 0 sinon
         int[] coups = new int[3];
         if(getHexagone(i,j).getBiomeTerrain()==VOLCAN) return coups;
-        if(getBatiment(i,j)!=0 && getBatiment(i,j)!=CHOISIR_BATIMENT) return coups; // S'il y a deja un batiment, ce n'est pas construisible
+        if(getBatiment(i,j)!=0 && getBatiment(i,j)!=CHOISIR_BATIMENT) return coups; // S'il y a deja un bâtiment, ce n'est pas constructible
         if(getHauteurTuile(i,j)>0) coups[1] = 1;
         if((getHauteurTuile(i,j)>1 && !aCiteAutour(i,j,color_joueur))) coups[1] = 0;  // Peut pas placer hutte a une hauteur > 1 s'il n'y pas de hutte à côté OU plus de hutte dans l'inventaire
         if(peutPoserTour(i,j,color_joueur)) coups[2] = 1;

@@ -2,6 +2,7 @@ package Vue;
 
 import Controleur.ControleurMediateur;
 import Modele.IA.AbstractIA;
+import Modele.Jeu.Coup;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Jeu;
@@ -938,17 +939,17 @@ public class PanelPlateau extends JPanel {
                 if (jeu.getPlateau().getHauteurTuile(i, j) > 1 && !aCiteAutour(i, j)) return;
                 enSelection = false;
                 decomptePropagation();
-                controleur.placeBatiment(i, j, (byte) 1);
+                controleur.placeBatiment(i, j, Coup.HUTTE);
             } else if (s == 2) { // place une tour
                 System.out.println("PLACE UNE TOUR");
                 if (peutPoserTour(i, j)) { // on verifie la condition pour poser une tour
                     enSelection = false;
-                    controleur.placeBatiment(i, j, (byte) 3);
+                    controleur.placeBatiment(i, j, Coup.TOUR);
                 }
             } else if (s == 1) { // place un temple
                 if (peutPoserTemple(i, j)) {
                     enSelection = false;
-                    controleur.placeBatiment(i, j, (byte) 2);
+                    controleur.placeBatiment(i, j, Coup.TEMPLE);
                 }
             }
             scrollValue = 1;//on met la valeur de scrollValue à 1 car si elle est à 0 la prochaine tuile ne s'affichera pas
@@ -997,7 +998,7 @@ public class PanelPlateau extends JPanel {
                 posBat_x = i;
                 posBat_y = j;
                 enSelection = true;
-                controleur.placeBatiment(posBat_x, posBat_y,(byte) 4);
+                controleur.placeBatiment(posBat_x, posBat_y, Coup.SELECTEUR_BATIMENT);
             }else{//pas de bâtiment à placer, le joueur a perdu
                 jeu.getJoueurCourant().stopChrono();
             }

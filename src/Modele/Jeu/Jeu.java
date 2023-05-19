@@ -70,12 +70,12 @@ public class Jeu extends Observable implements Serializable{
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
-        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
+        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
+        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        joueurs[0] = IA0;
-        joueurs[1] = IA1;
+        //joueurs[0] = IA0;
+        //joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
         joueurs[0].setCouleur(Color.RED);
@@ -280,16 +280,16 @@ public class Jeu extends Observable implements Serializable{
             return false;
         }
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
-        if(type_bat!=4){
-            if(type_bat == 1){
+        if(type_bat!=Coup.SELECTEUR_BATIMENT){
+            if(type_bat == Coup.HUTTE){
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
                 if(plateau.getHauteurTuile(ligne,colonne)>=3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
-            if(type_bat == 2) {
+            if(type_bat == Coup.TEMPLE) {
                 joueurs[jCourant].incrementeTemple();
             }
-            else if(type_bat == 3) {
+            else if(type_bat == Coup.TOUR) {
                 joueurs[jCourant].incrementeTour();
             }
             doit_placer_batiment = false;
