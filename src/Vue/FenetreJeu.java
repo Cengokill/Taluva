@@ -339,8 +339,8 @@ public class FenetreJeu extends Container {
                 posX_temples_finPartie = (int) (posX_cadre + largeur_fin_partie*0.46);
                 posX_tours_finPartie = (int) (posX_cadre + largeur_fin_partie*0.60);
                 posX_score_finPartie = (int) (posX_cadre + largeur_fin_partie*0.72);
-                posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.07);
-                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.65);
+                posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.05);
+                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.67);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
