@@ -6,7 +6,10 @@ import java.io.Serializable;
 public class Coup implements Serializable {
 
     public static final byte TUILE = 64;
-    public static final byte BATIMENT = 1;
+    public static final byte SELECTEUR_BATIMENT = 4;
+    public static final byte TEMPLE = 0;
+    public static final byte HUTTE = 1;
+    public static final byte TOUR = 2;
     public final byte typePlacement;
     final byte num_joueur;
     public Color color_joueur;

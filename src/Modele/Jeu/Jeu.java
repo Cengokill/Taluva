@@ -24,7 +24,7 @@ public class Jeu extends Observable implements Serializable{
     public boolean debug;
     Plateau plateau;
     private Tuile tuile_courante;
-    private int delai_avant_pioche = 500;
+    private int delai_avant_pioche = 800;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
     public byte jCourant;
     public byte jVainqueur;
@@ -50,7 +50,7 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 200;
+            delai = 800;
         }
         debug = false;
     }
@@ -189,7 +189,7 @@ public class Jeu extends Observable implements Serializable{
         Coup coupBatiment = coupValeur.getCoupB();
         if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
             estPartieFinie = true;
-            jVainqueur = (byte) ((jCourant + 1) % 2);
+            jVainqueur = (byte) ((jCourant + 1) % nb_joueurs);
             return;
         }
         doit_placer_batiment = true;
@@ -213,7 +213,7 @@ public class Jeu extends Observable implements Serializable{
             if (coupBatiment == null) {//l'IA ne peut pas placer de bâtiment
                 joueurs[jCourant].stopChrono();
                 estPartieFinie = true;
-                jVainqueur = (byte) ((jCourant + 1) % 2);
+                jVainqueur = (byte) ((jCourant + 1) % nb_joueurs);
                 return;
             }
             getPlateau().joueCoup(coupTuile);
@@ -301,16 +301,16 @@ public class Jeu extends Observable implements Serializable{
             return false;
         }
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
-        if(type_bat!=4){
-            if(type_bat == 1){
+        if(type_bat!=Coup.SELECTEUR_BATIMENT){
+            if(type_bat == Coup.HUTTE){
                 if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
                 if(plateau.getHauteurTuile(ligne,colonne)>=3) joueurs[jCourant].incrementeHutte();
                 joueurs[jCourant].incrementeHutte();
             }
-            if(type_bat == 2) {
+            if(type_bat == Coup.TEMPLE) {
                 joueurs[jCourant].incrementeTemple();
             }
-            else if(type_bat == 3) {
+            else if(type_bat == Coup.TOUR) {
                 joueurs[jCourant].incrementeTour();
             }
             doit_placer_batiment = false;
@@ -338,8 +338,30 @@ public class Jeu extends Observable implements Serializable{
             return true;
         }
         if(pioche.isEmpty()){
+            System.out.println("Partie terminee, pioche vide !");
+            ArrayList<Joueur> joueurs_copie = new ArrayList<>();
+            ArrayList<Joueur> joueurs_tries = new ArrayList<>();
+            for (int i = 0; i < getJoueurs().length; i++) {
+                joueurs_copie.add(getJoueurs()[i]);
+            }
+            int score_meilleur = Integer.MIN_VALUE;
+            int indice_meilleur_joueur = -1;
+            int score_courant;
+            while (joueurs_copie.size() > 1) {
+                for (int i = 0; i < joueurs_copie.size(); i++) {
+                    score_courant = joueurs_copie.get(i).calculScore();
+                    if (score_courant > score_meilleur) {
+                        score_meilleur = score_courant;
+                        indice_meilleur_joueur = i;
+                        jVainqueur = (byte) indice_meilleur_joueur;
+                    }
+                }
+                joueurs_tries.add(joueurs_copie.get(indice_meilleur_joueur));
+                joueurs_copie.remove(indice_meilleur_joueur);
+                indice_meilleur_joueur = -1;
+                score_meilleur = Integer.MIN_VALUE;
+            }
             if(AFFICHAGE){
-                System.out.println("Partie terminee, pioche vide !");
                 afficheScore();
             }
             return true;
@@ -348,6 +370,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void incrementePropagation(int ligne, int colonne){
+        //TODO : A modifier pour corriger le bu de propagation
         if(ligne==0||colonne==0) return;
         if(plateau.getHauteurTuile(ligne,colonne)==2) joueurs[jCourant].incrementeHutte();
         if(plateau.getHauteurTuile(ligne,colonne)==3) joueurs[jCourant].incrementeHutte();
@@ -357,11 +380,11 @@ public class Jeu extends Observable implements Serializable{
     public void changeJoueur() {
         //System.out.println("Changement de joueur");
         jCourant = (byte) ((jCourant + 1) % nb_joueurs);
-        getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
+        getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
+        if(estFinPartie()){
+            return;
+        }
         if(type_jeu==GRAPHIQUE){
-            if(estFinPartie()){
-                return;
-            }
             Timer timer = new Timer(delai_avant_pioche, e -> {
                 if(getJoueurCourant().type_joueur==Joueur.IA) {
                     pioche();
@@ -470,10 +493,8 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void pioche() {
-        if(AFFICHAGE && debug) {
-            System.out.println("Tuiles dans la pioche : " + pioche.size());
-            plateau.affiche();
-        }
+        if(AFFICHAGE) System.out.println("Tuiles dans la pioche : " + pioche.size());
+        if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
         pioche.remove(0);
         if(type_jeu==GRAPHIQUE) {
@@ -510,9 +531,9 @@ public class Jeu extends Observable implements Serializable{
                 }
                 if(stock.typeBatiment==Coup.TUILE){
                     pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
-                } else if(stock.typeBatiment == TEMPLE) {
+                } else if(stock.typeBatiment == Coup.TEMPLE) {
                     joueurs[jCourant].decrementeTemple();
-                } else if (stock.typeBatiment == TOUR) {
+                } else if (stock.typeBatiment == Coup.TOUR) {
                     joueurs[jCourant].decrementeTour();
                 } else {
                     for (int i = 0; i < stock.nbBatiment; i++) {
@@ -528,9 +549,9 @@ public class Jeu extends Observable implements Serializable{
         if(stock!=null) {
             if (stock.typeBatiment == Coup.TUILE) {
                 pioche.removeFirst();
-            } else if (stock.typeBatiment == TEMPLE) {
+            } else if (stock.typeBatiment == Coup.TEMPLE) {
                 joueurs[jCourant].incrementeTemple();
-            } else if (stock.typeBatiment == TOUR) {
+            } else if (stock.typeBatiment == Coup.TOUR) {
                 joueurs[jCourant].incrementeTour();
             } else {
                 for (int i = 0; i <= stock.nbBatiment; i++) {
