@@ -290,11 +290,13 @@ public class FenetreJeu extends Container {
                 posX_nb_tuiles_pioche = (int) (posX_fenetre_score + largeur_fenetre_score*0.71);
                 if(jeu.getNbJoueurs()==2){
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.49);
-                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.37);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.38);
                 }else if(jeu.getNbJoueurs()==3){
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.67);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.56);
                 }else{
                     posY_nb_tuiles_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.84);
+                    posY_pioche = (int) (posY_fenetre_score + hauteur_fenetre_score*0.74);
                 }
                 //animation tuile piochée
                 largeur_tuilePiochee_init = (int) (largeur_fenetre_score*0.32);
