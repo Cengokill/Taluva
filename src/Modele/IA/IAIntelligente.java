@@ -32,7 +32,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     // TODO BUGS //
-    // TODO -> l'IA PEUT POSER DES TEMPLES CÔTE A CÔTES
     // TODO -> NB TEMPLES INFINI ? (peut être pareil pour les joueurs à verifier)
 
     // TODO IMPLEMENTATIONS //
@@ -404,8 +403,14 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                             }
                         }
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
-                        coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]+1));
-                        plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (batimentsPlacable[batimentChoisit]));
+                        if((batimentsPlacable[batimentChoisit]==TEMPLE)){
+                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) TEMPLE);
+                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) TEMPLE);
+                        }else{ // TOUR
+                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) TOUR);
+                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) TOUR);
+                        }
+
                         //on supprime la position du bâtiment qui n'est plus libre
                         Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
                         plateauCopie2.supprimeElementNew(posASupprimer);
