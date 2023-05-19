@@ -127,6 +127,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurQuitter(MouseEvent e) {
+            if(!select_menu_options) return false;
             int largeur = (int)(posX_save*1.12) + largeur_bouton;
             int hauteur = posY_quitter + hauteur_bouton;
             if(e.getX() >= (int)(posX_save*1.12) && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
@@ -284,8 +285,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public void mouseMoved(MouseEvent e) {
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e) || estSurEchap(e) || estSurSauvegarder(e) || estSurCharger(e) || estSurOption(e)) {
                 fenetreJeu.setHandCursor();
+                fenetreJeu.panelPlateau.estSurBouton = true;
             }else{
                 fenetreJeu.setStandardCursor();
+                fenetreJeu.panelPlateau.estSurBouton = false;
             }
             hoverTilePosition = e.getPoint();
             fenetreJeu.panelPlateau.updateCursorPosOnTiles(e);

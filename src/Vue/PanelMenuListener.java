@@ -472,6 +472,8 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.jeu.initialiseMusique();
+            }else{
+                panelMenu.afficheErreur = true;
             }
             return true;
         }
@@ -541,9 +543,9 @@ public class PanelMenuListener implements MouseListener  {
 
     private void setVolume(){
         if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
-        else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*17);
+        else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*13);
         if(panelMenu.index_musique==0) panelMenu.jeu.volumeSons = -100000;
-        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*17);
+        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*13);
     }
 
     @Override
