@@ -216,8 +216,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupCourant);
             coupAFaire = choisirCoupBatiment(coupCourant,instanceCourante);
 
-            AffichertailleVillage(instanceCourante,instanceCourante.getJoueurCourantClasse().getCouleur());
-
             if(coupAFaire!=null){
                 score_courant = coupAFaire.getValeur();
                 // si le coup est aussi bien que notre meilleur on le rajoute
@@ -231,7 +229,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     coupARenvoyer.add(coupAFaire);
                 }
             }else{ // TODO on essaie toutes les tuiles qu'on a pas essayé, si on ne peut tout de meme pas jouer l'IA a perdu.
-                System.out.println("coupAFaire null A DEBUGGUER -> IAintelligente 233");
+                System.out.println("coupAFaire null A DEBUGGUER -> IAintelligente 236");
             }
         }
 
@@ -472,28 +470,24 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return score;
     }
 
-    private void AffichertailleVillage(InstanceJeu instanceJeu, Color color_joueur){
-        int taille = 0;
+    private int[] getBatimentsVillage(InstanceJeu instanceJeu, int i,int j){
         ArrayList<Point2D> dejavisite = new ArrayList<>();
+        int[] batiments = new int[3];
         Plateau plateau = instanceJeu.getPlateau();
-        for(int i=0; i<plateau.getLIGNES(); i++){
-            for(int j=0; j<plateau.getCOLONNES(); j++){
-                // Les positions de chaque hutte du village
-                if(plateau.getBatiment(i,j)!=0){
-                    taille = 0;
-                    ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,color_joueur);
-                    for(Point2D posCourante : pointsVillage){
-                        if(plateau.getHexagone(posCourante.getPointX(), posCourante.getPointY()).getColorJoueur()==color_joueur && !dejavisite.contains(posCourante)){
-                            dejavisite.add(posCourante);
-                            //System.out.println("numJoueur: "+color_joueur);
-                            //System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
-                            taille++;
-                        }
-                    }
-                    //System.out.println("taille : " + taille + " couleur : "+color_joueur);
+        // Les positions de chaque hutte du village
+        if(plateau.getBatiment(i,j)!=0){
+            Color couleurJoueur = instanceJeu.getPlateau().getHexagone(i,j).getColorJoueur();
+            ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,couleurJoueur);
+            for(Point2D posCourante : pointsVillage){
+                if(plateau.getHexagone(posCourante.getPointX(), posCourante.getPointY()).getColorJoueur()==couleurJoueur && !dejavisite.contains(posCourante)){
+                    if(plateau.getBatiment(posCourante.getPointX(),posCourante.getPointY()) == Coup.HUTTE) batiments[1]++;
+                    if(plateau.getBatiment(posCourante.getPointX(),posCourante.getPointY()) == Coup.TEMPLE) batiments[0]++;
+                    if(plateau.getBatiment(posCourante.getPointX(),posCourante.getPointY()) == Coup.TOUR) batiments[2]++;
+                    dejavisite.add(posCourante);
                 }
             }
         }
+        return batiments;
     }
 
     private int evaluerVillages(InstanceJeu instanceJeu,ArrayList<Joueur> joueursAEvaluer){
