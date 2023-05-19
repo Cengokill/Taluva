@@ -33,6 +33,7 @@ public class TaluvaMain {
             //démarre le calcul du temps
             long startTime = System.currentTimeMillis();
             for(int i = 0; i < nb_parties; i++) {
+                long startTimePartie = System.currentTimeMillis();
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
                 jeu.initPartie("IA", "IA", "IA", "IA", 2);
                 for(Joueur joueur : jeu.getJoueurs()){
@@ -54,12 +55,13 @@ public class TaluvaMain {
                 }//sinon égalité
                 System.out.println("Victoires IA 1 : " + victoires_defaites[0]);
                 System.out.println("Victoires IA 2 : " + victoires_defaites[1]);
-                long endTime = System.currentTimeMillis();
-                long timeElapsed = endTime - startTime;
-                System.out.println("Temps ecoule en secondes : " + timeElapsed/1000);
+                long endTimePartie = System.currentTimeMillis();
+                long tempsPartie =  endTimePartie - startTimePartie;
+                System.out.println("Temps de la partie : " + tempsPartie/1000);
             }
-            //System.out.println("Victoires joueur 1 : " + victoires_defaites[0]);
-            //System.out.println("Victoires joueur 2 : " + victoires_defaites[1]);
+            long endTime = System.currentTimeMillis();
+            long temps =  endTime - startTime;
+            System.out.println("Temps total : " + temps/1000);
         }
     }
 }
