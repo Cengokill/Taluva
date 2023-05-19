@@ -404,15 +404,13 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                         }
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
                         if(batimentChoisit==0){ // Temple
-                            System.out.println("TEMPLE");
-                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TEMPLE+2));
-                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (TEMPLE+2));
+                            System.out.println("Temple: "+Coup.TEMPLE);
+                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),Coup.TEMPLE);
+                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), Coup.TEMPLE);
                         }else{ // TOUR
-                            System.out.println("TOUR batimentChoisit: "+batimentChoisit);
-                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),(byte) (TOUR+1));
-                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(), (byte) (TOUR+1));
+                            coupB = new Coup(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),Coup.TOUR);
+                            plateauCopie2.placeBatiment(joueur_courant, color_joueur_courant, positionCourante.ligne(), positionCourante.colonne(),Coup.TOUR);
                         }
-
                         //on supprime la position du bâtiment qui n'est plus libre
                         Position posASupprimer = new Position(positionCourante.ligne(), positionCourante.colonne());
                         plateauCopie2.supprimeElementNew(posASupprimer);
