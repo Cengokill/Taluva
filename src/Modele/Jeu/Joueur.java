@@ -215,6 +215,10 @@ public class Joueur implements Serializable {
         }
     }
 
+    private void setNbVillages(int nbVillages) {
+        this.nbVillages = nbVillages;
+    }
+
     public CoupValeur joue() throws CloneNotSupportedException {
         return null;
     }
@@ -237,6 +241,20 @@ public class Joueur implements Serializable {
         this.image=joueur.image;
         this.score=joueur.score;
         this.numero=joueur.numero;
+    }
+
+    public Joueur copie(){
+        Joueur joueur = new Joueur(this.type_joueur,this.numero,this.prenom);
+        joueur.setCouleur(this.couleur);
+        joueur.setNbHuttes(this.nbHuttes);
+        joueur.setNbTours(this.nbTours);
+        joueur.setNbTemples(this.nbTemples);
+        joueur.setNbHuttesPlacees(this.nbHuttesPlacees);
+        joueur.setNbToursPlacees(this.nbToursPlacees);
+        joueur.setNbTemplesPlaces(this.nbTemplesPlaces);
+        joueur.setNbVillages(this.nbVillages);
+        joueur.setDoitJouer(this.doitJouer);
+        return joueur;
     }
 
 }
