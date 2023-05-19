@@ -72,7 +72,7 @@ public class PanelMenu extends JPanel {
         ecriture_PleinEcran = lisImage("/Options/plein_ecran");
         ecriture_Daltonien = lisImage("/Options/Mode_daltonien");
         ecriture_Extension = lisImage("/Options/Activer_extension");
-        configPartieBackground = lisImageBuf("start_game_menu");
+        configPartieBackground = lisImageBuf("background_choix_partie");
         plus = lisImageBuf("plus");
         moins = lisImageBuf("moins");
         rouge = lisImageBuf("rouge");
@@ -415,11 +415,10 @@ public class PanelMenu extends JPanel {
     }
 
     private void afficherConfigPartie(Graphics2D g2d) {
-        xConfigPanel = getWidth()/2 - configPartieBackground.getWidth()/4;
-        yConfigPanel = getHeight()/2 - configPartieBackground.getHeight()/4;
-
-
-        g2d.drawImage(configPartieBackground, xConfigPanel ,yConfigPanel , configPartieBackground.getWidth()/2, configPartieBackground.getHeight()/2, null);
+        //affiche un rectangle noir sur tout l'écran
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, frameWidth, frameHeight);
+        g2d.drawImage(configPartieBackground, posX_background ,posY_background , largeur_background, hauteur_background, null);
         g2d.drawImage(plus, xConfigPanel + 220, yConfigPanel + 240, plus.getWidth(), plus.getHeight(), null);
         g2d.drawImage(plus, xConfigPanel + 440, yConfigPanel + 240, plus.getWidth(), plus.getHeight(), null);
 
@@ -464,6 +463,7 @@ public class PanelMenu extends JPanel {
     private void calculeRapportsEtPositions() {
         frameWidth=frame.getWidth();
         frameHeight=frame.getHeight();
+        double rapport_background = 16/9;
         double rapport_bouton=1;//rapport de 86/522
         largeur_bouton=Math.min(largeur_background/7, frameWidth/7);
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
