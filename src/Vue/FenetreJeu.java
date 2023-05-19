@@ -384,6 +384,7 @@ public class FenetreJeu extends Container {
         bouton_tuto_on = lisImageBuf("Tuto_on");
         bouton_tuto_off = lisImageBuf("Tuto_off");
         bouton_options = lisImageBuf("Options");
+        bouton_options_select = lisImageBuf("Options_select");
         menu_options = lisImageBuf("Menu_options");
         menu_dark_filter = lisImageBuf("Menu_dark_filter");
         fenetre_score_2 = lisImageBuf("fenetre_score_2");

@@ -176,6 +176,21 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             return false;
         }
 
+        public boolean estSurOption(MouseEvent e) {
+            if (!select_menu_options) {
+                return false;
+            }
+            int largeur = posX_options + largeur_bouton * 2;
+            int hauteur = posY_options_echap + hauteur_bouton * 2;
+            if(e.getX() >=posX_options && e.getX() <= largeur && e.getY() >= posY_options_echap && e.getY() <= hauteur){
+                select_options = true;
+                select_save = false;
+                return true;
+            }
+            select_load = false;
+            return false;
+        }
+
         @Override
         public void mouseClicked(MouseEvent e) {
             if(estSurTuto(e)) {
@@ -213,6 +228,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             if (estSurCharger(e)) {
                 FenetreJeu.charger();
+            }
+            if (estSurOption(e)) {
+
             }
         }
 
@@ -263,7 +281,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e) || estSurEchap(e) || estSurSauvegarder(e) || estSurCharger(e)) {
+            if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurQuitter(e) || estSurEchap(e) || estSurSauvegarder(e) || estSurCharger(e) || estSurOption(e)) {
                 fenetreJeu.setHandCursor();
             }else{
                 fenetreJeu.setStandardCursor();
