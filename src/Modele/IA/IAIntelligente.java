@@ -31,9 +31,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         super(IA, n, "IA"+n);
     }
 
-    // TODO BUGS //
-    // TODO -> NB TEMPLES INFINI ? (peut être pareil pour les joueurs à verifier)
-
     // TODO IMPLEMENTATIONS //
     // TODO -> QU'ELLE PREFERE AGRANDIR UN VILLAGE AU LIEU DE S'EPARPILLER JUSQU'A UNE CERTAINE CONDITION // (!) faut qu'elle arête au bout d'un moment
     // TODO -> QU'ELLE ARETE DE FAIRE DES VILLAGES IMMENSES (?)
@@ -112,12 +109,11 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             // On évalue l'IA
             joueurs.add(joueur);
         }
-        // TODO si le ou un des joueurs peut directement gagner, return MAXVALUE
+
         for(Joueur joueurCourant: joueurs){
-            //si le joueur a posé tous ses bâtiments de 2 types, il a gagné
-            if(estJoueurVictorieux(joueur)){
-                return Integer.MAX_VALUE;
-            }
+            // On regarde si le joueur pourra gagner a ce tour en posant la tuile ici
+            if(seraJoueurVictorieux(instanceCourante,joueurs)) return Integer.MAX_VALUE; // (!) potentiellement lourd
+
             // On veut éviter le cas où le joueur n'a plus de huttes
             if(joueur.getNbHuttes() == 0){
                 return 0;
@@ -141,7 +137,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour);
         }
 
-        // TODO à completer
+        // TODO à completer (par exemple isoler un temple ou couper un gros village en 2...)
 
         return score/joueurs.size();
     }
@@ -173,7 +169,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                 }
             }
         }
-
         return batPlacables;
     }
 
@@ -201,9 +196,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             Plateau plateauCopie = instanceCourante.getPlateau();
             Coup coupT = new Coup(instanceCourante.getJoueurCourant(),tripletCourant.getVolcan().ligne(),tripletCourant.getVolcan().colonne(),tripletCourant.getTile1().ligne(),tripletCourant.getTile1().colonne(),tuile.biome0,tripletCourant.getTile2().ligne(),tripletCourant.getTile2().colonne(),tuile.biome1);
             plateauCopie.joueCoup(coupT);
-
-            // TODO verifier avant si la partie est gagnable directement ?
-            //Sans avoir le joueur en paramètre, c'est difficile de savoir si la partie est gagnable directement
 
             int scoreTuile_courante = evaluationScoreTuile(instanceCourante);
             // si le coup est aussi bien que notre meilleur on le rajoute
@@ -237,7 +229,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     coupARenvoyer.add(coupAFaire);
                 }
             }else{ // TODO on essaie toutes les tuiles qu'on a pas essayé, si on ne peut tout de meme pas jouer l'IA a perdu.
-                System.out.println("coupAFaire null");
+                System.out.println("coupAFaire null A DEBUGGUER -> IAintelligente 233");
             }
         }
 
@@ -324,13 +316,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     augmenteBatimentsJoueur(HUTTE,joueurAEvaluer,instanceAEvaluer.getPlateau().getHauteurTuile(coupPropager.batimentLigne,coupPropager.batimentColonne));
                 }
             }else{ // Tour ou Temple
-                //System.out.println("TEMPLE");
                 instanceAEvaluer.getPlateau().joueCoup(coupCourant);
                 batiment = coupCourant.typePlacement;
                 augmenteBatimentsJoueur(batiment,joueurAEvaluer,0);
-                //System.out.println("nbTemplesAvant: "+joueurAEvaluer.getNbTemplesPlaces());
             }
-
             // On évalue la nouvelle instance
             score_courant = evaluationScoreInstance(instanceAEvaluer);
             if(score_courant == score_max){
@@ -347,7 +336,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                 }
             }else{
                 diminueBatimentsJoueur(batiment,joueurAEvaluer,0);
-                //System.out.println("nbTemplesApres: "+joueurAEvaluer.getNbTemplesPlaces());
             }
             i++;
         }
@@ -473,10 +461,12 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             }
         }
 
+        // On regarde si le joueur pourra gagner au prochain tour en posant le batiment
+        if(seraJoueurVictorieux(instanceCourante,joueurs)) return Integer.MAX_VALUE; // (!) potentiellement lourd
+
         // on evalue pas dans la boucle pour eviter de parcour nbJoueurs fois la carte
         int score = evaluerVillages(instanceCourante,joueurs);
 
-        //if(!joueurCourant) instanceCourante.changeJoueur();
         return score;
     }
 
@@ -514,11 +504,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             // Score de placement
             score += joueurCourant.getNbHuttesPlacees() * poids_hutte;
             score += joueurCourant.getNbToursPlacees() * poids_tour;
-            score += joueurCourant.getNbTemplesPlaces() * 100000000; // j'avais mis 1000 ca poser plus de temple
+            score += joueurCourant.getNbTemplesPlaces() * 100000000;
 
-            if(joueurCourant.getNbToursPlacees()!=0){
-                //System.out.println("Temple placé");
-            }
         }
         return score/joueursAEvaluer.size();
     }
@@ -527,5 +514,20 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         //fin anticipée si le joueur a posé tous ses bâtiments de 2 types
         return (joueur.getNbHuttes() == 0 && joueur.getNbTemples() == 0)||(joueur.getNbTemples() ==0 && joueur.getNbTours() ==0)||(joueur.getNbHuttes()==0 && joueur.getNbTours()==0);
     }
+
+    private boolean seraJoueurVictorieux(InstanceJeu instanceCourante,ArrayList<Joueur> joueurs){
+        boolean gagnant = false;
+        int[] batimentsPlacables = getNombreBatimentsPlacable(instanceCourante,joueurs);
+        for(Joueur joueurCourant: joueurs) {
+            // Si on peut placer un temple et que ca nous donne la victoire
+            if(batimentsPlacables[0]==1 && (joueurCourant.getNbTemples()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTours()==0))) gagnant = true;
+            // Si on peut placer une hutte et que ca nous donne la victoire
+            if(batimentsPlacables[1]==1 && (joueurCourant.getNbHuttes()==1 && (joueurCourant.getNbTemples()==0 || joueurCourant.getNbTours()==0))) gagnant = true;
+            // Si on peut placer une tour et que ca nous donne la victoire
+            if(batimentsPlacables[2]==1 && (joueurCourant.getNbTours()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTemples()==0))) gagnant = true;
+        }
+        return gagnant;
+    }
+
 
 }
