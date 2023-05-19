@@ -109,6 +109,7 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_slider1;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_gauche1 = true;
+            panelMenu.select_gauche2 = false;
             return true;
         }
         panelMenu.select_gauche1 = false;
@@ -120,6 +121,7 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_slider2;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_gauche2 = true;
+            panelMenu.select_gauche1 = false;
             return true;
         }
         panelMenu.select_gauche2 = false;
@@ -131,6 +133,7 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_slider1;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_droit1 = true;
+            panelMenu.select_droit2 = false;
             return true;
         }
         panelMenu.select_droit1 = false;
@@ -142,6 +145,7 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_slider2;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_droit2 = true;
+            panelMenu.select_droit1 = false;
             return true;
         }
         panelMenu.select_droit2 = false;
@@ -153,6 +157,8 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_coche1;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_PleinEcran = true;
+            panelMenu.select_Daltonien = false;
+            panelMenu.select_Extension = false;
             return true;
         }
         panelMenu.select_PleinEcran = false;
@@ -164,6 +170,8 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_coche2;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_Daltonien = true;
+            panelMenu.select_PleinEcran = false;
+            panelMenu.select_Extension = false;
             return true;
         }
         panelMenu.select_Daltonien = false;
@@ -175,6 +183,8 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_coche3;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_Extension = true;
+            panelMenu.select_Daltonien = false;
+            panelMenu.select_PleinEcran = false;
             return true;
         }
         panelMenu.select_Extension = false;
