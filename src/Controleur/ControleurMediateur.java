@@ -66,5 +66,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     public void charger() {FenetreJeu.charger();}
+
+
 }
 

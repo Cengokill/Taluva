@@ -370,7 +370,9 @@ public class FenetreJeu extends Container {
         cadreVert = lisImageBuf("cadre_vert");
         cadreViolet = lisImageBuf("cadre_violet");
         bouton_save = lisImageBuf("Sauvegarder");
+        bouton_save_select = lisImageBuf("Sauvegarder_select");
         bouton_load = lisImageBuf("Charger");
+        bouton_load_select = lisImageBuf("Charger_select");
         bouton_quitter = lisImageBuf("Quitter");
         bouton_annuler = lisImageBuf("Annuler");
         //bouton_load_select = lisImageBuf("Charger_select");
