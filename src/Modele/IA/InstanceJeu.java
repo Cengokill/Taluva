@@ -1,7 +1,6 @@
 package Modele.IA;
 
 import Modele.Jeu.Coup;
-import Modele.Jeu.CoupValeur;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
@@ -40,7 +39,7 @@ public class InstanceJeu {
         this.estFinJeu = estFinJeu;
     }
 
-    public int getNb_joueurs(){
+    public int getNbJoueurs(){
         return nb_joueurs;
     }
 

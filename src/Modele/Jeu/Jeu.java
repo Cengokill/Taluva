@@ -59,7 +59,7 @@ public class Jeu extends Observable implements Serializable{
         //jCourant = (byte) new Random().nextInt(1);
         nb_joueurs = 2;
         taille_pioche = 12 * nb_joueurs;
-        temps_tour = 10.0;//secondes avant la limite de fin de tour du joueur
+        temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         jCourant = 0;
         IA0 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
