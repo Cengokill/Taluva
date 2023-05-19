@@ -97,6 +97,7 @@ public class FenetreJeu extends Container {
         initKeyBoardAndMouseListener();
         setBackgroundColor();
         boucle();
+        tempsDebutPartie = System.currentTimeMillis();
     }
 
     public void setHandCursor(){
@@ -164,23 +165,6 @@ public class FenetreJeu extends Container {
         layeredPane.add(buttonPanel, JLayeredPane.POPUP_LAYER);
     }
 
-    private void initBackgroundPanel(){
-        createBackgroundPanel();
-        //backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        //backgroundPanel.setOpaque(false);
-        layeredPane.add(backgroundPanel, JLayeredPane.FRAME_CONTENT_LAYER);
-    }
-
-    private void createBackgroundPanel() {
-        backgroundPanel = new JPanel() {
-            @Override
-            public void paint(Graphics g) {
-                //super.paint(g);
-                //afficheBackground(g);
-            }
-        };
-    }
-
     private void createButtonPanel() {
         buttonPanel = new JPanel(){
             @Override
@@ -216,6 +200,21 @@ public class FenetreJeu extends Container {
                 double rapport_cadre = 76.0/1180.0;
                 double rapport_timer = 205.0/335.0;
                 double rapport_pioche = 650.0/880.0;
+                //background
+                double rapport_background = 0.5625;// rapport de 2160/3840
+                double rapport_actuel = (double)hauteur/(double)largeur;
+                if(rapport_actuel>rapport) {// si la fenêtre est plus haute que large
+                    largeur_background=largeur;
+                    hauteur_background=(int)(largeur_background*rapport);
+                    posX_background=0;
+                    posY_background=(hauteur-hauteur_background)/2;
+                }
+                else {
+                    hauteur_background=hauteur;
+                    largeur_background=(int)(hauteur_background/rapport);
+                    posX_background=(largeur-largeur_background)/2;
+                    posY_background=0;
+                }
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 9, hauteur / 9), 80), 190);
                 hauteur_bouton = (int) (largeur_bouton * rapport);
@@ -330,18 +329,18 @@ public class FenetreJeu extends Container {
                 }
                 largeur_cadre = (int) (largeur_fin_partie * 0.80906593406);
                 hauteur_cadre = (int) (largeur_cadre * rapport_cadre);
-                posX_fin_partie = 0;
-                posY_fin_partie = 0;
-                posX_cadre = (int) (largeur_fin_partie*0.021);
-                posY_cadre = (int) (hauteur_fin_partie*0.19);
+                posX_cadre = (int) (posX_background+largeur_fin_partie*0.021);
+                posY_cadre = (int) (posY_background+hauteur_fin_partie*0.19);
                 decalageY_cadre = (int) (hauteur_cadre+hauteur_fin_partie*0.02);
-                posX_joueur_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.03);
-                posY_joueur_finPartie = (int) (posY_fin_partie + hauteur_fin_partie*0.25);
+                posX_joueur_finPartie = (int) (posX_cadre + hauteur_fin_partie*0.03);
+                posY_joueur_finPartie = (int) (posY_cadre + hauteur_fin_partie*0.055);
                 decalageY_joueur = decalageY_cadre;
-                posX_huttes_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.32);
-                posX_temples_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.46);
-                posX_tours_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.60);
-                posX_score_finPartie = (int) (posX_fin_partie + largeur_fin_partie*0.72);
+                posX_huttes_finPartie = (int) (posX_cadre + largeur_fin_partie*0.32);
+                posX_temples_finPartie = (int) (posX_cadre + largeur_fin_partie*0.46);
+                posX_tours_finPartie = (int) (posX_cadre + largeur_fin_partie*0.60);
+                posX_score_finPartie = (int) (posX_cadre + largeur_fin_partie*0.72);
+                posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.07);
+                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.65);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -663,9 +662,11 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheFinPartie(Graphics g) {
-        if (select_fin_partie) {
+        if(select_fin_partie){
             //System.out.println("afficheFinPartie");
             if(!ecran_fin_partie) {//évite de recalculer tous les scores des joueurs à chaque actualisation de l'écran
+                tempsFinPartie = System.currentTimeMillis();
+                tempsPartie = tempsFinPartie - tempsDebutPartie;
                 ecran_fin_partie = true;
                 ArrayList<Joueur> joueurs_copie = new ArrayList<>();
                 joueurs_tries = new ArrayList<>();
@@ -690,7 +691,7 @@ public class FenetreJeu extends Container {
                 }
                 joueurs_tries.add(joueurs_copie.get(0));
             }
-            g.drawImage(finPartie, posX_fin_partie, posY_fin_partie, largeur_fin_partie, hauteur_fin_partie, null);
+            g.drawImage(finPartie, posX_background, posY_background, largeur_fin_partie, hauteur_fin_partie, null);
             Font font = new Font("Bookman Old Style", Font.BOLD, 29);
             g.setFont(font);
             g.setColor(Color.BLACK);
@@ -709,9 +710,9 @@ public class FenetreJeu extends Container {
                 g.drawImage(img, posX_cadre, posY_cadre+decalageY_cadre*i, largeur_cadre, hauteur_cadre, null);
                 Joueur joueur_courant = joueurs_tries.get(i);
                 String joueur = joueur_courant.getPrenom();
-                String nb_huttes = Integer.toString(joueur_courant.getNbHuttes());
-                String nb_temples = Integer.toString(joueur_courant.getNbTemples());
-                String nb_tours = Integer.toString(joueur_courant.getNbTours());
+                String nb_huttes = Integer.toString(joueur_courant.getNbHuttesPlacees());
+                String nb_temples = Integer.toString(joueur_courant.getNbTemplesPlaces());
+                String nb_tours = Integer.toString(joueur_courant.getNbToursPlacees());
                 String score = Integer.toString(joueur_courant.calculScore());
                 g.drawString(joueur, posX_joueur_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
                 g.drawString(nb_huttes, posX_huttes_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
@@ -719,6 +720,18 @@ public class FenetreJeu extends Container {
                 g.drawString(nb_tours, posX_tours_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
                 g.drawString(score, posX_score_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
             }
+            int minutes = (int) ((int) tempsPartie/60000.0);
+            int secondes = (int) ((int) tempsPartie/1000.0);
+            String temps_minutes = Integer.toString(minutes);
+            String temps_secondes = Integer.toString(secondes);
+            String zero_1 = "0";String zero_2 = "0";
+            if(minutes>9){
+                zero_1 = "";
+            }
+            if(secondes>9){
+                zero_2 = "";
+            }
+            g.drawString(zero_1+temps_minutes+":"+zero_2+temps_secondes, posX_temps_partie, posY_temps_partie);
             afficheBoutonQuitter(g);
         }
     }

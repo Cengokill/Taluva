@@ -260,7 +260,7 @@ public class PanelMenu extends JPanel {
         g.fillRect(0, 0, frameWidth, frameHeight);
         double rapport = 0.5625;// rapport de 2160/3840
         double rapport_actuel = (double)frameHeight/(double)frameWidth;
-        if(rapport_actuel>rapport) {// si la fen�tre est plus haute que large
+        if(rapport_actuel>rapport) {// si la fenêtre est plus haute que large
             largeur_background=frameWidth;
             hauteur_background=(int)(largeur_background*rapport);
             posX_background=0;
