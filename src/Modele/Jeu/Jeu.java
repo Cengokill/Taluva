@@ -66,7 +66,7 @@ public class Jeu extends Observable implements Serializable{
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
         IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.INTELLIGENTE);
         IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.INTELLIGENTE);
         if (nomJoueur0.compareTo("IA") == 0) {
@@ -238,7 +238,6 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void joueIA() throws CloneNotSupportedException {
-
         if(type_jeu==CONSOLE) joueSansThread();
         else{
             joueMultiThread();
@@ -246,9 +245,8 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void afficheScore(){
-        System.out.println("Score :");
         for(int joueurIndex = 0; joueurIndex<joueurs.length; joueurIndex++){
-            System.out.println(joueurs[joueurIndex].getPrenom()+" : "+joueurs[joueurIndex].calculScore()+" points");
+            System.out.print(joueurs[joueurIndex].getPrenom()+" : "+joueurs[joueurIndex].calculScore()+" points :\t");
             System.out.println("Huttes : "+joueurs[joueurIndex].getNbHuttesPlacees()+"\tTours : "+joueurs[joueurIndex].getNbToursPlacees()+"\tTemples : "+joueurs[joueurIndex].getNbTemplesPlaces());
         }
     }
@@ -491,7 +489,6 @@ public class Jeu extends Observable implements Serializable{
                 indice_meilleur_joueur = -1;
                 score_meilleur = Integer.MIN_VALUE;
             }
-            System.out.println("jVainqueur : " + jVainqueur);
             if(AFFICHAGE){
                 afficheScore();
             }
