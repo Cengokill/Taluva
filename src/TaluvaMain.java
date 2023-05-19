@@ -29,10 +29,10 @@ public class TaluvaMain {
             FenetreJeu fenetre = new FenetreJeu(jeu, controler);
             fenetre.panelMenu.metAJour();
             fenetre.panelMenu.setFenetre(fenetre);
-        }else{
+        }else{// CONSOLE
             for(int i = 0; i < nb_parties; i++) {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
-                jeu.initPartie("A", "B", "C", "D", 4);
+                jeu.initPartie("A", "B", "C", "D", 2);
                 for(Joueur joueur : jeu.getJoueurs()){
                     if(joueur.getTypeJoueur()!=Joueur.IA) {
                         System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE ne peut etre active uniquement si tous les joueurs sont des IA.");

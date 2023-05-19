@@ -634,7 +634,6 @@ public class Plateau implements Serializable, Cloneable {
             } else if (coup.typePlacement == Coup.TOUR) {
                 batiment = Hexagone.TOUR;
             } else if (coup.typePlacement == Coup.SELECTEUR_BATIMENT){
-                System.out.println("Hexagone.CHOISIR_BATIMENT");
                 batiment = Hexagone.CHOISIR_BATIMENT;
             }
             if(batiment!=Hexagone.CHOISIR_BATIMENT){

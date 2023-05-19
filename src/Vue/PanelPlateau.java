@@ -834,6 +834,7 @@ public class PanelPlateau extends JPanel {
     }
 
     public void placerTuiles(int i, int j) {
+        //System.out.println("placerTuiles");
         int j_modified = convertionTileMapToHexagonal(i, j);
 
         if (scrollValue == 1) {
@@ -927,10 +928,6 @@ public class PanelPlateau extends JPanel {
     }
 
     public void placerBatiment(int i, int j) {
-        if(jeu.estFinPartie()){
-            jeu.getJoueurCourant().stopChrono();
-            return;
-        }
         int s = scrollValue%3;
         int[] coupsJouable = coupJouable(i,j);
         if(updateScrollValue(s, coupsJouable)) {
@@ -953,9 +950,7 @@ public class PanelPlateau extends JPanel {
             }
             scrollValue = 1;//on met la valeur de scrollValue à 1 car si elle est à 0 la prochaine tuile ne s'affichera pas
             jeu.getJoueurCourant().stopChrono();
-            if(!jeu.estFinPartie()){
-                jeu.changeJoueur();
-            }
+            jeu.changeJoueur();
         }
     }
 
@@ -990,7 +985,10 @@ public class PanelPlateau extends JPanel {
 
     private void placeBatiment(int i, int j) {
         jeu.isJoueurCourantPerdu();
-        if(jeu.estFinPartie()) return;
+        if(jeu.estFinPartie()) {
+            jeu.getJoueurCourant().stopChrono();
+            return;
+        }
         if(!enSelection){
             int[] coups = coupJouable(i,j);
             if (controleur.peutPlacerBatiment(i, j)&&(coups[0]!=0||coups[1]!=0||coups[2]!=0)) {
