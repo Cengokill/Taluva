@@ -1,6 +1,7 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
+import Modele.IA.AbstractIA;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Jeu;
@@ -100,8 +101,8 @@ public class PanelPlateau extends JPanel {
         g2d.translate(cameraOffset.x, cameraOffset.y);
         g2d.scale(zoomFactor, zoomFactor);
         displayHexagonMap(g);
-
-        if (!select_menu_options) {
+        //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
+        if (!select_menu_options || jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA) {
             affichePrevisualisationPropagation(g);
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);

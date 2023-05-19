@@ -70,12 +70,12 @@ public class Jeu extends Observable implements Serializable{
         IA1.setPrenom("IA1");
         IA2.setPrenom("IA2");
         IA3.setPrenom("IA3");
-        joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
-        joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
+        //joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, "Jean-Christophe");
+        //joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, "Killian");
         //joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, "Joueur 3");
         //joueurs[3] = new Joueur(Joueur.HUMAIN, (byte)4, "Joueur 4");
-        //[0] = IA0;
-        //joueurs[1] = IA1;
+        joueurs[0] = IA0;
+        joueurs[1] = IA1;
         //joueurs[2] = IA2;
         //joueurs[3] = IA3;
         joueurs[0].setCouleur(Color.RED);
