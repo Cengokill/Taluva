@@ -159,10 +159,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
                         // On calcul la taille du village
                         // !! Attention ici faut faire une verification pour pas verifier plusieurs fois le meme village
-                        /*if(instanceJeu.getPlateau().getBatiment(i,j)!=0){
-                           if((tailleVillage(instanceJeu,joueurAEvaluer.getNumero(),i,j))>1){
-                               score = 90000;
-                               //instanceJeu.getPlateau().affiche();
+                        /*if(instanceCourante.getPlateau().getBatiment(i,j)!=0){
+                           if((tailleVillage(instanceCourante,joueurCourant.getCouleur(),i,j))>1){
+                               System.out.println("i: "+i+" j: "+j+" taille : " + tailleVillage(instanceCourante,joueurCourant.getCouleur(),i,j));
                            }
                         }*/
                     }
@@ -216,6 +215,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             Plateau plateauCopie = instanceCourante.getPlateau();
             plateauCopie.joueCoup(coupCourant);
             coupAFaire = choisirCoupBatiment(coupCourant,instanceCourante);
+
+            AffichertailleVillage(instanceCourante,instanceCourante.getJoueurCourantClasse().getCouleur());
+
             if(coupAFaire!=null){
                 score_courant = coupAFaire.getValeur();
                 // si le coup est aussi bien que notre meilleur on le rajoute
@@ -470,19 +472,28 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return score;
     }
 
-    private int tailleVillage(InstanceJeu instanceJeu, Color color_joueur, int i, int j){
+    private void AffichertailleVillage(InstanceJeu instanceJeu, Color color_joueur){
         int taille = 0;
+        ArrayList<Point2D> dejavisite = new ArrayList<>();
         Plateau plateau = instanceJeu.getPlateau();
-        // Les positions de chaque hutte du village
-        ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,color_joueur);
-        for(Point2D posCourante : pointsVillage){
-            if(plateau.getHexagone(posCourante.getPointX(), posCourante.getPointY()).getColorJoueur()==color_joueur){
-                System.out.println("numJoueur: "+color_joueur);
-                System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
-                taille++;
+        for(int i=0; i<plateau.getLIGNES(); i++){
+            for(int j=0; j<plateau.getCOLONNES(); j++){
+                // Les positions de chaque hutte du village
+                if(plateau.getBatiment(i,j)!=0){
+                    taille = 0;
+                    ArrayList<Point2D> pointsVillage = instanceJeu.getPlateau().positionsBatsVillage(i,j,color_joueur);
+                    for(Point2D posCourante : pointsVillage){
+                        if(plateau.getHexagone(posCourante.getPointX(), posCourante.getPointY()).getColorJoueur()==color_joueur && !dejavisite.contains(posCourante)){
+                            dejavisite.add(posCourante);
+                            //System.out.println("numJoueur: "+color_joueur);
+                            //System.out.println("posVillage x: "+posCourante.getPointX()+" y: "+posCourante.getPointY());
+                            taille++;
+                        }
+                    }
+                    System.out.println("taille : " + taille + " couleur : "+color_joueur);
+                }
             }
         }
-        return taille;
     }
 
     private int evaluerVillages(InstanceJeu instanceJeu,ArrayList<Joueur> joueursAEvaluer){

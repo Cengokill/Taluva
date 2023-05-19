@@ -50,7 +50,7 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 800;
+            delai = 1000;
         }
         debug = false;
     }
@@ -67,10 +67,10 @@ public class Jeu extends Observable implements Serializable{
         int nbIA = 0;
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
         joueurs = new Joueur[nb_joueurs];
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
-        IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
-        IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
+        IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.INTELLIGENTE);
+        IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.INTELLIGENTE);
         if (nomJoueur0.compareTo("IA") == 0) {
             IA0.setPrenom("IA" + (nbIA + 1));
             nbIA++;

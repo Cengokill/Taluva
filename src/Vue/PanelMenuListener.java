@@ -446,11 +446,10 @@ public class PanelMenuListener implements MouseListener  {
         if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs >= 2) {
                 String nomJoueur1 = panelMenu.nomJoueur1.getText();
-                String nomJoueur2 = panelMenu.nomJoueur1.getText();
-                String nomJoueur3 = panelMenu.nomJoueur1.getText();
-                String nomJoueur4 = panelMenu.nomJoueur1.getText();
+                String nomJoueur2 = panelMenu.nomJoueur2.getText();
+                String nomJoueur3 = panelMenu.nomJoueur3.getText();
+                String nomJoueur4 = panelMenu.nomJoueur4.getText();
                 int nbJoueur = panelMenu.nbJoueurs;
-
 
                 //efface tout le contenu de la frame
                 panelMenu.layeredPane.removeAll();
