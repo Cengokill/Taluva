@@ -75,14 +75,15 @@ public class Jeu extends Observable implements Serializable{
             IA0.setPrenom("IA" + (nbIA + 1));
             nbIA++;
             joueurs[0] = IA0;
-            joueurs[0].setCouleur(Color.RED);
         }
+        joueurs[0].setCouleur(Color.RED);
         if (nomJoueur2.compareTo("IA") == 0) {
             IA1.setPrenom("IA" + (nbIA + 1));
             nbIA++;
             joueurs[1] = IA1;
-            joueurs[1].setCouleur(Color.BLUE);
         }
+        joueurs[1].setCouleur(Color.BLUE);
+
         if (nbJoueur >= 3) {
             joueurs[2] = new Joueur(Joueur.HUMAIN, (byte)3, nomJoueur3);
             if (nomJoueur3.compareTo("IA") == 0) {
