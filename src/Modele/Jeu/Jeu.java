@@ -61,7 +61,6 @@ public class Jeu extends Observable implements Serializable{
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
         if(nomJoueur2.isBlank()) nomJoueur2 = "Joueur 3";
         if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
-        System.out.println("nomJoueur1 : "+nomJoueur1);
         jCourant = 0;
         nb_joueurs = nbJoueurs;
         taille_pioche = 12 * nb_joueurs;
