@@ -149,7 +149,7 @@ public class InstanceJeu {
         }
     }
 
-    public boolean getEstFinJeu(){
+    public boolean estFinJeu(){
         return estFinJeu;
     }
 }
