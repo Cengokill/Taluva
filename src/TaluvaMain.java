@@ -6,12 +6,13 @@ import Modele.Reseau.Serveur;
 import Modele.Jeu.Jeu;
 import Vue.FenetreJeu;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
-    public static void main(String[] args) throws IOException, CloneNotSupportedException {
+    public static void main(String[] args) throws IOException, CloneNotSupportedException, FontFormatException {
         byte type_jeu = GRAPHIQUE;
         /*
         Serveur serveur = new Serveur(42113);

@@ -23,12 +23,13 @@ public class ImageLoader {
     public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, chronoBleu, chronoRouge;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
-    public static BufferedImage grassTile_0, grassTile_1, grassTile_2;
-    public static BufferedImage volcanTile_0, volcanTile_1, volcanTile_2;
-    public static BufferedImage foretTile_0, foretTile_1, foretTile_2;
-    public static BufferedImage desertTile_0, desertTile_1, desertTile_2;
-    public static BufferedImage lacTile_0, lacTile_1, lacTile_2;
-    public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2;
+    public static BufferedImage grassTile_0, grassTile_1, grassTile_2,grassTile_0_SP, grassTile_1_SP, grassTile_2_SP;
+    public static BufferedImage volcanTile_0, volcanTile_1, volcanTile_2,volcanTile_0_SP, volcanTile_1_SP, volcanTile_2_SP;
+    public static BufferedImage foretTile_0, foretTile_1, foretTile_2,foretTile_0_SP, foretTile_1_SP, foretTile_2_SP;
+    public static BufferedImage desertTile_0, desertTile_1, desertTile_2,desertTile_0_SP, desertTile_1_SP, desertTile_2_SP;
+    public static BufferedImage lacTile_0, lacTile_1, lacTile_2,lacTile_0_SP, lacTile_1_SP, lacTile_2_SP;
+    public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2,montagneTile_0_SP, montagneTile_1_SP, montagneTile_2_SP;
+    public static BufferedImage ombre_0, ombre_1;
     public static BufferedImage timer, joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
@@ -103,6 +104,7 @@ public class ImageLoader {
         readTuilePiochee();
         readPiocheImages();
         readPlayableTilesImages();
+        readPlayableTilesSansProfondeurImages();
         readHeightImages();
         readTileOrientationImages();
         readBatimentsImages();
@@ -222,6 +224,8 @@ public class ImageLoader {
         whiteTile = lisImageBuf(imageFolder + "White_Tile");
         voidTileOld = lisImageBuf(imageFolder + "Void_Tile_old");
         hoverTile = lisImageBuf(imageFolder + "Hover_Tile");
+        ombre_0 = lisImageBuf(imageFolder + "ombre_tuile_0");
+        ombre_1 = lisImageBuf(imageFolder + "ombre_tuile_1");
     }
 
     public static BufferedImage getBatimentFromPlayerId(Color color_player, byte batiment_id,int typeTerrain, int hauteurTerrain) {
@@ -338,6 +342,28 @@ public class ImageLoader {
         lacTile_0 = lisImageBuf(imageFolder + "Lac_0_Tile");
         lacTile_1 = lisImageBuf(imageFolder + "Lac_1_Tile");
         lacTile_2 = lisImageBuf(imageFolder + "Lac_2_Tile");
+    }
+
+    private static void readPlayableTilesSansProfondeurImages() {
+        String imageFolder = "/Plateau/Hexagones/Textures/Simples/sans_profondeur/";
+        grassTile_0_SP = lisImageBuf(imageFolder + "Grass_0_Tile");
+        grassTile_1_SP = lisImageBuf(imageFolder + "Grass_1_Tile");
+        grassTile_2_SP = lisImageBuf(imageFolder + "Grass_2_Tile");
+        volcanTile_0_SP = lisImageBuf(imageFolder + "Volcan_0_Tile");
+        volcanTile_1_SP = lisImageBuf(imageFolder + "Volcan_1_Tile");
+        volcanTile_2_SP = lisImageBuf(imageFolder + "Volcan_2_Tile");
+        foretTile_0_SP = lisImageBuf(imageFolder + "Foret_0_Tile");
+        foretTile_1_SP = lisImageBuf(imageFolder + "Foret_1_Tile");
+        foretTile_2_SP = lisImageBuf(imageFolder + "Foret_2_Tile");
+        desertTile_0_SP = lisImageBuf(imageFolder + "Desert_0_Tile");
+        desertTile_1_SP = lisImageBuf(imageFolder + "Desert_1_Tile");
+        desertTile_2_SP = lisImageBuf(imageFolder + "Desert_2_Tile");
+        montagneTile_0_SP = lisImageBuf(imageFolder + "Montagne_0_Tile");
+        montagneTile_1_SP = lisImageBuf(imageFolder + "Montagne_1_Tile");
+        montagneTile_2_SP = lisImageBuf(imageFolder + "Montagne_2_Tile");
+        lacTile_0_SP = lisImageBuf(imageFolder + "Lac_0_Tile");
+        lacTile_1_SP = lisImageBuf(imageFolder + "Lac_1_Tile");
+        lacTile_2_SP = lisImageBuf(imageFolder + "Lac_2_Tile");
     }
 
     private static void readBatimentsImages() {
@@ -500,24 +526,24 @@ public class ImageLoader {
         }
         if (id == GRASS) {
             if (numero_texture == 0) {
-                return grassTile_0;
+                return grassTile_0_SP;
             }
             if (numero_texture == 1) {
-                return grassTile_1;
+                return grassTile_1_SP;
             }
             if (numero_texture == 2) {
-                return grassTile_2;
+                return grassTile_2_SP;
             }
         }
         if (id == VOLCAN) {
             if (numero_texture == 0) {
-                return volcanTile_0;
+                return volcanTile_0_SP;
             }
             if (numero_texture == 1) {
-                return volcanTile_1;
+                return volcanTile_1_SP;
             }
             if (numero_texture == 2) {
-                return volcanTile_2;
+                return volcanTile_2_SP;
             }
         }
         /*if (id == HUTTE) {
@@ -525,46 +551,46 @@ public class ImageLoader {
         }*/
         if (id == DESERT) {
             if (numero_texture == 0) {
-                return desertTile_0;
+                return desertTile_0_SP;
             }
             if (numero_texture == 1) {
-                return desertTile_1;
+                return desertTile_1_SP;
             }
             if (numero_texture == 2) {
-                return desertTile_2;
+                return desertTile_2_SP;
             }
         }
         if (id == MONTAGNE) {
             if (numero_texture == 0) {
-                return montagneTile_0;
+                return montagneTile_0_SP;
             }
             if (numero_texture == 1) {
-                return montagneTile_1;
+                return montagneTile_1_SP;
             }
             if (numero_texture == 2) {
-                return montagneTile_2;
+                return montagneTile_2_SP;
             }
         }
         if (id == FORET) {
             if (numero_texture == 0) {
-                return foretTile_0;
+                return foretTile_0_SP;
             }
             if (numero_texture == 1) {
-                return foretTile_1;
+                return foretTile_1_SP;
             }
             if (numero_texture == 2) {
-                return foretTile_2;
+                return foretTile_2_SP;
             }
         }
         if (id == LAC) {
             if (numero_texture == 0) {
-                return lacTile_0;
+                return lacTile_0_SP;
             }
             if (numero_texture == 1) {
-                return lacTile_1;
+                return lacTile_1_SP;
             }
             if (numero_texture == 2) {
-                return lacTile_2;
+                return lacTile_2_SP;
             }
         }
         if (id == WATER) {

@@ -3,6 +3,7 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
+import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -62,12 +63,13 @@ public class FenetreJeu extends Container {
     static BufferedImage temple_j3 = null;
     static Color couleur_bleue = new Color(0, 166, 255, 255);
     static int taille_texte_finPartie;
-
-    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
+    static Font customFont;
+    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException, FontFormatException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         joueurs_tries = new ArrayList<>();
         FenetreJeu.jeu = jeu;
+        customFont = Font.createFont(Font.TRUETYPE_FONT, new File("ressources/BOOKOSB.TTF"));
         frame = getFMenu();
         frame.setMinimumSize(new Dimension(800, 700));
         initFrame();
@@ -416,7 +418,7 @@ public class FenetreJeu extends Container {
         fenetre_score_4 = lisImageBuf("fenetre_score_4");
         timer = lisImageBuf("Timer");
         joueur_courant = lisImageBuf("Joueur_courant");
-        echap_button = lisImageBuf("Menu/echap_icon");
+        echap_button = lisImageBuf("Menu/Options");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
@@ -801,9 +803,9 @@ public class FenetreJeu extends Container {
 
     public static void afficheBoutonEchap(Graphics g) {
         if(tuto_on)
-            g.drawImage(echap_button, posX_Echap, posY_Echap, largeur_bouton * 2, hauteur_bouton * 2,null);
+            g.drawImage(echap_button, posX_Echap, posY_Echap, largeur_bouton, largeur_bouton,null);
         else
-            g.drawImage(echap_button, posX_Echap, posY_Echap, largeur_bouton * 2, hauteur_bouton * 2,null);
+            g.drawImage(echap_button, posX_Echap, posY_Echap, largeur_bouton, largeur_bouton,null);
     }
 
     public static void afficheBoutonQuitter(Graphics g) {
@@ -836,7 +838,8 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheJoueurCourant(Graphics g) {
-        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        //Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        Font font = customFont.deriveFont(Font.PLAIN,29);
         g.setFont(font);
         Color couleur_joueur = jeu.getJoueurCourant().getCouleur();
         if(couleur_joueur == Color.BLUE) couleur_joueur = couleur_bleue;
