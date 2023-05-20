@@ -17,8 +17,9 @@ public class AbstractIA extends Joueur implements Runnable{
     protected Jeu jeu;
     public static LinkedList<Tuile> pioche;
     private static int type_IA;
-    public static final byte INTELLIGENTE = 0;
-    public static final byte ALEATOIRE = 1;
+    public static final byte ALEATOIRE = 0;
+    public static final byte MOYENNE = 1;
+    public static final byte INTELLIGENTE = 2;
     private byte numero;
 
     public AbstractIA(byte type, byte n, String prenom) {
@@ -33,9 +34,8 @@ public class AbstractIA extends Joueur implements Runnable{
             resultat = new IAAleatoire(n);
         }else if(type_IA == INTELLIGENTE) {
             resultat = new IAIntelligente(n);
-        }else{
-            System.err.println("AbstractIA non supportée.");
-            System.exit(1);
+        }else if(type_IA == MOYENNE) {
+            resultat = new IAMoyenne(n);
         }
         if (resultat != null) {
             resultat.jeu = j;

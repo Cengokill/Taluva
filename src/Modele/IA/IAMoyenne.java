@@ -15,8 +15,6 @@ import java.io.Serializable;
 import java.util.*;
 
 public class IAMoyenne extends AbstractIA implements Serializable {
-    public byte num_joueur_ia;
-    private int nbInstancesDifferentes =0;
     public int taille_max_tuiles_a_tester = 20;
     public static int poids_temple = 1000;
     public static int poids_tour = 100;
@@ -25,7 +23,6 @@ public class IAMoyenne extends AbstractIA implements Serializable {
     public static int HUTTE = 1;
     public static int TOUR = 2;
     private Random r;
-    private CoupValeur coupValeur;
     double temps_copie_plateau = 0;
     double debut, fin, temps_total;
     double debut_test, fin_test, temps_test;
@@ -53,10 +50,10 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
         this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur(), false);
         if(plateauIA.getTripletsPossibles().size()==1){ // C'est le premier coup
-            ArrayList<CoupValeur> meilleursCoupsTab = choisirCoupsTuile(instance,jeu.getTuileCourante());
+            ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoups(instance,1);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,0);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -79,13 +76,14 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         return false;
     }
 
-    public ArrayList<CoupValeur> meilleursCoups(InstanceJeu instance, int horizon){
+    public ArrayList<CoupValeur> meilleursCoupsInstance(InstanceJeu instance, int horizon){
+        //renvoie les meilleurs coups possibles de l'instance donnée en paramètre
         int valeurMax = Integer.MIN_VALUE;
         ArrayList<CoupValeur> coups_calcules = new ArrayList<>();
-        ArrayList<CoupValeur> coups_possibles = choisirCoupsTuile(instance,jeu.getTuileCourante());
-        //for chaque coup possible
-        for(int i = 0; i<coups_possibles.size(); i++){
-            CoupValeur coupCourant = coups_possibles.get(i);//on rappelle qu'on coup est constitué d'un coup de tuile et d'un coup de bâtiment d'où le Duo
+        ArrayList<CoupValeur> coups_meilleurs = meilleursCoupsTuile(instance,jeu.getTuileCourante());
+        //pour chaque coup meilleur
+        for(int i = 0; i<coups_meilleurs.size(); i++){
+            CoupValeur coupCourant = coups_meilleurs.get(i);//on rappelle qu'on coup est constitué d'un coup de tuile et d'un coup de bâtiment d'où le Duo
             InstanceJeu nouvelle_configuration = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
             Plateau plateauCourant = nouvelle_configuration.getPlateau();
             plateauCourant.joueCoup(coupCourant.getCoupT());
@@ -102,20 +100,19 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         return coups_calcules;
     }
 
-
     public int miniMaxJoueurA(InstanceJeu instance, Tuile tuile, int profondeur){
         if(profondeur == 0){
             return evaluationScoreTuile(instance);
         }
         int valeur = Integer.MIN_VALUE;
-        ArrayList<CoupValeur> meilleursCoups = choisirCoupsTuile(instance,jeu.getTuileCourante());
+        ArrayList<CoupValeur> meilleursCoups = meilleursCoupsTuile(instance,jeu.getTuileCourante());
         for(int i = 0; i<meilleursCoups.size(); i++){
             CoupValeur coupDuo = meilleursCoups.get(i);
             InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
             Plateau plateauCopie = instanceCourante.getPlateau();
             //joue le coup Tuile
             plateauCopie.joueCoup(coupDuo.getCoupT());
-            //joue le coup Batiment
+            //joue le coup Bâtiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
             valeur = Math.max(valeur, miniMaxJoueurB(instanceCourante, tuile, profondeur-1));
         }
@@ -127,7 +124,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
             return evaluationScoreTuile(instance);
         }
         int valeur = Integer.MAX_VALUE;
-        ArrayList<CoupValeur> meilleursCoups = choisirCoupsTuile(instance,jeu.getTuileCourante());
+        ArrayList<CoupValeur> meilleursCoups = meilleursCoupsTuile(instance,jeu.getTuileCourante());
         for(int i = 0; i<meilleursCoups.size(); i++){
             CoupValeur coupDuo = meilleursCoups.get(i);
             InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
@@ -179,45 +176,31 @@ public class IAMoyenne extends AbstractIA implements Serializable {
                 if(joueurCourantAdverse!=joueur) joueurs.add(joueurCourantAdverse);
             }
         }else{
-            // On évalue l'IA
             joueurs.add(joueur);
         }
-        /*
-        for(Joueur joueurCourant: joueurs){
-            // On regarde si le joueur pourra gagner a ce tour en posant la tuile ici
-            if(seraJoueurVictorieux(instanceCourante,joueurs)) return Integer.MAX_VALUE; // (!) potentiellement lourd
-
-            // On veut éviter le cas où le joueur n'a plus de huttes
-
-            if(joueur.getNbHuttes() == 0){
-                return 0;
-            }
-        }
-        //sinon on évalue le score de l'instance avec cette tuile
-        */
         int score = evaluerInstanceTuile(instanceCourante,joueurs);
 
         return score;
     }
     private int evaluerInstanceTuile(InstanceJeu instanceCourante, ArrayList<Joueur> joueurs){
         // On regarde ce que cette nouvelle tuile nous permet de construire
-        int[] batimentsPlacablesNombre = getNombreBatimentsPlacable(instanceCourante,joueurs);
+        int[] batimentsPlacablesNombre = getNombreBatimentsConstructible(instanceCourante,joueurs);
         int score = 0;
         // batimentsPlacablesNombre[0] -> nombre de temples constructibles par les joueurs adverses
         // batimentsPlacablesNombre[1] -> nombre de huttes constructibles par les joueurs adverses
         // batimentsPlacablesNombre[2] -> nombre de tours constructibles par les joueurs adverses
         for(Joueur joueurCourant: joueurs){
+            if(seraJoueurVictorieux(instanceCourante,joueurs)) return Integer.MAX_VALUE;
+            if(batimentsPlacablesNombre[0] == 0 && batimentsPlacablesNombre[1] == 0 && batimentsPlacablesNombre[2] == 0) return Integer.MIN_VALUE;
             score += (batimentsPlacablesNombre[0]*joueurCourant.getNbTemples())*(poids_temple);
             score += batimentsPlacablesNombre[1]*joueurCourant.getNbHuttes()*(poids_hutte);
             score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour);
         }
-
         // TODO à completer (par exemple isoler un temple ou couper un gros village en 2...)
-
         return score/joueurs.size();
     }
 
-    private int[] getNombreBatimentsPlacable(InstanceJeu instanceCourante, ArrayList<Joueur> joueursAEvaluer){
+    private int[] getNombreBatimentsConstructible(InstanceJeu instanceCourante, ArrayList<Joueur> joueursAEvaluer){
         int[] batPlacables = new int[3];
 
         // On regarde tous les batiments placables par le joueurAEvaluer sur l'instance courante
@@ -254,7 +237,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
     }
 
 
-    private ArrayList<CoupValeur> choisirCoupsTuile(InstanceJeu instanceJeu,Tuile tuile){
+    private ArrayList<CoupValeur> meilleursCoupsTuile(InstanceJeu instanceJeu, Tuile tuile){
         int i=0, scoreBatiment_max = Integer.MIN_VALUE, scoreTuile_max = Integer.MIN_VALUE;
         int score_courant;
         ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
@@ -316,11 +299,11 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         temps_test += fin_test-debut_test;
         temps_test2 += fin_test2-debut_test2;
         //System.out.println("temps copie plateau : "+temps_copie_plateau);
-        System.out.println("---------------------------------------");
-        System.out.println("temps eval. tuiles : "+temps_test);
-        System.out.println("temps eval. batiments : "+temps_test2);
-        System.out.println("taille coupTuileBatimentsAEvaluer : "+coupTuileBatimentsAEvaluer.size());
-        System.out.println("temps total : "+temps_total);
+        //System.out.println("---------------------------------------");
+        //System.out.println("temps eval. tuiles : "+temps_test);
+        //System.out.println("temps eval. batiments : "+temps_test2);
+        //System.out.println("taille coupTuileBatimentsAEvaluer : "+coupTuileBatimentsAEvaluer.size());
+        //System.out.println("temps total : "+temps_total);
         temps_copie_plateau = 0;
         temps_total = 0;
         temps_test = 0;
@@ -352,8 +335,12 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
         else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
         else{
-            if(hauteur>=3) jCourantCopie.incrementeHutte();
-            if(hauteur==2) jCourantCopie.incrementeHutte();
+            if(hauteur>=3){
+                jCourantCopie.incrementeHutte();
+            }
+            if(hauteur>=2){
+                jCourantCopie.incrementeHutte();
+            }
             jCourantCopie.incrementeHutte();
         }
     }
@@ -363,7 +350,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         else if(batimentChoisit == TOUR) jCourantCopie.decrementeTour();
         else{
             if(hauteur>=3) jCourantCopie.decrementeHutte();
-            if(hauteur==2) jCourantCopie.decrementeHutte();
+            if(hauteur>=2) jCourantCopie.decrementeHutte();
             jCourantCopie.decrementeHutte();
         }
         return jCourantCopie;
@@ -593,7 +580,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         int score=0;
 
         // On regarde les batiments placables maintenant que nous avons posé le batiment
-        int[] batimentsPlacables = getNombreBatimentsPlacable(instanceJeu,joueursAEvaluer);
+        int[] batimentsPlacables = getNombreBatimentsConstructible(instanceJeu,joueursAEvaluer);
 
         for(Joueur joueurCourant: joueursAEvaluer){
             score += joueurCourant.getNbVillages();
@@ -619,14 +606,14 @@ public class IAMoyenne extends AbstractIA implements Serializable {
 
     private boolean seraJoueurVictorieux(InstanceJeu instanceCourante,ArrayList<Joueur> joueurs){
         boolean gagnant = false;
-        int[] batimentsPlacables = getNombreBatimentsPlacable(instanceCourante,joueurs);
+        int[] batimentsPlacables = getNombreBatimentsConstructible(instanceCourante,joueurs);
         for(Joueur joueurCourant: joueurs) {
             // Si on peut placer un temple et que ca nous donne la victoire
-            if(batimentsPlacables[0]==1 && (joueurCourant.getNbTemples()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTours()==0))) gagnant = true;
+            if(batimentsPlacables[0]==1 && (joueurCourant.getNbTemples()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTours()==0))) return true;
             // Si on peut placer une hutte et que ca nous donne la victoire
-            if(batimentsPlacables[1]==1 && (joueurCourant.getNbHuttes()==1 && (joueurCourant.getNbTemples()==0 || joueurCourant.getNbTours()==0))) gagnant = true;
+            if(batimentsPlacables[1]==1 && (joueurCourant.getNbHuttes()==1 && (joueurCourant.getNbTemples()==0 || joueurCourant.getNbTours()==0))) return true;
             // Si on peut placer une tour et que ca nous donne la victoire
-            if(batimentsPlacables[2]==1 && (joueurCourant.getNbTours()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTemples()==0))) gagnant = true;
+            if(batimentsPlacables[2]==1 && (joueurCourant.getNbTours()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTemples()==0))) return true;
         }
         return gagnant;
     }

@@ -29,7 +29,7 @@ public class Jeu extends Observable implements Serializable{
     Plateau plateau;
     public MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     private Tuile tuile_courante;
-    private int delai_avant_pioche = 50;
+    private int delai_avant_pioche = 800;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
     public byte jCourant;
     public byte jVainqueur;
@@ -38,10 +38,8 @@ public class Jeu extends Observable implements Serializable{
     private double temps_tour;
     private boolean timerActif;
     Parametres p;
-    final int[]score = new int[2];
     byte[] tuileAPoser = new byte[5];
     private boolean estPiochee = false;
-
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
     boolean estFinPartie;
     public boolean unefoisIA=false;
@@ -53,7 +51,7 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 50;
+            delai = 800;
         }
         debug = false;
     }
@@ -72,7 +70,7 @@ public class Jeu extends Observable implements Serializable{
         timerActif = true;
         joueurs = new Joueur[nb_joueurs];
         IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.MOYENNE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
         IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
         if (nomJoueur0.compareTo("IA") == 0) {
@@ -132,16 +130,8 @@ public class Jeu extends Observable implements Serializable{
 
         if (estJoueurCourantUneIA()) {
             if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
-                Timer timer = new Timer(delai, e -> {
-                    try {
-                        pioche();
-                        joueIA();
-                    } catch (CloneNotSupportedException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                });
-                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-                timer.start(); // Démarrez le timer
+                pioche();
+                joueIA();
             }
         }else{
             if (type_jeu == GRAPHIQUE) {
@@ -248,7 +238,11 @@ public class Jeu extends Observable implements Serializable{
     public void joueIA() throws CloneNotSupportedException {
         if(type_jeu==CONSOLE) joueSansThread();
         else{
-            joueMultiThread();
+            Timer timer = new Timer(delai, e -> {
+                joueMultiThread();
+            });
+            timer.setRepeats(false);
+            timer.start();
         }
     }
 
@@ -314,7 +308,10 @@ public class Jeu extends Observable implements Serializable{
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=Coup.SELECTEUR_BATIMENT){
             if(type_bat == Coup.HUTTE){
+                System.out.println("---------------------------------------");
+                System.out.println("hauteur tuile : "+plateau.getHauteurTuile(ligne,colonne));
                 for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
+                    System.out.println("incremente hutte");
                     joueurs[jCourant].incrementeHutte();
                     }
                 }
