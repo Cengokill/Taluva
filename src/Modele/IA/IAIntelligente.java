@@ -53,8 +53,11 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         Plateau plateauIA = jeu.getPlateau().copie();
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
         this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur(), false);
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoups(instance,0);
-
+        if(plateauIA.getTripletsPossibles().size()==1){ // C'est le premier coup
+            ArrayList<CoupValeur> meilleursCoupsTab = choisirCoupsTuile(instance,jeu.getTuileCourante());
+            return meilleursCoupsTab.get(0);
+        }
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoups(instance,1);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -396,7 +399,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                 }
             }
             double debut2 = System.currentTimeMillis();
-            InstanceJeu instanceAEvaluer = new InstanceJeu(null,plateauCopie2,instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
+            InstanceJeu instanceAEvaluer = new InstanceJeu(instance.getPioche(),plateauCopie2,instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
             double fin2 = System.currentTimeMillis();
             temps_copie_plateau += fin2-debut2;
             Joueur joueurAEvaluer = instanceAEvaluer.getJoueur(instanceAEvaluer.getJoueurCourant());
@@ -432,6 +435,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             i++;
         }
         if(coupsBatimentARenvoyer.size()==0){
+            System.out.println("batiment null");
             return null;
         }
         CoupValeur coupARenvoyer = new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
