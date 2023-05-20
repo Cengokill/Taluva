@@ -744,7 +744,7 @@ public class FenetreJeu extends Container {
                 g.drawString(score, posX_score_finPartie, posY_joueur_finPartie+decalageY_joueur*i);
             }
             int minutes = (int) ((int) tempsPartie/60000.0);
-            int secondes = (int) ((int) tempsPartie/1000.0);
+            int secondes = (int) ((int) (tempsPartie-(double)minutes*60000.0)/1000.0);
             String temps_minutes = Integer.toString(minutes);
             String temps_secondes = Integer.toString(secondes);
             String zero_1 = "0";String zero_2 = "0";
@@ -754,6 +754,7 @@ public class FenetreJeu extends Container {
             if(secondes>9){
                 zero_2 = "";
             }
+            System.out.println("temps total : "+tempsPartie);
             System.out.println("minutes : "+minutes+" secondes : "+secondes);
             g.drawString(zero_1+temps_minutes+":"+zero_2+temps_secondes, posX_temps_partie, posY_temps_partie);
             afficheBoutonQuitter(g);
