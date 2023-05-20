@@ -20,17 +20,13 @@ import java.io.IOException;
 import static Vue.ImageLoader.*;
 
 public class PanelMenu extends JPanel {
-
     JFrame frame;
     JLayeredPane layeredPane;
-
     FenetreJeu fenetre;
     public Jeu jeu;
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
-
     final BufferedImage[] sliders = new BufferedImage[6];
-
     BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Reseau_hover,bouton_Options_hover,bouton_Quitter_hover,
             options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
             ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
@@ -39,9 +35,9 @@ public class PanelMenu extends JPanel {
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
-    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posX_bouton_plus_ia, posY_bouton_plus_ia, posX_bouton_moins, posY_bouton_moins, posX_cadre, posY_cadre;
-    public int largeur_bouton_plus, largeur_bouton_moins, largeur_cadre;
-
+    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posX_bouton_plus_ia, posX_bouton_moins, posY_bouton_moins, posX_cadre, posY_cadre, posX_textJoueur, posY_textJoueur,
+    posX_bouton_valider, posY_bouton_valider, posX_bouton_fermer, posY_bouton_fermer;
+    public int largeur_bouton_plus, largeur_bouton_moins, largeur_cadre, largeur_bouton_valider, largeur_bouton_fermer, largeur_textJoueur, decalageY_couleur;
     private int timerValue;
     private JTextField field_joueur1;
     boolean select_local,select_reseau,select_options,select_quitter,clicOptions,select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
@@ -412,48 +408,34 @@ public class PanelMenu extends JPanel {
         g2d.drawImage(configPartieBackground, posX_background ,posY_background , largeur_background, hauteur_background, null);
         g2d.drawImage(plus, posX_bouton_plus_joueur, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
         g2d.drawImage(plus, posX_bouton_plus_ia, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
-
+        BufferedImage[] couleurs = {rouge, bleu, vert, violet};
+        for(int i = 0; i < nbJoueurs; i++) {
+            g2d.drawImage(couleurs[i], posX_cadre, posY_cadre + i*decalageY_couleur, largeur_cadre, largeur_cadre, null);
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + i*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+        }
         if (nbJoueurs >= 1) {
             nomJoueur1.setVisible(true);
-            g2d.drawImage(rouge, xConfigPanel + 440, yConfigPanel + 340, plus.getWidth(), plus.getHeight(), null);
         }
         if (nbJoueurs >= 2) {
             nomJoueur2.setVisible(true);
-            g2d.drawImage(bleu, xConfigPanel + 440, yConfigPanel + 440, plus.getWidth(), plus.getHeight(), null);
         }
         if (nbJoueurs >= 3) {
             nomJoueur3.setVisible(true);
-            g2d.drawImage(violet, xConfigPanel + 440, yConfigPanel + 540, plus.getWidth(), plus.getHeight(), null);
         }
         if (nbJoueurs == 4) {
             nomJoueur4.setVisible(true);
-            g2d.drawImage(vert, xConfigPanel + 440, yConfigPanel + 640, plus.getWidth(), plus.getHeight(), null);
-            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 660, plus.getWidth()/2, plus.getHeight()/2, null);
         }
-
-        if (nbJoueurs == 1) {
-            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 360, plus.getWidth()/2, plus.getHeight()/2, null);
-        }
-        if (nbJoueurs == 2) {
-            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 460, plus.getWidth()/2, plus.getHeight()/2, null);
-        }
-        if (nbJoueurs == 3) {
-            g2d.drawImage(moins, xConfigPanel + 440 + 80, yConfigPanel + 560, plus.getWidth()/2, plus.getHeight()/2, null);
-        }
-
-
-        g2d.drawImage(fermer, xConfigPanel + 40, yConfigPanel + 700, plus.getWidth(), plus.getHeight(), null);
-        g2d.drawImage(valider, xConfigPanel + 610, yConfigPanel + 700, plus.getWidth(), plus.getHeight(), null);
-
-        nomJoueur1.setBounds(xConfigPanel + 180, yConfigPanel + 360, 200, 40);
-        nomJoueur2.setBounds(xConfigPanel + 180, yConfigPanel + 460, 200, 40);
-        nomJoueur3.setBounds(xConfigPanel + 180, yConfigPanel + 560, 200, 40);
-        nomJoueur4.setBounds(xConfigPanel + 180, yConfigPanel + 660, 200, 40);
+        g2d.drawImage(fermer, posX_bouton_fermer, posX_bouton_fermer, largeur_bouton_fermer, largeur_bouton_fermer, null);
+        g2d.drawImage(valider, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
+        nomJoueur1.setBounds(posX_textJoueur, posY_textJoueur, largeur_textJoueur, 40);
+        nomJoueur2.setBounds(posX_textJoueur, posY_textJoueur+decalageY_couleur, largeur_textJoueur, 40);
+        nomJoueur3.setBounds(posX_textJoueur, posY_textJoueur+2*decalageY_couleur, largeur_textJoueur, 40);
+        nomJoueur4.setBounds(posX_textJoueur, posY_textJoueur+3*decalageY_couleur, largeur_textJoueur, 40);
     }
 
     private void calculeRapportsEtPositions() {
-        largeur =frame.getWidth();
-        hauteur =frame.getHeight();
+        largeur = layeredPane.getWidth();
+        hauteur = layeredPane.getHeight();
         double rapport_bouton=1;
         double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
         double rapport_background = 0.5625;
@@ -470,7 +452,7 @@ public class PanelMenu extends JPanel {
             posX_background=(largeur -largeur_background)/2;
             posY_background=0;
         }
-        largeur_bouton=Math.min(largeur_background/7, largeur /7);
+        largeur_bouton=largeur_background/7;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
         posY_Local=0;
@@ -479,7 +461,24 @@ public class PanelMenu extends JPanel {
         largeur_menu_options = hauteur_background/2;
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
         //boutons menu création partie
-
+        largeur_bouton_plus = (int) (largeur_background*0.06);
+        largeur_bouton_moins = (int) (largeur_bouton_plus*0.6);
+        largeur_bouton_valider = (int) (largeur_background*0.09);
+        largeur_bouton_fermer = (int) (largeur_background*0.08);
+        largeur_cadre = (int) (largeur_background*0.05);
+        largeur_textJoueur = (int) (largeur_background*0.16);
+        posX_bouton_plus_joueur = (int) (posX_background + largeur_background*0.10);
+        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.29);
+        posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.26);
+        posX_textJoueur = (int) (posX_background + largeur_background*0.055);
+        posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
+        posX_cadre = (int) (posX_textJoueur + largeur_background*0.20);
+        posY_cadre = (int) (posY_textJoueur - hauteur_background*0.02);
+        posX_bouton_moins = (int) (posX_cadre + largeur_cadre*1.5);
+        posY_bouton_moins = (int) (posY_cadre + largeur_cadre*0.2);
+        decalageY_couleur = (int) (hauteur_background*0.13);
+        posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
+        posY_bouton_valider = (int) (posY_background + hauteur_background*0.78);
     }
 
     private void afficheMessageErreur(Graphics g) {

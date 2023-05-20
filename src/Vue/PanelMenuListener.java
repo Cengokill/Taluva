@@ -218,9 +218,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 40;
-        int starty = panelMenu.yConfigPanel + 700;
-        if(e.getX() >= startx && e.getX() <= startx+ fermer.getWidth() && e.getY() >= starty && e.getY() <= starty+ fermer.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_fermer;
+        int starty = panelMenu.posY_bouton_fermer;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_fermer && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_fermer && !panelMenu.clicOptions) {
             panelMenu.estConfigPartie = false;
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
@@ -235,9 +235,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 220;
-        int starty = panelMenu.yConfigPanel + 240;
-        if(e.getX() >= startx && e.getX() <= startx+ plus.getWidth() && e.getY() >= starty && e.getY() <= starty+ plus.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_plus_joueur;
+        int starty = panelMenu.posY_bouton_plus_joueur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -272,9 +272,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 440;
-        int starty = panelMenu.yConfigPanel + 240;
-        if(e.getX() >= startx && e.getX() <= startx+ plus.getWidth() && e.getY() >= starty && e.getY() <= starty+ plus.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_plus_ia;
+        int starty = panelMenu.posY_bouton_plus_joueur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -309,9 +309,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 440 + 80;
-        int starty = panelMenu.yConfigPanel + 360;
-        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_moins;
+        int starty = panelMenu.posY_bouton_moins;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs == 1) {
                 panelMenu.nbJoueurs = 0;
             }
@@ -340,9 +340,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 440 + 80;
-        int starty = panelMenu.yConfigPanel + 460;
-        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_moins;
+        int starty = panelMenu.posY_bouton_moins+panelMenu.decalageY_couleur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs == 2) {
                 panelMenu.nbJoueurs = 1;
             }
@@ -371,9 +371,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 440 + 80;
-        int starty = panelMenu.yConfigPanel + 560;
-        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_moins;
+        int starty = panelMenu.posY_bouton_moins+2*panelMenu.decalageY_couleur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs == 3) {
                 panelMenu.nbJoueurs = 2;
             }
@@ -405,9 +405,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 440 + 80;
-        int starty = panelMenu.yConfigPanel + 660;
-        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_moins;
+        int starty = panelMenu.posY_bouton_moins+3*panelMenu.decalageY_couleur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs == 4) {
                 panelMenu.nbJoueurs = 3;
             }
@@ -438,9 +438,9 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.xConfigPanel + 610;
-        int starty = panelMenu.yConfigPanel + 700;
-        if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
+        int startx = panelMenu.posX_bouton_valider;
+        int starty = panelMenu.posY_bouton_valider;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_valider && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_valider && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs >= 2) {
                 String nomJoueur1 = panelMenu.nomJoueur1.getText();
                 String nomJoueur2 = panelMenu.nomJoueur2.getText();
