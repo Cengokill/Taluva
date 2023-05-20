@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 
 import static Vue.ImageLoader.*;
-import static Vue.ImageLoader.largeur_bouton;
 
 public class PanelMenu extends JPanel {
 
@@ -36,11 +35,12 @@ public class PanelMenu extends JPanel {
             options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
             ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
     Dimension tailleEcran, tailleFenetre;
-    int screenWidth, screenHeight, frameWidth, frameHeight,largeur_background,largeur_bouton,largeur_menu_options,hauteur_background,hauteur_bouton,hauteur_menu_options,index_son,index_musique;
-
+    int screenWidth, screenHeight, largeur, hauteur,largeur_background,largeur_bouton,largeur_menu_options,hauteur_background,hauteur_bouton,hauteur_menu_options,index_son,index_musique;
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
+    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posX_bouton_plus_ia, posY_bouton_plus_ia, posX_bouton_moins, posY_bouton_moins, posX_cadre, posY_cadre;
+    public int largeur_bouton_plus, largeur_bouton_moins, largeur_cadre;
 
     private int timerValue;
     private JTextField field_joueur1;
@@ -128,9 +128,9 @@ public class PanelMenu extends JPanel {
         screenWidth=tailleEcran.width;
         screenHeight=tailleEcran.height;
         tailleFenetre=frame.getSize();
-        frameWidth=tailleFenetre.width;
-        frameHeight=tailleFenetre.width;
-        posX_menu_options = frameWidth;
+        largeur =tailleFenetre.width;
+        hauteur =tailleFenetre.width;
+        posX_menu_options = largeur;
 
         nomJoueur1 = new JTextField(15);
         nomJoueur1.setVisible(true);
@@ -261,21 +261,7 @@ public class PanelMenu extends JPanel {
     public void afficheBackground(Graphics g) {
         Image scaledImage = background.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
         g.setColor(new Color(64, 164, 223));
-        g.fillRect(0, 0, frameWidth, frameHeight);
-        double rapport = 0.5625;// rapport de 2160/3840
-        double rapport_actuel = (double)frameHeight/(double)frameWidth;
-        if(rapport_actuel>rapport) {// si la fenêtre est plus haute que large
-            largeur_background=frameWidth;
-            hauteur_background=(int)(largeur_background*rapport);
-            posX_background=0;
-            posY_background=(frameHeight-hauteur_background)/2;
-        }
-        else {
-            hauteur_background=frameHeight;
-            largeur_background=(int)(hauteur_background/rapport);
-            posX_background=(frameWidth-largeur_background)/2;
-            posY_background=0;
-        }
+        g.fillRect(0, 0, largeur, hauteur);
         g.drawImage(scaledImage, 0, 0, null);
     }
 
@@ -305,7 +291,7 @@ public class PanelMenu extends JPanel {
         int taille_sons = (int) (Math.min(getWidth(),getHeight())*0.1);
         int taille_musiques = (int) (Math.min(getWidth(),getHeight())*0.2);
 
-        int x = (frameWidth - taille_slider_x)/2;
+        int x = (largeur - taille_slider_x)/2;
         int y=(int) (taille_slider_y*4.25);
 
         posX_gauche1 = x;
@@ -335,7 +321,7 @@ public class PanelMenu extends JPanel {
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.08);
         int taille_pleinecran = (int) (Math.min(getWidth(),getHeight())*0.25);
 
-        int x = (frameWidth - taille_slider_x)/2;
+        int x = (largeur - taille_slider_x)/2;
         int y=(int) (taille_slider_y*4.25);
 
         posX_coches = (int)(x+taille_slider_x*0.72);
@@ -376,7 +362,7 @@ public class PanelMenu extends JPanel {
         int taille_btn = (int) (Math.min(getWidth(),getHeight())*0.12);
 
 
-        int x = (frameWidth - taille_slider_x)/2;
+        int x = (largeur - taille_slider_x)/2;
         int y=(int) (taille_slider_y*4.25);
 
         posX_btnValider = (int)(x+taille_slider_x*1.05);
@@ -392,7 +378,7 @@ public class PanelMenu extends JPanel {
     public void afficheParametre(Graphics g){
         int taille_x = (int) (Math.min(getWidth(),getHeight())*1.3);
         int taille_y = (int) (taille_x/1.25);
-        int x = (frameWidth - taille_x)/2;
+        int x = (largeur - taille_x)/2;
         int y=0-(taille_y/45);
         g.drawImage(options_background, x, y, taille_x,taille_y,null);
         afficheSliders(g);
@@ -422,10 +408,10 @@ public class PanelMenu extends JPanel {
     private void afficherConfigPartie(Graphics2D g2d) {
         //affiche un rectangle noir sur tout l'écran
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, frameWidth, frameHeight);
+        g2d.fillRect(0, 0, largeur, hauteur);
         g2d.drawImage(configPartieBackground, posX_background ,posY_background , largeur_background, hauteur_background, null);
-        g2d.drawImage(plus, xConfigPanel + 220, yConfigPanel + 240, plus.getWidth(), plus.getHeight(), null);
-        g2d.drawImage(plus, xConfigPanel + 440, yConfigPanel + 240, plus.getWidth(), plus.getHeight(), null);
+        g2d.drawImage(plus, posX_bouton_plus_joueur, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
+        g2d.drawImage(plus, posX_bouton_plus_ia, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
 
         if (nbJoueurs >= 1) {
             nomJoueur1.setVisible(true);
@@ -466,19 +452,34 @@ public class PanelMenu extends JPanel {
     }
 
     private void calculeRapportsEtPositions() {
-        frameWidth=frame.getWidth();
-        frameHeight=frame.getHeight();
-        double rapport_background = 16/9;
-        double rapport_bouton=1;//rapport de 86/522
-        largeur_bouton=Math.min(largeur_background/7, frameWidth/7);
+        largeur =frame.getWidth();
+        hauteur =frame.getHeight();
+        double rapport_bouton=1;
+        double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
+        double rapport_background = 0.5625;
+        double rapport_actuel = (double) hauteur /(double) largeur;
+        if(rapport_actuel>rapport_background) {// si la fenêtre est plus haute que large
+            largeur_background= largeur;
+            hauteur_background=(int)(largeur_background*rapport_background);
+            posX_background=0;
+            posY_background=(hauteur -hauteur_background)/2;
+        }
+        else {
+            hauteur_background= hauteur;
+            largeur_background=(int)(hauteur_background/rapport_background);
+            posX_background=(largeur -largeur_background)/2;
+            posY_background=0;
+        }
+        largeur_bouton=Math.min(largeur_background/7, largeur /7);
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
         posY_Local=0;
         posY_Options=posY_Local+hauteur_background/3;
         posY_Quitter=posY_Options+hauteur_background/3;
-        double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
         largeur_menu_options = hauteur_background/2;
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
+        //boutons menu création partie
+
     }
 
     private void afficheMessageErreur(Graphics g) {
@@ -489,8 +490,8 @@ public class PanelMenu extends JPanel {
         if(afficheErreur){
             message="Il doit y avoir au moins 2 joueurs";
             largeurMessageErreur = (int)(message.length()*font.getSize());
-            g.drawImage(applyColorFilter(joueur_courant,(byte) 9),(int) (xConfigPanel-largeurMessageErreur/11.5),frameHeight-(frameHeight/4),largeurMessageErreur,(int) (largeurMessageErreur*0.1),null);
-            g.drawString(message,(int) (xConfigPanel+largeurMessageErreur/5.5), (int) frameHeight-(frameHeight/4)+50);
+            g.drawImage(applyColorFilter(joueur_courant,(byte) 9),(int) (xConfigPanel-largeurMessageErreur/11.5), hauteur -(hauteur /4),largeurMessageErreur,(int) (largeurMessageErreur*0.1),null);
+            g.drawString(message,(int) (xConfigPanel+largeurMessageErreur/5.5), (int) hauteur -(hauteur /4)+50);
             if(timerValue>=20){
                 afficheErreur = false;
                 timerValue=0;

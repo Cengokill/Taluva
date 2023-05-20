@@ -238,12 +238,10 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.xConfigPanel + 220;
         int starty = panelMenu.yConfigPanel + 240;
         if(e.getX() >= startx && e.getX() <= startx+ plus.getWidth() && e.getY() >= starty && e.getY() <= starty+ plus.getHeight() && !panelMenu.clicOptions) {
-
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
             panelMenu.nomJoueur4.setVisible(false);
-
             if (panelMenu.nbJoueurs == 0) {
                 panelMenu.nomJoueur1.setEnabled(true);
                 panelMenu.nomJoueur1.setText("");
@@ -264,8 +262,6 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.nomJoueur4.setText("");
                 panelMenu.nomJoueur4.setVisible(true);
             }
-
-
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
             return true;
         }
@@ -279,13 +275,10 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.xConfigPanel + 440;
         int starty = panelMenu.yConfigPanel + 240;
         if(e.getX() >= startx && e.getX() <= startx+ plus.getWidth() && e.getY() >= starty && e.getY() <= starty+ plus.getHeight() && !panelMenu.clicOptions) {
-            System.out.println(e.getButton());
-
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
             panelMenu.nomJoueur4.setVisible(false);
-
             if (panelMenu.nbJoueurs == 0) {
                 panelMenu.nomJoueur1.setEnabled(false);
                 panelMenu.nomJoueur1.setText("IA");
@@ -306,7 +299,6 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.nomJoueur4.setText("IA");
                 panelMenu.nomJoueur4.setVisible(true);
             }
-
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
             return true;
         }
@@ -317,20 +309,16 @@ public class PanelMenuListener implements MouseListener  {
         if (!panelMenu.estConfigPartie) {
             return false;
         }
-
         int startx = panelMenu.xConfigPanel + 440 + 80;
         int starty = panelMenu.yConfigPanel + 360;
         if(e.getX() >= startx && e.getX() <= startx+ moins.getWidth() && e.getY() >= starty && e.getY() <= starty+ moins.getHeight() && !panelMenu.clicOptions) {
             if (panelMenu.nbJoueurs == 1) {
                 panelMenu.nbJoueurs = 0;
             }
-
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
             panelMenu.nomJoueur4.setVisible(false);
-
-
             if (panelMenu.nbJoueurs == 1) {
                 panelMenu.nomJoueur1.setVisible(true);
             }
@@ -362,8 +350,6 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
             panelMenu.nomJoueur4.setVisible(false);
-
-
             if (panelMenu.nbJoueurs == 1) {
                 panelMenu.nomJoueur1.setVisible(true);
             }
