@@ -207,6 +207,7 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_btnChoix;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_valider = true;
+            System.out.println("valider");
             return true;
         }
         panelMenu.select_valider = false;
