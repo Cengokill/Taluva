@@ -14,6 +14,8 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
 
+import static Vue.ImageLoader.voidTile;
+
 public class IAIntelligente extends AbstractIA implements Serializable {
     public int taille_max_tuiles_a_tester = 20;
     public static int poids_temple = 1000;
@@ -427,6 +429,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         CoupValeur coupARenvoyer = new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
         return coupARenvoyer;
     }
+
 
     private ArrayList<Coup> getTousLesCoupsPossiblesDesBatiments(InstanceJeu instanceCourante){
         Plateau plateauCopie = instanceCourante.getPlateau().copie();
