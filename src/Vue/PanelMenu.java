@@ -45,7 +45,7 @@ public class PanelMenu extends JPanel {
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
-    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posX_bouton_plus_ia, posX_bouton_moins, posY_bouton_moins, posX_cadre, posY_cadre, posX_textJoueur, posY_textJoueur,
+    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posYChronoList, posXChronoList, posXDifficulteList, posYDifficulteList,  posX_bouton_plus_ia, posX_bouton_moins, posY_bouton_moins, posX_cadre, posY_cadre, posX_textJoueur, posY_textJoueur,
     posX_bouton_valider, posY_bouton_valider, posX_bouton_fermer, posY_bouton_fermer;
     public int largeur_bouton_plus, largeur_bouton_moins, largeur_cadre, largeur_bouton_valider, largeur_bouton_fermer, largeur_textJoueur, decalageY_couleur;
     private int timerValue;
@@ -69,11 +69,15 @@ public class PanelMenu extends JPanel {
     boolean select_annuler;
     boolean afficheErreur;
 
-
-
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
     JTextField nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4;
+    String[] choixChrono = { "Infini", "15 sec", "30 sec", "1 min" };
+    String[] choixDifficulte = { "Facile", "Intermediaire", "Difficile"};
+    JComboBox<String> listeChrono = new JComboBox<>(choixChrono);
+    JComboBox<String> listeDifficulte = new JComboBox<>(choixDifficulte);
+
+
     int nbJoueurs = 0;
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
@@ -155,6 +159,20 @@ public class PanelMenu extends JPanel {
         largeur =tailleFenetre.width;
         hauteur =tailleFenetre.width;
         posX_menu_options = largeur;
+
+        listeChrono.setVisible(true);
+        listeChrono.setBackground(Color.WHITE);
+        listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(listeChrono, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        repaint();
+
+        listeDifficulte.setVisible(true);
+        listeDifficulte.setBackground(Color.WHITE);
+        listeDifficulte.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(listeDifficulte, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        repaint();
 
         nomJoueur1 = new JTextField(15);
         nomJoueur1.setVisible(true);
@@ -487,12 +505,17 @@ public class PanelMenu extends JPanel {
             g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 3*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
 
-        g2d.drawImage(fermer, posX_bouton_fermer, posX_bouton_fermer, largeur_bouton_fermer, largeur_bouton_fermer, null);
+        g2d.drawImage(fermer, posX_bouton_fermer, 10, largeur_bouton_fermer, largeur_bouton_fermer, null);
         g2d.drawImage(valider, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
         nomJoueur1.setBounds(posX_textJoueur, posY_textJoueur, largeur_textJoueur, 40);
         nomJoueur2.setBounds(posX_textJoueur, posY_textJoueur+decalageY_couleur, largeur_textJoueur, 40);
         nomJoueur3.setBounds(posX_textJoueur, posY_textJoueur+2*decalageY_couleur, largeur_textJoueur, 40);
         nomJoueur4.setBounds(posX_textJoueur, posY_textJoueur+3*decalageY_couleur, largeur_textJoueur, 40);
+
+        listeChrono.setVisible(true);
+        listeDifficulte.setVisible(true);
+        listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textJoueur + 35, 40);
+        listeDifficulte.setBounds(posXDifficulteList, posYDifficulteList, largeur_textJoueur + 35, 40);
     }
 
     private void calculeRapportsEtPositions() {
@@ -534,6 +557,10 @@ public class PanelMenu extends JPanel {
         posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.26);
         posX_textJoueur = (int) (posX_background + largeur_background*0.055);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
+        posYChronoList = posY_bouton_plus_joueur + 5;
+        posXChronoList = (int) (largeur_background*0.64);
+        posXDifficulteList = posXChronoList;
+        posYDifficulteList = posY_cadre + (int) (hauteur_background*0.23);
         posX_cadre = (int) (posX_textJoueur + largeur_background*0.20);
         posY_cadre = (int) (posY_textJoueur - hauteur_background*0.02);
         posX_bouton_moins = (int) (posX_cadre + largeur_cadre*1.5);
@@ -541,6 +568,7 @@ public class PanelMenu extends JPanel {
         decalageY_couleur = (int) (hauteur_background*0.13);
         posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
         posY_bouton_valider = (int) (posY_background + hauteur_background*0.78);
+        posX_bouton_fermer = getWidth() - 100;
     }
 
     private void afficheMessageErreur(Graphics g) {
