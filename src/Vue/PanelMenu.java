@@ -588,15 +588,23 @@ public class PanelMenu extends JPanel {
     }
     public static void loadParametre() {
         try {
-            FileInputStream file2 = new FileInputStream("sauvegardeParametres.txt");
-            ObjectInputStream in2 = new ObjectInputStream(file2);
-            index_son=in2.readInt();
-            index_musique=in2.readInt();
-            estPleinEcran=in2.readBoolean();
-            System.out.println(estPleinEcran);
-            //estPleinEcran=in2.readBoolean();
-            in2.close();
-            file2.close();
+            File f = new File("sauvegardeParametres.txt");
+            if(f.exists()){
+                FileInputStream file2 = new FileInputStream(f);
+                ObjectInputStream in2 = new ObjectInputStream(file2);
+                index_son=in2.readInt();
+                index_musique=in2.readInt();
+                estPleinEcran=in2.readBoolean();
+                System.out.println(estPleinEcran);
+                //estPleinEcran=in2.readBoolean();
+                in2.close();
+                file2.close();
+            }else{
+                index_son=3;
+                index_musique=3;
+                estPleinEcran=false;
+            }
+
 
         } catch (Exception e) {
             throw new RuntimeException("Impossible de charger les parametres.\n" + e);

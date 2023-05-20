@@ -4,6 +4,7 @@ import Modele.IA.AbstractIA;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
+import Structures.Position.Point2D;
 import Structures.Position.Position;
 
 import javax.swing.*;
@@ -227,6 +228,30 @@ public class Jeu extends Observable implements Serializable{
                 return;
             }
             getPlateau().joueCoup(coupTuile);
+            if(coupBatiment.typePlacement == Coup.HUTTE){
+                int propagation = 0;
+                //On créer un tableau contenant toutes les coordonées où l'on doit propager
+                ArrayList<Point2D> aPropager = getPlateau().previsualisePropagation(coupBatiment.batimentLigne, coupBatiment.batimentColonne, getJoueurCourant().getCouleur());
+                //On place la hutte classique sans propagation
+                propagation-=getPlateau().getHauteurTuile(coupBatiment.batimentLigne, coupBatiment.batimentColonne);
+                // On récupère le nombre de huttes disponibles pour le joueur courant
+                int nbHuttesDispo = getPlateau().nbHuttesDisponiblesJoueur - (getPlateau().getHauteurTuile(coupBatiment.batimentLigne, coupBatiment.batimentColonne));
+
+                while (aPropager.size() != 0) {
+                    Point2D posCourantePropagation = aPropager.remove(0);
+                    int hauteurCourante = getPlateau().getHauteurTuile(posCourantePropagation.getPointX(), posCourantePropagation.getPointY());
+                    if (nbHuttesDispo >= hauteurCourante) {
+                        propagation += hauteurCourante;
+                        nbHuttesDispo -= hauteurCourante;
+                    }
+                }
+                for(int index=0;index<propagation;index++){
+                    getJoueurCourant().incrementeHutte();
+                }
+            }
+
+
+
             doit_placer_batiment = true;
             doit_placer_tuile = false;
             Timer timer = new Timer(delai, e -> {
