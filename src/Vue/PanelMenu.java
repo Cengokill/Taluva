@@ -589,7 +589,7 @@ public class PanelMenu extends JPanel {
     public static void loadParametre() {
         try {
             File f = new File("sauvegardeParametres.txt");
-            if(f.exists()){
+            if(f.exists() && f.canRead()){
                 FileInputStream file2 = new FileInputStream(f);
                 ObjectInputStream in2 = new ObjectInputStream(file2);
                 index_son=in2.readInt();
