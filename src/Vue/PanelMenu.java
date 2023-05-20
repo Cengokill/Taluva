@@ -71,7 +71,7 @@ public class PanelMenu extends JPanel {
 
 
 
-    boolean estConfigPartie = false;
+    static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
     JTextField nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4;
     int nbJoueurs = 0;
@@ -461,7 +461,6 @@ public class PanelMenu extends JPanel {
         BufferedImage[] couleurs = {rouge, bleu, vert, violet};
         for(int i = 0; i < nbJoueurs; i++) {
             g2d.drawImage(couleurs[i], posX_cadre, posY_cadre + i*decalageY_couleur, largeur_cadre, largeur_cadre, null);
-            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + i*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
         if (nbJoueurs >= 1) {
             nomJoueur1.setVisible(true);
@@ -475,6 +474,19 @@ public class PanelMenu extends JPanel {
         if (nbJoueurs == 4) {
             nomJoueur4.setVisible(true);
         }
+        if (nbJoueurs == 1) {
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 0*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+        }
+        if (nbJoueurs == 2) {
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 1*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+        }
+        if (nbJoueurs == 3) {
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 2*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+        }
+        if (nbJoueurs == 4) {
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 3*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+        }
+
         g2d.drawImage(fermer, posX_bouton_fermer, posX_bouton_fermer, largeur_bouton_fermer, largeur_bouton_fermer, null);
         g2d.drawImage(valider, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
         nomJoueur1.setBounds(posX_textJoueur, posY_textJoueur, largeur_textJoueur, 40);

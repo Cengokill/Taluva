@@ -55,7 +55,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,0);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,1);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
@@ -90,7 +90,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             Plateau plateauCourant = nouvelle_configuration.getPlateau();
             plateauCourant.joueCoup(coupCourant.getCoupT());
             plateauCourant.joueCoup(coupCourant.getCoupB());
-            int valeur = miniMaxJoueurA(nouvelle_configuration,jeu.getTuileCourante(), horizon, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int valeur = miniMaxJoueurA(nouvelle_configuration,jeu.getTuileCourante(), horizon, Integer.MIN_VALUE, Integer.MIN_VALUE);
             if(valeur==valeurMax) coups_calcules.add(new CoupValeur(coupCourant.getCoupT(), coupCourant.getCoupB(), valeur));
             else if(valeur > valeurMax){
                 coups_calcules = new ArrayList<>();
@@ -117,10 +117,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             //joue le coup Bâtiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
             valeur = Math.max(valeur, miniMaxJoueurB(instanceCourante, tuile, profondeur-1, alpha, beta));
-            alpha = Math.max(alpha, valeur);
             if (valeur >= beta) {
                 return valeur; // Coupure beta
             }
+            alpha = Math.max(alpha, valeur);
         }
         return valeur;
     }
@@ -140,10 +140,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             //joue le coup Batiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
             valeur = Math.max(valeur, miniMaxJoueurA(instanceCourante, tuile, profondeur - 1, alpha, beta));
-            beta = Math.max(beta, valeur);
-            if (valeur >= alpha) {
+            if (alpha >= valeur) {
                 return valeur; // Coupure alpha
             }
+            beta = Math.max(beta, valeur);
         }
         return valeur;
     }

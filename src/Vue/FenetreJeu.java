@@ -755,8 +755,6 @@ public class FenetreJeu extends Container {
             if(secondes>9){
                 zero_2 = "";
             }
-            System.out.println("temps total : "+tempsPartie);
-            System.out.println("minutes : "+minutes+" secondes : "+secondes);
             g.drawString(zero_1+temps_minutes+":"+zero_2+temps_secondes, posX_temps_partie, posY_temps_partie);
             afficheBoutonQuitter(g);
         }

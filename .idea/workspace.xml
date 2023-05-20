@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="AJout d'une partie annuler/refaire mais probleme pour :&#10;-annleur rajoute un batiment de plus lors de la premiere annulation d'une propagation">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" afterDir="false" />
+    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Suppression booleen estFinPartie dans Jeu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ressources/Plateau/background_plateau_x4_carre.png" beforeDir="false" afterPath="$PROJECT_DIR$/ressources/Plateau/background_plateau_x4_carre.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Joueur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Joueur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Plateau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TaluvaMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaluvaMain.java" afterDir="false" />
     </list>
-    <list id="5c55dc87-a75f-4073-8ab0-c8967f6c2741" name="Changes by jerem" comment="Changes by jerem" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,21 +36,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "com.obiscr.chatgpt.settings.ChatGPT"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.obiscr.chatgpt.settings.ChatGPT&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\x\IdeaProjects\Taluva\ressources\Menu" />
@@ -155,6 +150,10 @@
       <workItem from="1683804591474" duration="2762000" />
       <workItem from="1683817106673" duration="6827000" />
       <workItem from="1684141203675" duration="10758000" />
+      <workItem from="1684519370982" duration="299000" />
+      <workItem from="1684522607927" duration="3866000" />
+      <workItem from="1684533073548" duration="3184000" />
+      <workItem from="1684563262985" duration="28646000" />
     </task>
     <task id="LOCAL-00010" summary="Changement controles">
       <created>1682586246895</created>
@@ -226,7 +225,182 @@
       <option name="project" value="LOCAL" />
       <updated>1683821649753</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Couleur bleue du joueur plus vive">
+      <created>1684503582977</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1684503582977</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Position Y du nombre tuiles dans la pioche à 4 joueurs corrigée">
+      <created>1684503896758</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1684503896758</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Bug impossible de jouer en mode CONSOLE corrigé">
+      <created>1684504371115</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1684504371115</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Bug impossible de jouer en mode CONSOLE corrigé">
+      <created>1684505156262</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1684505156262</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Correction bug impossible de jouer en mode CONSOLE">
+      <created>1684508530659</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1684508530659</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Temps écoulé en secondes">
+      <created>1684510522988</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1684510522988</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Nouveau booléen timerActif">
+      <created>1684519635074</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1684519635074</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Calcul du temps des parties en mode CONSOLE">
+      <created>1684522871392</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1684522871392</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Un background sympa et des boutons">
+      <created>1684528673133</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1684528673133</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Un background sympa et des boutons">
+      <created>1684528707396</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1684528707396</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Affichage correct du récapitulatif de fin de partie avec le temps">
+      <created>1684535982782</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1684535982782</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Correction posX_temps_partie et posY_temps_partie">
+      <created>1684536091713</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1684536091713</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Centrage image fin de partie, texte adapté à la taille de la fenêtre, temps affiché">
+      <created>1684567764888</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1684567764888</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Design boutons">
+      <created>1684571873062</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1684571873062</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Positions boutons">
+      <created>1684575476786</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1684575476786</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Ajustements positions boutons menu création partie">
+      <created>1684578423880</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1684578423880</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Images ombre_tuile_0.png et ombre_tuile_1.png">
+      <created>1684579828172</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1684579828172</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Push IA Intelligente ajout MiniMax">
+      <created>1684590328976</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1684590328976</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Test temps de fin de partie">
+      <created>1684592539249</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1684592539249</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Affichage temps partie correct">
+      <created>1684596569936</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1684596569936</updated>
+    </task>
+    <task id="LOCAL-00040" summary="IA MOYENNE">
+      <created>1684596648211</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1684596648211</updated>
+    </task>
+    <task id="LOCAL-00041" summary="ajouts prints">
+      <created>1684598955888</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1684598955888</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Test coupure alpha beta">
+      <created>1684600181708</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1684600181708</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Alpha beta semble fonctionner + suppression print minutes secondes">
+      <created>1684600839061</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1684600839061</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Suppression booleen estFinPartie dans Jeu">
+      <created>1684601570815</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1684601570815</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,29 +418,38 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tengine Tuiles Triplé fix" />
-    <MESSAGE value="Fix taille volcan" />
-    <MESSAGE value="Hexagones connaissent volcans" />
-    <MESSAGE value="Merged" />
-    <MESSAGE value="Multiples changes me souviens plus" />
-    <MESSAGE value="Couleur et tout" />
-    <MESSAGE value="Toggle niveaux avec ctrl" />
-    <MESSAGE value="Images" />
-    <MESSAGE value="Mode plateau et mode numéro (A et Z)" />
-    <MESSAGE value="Plateau" />
-    <MESSAGE value="Changement controles" />
-    <MESSAGE value="edit affichages" />
-    <MESSAGE value="maison" />
-    <MESSAGE value="Affichage du joueur courant" />
-    <MESSAGE value="Modification images bâtiments" />
-    <MESSAGE value="Ajout EchoServeur et EchoClient" />
-    <MESSAGE value="Ajout fichier .psd" />
-    <MESSAGE value="Ajouts IA" />
-    <MESSAGE value="Changes by jerem" />
-    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments &#10;-changement de la phase du tour" />
-    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-joueurCourant &#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments" />
-    <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-rajout/enlever a la pioche &#10;-rajout/enlever a les batiments +/- reglé" />
     <MESSAGE value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-annleur rajoute un batiment de plus lors de la premiere annulation d'une propagation" />
-    <option name="LAST_COMMIT_MESSAGE" value="AJout d'une partie annuler/refaire mais probleme pour :&#10;-annleur rajoute un batiment de plus lors de la premiere annulation d'une propagation" />
+    <MESSAGE value="Couleur bleue du joueur plus vive" />
+    <MESSAGE value="Position Y du nombre tuiles dans la pioche à 4 joueurs corrigée" />
+    <MESSAGE value="Bug impossible de jouer en mode CONSOLE corrigé" />
+    <MESSAGE value="Correction bug impossible de jouer en mode CONSOLE" />
+    <MESSAGE value="Temps écoulé en secondes" />
+    <MESSAGE value="Nouveau booléen timerActif" />
+    <MESSAGE value="Calcul du temps des parties en mode CONSOLE" />
+    <MESSAGE value="Un background sympa" />
+    <MESSAGE value="Un background sympa et des boutons" />
+    <MESSAGE value="Affichage correct du récapitulatif de fin de partie avec le temps" />
+    <MESSAGE value="Correction posX_temps_partie et posY_temps_partie" />
+    <MESSAGE value="Centrage image fin de partie, texte adapté à la taille de la fenêtre, temps affiché" />
+    <MESSAGE value="Design boutons" />
+    <MESSAGE value="Positions boutons" />
+    <MESSAGE value="Ajustements positions boutons menu création partie" />
+    <MESSAGE value="Images ombre_tuile_0.png et ombre_tuile_1.png" />
+    <MESSAGE value="Push IA Intelligente ajout MiniMax" />
+    <MESSAGE value="Test temps de fin de partie" />
+    <MESSAGE value="Affichage temps partie correct" />
+    <MESSAGE value="IA MOYENNE" />
+    <MESSAGE value="ajouts prints" />
+    <MESSAGE value="Test coupure alpha beta" />
+    <MESSAGE value="Alpha beta semble fonctionner + suppression print minutes secondes" />
+    <MESSAGE value="Suppression booleen estFinPartie dans Jeu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Suppression booleen estFinPartie dans Jeu" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((Jeu)this).pioche" custom="Modele.Jeu.Jeu" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
