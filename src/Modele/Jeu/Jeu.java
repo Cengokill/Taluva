@@ -1,6 +1,7 @@
 package Modele.Jeu;
 
 import Modele.IA.AbstractIA;
+import Modele.Jeu.Plateau.Historique;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
@@ -33,15 +34,12 @@ public class Jeu extends Observable implements Serializable{
     private Joueur[] joueurs;
     private int nb_joueurs;
     private double temps_tour;
-    private boolean timerActif;
     Parametres p;
     byte[] tuileAPoser = new byte[5];
     public boolean timerActif, debug, estPiochee, unefoisIA;
-    private boolean estPiochee = false;
 
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
     boolean estFinPartie;
-    public boolean unefoisIA=false;
     public boolean peutPiocher =true;
 
     public LinkedList<Tuile> pioche;

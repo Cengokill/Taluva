@@ -514,8 +514,8 @@ public class PanelMenu extends JPanel {
 
         listeChrono.setVisible(true);
         listeDifficulte.setVisible(true);
-        listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textJoueur + 10, 40);
-        listeDifficulte.setBounds(posXDifficulteList, posYDifficulteList, largeur_textJoueur + 10, 40);
+        listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textJoueur + 35, 40);
+        listeDifficulte.setBounds(posXDifficulteList, posYDifficulteList, largeur_textJoueur + 35, 40);
     }
 
     private void calculeRapportsEtPositions() {
@@ -558,7 +558,7 @@ public class PanelMenu extends JPanel {
         posX_textJoueur = (int) (posX_background + largeur_background*0.055);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
         posYChronoList = posY_bouton_plus_joueur + 5;
-        posXChronoList = (int) (largeur_background*0.66);
+        posXChronoList = (int) (largeur_background*0.64);
         posXDifficulteList = posXChronoList;
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.23);
         posX_cadre = (int) (posX_textJoueur + largeur_background*0.20);
