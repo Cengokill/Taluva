@@ -497,6 +497,7 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBoutonValider(e)){
             setFullscreen();
             setVolume();
+            PanelMenu.setParametre(panelMenu.index_musique,panelMenu.index_son,panelMenu.estPleinEcran);
             panelMenu.clicOptions = false;
         }
 
@@ -533,10 +534,8 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     private void setVolume(){
-        if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
-        else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*13);
-        if(panelMenu.index_son==0) panelMenu.jeu.volumeSons = -100000;
-        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_son*13);
+        panelMenu.jeu.indexMusique = panelMenu.index_musique;
+        panelMenu.jeu.indexSon = panelMenu.index_son;
     }
 
     @Override

@@ -80,16 +80,12 @@ public class FenetreJeu extends Container {
         afficheOptions = false;
         frame.setVisible(true);
         loadImageOption();
-        index_musique = 3;
-        index_son = 3;
-
     }
 
     public void initMenuJeu() throws IOException {
         layeredPane.removeAll();
         initFrame();
         initMenu();
-
         buttonPanel.removeAll();
         panelPlateau.removeAll();
 
@@ -116,6 +112,8 @@ public class FenetreJeu extends Container {
         setBackgroundColor();
         boucle();
         tempsDebutPartie = System.currentTimeMillis();
+        index_musique = jeu.indexMusique;
+        index_son = jeu.indexSon;
     }
 
     public void setHandCursor(){
@@ -136,8 +134,6 @@ public class FenetreJeu extends Container {
         panelMenu = new PanelMenu(frame,layeredPane,jeu,controleur);
         panelMenu.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         layeredPane.add(panelMenu, JLayeredPane.DEFAULT_LAYER);
-
-
     }
 
     private void initKeyBoardAndMouseListener() {
@@ -381,10 +377,12 @@ public class FenetreJeu extends Container {
         ImageIcon icon = new ImageIcon("ressources/icon.png");
         frame.setIconImage(icon.getImage());
         //récupère la taille de l'écran
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        if(panelMenu!=null) frame.setSize(panelMenu.getSize());
-        else frame.setSize(screenSize.width * 6 / 10, screenSize.height * 6 / 10);
+        if(panelMenu!=null)frame.setSize(panelMenu.getSize());
+        else frame.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
     }
