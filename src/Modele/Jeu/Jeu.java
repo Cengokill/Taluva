@@ -1,11 +1,12 @@
 package Modele.Jeu;
 
 import Modele.IA.AbstractIA;
+import Modele.Jeu.Plateau.Historique;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
-import Structures.Position.Point2D;
-import Structures.Position.Position;
+import Structures.Position.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,9 +42,12 @@ public class Jeu extends Observable implements Serializable{
     Parametres p;
     byte[] tuileAPoser = new byte[5];
     private boolean estPiochee = false;
+
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
     boolean estFinPartie;
     public boolean unefoisIA=false;
+    public boolean peutPiocher =true;
+
     public LinkedList<Tuile> pioche;
     private static int taille_pioche;
 
@@ -301,7 +305,9 @@ public class Jeu extends Observable implements Serializable{
             int[] coupsPossibleCourant = coupJouable(posCourante.ligne(),posCourante.colonne());
             if(coupsPossibleCourant[0]!=0 || coupsPossibleCourant[1]!=0 || coupsPossibleCourant[2]!=0) return;
         }
-        setFinPartie();
+        if(Historique.getPasse().size()!=0){
+            setFinPartie();
+        }
     }
 
     public Joueur getJoueurCourantClasse(){
@@ -394,14 +400,20 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu==GRAPHIQUE){
             Timer timer = new Timer(delai_avant_pioche, e -> {
                 if(getJoueurCourant().type_joueur==Joueur.IA) {
-                    pioche();
+                    if(peutPiocher) {
+                        pioche();
+                        peutPiocher=true;
+                    }
                     try {
                         joueIA();
                     } catch (CloneNotSupportedException ex) {
                         throw new RuntimeException(ex);
                     }
                 }else{
-                    pioche();
+                    if(peutPiocher) {
+                        pioche();
+                        peutPiocher=true;
+                    }
                 }
             });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
@@ -564,23 +576,26 @@ public class Jeu extends Observable implements Serializable{
 
     public void annuler() {
         Stock stock = plateau.annuler();
-            if(stock!=null) {
-                if (stock.changementDeJoueur == false) {
-                    changeJoueur();
-                }
-                if(stock.typeBatiment==Coup.TUILE){
-                    pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
-                } else if(stock.typeBatiment == Coup.TEMPLE) {
-                    joueurs[jCourant].decrementeTemple();
-                } else if (stock.typeBatiment == Coup.TOUR) {
-                    joueurs[jCourant].decrementeTour();
-                } else {
-                    for (int i = 0; i < stock.nbBatiment; i++) {
-                        joueurs[jCourant].decrementeHutte();
-                    }
-                }
-                changePhase();
+        if(stock!=null) {
+            if (stock.changementDeJoueur == false) {
+                changeJoueur();
             }
+            if(stock.typeBatiment==Coup.TUILE){
+                pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+            } else if(stock.typeBatiment == Coup.TEMPLE) {
+                joueurs[jCourant].decrementeTemple();
+            } else if (stock.typeBatiment == Coup.TOUR) {
+                joueurs[jCourant].decrementeTour();
+            } else {
+                for (int i = 0; i < stock.nbBatiment; i++) {
+                    joueurs[jCourant].decrementeHutte();
+                }
+            }
+            changePhase();
+            peutPiocher=false;
+
+        }
+
     }
 
     public void refaire() {
@@ -593,7 +608,7 @@ public class Jeu extends Observable implements Serializable{
             } else if (stock.typeBatiment == Coup.TOUR) {
                 joueurs[jCourant].incrementeTour();
             } else {
-                for (int i = 0; i <= stock.nbBatiment; i++) {
+                for (int i = 0; i < stock.nbBatiment; i++) {
                     joueurs[jCourant].incrementeHutte();
                 }
             }
