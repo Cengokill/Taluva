@@ -8,6 +8,8 @@ import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 
+import static Vue.PanelMenu.estConfigPartie;
+
 public class PanelVignette extends JPanel {
 
     public PanelVignette() {
@@ -16,6 +18,9 @@ public class PanelVignette extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        if (estConfigPartie) {
+            return;
+        }
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g.create();
