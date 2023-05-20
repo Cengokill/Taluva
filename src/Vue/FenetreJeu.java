@@ -49,6 +49,7 @@ public class FenetreJeu extends Container {
     static BufferedImage temple_j2 = null;
     static BufferedImage temple_j3 = null;
     static Color couleur_bleue = new Color(0, 166, 255, 255);
+    static int taille_texte_finPartie;
 
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
         this.controleur = controleur;
@@ -190,14 +191,14 @@ public class FenetreJeu extends Container {
             }
 
             private void calculeRapports() {
-                largeur = getWidth();
-                hauteur = getHeight();
+                largeur = layeredPane.getWidth();
+                hauteur = layeredPane.getHeight();
                 double rapport = 492.0 / 847.0;
                 double rapport_fenetre_score = 1400.0/872.0;
                 double rapport_joueur_courant = 280.0/950.0;
                 double rapport_bouton_dans_options = 207.0/603.0;
-                double rapport_fin_partie = 816.0/1456.0;
-                double rapport_cadre = 76.0/1180.0;
+                double rapport_fin_partie = 9.0/16.0;
+                double rapport_cadre = 76.0/1349.0;
                 double rapport_timer = 205.0/335.0;
                 double rapport_pioche = 650.0/880.0;
                 //background
@@ -321,26 +322,29 @@ public class FenetreJeu extends Container {
                 hauteur_timer = (int) (largeur_timer * rapport_timer);
                 //fin de partie
                 if((double)hauteur/(double)largeur > rapport_fin_partie){
-                    largeur_fin_partie = largeur;
+                    largeur_fin_partie = (int) (largeur*0.8);
                     hauteur_fin_partie = (int) (largeur_fin_partie * rapport_fin_partie);
                 }else{
-                    hauteur_fin_partie = hauteur;
+                    hauteur_fin_partie = (int) (hauteur*0.8);
                     largeur_fin_partie = (int) (hauteur_fin_partie / rapport_fin_partie);
                 }
-                largeur_cadre = (int) (largeur_fin_partie * 0.80906593406);
+                taille_texte_finPartie = (int) (hauteur_fin_partie*0.035);
+                posX_finPartie = (largeur - largeur_fin_partie)/2;
+                posY_finPartie = (hauteur - hauteur_fin_partie)/2;
+                largeur_cadre = (int) (largeur_fin_partie * 0.917);
                 hauteur_cadre = (int) (largeur_cadre * rapport_cadre);
-                posX_cadre = (int) (posX_background+largeur_fin_partie*0.021);
-                posY_cadre = (int) (posY_background+hauteur_fin_partie*0.19);
+                posX_cadre = (int) (posX_finPartie+largeur_fin_partie*0.040);
+                posY_cadre = (int) (posY_finPartie+hauteur_fin_partie*0.19);
                 decalageY_cadre = (int) (hauteur_cadre+hauteur_fin_partie*0.02);
                 posX_joueur_finPartie = (int) (posX_cadre + hauteur_fin_partie*0.03);
                 posY_joueur_finPartie = (int) (posY_cadre + hauteur_fin_partie*0.055);
                 decalageY_joueur = decalageY_cadre;
-                posX_huttes_finPartie = (int) (posX_cadre + largeur_fin_partie*0.295);
-                posX_temples_finPartie = (int) (posX_cadre + largeur_fin_partie*0.44);
-                posX_tours_finPartie = (int) (posX_cadre + largeur_fin_partie*0.58);
-                posX_score_finPartie = (int) (posX_cadre + largeur_fin_partie*0.70);
-                posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.05);
-                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.67);
+                posX_huttes_finPartie = (int) (posX_cadre + largeur_fin_partie*0.332);
+                posX_temples_finPartie = (int) (posX_cadre + largeur_fin_partie*0.495);
+                posX_tours_finPartie = (int) (posX_cadre + largeur_fin_partie*0.653);
+                posX_score_finPartie = (int) (posX_cadre + largeur_fin_partie*0.785);
+                posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.23);
+                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.665);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -364,7 +368,7 @@ public class FenetreJeu extends Container {
     }
 
     public JFrame getFMenu(){
-        finPartie = lisImageBuf("Fin_partie_2");
+        finPartie = lisImageBuf("Fin_partie");
         cadreBleu = lisImageBuf("cadre_bleu");
         cadreRouge = lisImageBuf("cadre_rouge");
         cadreVert = lisImageBuf("cadre_vert");
@@ -691,8 +695,8 @@ public class FenetreJeu extends Container {
                 }
                 joueurs_tries.add(joueurs_copie.get(0));
             }
-            g.drawImage(finPartie, posX_background, posY_background, largeur_fin_partie, hauteur_fin_partie, null);
-            Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            g.drawImage(finPartie, posX_finPartie, posY_finPartie, largeur_fin_partie, hauteur_fin_partie, null);
+            Font font = new Font("Bookman Old Style", Font.BOLD, taille_texte_finPartie);
             g.setFont(font);
             g.setColor(Color.BLACK);
             for(int i=0; i<joueurs_tries.size(); i++){

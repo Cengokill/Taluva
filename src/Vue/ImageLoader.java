@@ -45,7 +45,7 @@ public class ImageLoader {
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options, largeur_chrono, posX_chrono, posY_chrono, largeur_aiguille, posX_aiguille, posY_aiguille, posX_tuilePiochee, posY_tuilePiochee, largeur_tuilePiochee,
             posX_tuilePiochee_init, posY_tuilePiochee_init, largeur_tuilePiochee_init, posX_temps_partie, posY_temps_partie;
-    public static int largeur_background, hauteur_background, posX_background, posY_background,
+    public static int largeur_background, hauteur_background, posX_background, posY_background, posX_finPartie, posY_finPartie,
     largeur_hutte_score, largeur_tour_score, largeur_temple_score, posX_huttes_score, posX_tours_score, posX_temples_score, posY_huttes_score_j0,
             posY_huttes_score_j1, posY_huttes_score_j2, posY_huttes_score_j3, posY_tours_score_j0, posY_tours_score_j1, posY_tours_score_j2, posY_tours_score_j3,
             posY_temples_score_j0, posY_temples_score_j1, posY_temples_score_j2, posY_temples_score_j3;
