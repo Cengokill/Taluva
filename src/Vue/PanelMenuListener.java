@@ -454,6 +454,14 @@ public class PanelMenuListener implements MouseListener  {
                 String difficulte = (String) panelMenu.listeDifficulte.getSelectedItem();
                 int nbJoueur = panelMenu.nbJoueurs;
 
+                PanelMenu.estConfigPartie = false;
+                panelMenu.nomJoueur1.setVisible(false);
+                panelMenu.nomJoueur2.setVisible(false);
+                panelMenu.nomJoueur3.setVisible(false);
+                panelMenu.nomJoueur4.setVisible(false);
+                panelMenu.listeChrono.setVisible(false);
+                panelMenu.listeDifficulte.setVisible(false);
+
                 //efface tout le contenu de la frame
                 panelMenu.layeredPane.removeAll();
                 panelMenu.musicPlayer.stop();

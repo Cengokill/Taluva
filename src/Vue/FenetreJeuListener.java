@@ -369,12 +369,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;
-                //zoomFactor -= (wheelRotation * zoomIncrement) / 5;
+                zoomFactor -= (wheelRotation * zoomIncrement) / 5;
 
                 // Limiter le zoom minimum et maximum
-                //double minZoom = 0.2;
-                //double maxZoom = 2.0;
-                //zoomFactor = Math.max(Math.min(zoomFactor, maxZoom), minZoom);
+                double minZoom = 0.2;
+                double maxZoom = 2.0;
+                zoomFactor = Math.max(Math.min(zoomFactor, maxZoom), minZoom);
 
                 // Ajuster l'offset de la caméra en fonction du zoom pour centrer le zoom sur la position de la souris
                 cameraOffset.x -= (e.getX() - cameraOffset.x) * (zoomFactor - prevZoomFactor);
