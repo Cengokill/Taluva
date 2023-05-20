@@ -14,6 +14,8 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
 
+import static Vue.ImageLoader.voidTile;
+
 public class IAMoyenne extends AbstractIA implements Serializable {
     public int taille_max_tuiles_a_tester = 20;
     public static int poids_temple = 1000;
@@ -88,7 +90,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
             Plateau plateauCourant = nouvelle_configuration.getPlateau();
             plateauCourant.joueCoup(coupCourant.getCoupT());
             plateauCourant.joueCoup(coupCourant.getCoupB());
-            int valeur = miniMaxJoueurA(nouvelle_configuration,jeu.getTuileCourante(), horizon);
+            int valeur = miniMaxJoueurA(nouvelle_configuration,jeu.getTuileCourante(), horizon, Integer.MIN_VALUE, Integer.MIN_VALUE);
             if(valeur==valeurMax) coups_calcules.add(new CoupValeur(coupCourant.getCoupT(), coupCourant.getCoupB(), valeur));
             else if(valeur > valeurMax){
                 coups_calcules = new ArrayList<>();
@@ -100,8 +102,8 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         return coups_calcules;
     }
 
-    public int miniMaxJoueurA(InstanceJeu instance, Tuile tuile, int profondeur){
-        if(profondeur == 0){
+    public int miniMaxJoueurA(InstanceJeu instance, Tuile tuile, int profondeur, int alpha, int beta){
+        if(profondeur == 0 || instance.estFinJeu()){
             return evaluationScoreTuile(instance);
         }
         int valeur = Integer.MIN_VALUE;
@@ -114,13 +116,17 @@ public class IAMoyenne extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupDuo.getCoupT());
             //joue le coup Bâtiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
-            valeur = Math.max(valeur, miniMaxJoueurB(instanceCourante, tuile, profondeur-1));
+            valeur = Math.max(valeur, miniMaxJoueurB(instanceCourante, tuile, profondeur-1, alpha, beta));
+            if (valeur >= beta) {
+                return valeur; // Coupure beta
+            }
+            alpha = Math.max(alpha, valeur);
         }
         return valeur;
     }
 
-    public int miniMaxJoueurB(InstanceJeu instance, Tuile tuile, int profondeur){
-        if(profondeur == 0){
+    public int miniMaxJoueurB(InstanceJeu instance, Tuile tuile, int profondeur, int alpha, int beta){
+        if(profondeur == 0 || instance.estFinJeu()){
             return evaluationScoreTuile(instance);
         }
         int valeur = Integer.MAX_VALUE;
@@ -133,7 +139,11 @@ public class IAMoyenne extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupDuo.getCoupT());
             //joue le coup Batiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
-            valeur = Math.max(valeur, miniMaxJoueurA(instanceCourante, tuile, profondeur-1));
+            valeur = Math.max(valeur, miniMaxJoueurA(instanceCourante, tuile, profondeur - 1, alpha, beta));
+            if (alpha >= valeur) {
+                return valeur; // Coupure alpha
+            }
+            beta = Math.max(beta, valeur);
         }
         return valeur;
     }
@@ -428,6 +438,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         return coupARenvoyer;
     }
 
+
     private ArrayList<Coup> getTousLesCoupsPossiblesDesBatiments(InstanceJeu instanceCourante){
         Plateau plateauCopie = instanceCourante.getPlateau().copie();
         ArrayList<Coup> coupsPossiblesARenvoyer = new ArrayList<>();
@@ -617,6 +628,4 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         }
         return gagnant;
     }
-
-
 }

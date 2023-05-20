@@ -55,7 +55,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,0);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,1);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
     public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes

@@ -19,31 +19,24 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.select_fin_partie;
 
 public class Jeu extends Observable implements Serializable{
-
     public int indexSon = 0, indexMusique = 0;
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static boolean AFFICHAGE;
     public byte type_jeu;
-    public int delai;
-    public boolean debug;
     Plateau plateau;
     public MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     private Tuile tuile_courante;
-    private int delai_avant_pioche = 800;
+    private int delai, delai_avant_pioche;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
-    public byte jCourant;
-    public byte jVainqueur;
+    public byte jCourant, jVainqueur;
     private Joueur[] joueurs;
     private int nb_joueurs;
     private double temps_tour;
-    private boolean timerActif;
     Parametres p;
     byte[] tuileAPoser = new byte[5];
-    private boolean estPiochee = false;
+    public boolean timerActif, debug, estPiochee, unefoisIA;
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
-    boolean estFinPartie;
-    public boolean unefoisIA=false;
     public LinkedList<Tuile> pioche;
     private static int taille_pioche;
 
@@ -52,7 +45,8 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 800;
+            delai_avant_pioche = 0;//800;
+            delai = 0;//800;
         }
         debug = false;
     }
@@ -657,8 +651,8 @@ public class Jeu extends Observable implements Serializable{
         this.tuileAPoser=jeu.tuileAPoser;
         this.doit_placer_tuile=jeu.doit_placer_tuile;
         this.doit_placer_batiment=jeu.doit_placer_batiment;
-        this.estFinPartie= jeu.estFinPartie();
-        this.estFinPartie= jeu.estFinPartie();
+        this.estPartieFinie= jeu.estFinPartie();
+        this.estPartieFinie= jeu.estFinPartie();
         this.unefoisIA=jeu.unefoisIA;
         this.pioche=jeu.pioche;
     }
