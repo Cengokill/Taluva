@@ -228,6 +228,8 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
             panelMenu.nomJoueur4.setVisible(false);
+            panelMenu.listeChrono.setVisible(false);
+            panelMenu.listeDifficulte.setVisible(false);
             return true;
         }
         return false;
@@ -448,6 +450,8 @@ public class PanelMenuListener implements MouseListener  {
                 String nomJoueur2 = panelMenu.nomJoueur2.getText();
                 String nomJoueur3 = panelMenu.nomJoueur3.getText();
                 String nomJoueur4 = panelMenu.nomJoueur4.getText();
+                String tempsChrono = (String) panelMenu.listeChrono.getSelectedItem();
+                String difficulte = (String) panelMenu.listeDifficulte.getSelectedItem();
                 int nbJoueur = panelMenu.nbJoueurs;
 
                 //efface tout le contenu de la frame
@@ -456,7 +460,7 @@ public class PanelMenuListener implements MouseListener  {
 
                 // On passe du menu au jeu
                 ImageLoader.loadImages();
-                panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur);
+                panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
                 panelMenu.fenetre.panelPlateau.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());

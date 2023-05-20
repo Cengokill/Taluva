@@ -1,4 +1,5 @@
 import Controleur.ControleurMediateur;
+import Modele.IA.AbstractIA;
 import Modele.Jeu.Joueur;
 import Modele.Reseau.Client;
 import Modele.Reseau.Serveur;
@@ -35,7 +36,7 @@ public class TaluvaMain {
             for(int i = 0; i < nb_parties; i++) {
                 long startTimePartie = System.currentTimeMillis();
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
-                jeu.initPartie("IA", "IA", "IA", "IA", 2);
+                jeu.initPartie("IA", "IA", "IA", "IA", 2, "Infini", "Difficile");
                 for(Joueur joueur : jeu.getJoueurs()){
                     if(joueur.getTypeJoueur()!=Joueur.IA) {
                         System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE doit etre active uniquement si tous les joueurs sont des IA.");

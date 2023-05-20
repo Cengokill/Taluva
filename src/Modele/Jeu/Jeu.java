@@ -57,7 +57,7 @@ public class Jeu extends Observable implements Serializable{
         debug = false;
     }
 
-    public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs) throws CloneNotSupportedException {
+    public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, String difficulte) throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(nb_joueurs-1);
         if(nomJoueur0.isBlank()) nomJoueur0 = "Joueur 1";
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
@@ -67,13 +67,34 @@ public class Jeu extends Observable implements Serializable{
         nb_joueurs = nbJoueurs;
         taille_pioche = 12 * nb_joueurs;
         int nbIA = 0;
-        temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
-        timerActif = true;
+
+        if (tempsChrono.compareTo("Infini") == 0) {
+            timerActif = false;
+        } else {
+            timerActif = true;
+        }
+        if (tempsChrono.compareTo("15 sec") == 0) {
+            temps_tour = 15.0;
+        }
+        if (tempsChrono.compareTo("30 sec") == 0) {
+            temps_tour = 30.0;
+        }
+        if (tempsChrono.compareTo("1 min") == 0) {
+            temps_tour = 60.0;
+        }
+
         joueurs = new Joueur[nb_joueurs];
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.MOYENNE);
-        IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
-        IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
+
+        byte difficulteIA = AbstractIA.ALEATOIRE;
+        if (difficulte.compareTo("Intermediaire") == 0) {
+            difficulteIA = AbstractIA.MOYENNE;
+        } else if (difficulte.compareTo("Difficile") == 0) {
+            difficulteIA = AbstractIA.INTELLIGENTE;
+        }
+        IA0 = AbstractIA.nouvelle(this, (byte)0, difficulteIA);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, difficulteIA);
+        IA2 = AbstractIA.nouvelle(this, (byte)2, difficulteIA);
+        IA3 = AbstractIA.nouvelle(this, (byte)3, difficulteIA);
         if (nomJoueur0.compareTo("IA") == 0) {
             IA0.setPrenom("IA" + (nbIA + 1));
             nbIA++;
