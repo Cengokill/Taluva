@@ -615,6 +615,7 @@ public class PanelPlateau extends JPanel {
             Point hoverTilePositionAdjusted = new Point((int) ((hoverTilePosition.x - cameraOffset.x) / zoomFactor),
                     (int) ((hoverTilePosition.y - cameraOffset.y) / zoomFactor));
 
+
             // Convertir les coordonnées du système de pixels en coordonnées du système de grille
             int i = hoverTilePositionAdjusted.y / verticalOffset;
             int j = (hoverTilePositionAdjusted.x + (i % 2 == 1 ? tileWidth / 2 : 0)) / tileWidth;
@@ -633,38 +634,43 @@ public class PanelPlateau extends JPanel {
             BufferedImage tile3 = null;
 
             if (scrollValue == 1) {
+                g.drawImage(ombre_0, x-tileWidth/2-40, y-verticalOffset/2-50,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum());
             }
             else if (scrollValue == 2){
+                g.drawImage(ombre_1, x-tileWidth/2+175, y-verticalOffset/2-50,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
             }
             else if (scrollValue == 3){
+                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+250,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
             }
             else if (scrollValue == 4){
+                g.drawImage(ombre_1, x-tileWidth/2-50, y-verticalOffset/2+300,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
             }
             else if (scrollValue == 5){
+                g.drawImage(ombre_0, x-tileWidth/2-300, y-verticalOffset/2-300,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
             }
             else if (scrollValue == 6){
+                g.drawImage(ombre_1, x-tileWidth/2-400, y-verticalOffset/2-200,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
             }
 
             float opacity = 1f;
-
 
             if (tile1 != null && tile2 != null && tile3 != null) {
                 opacity = updateOpacite(i, j, j2, opacity);
@@ -880,22 +886,8 @@ public class PanelPlateau extends JPanel {
 
     private boolean aCiteAutour(int i,int j){
         boolean bool = possedeBatiment(i-1,j)||possedeBatiment(i+1,j)||possedeBatiment(i,j-1)||possedeBatiment(i,j+1);
-        if(i%2==1){
-            if(possedeBatiment(i-1,j-1)) {
-                bool = true;
-            }
-            if(possedeBatiment(i+1,j-1)) {
-                bool = true;
-            }
-        }else{
-            if(possedeBatiment(i-1,j+1)) {
-                bool = true;
-            }
-            if(possedeBatiment(i+1,j+1)) {
-                bool = true;
-            }
-        }
-        return bool;
+        if(i%2==1) return (possedeBatiment(i-1,j-1) || possedeBatiment(i+1,j-1) || bool);
+        else return (possedeBatiment(i-1,j+1) || possedeBatiment(i+1,j+1) || bool);
     }
 
     private void decomptePropagation(){
