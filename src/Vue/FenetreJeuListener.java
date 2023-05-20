@@ -283,10 +283,8 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         private void setVolume(){
-            if(fenetreJeu.index_musique==0) fenetreJeu.jeu.volumeMusiques = -100000;
-            else {fenetreJeu.jeu.volumeMusiques = -(30)+(fenetreJeu.index_musique*13);}
-            if(fenetreJeu.index_son==0) fenetreJeu.jeu.volumeSons = -100000;
-            else {fenetreJeu.jeu.volumeSons = -(30)+(fenetreJeu.index_son*13);}
+            fenetreJeu.getJeu().indexMusique = fenetreJeu.index_musique;
+            fenetreJeu.getJeu().indexSon = fenetreJeu.index_son;
             fenetreJeu.jeu.initialiseMusique();
         }
 

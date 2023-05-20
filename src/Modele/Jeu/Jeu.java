@@ -19,7 +19,7 @@ import static Vue.ImageLoader.select_fin_partie;
 
 public class Jeu extends Observable implements Serializable{
 
-    public int volumeSons = 50, volumeMusiques = 50;
+    public int indexSon = 0, indexMusique = 0;
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static boolean AFFICHAGE;
@@ -118,7 +118,15 @@ public class Jeu extends Observable implements Serializable{
 
     public void initialiseMusique(){
         if(type_jeu == GRAPHIQUE) {
-            musicPlayer.setVolume(-1000000);
+            int musicVolume;
+            if(indexMusique==0) musicVolume=-100000;
+            else musicVolume = (-30)+indexMusique*13;
+
+            int sonVolume;
+            if(indexSon==0) sonVolume=-100000;
+            else sonVolume = (-30)+indexSon*13;
+
+            musicPlayer.setVolume(musicVolume);
             musicPlayer.loop();
         }
     }

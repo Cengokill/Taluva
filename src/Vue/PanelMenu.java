@@ -61,7 +61,7 @@ public class PanelMenu extends JPanel {
     boolean select_droit2;
     boolean select_PleinEcran;
     boolean select_Daltonien;
-    boolean select_Extension;
+    boolean select_Extension, chargeParametre;
     static boolean estPleinEcran;
     boolean Daltonien;
     boolean Extension;
@@ -126,6 +126,7 @@ public class PanelMenu extends JPanel {
         //Parametres p = new Parametres();
         //entier
         loadParametre();
+
         timerValue=0;
         //bool�ens
         select_local = false;
@@ -139,7 +140,7 @@ public class PanelMenu extends JPanel {
         select_annuler = false;
         clicOptions = false;
         afficheErreur = false;
-
+        chargeParametre = true;
         // Eléments de l'interface
         frame = f;
         this.layeredPane = layeredPane;
@@ -201,7 +202,28 @@ public class PanelMenu extends JPanel {
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
         boucle();//Timer
+    }
 
+    public void setFullscreen(){
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        if(estPleinEcran){
+            fenetre.setSize(dim);
+            setSize(dim);
+            frame.setSize(dim);
+            frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+            gd.setFullScreenWindow(frame);
+        }else{
+            fenetre.setSize(tailleFenetre);
+            setSize(tailleFenetre);
+            frame.setSize(tailleFenetre);
+            frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+            gd.setFullScreenWindow(null);
+            frame.setExtendedState(Frame.NORMAL);
+            frame.setLocationRelativeTo(null);
+        }
     }
 
     private void limiterNombreCaractereNomJoueur() {
@@ -539,6 +561,12 @@ public class PanelMenu extends JPanel {
 
     public void metAJour() {
         if(afficheErreur) timerValue++;
+        if(chargeParametre){
+            if(fenetre!=null){
+                setFullscreen();
+                chargeParametre=false;
+            }
+        }
         repaint();
     }
     public static void setParametre(int volumeMusic, int volumeSon,boolean pleinEcran){
@@ -564,7 +592,7 @@ public class PanelMenu extends JPanel {
             ObjectInputStream in2 = new ObjectInputStream(file2);
             index_son=in2.readInt();
             index_musique=in2.readInt();
-            estPleinEcran=true;
+            estPleinEcran=in2.readBoolean();
             System.out.println(estPleinEcran);
             //estPleinEcran=in2.readBoolean();
             in2.close();
