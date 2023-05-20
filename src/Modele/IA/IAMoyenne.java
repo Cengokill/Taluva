@@ -84,7 +84,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         //pour chaque coup meilleur
         for(int i = 0; i<coups_meilleurs.size(); i++){
             CoupValeur coupCourant = coups_meilleurs.get(i);//on rappelle qu'on coup est constitué d'un coup de tuile et d'un coup de bâtiment d'où le Duo
-            InstanceJeu nouvelle_configuration = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
+            InstanceJeu nouvelle_configuration = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.estFinJeu());
             Plateau plateauCourant = nouvelle_configuration.getPlateau();
             plateauCourant.joueCoup(coupCourant.getCoupT());
             plateauCourant.joueCoup(coupCourant.getCoupB());
@@ -108,7 +108,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         ArrayList<CoupValeur> meilleursCoups = meilleursCoupsTuile(instance,jeu.getTuileCourante());
         for(int i = 0; i<meilleursCoups.size(); i++){
             CoupValeur coupDuo = meilleursCoups.get(i);
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.estFinJeu());
             Plateau plateauCopie = instanceCourante.getPlateau();
             //joue le coup Tuile
             plateauCopie.joueCoup(coupDuo.getCoupT());
@@ -127,7 +127,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         ArrayList<CoupValeur> meilleursCoups = meilleursCoupsTuile(instance,jeu.getTuileCourante());
         for(int i = 0; i<meilleursCoups.size(); i++){
             CoupValeur coupDuo = meilleursCoups.get(i);
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.estFinJeu());
             Plateau plateauCopie = instanceCourante.getPlateau();
             //joue le coup Tuile
             plateauCopie.joueCoup(coupDuo.getCoupT());
@@ -250,7 +250,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         debut_test = System.currentTimeMillis();
         while(i < coupsTuilePossibles.size()){
             TripletDePosition tripletCourant = coupsTuilePossibles.get(i);
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instanceJeu.getPioche()),instanceJeu.getPlateau().copie(),copyJoueurs(instanceJeu.getJoueurs()),instanceJeu.getNbJoueurs(), instanceJeu.getJoueurCourant(), instanceJeu.getCouleurJoueur(), instanceJeu.getEstFinJeu());
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instanceJeu.getPioche()),instanceJeu.getPlateau().copie(),copyJoueurs(instanceJeu.getJoueurs()),instanceJeu.getNbJoueurs(), instanceJeu.getJoueurCourant(), instanceJeu.getCouleurJoueur(), instanceJeu.estFinJeu());
             Plateau plateauCopie = instanceCourante.getPlateau();
             Coup coupT = new Coup(instanceCourante.getJoueurCourant(),tripletCourant.getVolcan().ligne(),tripletCourant.getVolcan().colonne(),tripletCourant.getTile1().ligne(),tripletCourant.getTile1().colonne(),tuile.biome0,tripletCourant.getTile2().ligne(),tripletCourant.getTile2().colonne(),tuile.biome1);
             plateauCopie.joueCoup(coupT);
@@ -271,7 +271,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         // Pour toutes les meilleures tuiles trouvées :
         debut_test2 = System.currentTimeMillis();
         for(Coup coupCourant: coupTuileBatimentsAEvaluer){
-            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instanceJeu.getPioche()),instanceJeu.getPlateau().copie(),copyJoueurs(instanceJeu.getJoueurs()),instanceJeu.getNbJoueurs(), instanceJeu.getJoueurCourant(), instanceJeu.getCouleurJoueur(), instanceJeu.getEstFinJeu());
+            InstanceJeu instanceCourante = new InstanceJeu(copyPioche(instanceJeu.getPioche()),instanceJeu.getPlateau().copie(),copyJoueurs(instanceJeu.getJoueurs()),instanceJeu.getNbJoueurs(), instanceJeu.getJoueurCourant(), instanceJeu.getCouleurJoueur(), instanceJeu.estFinJeu());
             Plateau plateauCopie = instanceCourante.getPlateau();
             plateauCopie.joueCoup(coupCourant);
             coupAFaire = choisirCoupBatiment(coupCourant,instanceCourante);
@@ -360,7 +360,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
         int i=0, score_max = Integer.MIN_VALUE;
         int score_courant;
         ArrayList<Coup> coupsBatimentARenvoyer = new ArrayList<>();
-        InstanceJeu instanceCourante = new InstanceJeu(instance.getPioche(),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
+        InstanceJeu instanceCourante = new InstanceJeu(instance.getPioche(),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.estFinJeu());
         ArrayList<Coup> coupsBatimentPossible = getTousLesCoupsPossiblesDesBatiments(instanceCourante);
 
         while(i < coupsBatimentPossible.size()){
@@ -385,7 +385,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
                 }
             }
             double debut2 = System.currentTimeMillis();
-            InstanceJeu instanceAEvaluer = new InstanceJeu(instance.getPioche(),plateauCopie2,instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.getEstFinJeu());
+            InstanceJeu instanceAEvaluer = new InstanceJeu(instance.getPioche(),plateauCopie2,instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur(), instance.estFinJeu());
             double fin2 = System.currentTimeMillis();
             temps_copie_plateau += fin2-debut2;
             Joueur joueurAEvaluer = instanceAEvaluer.getJoueur(instanceAEvaluer.getJoueurCourant());
