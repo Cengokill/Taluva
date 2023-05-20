@@ -19,31 +19,31 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.select_fin_partie;
 
 public class Jeu extends Observable implements Serializable{
-
     public int indexSon = 0, indexMusique = 0;
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static boolean AFFICHAGE;
     public byte type_jeu;
-    public int delai;
-    public boolean debug;
     Plateau plateau;
     public MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     private Tuile tuile_courante;
-    private int delai_avant_pioche = 800;
+    private int delai, delai_avant_pioche;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
-    public byte jCourant;
-    public byte jVainqueur;
+    public byte jCourant, jVainqueur;
     private Joueur[] joueurs;
     private int nb_joueurs;
     private double temps_tour;
     private boolean timerActif;
     Parametres p;
     byte[] tuileAPoser = new byte[5];
+    public boolean timerActif, debug, estPiochee, unefoisIA;
     private boolean estPiochee = false;
+
     boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
     boolean estFinPartie;
     public boolean unefoisIA=false;
+    public boolean peutPiocher =true;
+
     public LinkedList<Tuile> pioche;
     private static int taille_pioche;
 
@@ -52,7 +52,8 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai = 800;
+            delai_avant_pioche = 0;//800;
+            delai = 0;//800;
         }
         debug = false;
     }
@@ -322,7 +323,9 @@ public class Jeu extends Observable implements Serializable{
             int[] coupsPossibleCourant = coupJouable(posCourante.ligne(),posCourante.colonne());
             if(coupsPossibleCourant[0]!=0 || coupsPossibleCourant[1]!=0 || coupsPossibleCourant[2]!=0) return;
         }
-        setFinPartie();
+        if(Historique.getPasse().size()!=0){
+            setFinPartie();
+        }
     }
 
     public Joueur getJoueurCourantClasse(){
@@ -415,14 +418,20 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu==GRAPHIQUE){
             Timer timer = new Timer(delai_avant_pioche, e -> {
                 if(getJoueurCourant().type_joueur==Joueur.IA) {
-                    pioche();
+                    if(peutPiocher) {
+                        pioche();
+                        peutPiocher=true;
+                    }
                     try {
                         joueIA();
                     } catch (CloneNotSupportedException ex) {
                         throw new RuntimeException(ex);
                     }
                 }else{
-                    pioche();
+                    if(peutPiocher) {
+                        pioche();
+                        peutPiocher=true;
+                    }
                 }
             });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
@@ -585,23 +594,26 @@ public class Jeu extends Observable implements Serializable{
 
     public void annuler() {
         Stock stock = plateau.annuler();
-            if(stock!=null) {
-                if (stock.changementDeJoueur == false) {
-                    changeJoueur();
-                }
-                if(stock.typeBatiment==Coup.TUILE){
-                    pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
-                } else if(stock.typeBatiment == Coup.TEMPLE) {
-                    joueurs[jCourant].decrementeTemple();
-                } else if (stock.typeBatiment == Coup.TOUR) {
-                    joueurs[jCourant].decrementeTour();
-                } else {
-                    for (int i = 0; i < stock.nbBatiment; i++) {
-                        joueurs[jCourant].decrementeHutte();
-                    }
-                }
-                changePhase();
+        if(stock!=null) {
+            if (stock.changementDeJoueur == false) {
+                changeJoueur();
             }
+            if(stock.typeBatiment==Coup.TUILE){
+                pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+            } else if(stock.typeBatiment == Coup.TEMPLE) {
+                joueurs[jCourant].decrementeTemple();
+            } else if (stock.typeBatiment == Coup.TOUR) {
+                joueurs[jCourant].decrementeTour();
+            } else {
+                for (int i = 0; i < stock.nbBatiment; i++) {
+                    joueurs[jCourant].decrementeHutte();
+                }
+            }
+            changePhase();
+            peutPiocher=false;
+
+        }
+
     }
 
     public void refaire() {
@@ -614,7 +626,7 @@ public class Jeu extends Observable implements Serializable{
             } else if (stock.typeBatiment == Coup.TOUR) {
                 joueurs[jCourant].incrementeTour();
             } else {
-                for (int i = 0; i <= stock.nbBatiment; i++) {
+                for (int i = 0; i < stock.nbBatiment; i++) {
                     joueurs[jCourant].incrementeHutte();
                 }
             }
@@ -678,8 +690,8 @@ public class Jeu extends Observable implements Serializable{
         this.tuileAPoser=jeu.tuileAPoser;
         this.doit_placer_tuile=jeu.doit_placer_tuile;
         this.doit_placer_batiment=jeu.doit_placer_batiment;
-        this.estFinPartie= jeu.estFinPartie();
-        this.estFinPartie= jeu.estFinPartie();
+        this.estPartieFinie= jeu.estFinPartie();
+        this.estPartieFinie= jeu.estFinPartie();
         this.unefoisIA=jeu.unefoisIA;
         this.pioche=jeu.pioche;
     }
