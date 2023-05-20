@@ -361,10 +361,7 @@ public class Jeu extends Observable implements Serializable{
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=Coup.SELECTEUR_BATIMENT){
             if(type_bat == Coup.HUTTE){
-                System.out.println("---------------------------------------");
-                System.out.println("hauteur tuile : "+plateau.getHauteurTuile(ligne,colonne));
                 for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
-                    System.out.println("incremente hutte");
                     joueurs[jCourant].incrementeHutte();
                     }
                 }
@@ -517,7 +514,8 @@ public class Jeu extends Observable implements Serializable{
         }
         //mélange la pioche
         long seed = 12345L;
-        Collections.shuffle(pioche, new Random(seed));
+        //Collections.shuffle(pioche, new Random(seed));
+        Collections.shuffle(pioche);
     }
 
     public byte[] getTuilesAPoser() {

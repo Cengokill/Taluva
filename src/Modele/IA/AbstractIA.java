@@ -33,7 +33,7 @@ public class AbstractIA extends Joueur implements Runnable{
         if(type_IA == ALEATOIRE) {
             resultat = new IAAleatoire(n);
         }else if(type_IA == INTELLIGENTE) {
-            resultat = new IAIntelligente(n);
+            resultat = new IAIntelligente(n, 1);
         }else if(type_IA == MOYENNE) {
             resultat = new IAMoyenne(n);
         }

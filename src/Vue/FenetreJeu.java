@@ -3,6 +3,7 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
+import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,7 +21,7 @@ import static Vue.ImageLoader.*;
 public class FenetreJeu extends Container {
     FenetreJeuListener listener;
     public PanelPlateau panelPlateau;
-
+    Font customFont = null;
     Graphics g1;
     public PanelMenu panelMenu;
 
@@ -63,11 +64,12 @@ public class FenetreJeu extends Container {
     static Color couleur_bleue = new Color(0, 166, 255, 255);
     static int taille_texte_finPartie;
 
-    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException {
+    public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException, FontFormatException {
         this.controleur = controleur;
         this.controleur.setEngine(this);
         joueurs_tries = new ArrayList<>();
         FenetreJeu.jeu = jeu;
+        customFont = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/resources/BOOKOS.ttf"));
         frame = getFMenu();
         frame.setMinimumSize(new Dimension(800, 700));
         initFrame();

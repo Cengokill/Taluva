@@ -11,27 +11,27 @@ import Structures.Position.Position;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static Vue.ImageLoader.select_fin_partie;
+
 public class InstanceJeu {
     private Plateau plateau;
     private ArrayList<Tuile> pioche;
     private Joueur[] joueurs;
     private byte jCourant;
     private Color couleur_joueur;
-    private boolean estFinJeu;
     private int nb_joueurs;
 
     public static int TEMPLE = 2;
     public static int HUTTE = 1;
     public static int TOUR = 3;
 
-    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs,int nbjoueurs, byte jCourant, Color color_joueur, boolean estFinJeu){
+    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau, Joueur[] joueurs,int nbjoueurs, byte jCourant, Color color_joueur){
         this.pioche = pioche;
         this.plateau = plateau;
         this.joueurs = joueurs;
         this.jCourant = jCourant;
         this.nb_joueurs = nbjoueurs;
         this.couleur_joueur = color_joueur;
-        this.estFinJeu = estFinJeu;
     }
 
     public int getNbJoueurs(){
@@ -58,11 +58,29 @@ public class InstanceJeu {
         return pioche;
     }
 
+    public Tuile pioche(){
+        return pioche.remove(0);
+    }
+
     public Joueur[] getJoueurs(){
         return joueurs;
     }
     public Joueur getJoueur(int n){
         return joueurs[n];
+    }
+
+    public boolean estFinJeu(){
+        if(!pioche.isEmpty()){
+            int nb_temples_j = joueurs[jCourant].getNbTemples();
+            int nb_tours_j = joueurs[jCourant].getNbTours();
+            int nb_huttes_j = joueurs[jCourant].getNbHuttes();
+            if ((nb_temples_j == 0 && nb_tours_j == 0) || (nb_temples_j == 0 && nb_huttes_j == 0) || (nb_tours_j == 0 && nb_huttes_j == 0)) {
+                return true;
+            }
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public void annuler() {
@@ -87,25 +105,6 @@ public class InstanceJeu {
         jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour eviter d'aller dans le negatif lors de la propagation
     }
-
-    /*public InstanceJeu simulerCoup(CoupValeur coupValeur){
-        InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,couleur_joueur,estFinJeu);
-        joueTuile(coupValeur.getCoupT(),instanceNew);
-        joueBatiment(coupValeur.getCoupB(),instanceNew);
-        return instanceNew;
-    }*/
-
-    /*public InstanceJeu simulerTuile(Coup coupT){
-        InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,couleur_joueur,estFinJeu);
-        joueTuile(coupT,instanceNew);
-        return instanceNew;
-    }*/
-
-    /*public InstanceJeu simulerBatiment(Coup coupB){
-        InstanceJeu instanceNew = new InstanceJeu(pioche,plateau.copie(),joueurs,jCourant,couleur_joueur,estFinJeu);
-        joueBatiment(coupB,instanceNew);
-        return instanceNew;
-    }*/
 
     private void joueTuile(Coup coupTuile,InstanceJeu instanceCourante){
         instanceCourante.plateau.placeEtage(getJoueurCourant(), coupTuile.volcanLigne, coupTuile.volcanColonne, coupTuile.tile1Ligne, coupTuile.tile1Colonne, coupTuile.biome1, coupTuile.tile2Ligne, coupTuile.tile2Colonne, coupTuile.biome2);
@@ -147,10 +146,6 @@ public class InstanceJeu {
             Position posASupprimer = new Position(x, y);
             instanceCourante.plateau.supprimeElementNew(posASupprimer);
         }
-    }
-
-    public boolean estFinJeu(){
-        return estFinJeu;
     }
 }
 
