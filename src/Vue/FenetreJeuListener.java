@@ -58,6 +58,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             //touche echap
             if(keyCode == KeyEvent.VK_ESCAPE){
                 select_menu_options = !select_menu_options;
+                fenetreJeu.afficheOptions = false;
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 shake();
@@ -275,7 +276,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         private void setVolume(){
-            System.out.println("index musique: "+fenetreJeu.index_musique);
             if(fenetreJeu.index_musique==0) fenetreJeu.jeu.volumeMusiques = -100000;
             else fenetreJeu.jeu.volumeMusiques = -(30)+(fenetreJeu.index_musique*13);
             if(fenetreJeu.index_musique==0) fenetreJeu.jeu.volumeSons = -100000;
@@ -492,7 +492,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         int starty = fenetreJeu.posY_btnChoix;
         if(e.getX() >= startx && e.getX() <= startx+ fenetreJeu.taille_btnParametre && e.getY() >= starty && e.getY() <= starty+ fenetreJeu.taille_btnParametre && fenetreJeu.afficheOptions) {
             fenetreJeu.select_valider = true;
-            System.out.println("valider");
             return true;
         }
         fenetreJeu.select_valider = false;

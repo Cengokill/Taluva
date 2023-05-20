@@ -480,7 +480,9 @@ public class PanelMenuListener implements MouseListener  {
         }
         // Options cochables
         if(estCurseurSurBoutonPleinEcran(e)) panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
-        if(estCurseurSurBoutonDaltonien(e)) panelMenu.Daltonien = !panelMenu.Daltonien;
+        if(estCurseurSurBoutonDaltonien(e)){
+            panelMenu.Daltonien = !panelMenu.Daltonien;
+        }
         if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;
         // Options réglables
         if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_son==5)) panelMenu.index_son++;
