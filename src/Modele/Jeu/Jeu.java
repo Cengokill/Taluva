@@ -250,8 +250,6 @@ public class Jeu extends Observable implements Serializable{
                 }
             }
 
-
-
             doit_placer_batiment = true;
             doit_placer_tuile = false;
             Timer timer = new Timer(delai, e -> {
