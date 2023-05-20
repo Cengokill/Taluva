@@ -121,12 +121,12 @@ class IAAleatoire extends AbstractIA {
                 if (batimentsPlacable[batimentChoisit] == 1) {
                     if (batimentChoisit == HUTTE) {
                         //On place une hutte si il nous en reste
-                        if(instance.getJoueur(instance.jCourant).getNbHuttes()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.HUTTE);
+                        if(instance.getJoueur(instance.getJoueurCourant()).getNbHuttes()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.HUTTE);
                     } else { // Si nous ne posons pas de hutte, il n'y a pas de propagation
                         if(batimentChoisit==TEMPLE){
-                            if(instance.getJoueur(instance.jCourant).getNbTemples()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.TEMPLE);
+                            if(instance.getJoueur(instance.getJoueurCourant()).getNbTemples()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.TEMPLE);
                         }else{//TOUR
-                            if(instance.getJoueur(instance.jCourant).getNbTours()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.TOUR);
+                            if(instance.getJoueur(instance.getJoueurCourant()).getNbTours()>0) coupB = new Coup(joueur_courant, couleur_joueur, positionCourante.ligne(), positionCourante.colonne(), Coup.TOUR);
                         }
                     }
                     coups_possibles.add(coupB);

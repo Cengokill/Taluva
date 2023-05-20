@@ -12,18 +12,13 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InstanceJeu {
-    /*
-    public Integer pioche;
-    public Integer plateau;
-     */
-
-    public Plateau plateau;
-    public ArrayList<Tuile> pioche;
-    public Joueur[] joueurs;
-    public byte jCourant;
-    public Color couleur_joueur;
-    public boolean estFinJeu;
-    public int nb_joueurs;
+    private Plateau plateau;
+    private ArrayList<Tuile> pioche;
+    private Joueur[] joueurs;
+    private byte jCourant;
+    private Color couleur_joueur;
+    private boolean estFinJeu;
+    private int nb_joueurs;
 
     public static int TEMPLE = 2;
     public static int HUTTE = 1;
@@ -154,53 +149,8 @@ public class InstanceJeu {
         }
     }
 
-    /*
-
-    public InstanceJeu(ArrayList<Tuile> pioche, Plateau plateau){
-        // R�cup�re la pioche et le plateau sous forme Serializable
-
-        ByteArrayOutputStream piocheByte = new ByteArrayOutputStream();
-        ByteArrayOutputStream plateauByte = new ByteArrayOutputStream();
-
-        creerObjetPioche(piocheByte);
-        creerObjetPlateau(plateau, plateauByte);
-
-        byte[] piocheByteData = convertirEnByte(piocheByte);
-        byte[] plateauByteData = convertirEnByte(plateauByte);
-
-        this.pioche = readFromByte(piocheByteData);
-        this.plateau = readFromByte(plateauByteData);
+    public boolean getEstFinJeu(){
+        return estFinJeu;
     }
-    private int readFromByte(byte[] objectData) {
-        return ByteBuffer.wrap(objectData).getInt();
-    }
-
-    private byte[] convertirEnByte(ByteArrayOutputStream piocheByte) {
-        byte[] piocheByteData = piocheByte.toByteArray();
-        return piocheByteData;
-    }
-
-    private void creerObjetPlateau(Plateau plateau, ByteArrayOutputStream plateauByte) {
-        try {
-            ObjectOutputStream plateauStream = new ObjectOutputStream(plateauByte);
-
-
-            plateauStream.writeObject(plateau);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void creerObjetPioche(ByteArrayOutputStream piocheByte) {
-        try {
-            ObjectOutputStream piocheStream = new ObjectOutputStream(piocheByte);
-
-
-            piocheStream.writeObject(piocheStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-     */
 }
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.select_fin_partie;
@@ -68,10 +69,10 @@ public class Jeu extends Observable implements Serializable{
         taille_pioche = 12 * nb_joueurs;
         int nbIA = 0;
         temps_tour = 40.0;//secondes avant la limite de fin de tour du joueur
-        timerActif = false;
+        timerActif = true;
         joueurs = new Joueur[nb_joueurs];
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.ALEATOIRE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.ALEATOIRE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, AbstractIA.ALEATOIRE);
         IA3 = AbstractIA.nouvelle(this, (byte)3, AbstractIA.ALEATOIRE);
         if (nomJoueur0.compareTo("IA") == 0) {
@@ -117,7 +118,7 @@ public class Jeu extends Observable implements Serializable{
 
     public void initialiseMusique(){
         if(type_jeu == GRAPHIQUE) {
-            musicPlayer.setVolume(volumeMusiques);
+            musicPlayer.setVolume(-1000000);
             musicPlayer.loop();
         }
     }
@@ -459,7 +460,8 @@ public class Jeu extends Observable implements Serializable{
             }//24
         }
         //mélange la pioche
-        Collections.shuffle(pioche);
+        long seed = 12345L;
+        Collections.shuffle(pioche, new Random(seed));
     }
 
     public byte[] getTuilesAPoser() {
