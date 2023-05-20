@@ -15,13 +15,6 @@ public class TaluvaMain {
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException, FontFormatException {
         byte type_jeu = CONSOLE;
-        /*
-        Serveur serveur = new Serveur(42113);
-        Client client = new Client("localhost", 42113);
-        Thread t = new Thread(serveur);
-        Thread t2 = new Thread(client);
-        t.start();
-         */
         int nb_parties = 100;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
