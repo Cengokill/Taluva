@@ -14,8 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import static Vue.ImageLoader.*;
 
@@ -31,7 +30,18 @@ public class PanelMenu extends JPanel {
             options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
             ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
     Dimension tailleEcran, tailleFenetre;
-    int screenWidth, screenHeight, largeur, hauteur,largeur_background,largeur_bouton,largeur_menu_options,hauteur_background,hauteur_bouton,hauteur_menu_options,index_son,index_musique;
+    int screenWidth;
+    int screenHeight;
+    int largeur;
+    int hauteur;
+    int largeur_background;
+    int largeur_bouton;
+    int largeur_menu_options;
+    int hauteur_background;
+    int hauteur_bouton;
+    int hauteur_menu_options;
+    static int index_son;
+    static int index_musique;
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
@@ -40,8 +50,26 @@ public class PanelMenu extends JPanel {
     public int largeur_bouton_plus, largeur_bouton_moins, largeur_cadre, largeur_bouton_valider, largeur_bouton_fermer, largeur_textJoueur, decalageY_couleur;
     private int timerValue;
     private JTextField field_joueur1;
-    boolean select_local,select_reseau,select_options,select_quitter,clicOptions,select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
-            select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler,afficheErreur;
+    boolean select_local;
+    boolean select_reseau;
+    boolean select_options;
+    boolean select_quitter;
+    boolean clicOptions;
+    boolean select_gauche1;
+    boolean select_gauche2;
+    boolean select_droit1;
+    boolean select_droit2;
+    boolean select_PleinEcran;
+    boolean select_Daltonien;
+    boolean select_Extension;
+    static boolean estPleinEcran;
+    boolean Daltonien;
+    boolean Extension;
+    boolean select_valider;
+    boolean select_annuler;
+    boolean afficheErreur;
+
+
 
     boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
@@ -97,8 +125,7 @@ public class PanelMenu extends JPanel {
 
         //Parametres p = new Parametres();
         //entier
-        index_son = 3;
-        index_musique = 3;
+        loadParametre();
         timerValue=0;
         //bool�ens
         select_local = false;
@@ -174,6 +201,7 @@ public class PanelMenu extends JPanel {
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
         boucle();//Timer
+
     }
 
     private void limiterNombreCaractereNomJoueur() {
@@ -512,6 +540,39 @@ public class PanelMenu extends JPanel {
     public void metAJour() {
         if(afficheErreur) timerValue++;
         repaint();
+    }
+    public static void setParametre(int volumeMusic, int volumeSon,boolean pleinEcran){
+        try{
+            File file = new File ("sauvegardeParametres.txt");
+            file.delete();
+            file.createNewFile();
+            FileOutputStream fichierOut2 = new FileOutputStream(file);
+            ObjectOutputStream out2 = new ObjectOutputStream(fichierOut2);
+            out2.writeInt(volumeSon);
+            out2.writeInt(volumeMusic);
+            out2.writeBoolean(pleinEcran);
+            out2.close();
+            fichierOut2.close();
+        }catch (Exception e){
+            System.out.println("impossible de save les parametres .\n"+e);
+        }
+
+    }
+    public static void loadParametre() {
+        try {
+            FileInputStream file2 = new FileInputStream("sauvegardeParametres.txt");
+            ObjectInputStream in2 = new ObjectInputStream(file2);
+            index_son=in2.readInt();
+            index_musique=in2.readInt();
+            estPleinEcran=true;
+            System.out.println(estPleinEcran);
+            //estPleinEcran=in2.readBoolean();
+            in2.close();
+            file2.close();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de charger les parametres.\n" + e);
+        }
     }
 
 

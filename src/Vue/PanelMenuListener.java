@@ -24,6 +24,7 @@ public class PanelMenuListener implements MouseListener  {
         panelMenu.addMouseMotionListener(survol);
         //m.metAJour();
 
+
         Image cursorImage = Toolkit.getDefaultToolkit().getImage("ressources/Menu/normal_cursor.png");
         Image cursorImage2 = Toolkit.getDefaultToolkit().getImage("ressources/Menu/click_cursor.png");
 
@@ -31,6 +32,7 @@ public class PanelMenuListener implements MouseListener  {
         Point hotspot = new Point(0, 0); // D�finissez les coordonn�es du point d'ancrage du curseur si n�cessaire
         idle_cursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom Cursor");
         click_cursor = toolkit.createCustomCursor(cursorImage2, hotspot, "Custom Cursor");
+
     }
 
     public boolean estCurseurSurBouton_Local(MouseEvent e){
@@ -508,7 +510,7 @@ public class PanelMenuListener implements MouseListener  {
         estCurseurSurBoutonValiderConfig(e);
     }
 
-    private void setFullscreen(){
+    public void setFullscreen(){
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
@@ -533,8 +535,8 @@ public class PanelMenuListener implements MouseListener  {
     private void setVolume(){
         if(panelMenu.index_musique==0) panelMenu.jeu.volumeMusiques = -100000;
         else panelMenu.jeu.volumeMusiques = -(30)+(panelMenu.index_musique*13);
-        if(panelMenu.index_musique==0) panelMenu.jeu.volumeSons = -100000;
-        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_musique*13);
+        if(panelMenu.index_son==0) panelMenu.jeu.volumeSons = -100000;
+        else panelMenu.jeu.volumeSons = -(30)+(panelMenu.index_son*13);
     }
 
     @Override

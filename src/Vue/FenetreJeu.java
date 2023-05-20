@@ -82,6 +82,7 @@ public class FenetreJeu extends Container {
         loadImageOption();
         index_musique = 3;
         index_son = 3;
+
     }
 
     public void initMenuJeu() throws IOException {
@@ -135,6 +136,8 @@ public class FenetreJeu extends Container {
         panelMenu = new PanelMenu(frame,layeredPane,jeu,controleur);
         panelMenu.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         layeredPane.add(panelMenu, JLayeredPane.DEFAULT_LAYER);
+
+
     }
 
     private void initKeyBoardAndMouseListener() {
@@ -862,6 +865,7 @@ public class FenetreJeu extends Container {
             out.writeObject(jeu.getJoueurs());
             out.close();
             fichierOut.close();
+
         } catch (Exception e) {
             throw new RuntimeException("Impossible de sauvegarder cette partie.\n" + e);
         }
@@ -884,6 +888,7 @@ public class FenetreJeu extends Container {
             throw new RuntimeException("Impossible de charger cette sauvegarde.\n" + e);
         }
     }
+
 
     public void afficheParametre(Graphics g){
         int taille_x = (int) (Math.min(frame.getWidth(),frame.getHeight())*1.3);

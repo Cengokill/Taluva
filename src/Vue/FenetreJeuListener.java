@@ -1,10 +1,13 @@
 package Vue;
 
+import Modele.Jeu.Jeu;
+
+import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
 import java.awt.*;
 
 import java.awt.event.*;
-import java.io.IOException;
+import java.io.*;
 
 import static Vue.Camera.*;
 import static Modele.Jeu.Plateau.EtatPlateau.*;
@@ -212,6 +215,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 if(estCurseurSurBoutonValider(e)){
                     setFullscreen();
                     setVolume();
+                    PanelMenu.setParametre(fenetreJeu.index_musique,fenetreJeu.index_son,fenetreJeu.estPleinEcran);
                     fenetreJeu.afficheOptions = false;
                 }
             }else{
@@ -230,6 +234,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     fenetreJeu.getJeu().musicPlayer.stop();
                     fenetreJeu.layeredPane.removeAll();
                     select_menu_options = !select_menu_options;
+
                     // On passe du menu au jeu
                     try {
                         fenetreJeu.initMenuJeu();
@@ -238,6 +243,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     }
                     fenetreJeu.revalidate();
                     fenetreJeu.metAJour();
+
                 }
                 fenetreJeu.panelPlateau.addToCursor(e);
                 fenetreJeu.panelPlateau.annuleConstruction(e);
@@ -252,6 +258,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     FenetreJeu.charger();
                 }
                 if (estSurOption(e)) {
+                    PanelMenu.loadParametre();
                     fenetreJeu.afficheOptions = true;
                 }
             }
@@ -277,9 +284,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
 
         private void setVolume(){
             if(fenetreJeu.index_musique==0) fenetreJeu.jeu.volumeMusiques = -100000;
-            else fenetreJeu.jeu.volumeMusiques = -(30)+(fenetreJeu.index_musique*13);
-            if(fenetreJeu.index_musique==0) fenetreJeu.jeu.volumeSons = -100000;
-            else fenetreJeu.jeu.volumeSons = -(30)+(fenetreJeu.index_musique*13);
+            else {fenetreJeu.jeu.volumeMusiques = -(30)+(fenetreJeu.index_musique*13);}
+            if(fenetreJeu.index_son==0) fenetreJeu.jeu.volumeSons = -100000;
+            else {fenetreJeu.jeu.volumeSons = -(30)+(fenetreJeu.index_son*13);}
             fenetreJeu.jeu.initialiseMusique();
         }
 
@@ -497,5 +504,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         fenetreJeu.select_valider = false;
         return false;
     }
+
 
 }
