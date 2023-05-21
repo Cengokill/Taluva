@@ -33,7 +33,7 @@ public class ImageLoader {
     public static BufferedImage timer, joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
-    public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
+    public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_retour, bouton_retour_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
             bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on, bouton_options_echap, bouton_options_echap_select,
             menu_options, menu_dark_filter;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posX_options_echap, posY_options_echap, largeur_bouton_options,
@@ -57,6 +57,7 @@ public class ImageLoader {
     public static boolean select_save;
     public static boolean select_load;
     public static boolean select_annuler;
+    public static boolean select_retour;
     public static boolean select_refaire;
     public static boolean tuto_on;
     public static boolean select_quitter;

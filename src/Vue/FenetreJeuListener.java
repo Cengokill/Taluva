@@ -152,11 +152,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (!select_menu_options) {
                 return false;
             }
-            int largeur = posX_save + bouton_save.getWidth()/3;
-            int hauteur = posY_save + bouton_save.getHeight()/3;
+            int largeur = posX_save + largeur_bouton_dans_options;
+            int hauteur = posY_save + hauteur_bouton_dans_options;
             if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_save && e.getY() <= hauteur){
                 select_save = true;
-                select_load = false;
                 return true;
             }
             select_save = false;
@@ -167,11 +166,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if (!select_menu_options) {
                 return false;
             }
-            int largeur = posX_save + bouton_load.getWidth()/3;
-            int hauteur = posY_save + bouton_load.getHeight()/3;
-            if(e.getX() >= posX_save + bouton_load.getWidth()/2 && e.getX() <= largeur && e.getY() >= posY_save && e.getY() <= hauteur){
+            int largeur = posX_save + largeur_bouton_dans_options;
+            int hauteur = posY_load + largeur_bouton_dans_options;
+            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_load && e.getY() <= hauteur){
                 select_load = true;
-                select_save = false;
                 return true;
             }
             select_load = false;

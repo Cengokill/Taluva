@@ -38,7 +38,7 @@ public class FenetreJeu extends Container {
     public static boolean estFenetreScoreChargee = false, estImageTuilePiocheeFinale=false;
 
     public boolean afficheOptions;
-    public static boolean estSurBoutonOptions, estSurBoutonAnnuler, estSurBoutonRefaire, estSurBoutonSave, estSurBoutonLoad, estSurBoutonQuitterOptions, estSurBoutonQuitterFinPartie;
+    public static boolean estSurBoutonOptions, estSurBoutonAnnuler, estSurBoutonRefaire, estSurBoutonQuitterOptions, estSurBoutonQuitterFinPartie;
 
     public int index_son,index_musique,posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix, taille_btnParametre;
@@ -218,7 +218,7 @@ public class FenetreJeu extends Container {
                 double rapport = 492.0 / 847.0;
                 double rapport_fenetre_score = 1400.0/872.0;
                 double rapport_joueur_courant = 280.0/950.0;
-                double rapport_bouton_dans_options = 207.0/603.0;
+                double rapport_bouton_dans_options = 351.0/1572.0;
                 double rapport_fin_partie = 9.0/16.0;
                 double rapport_cadre = 76.0/1349.0;
                 double rapport_timer = 205.0/335.0;
@@ -246,10 +246,10 @@ public class FenetreJeu extends Container {
                 hauteur_menu_options = largeur_menu_options;
                 posX_menu_options = (largeur - largeur_menu_options)/2;
                 posY_menu_options = (hauteur - hauteur_menu_options)/2;
-                largeur_bouton_dans_options = (int) (largeur_menu_options * 0.4);
+                largeur_bouton_dans_options = (int) (largeur_menu_options * 0.7);
                 hauteur_bouton_dans_options = (int) (largeur_bouton_dans_options * rapport_bouton_dans_options);
-                posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2 + 20;
-                posY_save = (int) (posY_menu_options + hauteur_menu_options * 0.15);
+                posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2;
+                posY_save = (int) (posY_menu_options + hauteur_menu_options * 0.10);
                 posY_load = (int) (posY_save + hauteur_menu_options * 0.20);
                 posX_tuto = (int) (largeur / 1.2);
                 posY_tuto =  (int)(hauteur / 1.3);
@@ -398,7 +398,6 @@ public class FenetreJeu extends Container {
             frame.setLocationRelativeTo(null);
         }
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     public JFrame getFMenu(){
@@ -407,13 +406,14 @@ public class FenetreJeu extends Container {
         cadreRouge = lisImageBuf("cadre_rouge");
         cadreVert = lisImageBuf("cadre_vert");
         cadreViolet = lisImageBuf("cadre_violet");
-        bouton_save = lisImageBuf("Sauvegarder");
-        bouton_save_select = lisImageBuf("Sauvegarder_select");
-        bouton_load = lisImageBuf("Charger");
-        bouton_load_select = lisImageBuf("Charger_select");
+        bouton_save = lisImageBuf("Menu/bouton_sauvegarder");
+        bouton_save_select = lisImageBuf("Menu/bouton_sauvegarder_select");
+        bouton_load = lisImageBuf("Menu/bouton_charger");
+        bouton_load_select = lisImageBuf("Menu/bouton_charger_select");
+        bouton_retour = lisImageBuf("Menu/Retour");
+        bouton_retour_select = lisImageBuf("Menu/Retour_select");
         bouton_quitter = lisImageBuf("Quitter");
         bouton_annuler = lisImageBuf("Annuler");
-        //bouton_load_select = lisImageBuf("Charger_select");
         bouton_annuler = lisImageBuf("Annuler");
         bouton_annuler_select = lisImageBuf("Annuler_select");
         bouton_refaire = lisImageBuf("Refaire");
@@ -799,18 +799,18 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_options_echap, posX_options_echap, posY_options_echap, largeur_bouton, largeur_bouton, null);
     }
 
-    public static void afficheBoutonLoad(Graphics g) {
-        if(estSurBoutonLoad)
-            g.drawImage(bouton_load_select, posX_save + bouton_load_select.getWidth()/2, posY_save, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
+    public static void afficheBoutonSave(Graphics g) {
+        if(select_save)
+            g.drawImage(bouton_save_select, posX_save, posY_save, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
         else
-            g.drawImage(bouton_load, posX_save + bouton_load.getWidth()/2, posY_save, bouton_load.getWidth() / 3, bouton_load.getHeight() / 3,null);
+            g.drawImage(bouton_save, posX_save, posY_save, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
     }
 
-    public static void afficheBoutonSave(Graphics g) {
-        if(estSurBoutonSave)
-            g.drawImage(bouton_save_select, posX_save, posY_save, bouton_save_select.getWidth() / 3, bouton_save_select.getHeight() / 3,null);
+    public static void afficheBoutonLoad(Graphics g) {
+        if(select_load)
+            g.drawImage(bouton_load_select, posX_save, posY_load, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
         else
-            g.drawImage(bouton_save, posX_save, posY_save, bouton_save.getWidth() / 3, bouton_save.getHeight() / 3,null);
+            g.drawImage(bouton_load, posX_save, posY_load, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
     }
 
     public static void afficheBoutonTuto(Graphics g) {
@@ -1048,7 +1048,7 @@ public class FenetreJeu extends Container {
     }
 
     public void boucle(){
-        Timer timer = new Timer(10, new ActionListener() {
+        Timer timer = new Timer(10, new ActionListener() {// ici
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
