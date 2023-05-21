@@ -57,15 +57,13 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,1);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,2);
+        System.out.println("meilleursCoupsTab.size() : "+meilleursCoupsTab.size());
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
 
     public ArrayList<CoupValeur> meilleursCoupsInstance(InstanceJeu instance, int horizon){
         //renvoie les meilleurs coups possibles de l'instance donnée en paramètre
-        if(instance.estFinJeu()){
-            return new ArrayList<>();
-        }
         int valeurMax = Integer.MIN_VALUE;
         ArrayList<CoupValeur> coups_calcules = new ArrayList<>();
         ArrayList<CoupValeur> coups_meilleurs = meilleursCoupsTuile(instance,instance.getTuilePiochee());
@@ -98,7 +96,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     public int miniMaxJoueurA(InstanceJeu instance, int horizon, int alpha, int beta){
-        if(horizon == 0 || instance.estFinJeu()){
+        if(horizon <= 0 || instance.estFinJeu()){
             return evaluationScoreTuile(instance);
         }
         int valeur = Integer.MIN_VALUE;
@@ -643,7 +641,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             // Score de placement
             score += joueurCourant.getNbHuttesPlacees() * poids_hutte;
             score += joueurCourant.getNbToursPlacees() * poids_tour;
-            score += joueurCourant.getNbTemplesPlaces() * 100000000;
+            score += joueurCourant.getNbTemplesPlaces() * poids_temple;
 
         }
         return score/joueursAEvaluer.size();
