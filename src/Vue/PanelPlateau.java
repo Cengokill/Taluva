@@ -223,7 +223,7 @@ public class PanelPlateau extends JPanel {
 
         int heightoffset = calculHauteurAffichageHexagone(map, ligne, colonne);
 
-        BufferedImage tile = getTileImageFromId(tileId, map[ligne][colonne].getNum());
+        BufferedImage tile = getTileImageFromId(tileId, map[ligne][colonne].getNum(),true);
         g.drawImage(tile, x , y - heightoffset, null);
 
         afficheFiltresTileMode(g, map, ligne, colonne, x, y, heightoffset);
@@ -635,39 +635,39 @@ public class PanelPlateau extends JPanel {
 
             if (scrollValue == 1) {
                 g.drawImage(ombre_0, x-tileWidth/2-40, y-verticalOffset/2-50,x/12,y/12, null);
-                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
-                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
-                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum());
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(),false);
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum(),false);
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum(),false);
             }
             else if (scrollValue == 2){
                 g.drawImage(ombre_1, x-tileWidth/2+175, y-verticalOffset/2-50,x/12,y/12, null);
-                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
-                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum());
-                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(),false);
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum(),false);
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j + 1].getNum(),false);
             }
             else if (scrollValue == 3){
-                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+250,x/12,y/12, null);
-                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
-                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
-                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
+                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+265,x/12,y/12, null);
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j + 1].getNum(), false);
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum(), false);
             }
             else if (scrollValue == 4){
                 g.drawImage(ombre_1, x-tileWidth/2-50, y-verticalOffset/2+300,x/12,y/12, null);
-                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
-                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
-                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum(), false);
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum(), false);
             }
             else if (scrollValue == 5){
-                g.drawImage(ombre_0, x-tileWidth/2-300, y-verticalOffset/2-300,x/12,y/12, null);
-                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
-                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
-                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
+                g.drawImage(ombre_0, x-tileWidth/2-265, y-verticalOffset/2+260,x/12,y/12, null);
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum(), false);
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j - 1].getNum(), false);
             }
             else if (scrollValue == 6){
-                g.drawImage(ombre_1, x-tileWidth/2-400, y-verticalOffset/2-200,x/12,y/12, null);
-                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
-                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
-                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
+                g.drawImage(ombre_1, x-tileWidth/2-270, y-verticalOffset/2-50,x/12,y/12, null);
+                tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
+                tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j - 1].getNum(), false);
+                tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum(), false);
             }
 
             float opacity = 1f;
@@ -675,18 +675,43 @@ public class PanelPlateau extends JPanel {
             if (tile1 != null && tile2 != null && tile3 != null) {
                 opacity = updateOpacite(i, j, j2, opacity);
                 if (opacity != 1f) {
-                    tile1 = tileErreur;
-                    tile2 = tileErreur;
-                    tile3 = tileErreur;
+                    tile1 = reduceOpacity(tile1,opacity);
+                    tile1 = applyRedFilter(tile1);
+                    tile2 = reduceOpacity(tile2,opacity);
+                    tile2 = applyRedFilter(tile2);
+                    tile3 = reduceOpacity(tile3,opacity);
+                    tile3 = applyRedFilter(tile3);
                 }
             }
 
             y -= jeu.getPlateau().getCarte()[i][j].getHauteur() * HAUTEUR_ETAGE;
-            afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
+            afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3, opacity);
         }
     }
 
-    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int drawX, int drawY, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3) {
+    public static BufferedImage reduceOpacity(BufferedImage image, float opacity) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        // Crée une nouvelle BufferedImage avec le même type d'image et la même taille
+        BufferedImage reducedOpacityImage = new BufferedImage(width, height, image.getType());
+
+        // Obtenir un objet Graphics2D pour la nouvelle image
+        Graphics2D g2d = reducedOpacityImage.createGraphics();
+
+        // Spécifie le composite avec la nouvelle opacité
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+
+        // Dessiner l'image d'origine avec la nouvelle opacité
+        g2d.drawImage(image, 0, 0, null);
+
+        // Libérer les ressources du Graphics2D
+        g2d.dispose();
+
+        return reducedOpacityImage;
+    }
+
+    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int drawX, int drawY, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3, float opacity) {
         int heightoffset1 = 1;
         int heightoffset2 = 1;
         int heightoffset3 = 1;

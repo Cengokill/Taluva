@@ -589,10 +589,10 @@ public class PanelMenuListener implements MouseListener  {
             if (estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
                     estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
                     estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
-                panelMenu.fenetre.setHandCursor();
+                if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setHandCursor();
                 //m.metAJour();
             }else{
-                panelMenu.fenetre.setStandardCursor();
+                if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setStandardCursor();
             }
         }
     }

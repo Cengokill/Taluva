@@ -323,10 +323,9 @@ public class PanelMenu extends JPanel {
     }
 
     public void afficheBackground(Graphics g) {
-        Image scaledImage = background.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-        g.setColor(new Color(64, 164, 223));
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, largeur, hauteur);
-        g.drawImage(scaledImage, 0, 0, null);
+        g.drawImage(background, posX_background ,posY_background , largeur_background, hauteur_background, null);
     }
 
     public void afficheBoutonLocal(Graphics g) {
@@ -590,7 +589,7 @@ public class PanelMenu extends JPanel {
 
 
     public void boucle(){
-        Timer timer = new Timer(2, new ActionListener() {
+        Timer timer = new Timer(5, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
