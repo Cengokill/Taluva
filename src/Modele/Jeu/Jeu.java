@@ -90,8 +90,8 @@ public class Jeu extends Observable implements Serializable{
         } else if (difficulte.compareTo("Difficile") == 0) {
             difficulteIA = AbstractIA.INTELLIGENTE;
         }
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, difficulteIA);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, difficulteIA);
         IA2 = AbstractIA.nouvelle(this, (byte)2, difficulteIA);
         IA3 = AbstractIA.nouvelle(this, (byte)3, difficulteIA);
         if (nomJoueur0.compareTo("IA") == 0) {
