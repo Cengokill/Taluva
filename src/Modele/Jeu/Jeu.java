@@ -90,8 +90,8 @@ public class Jeu extends Observable implements Serializable{
         } else if (difficulte.compareTo("Difficile") == 0) {
             difficulteIA = AbstractIA.INTELLIGENTE;
         }
-        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.MOYENNE);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.MOYENNE);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.INTELLIGENTE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.INTELLIGENTE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, difficulteIA);
         IA3 = AbstractIA.nouvelle(this, (byte)3, difficulteIA);
         if (nomJoueur0.compareTo("IA") == 0) {
@@ -147,7 +147,7 @@ public class Jeu extends Observable implements Serializable{
             if(indexSon==0) sonVolume=-100000;
             else sonVolume = (-30)+indexSon*13;
 
-            musicPlayer.setVolume(-100000);
+            musicPlayer.setVolume(musicVolume);
             musicPlayer.loop();
         }
     }
@@ -365,8 +365,8 @@ public class Jeu extends Observable implements Serializable{
             if(type_bat == Coup.HUTTE){
                 for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
                     joueurs[jCourant].incrementeHutte();
-                    }
                 }
+            }
             if(type_bat == Coup.TEMPLE) {
                 joueurs[jCourant].incrementeTemple();
             }
@@ -407,11 +407,11 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void changeJoueur() {
-        getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
         if(estFinPartie()){
             return;
         }
         jCourant = (byte) ((jCourant + 1) % nb_joueurs);
+        getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
         if(type_jeu==GRAPHIQUE){
             Timer timer = new Timer(delai_avant_pioche, e -> {
                 if(getJoueurCourant().type_joueur==Joueur.IA) {
