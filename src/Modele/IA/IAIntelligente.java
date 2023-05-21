@@ -57,7 +57,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,2);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,1);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
 
@@ -111,6 +111,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupDuo.getCoupT());
             //joue le coup Bâtiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
+            instanceCourante.changeJoueur();
             valeur = Math.max(valeur, miniMaxJoueurB(instanceCourante, horizon-1, alpha, beta));
             if (valeur >= beta) {
                 return valeur; // Coupure beta
@@ -137,6 +138,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupDuo.getCoupT());
             //joue le coup Batiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
+            instanceCourante.changeJoueur();
             valeur = Math.min(valeur, miniMaxJoueurA(instanceCourante, horizon-1, alpha, beta));
             if (alpha >= valeur) {
                 return valeur; // Coupure alpha
@@ -388,13 +390,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         if(batimentChoisit == TEMPLE) jCourantCopie.incrementeTemple();
         else if(batimentChoisit == TOUR) jCourantCopie.incrementeTour();
         else{
-            if(hauteur>=3){
+            for (int index = 0; index<hauteur; index++) {
                 jCourantCopie.incrementeHutte();
             }
-            if(hauteur>=2){
-                jCourantCopie.incrementeHutte();
-            }
-            jCourantCopie.incrementeHutte();
         }
     }
 
@@ -402,9 +400,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         if(batimentChoisit == TEMPLE) jCourantCopie.decrementeTemple();
         else if(batimentChoisit == TOUR) jCourantCopie.decrementeTour();
         else{
-            if(hauteur>=3) jCourantCopie.decrementeHutte();
-            if(hauteur>=2) jCourantCopie.decrementeHutte();
-            jCourantCopie.decrementeHutte();
+            for (int index = 0; index<hauteur; index++) {
+                jCourantCopie.decrementeHutte();
+            }
         }
         return jCourantCopie;
     }

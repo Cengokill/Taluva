@@ -144,7 +144,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
 
         public boolean estSurEchap(MouseEvent e) {
             int largeur = posX_Echap + largeur_bouton * 2;
-            int hauteur = posY_Echap + hauteur_bouton * 2;
+            int hauteur = posY_Echap + largeur_bouton * 2;
             if(e.getX() >= posX_Echap && e.getX() <= largeur && e.getY() >= posY_Echap && e.getY() <= hauteur){
                 return true;
             }
