@@ -675,18 +675,43 @@ public class PanelPlateau extends JPanel {
             if (tile1 != null && tile2 != null && tile3 != null) {
                 opacity = updateOpacite(i, j, j2, opacity);
                 if (opacity != 1f) {
-                    tile1 = tileErreur;
-                    tile2 = tileErreur;
-                    tile3 = tileErreur;
+                    tile1 = reduceOpacity(tile1,opacity);
+                    tile1 = applyRedFilter(tile1);
+                    tile2 = reduceOpacity(tile2,opacity);
+                    tile2 = applyRedFilter(tile2);
+                    tile3 = reduceOpacity(tile3,opacity);
+                    tile3 = applyRedFilter(tile3);
                 }
             }
 
             y -= jeu.getPlateau().getCarte()[i][j].getHauteur() * HAUTEUR_ETAGE;
-            afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3);
+            afficheTilesHover(g, tileWidth, verticalOffset, x, y, tile1, tile2, tile3, opacity);
         }
     }
 
-    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int drawX, int drawY, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3) {
+    public static BufferedImage reduceOpacity(BufferedImage image, float opacity) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        // Crée une nouvelle BufferedImage avec le même type d'image et la même taille
+        BufferedImage reducedOpacityImage = new BufferedImage(width, height, image.getType());
+
+        // Obtenir un objet Graphics2D pour la nouvelle image
+        Graphics2D g2d = reducedOpacityImage.createGraphics();
+
+        // Spécifie le composite avec la nouvelle opacité
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+
+        // Dessiner l'image d'origine avec la nouvelle opacité
+        g2d.drawImage(image, 0, 0, null);
+
+        // Libérer les ressources du Graphics2D
+        g2d.dispose();
+
+        return reducedOpacityImage;
+    }
+
+    private void afficheTilesHover(Graphics g, int tileWidth, int verticalOffset, int drawX, int drawY, BufferedImage tile1, BufferedImage tile2, BufferedImage tile3, float opacity) {
         int heightoffset1 = 1;
         int heightoffset2 = 1;
         int heightoffset3 = 1;
