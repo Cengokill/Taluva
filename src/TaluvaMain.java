@@ -40,6 +40,7 @@ public class TaluvaMain {
                 }
                 while (!jeu.estFinPartie()) {
                     if(!jeu.pioche()) {//si pioche non vide, l'IA joue, sinon la partie est finie
+                        System.out.println("pioche non vide");
                         jeu.joueIA();
                     }
                 }

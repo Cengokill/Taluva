@@ -53,7 +53,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur());
         instance.setTuilePiochee(jeu.getTuileCourante());//définit la tuile piochée de l'instance sans la retirer de la pioche, puisque à ce moment le jeu a déjà retiré la tuile de la pioche
         //aussi, si la pioche est vide, la tuile déjà piochée est stockée ici
-        if(plateauIA.getTripletsPossibles().size()==1){ // C'est le premier coup
+        if(plateauIA.getTripletsPossibles().size()==1){ // Si c'est le premier coup sur le plateau
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
@@ -217,7 +217,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     private int evaluerInstanceTuile(InstanceJeu instanceCourante, ArrayList<Joueur> joueurs){
         // On regarde ce que cette nouvelle tuile nous permet de construire
         int[] batimentsPlacablesNombre = getNombreBatimentsConstructible(instanceCourante,joueurs);
-        int score = 0;
+        int score = Integer.MIN_VALUE;
         // batimentsPlacablesNombre[0] -> nombre de temples constructibles par les joueurs adverses
         // batimentsPlacablesNombre[1] -> nombre de huttes constructibles par les joueurs adverses
         // batimentsPlacablesNombre[2] -> nombre de tours constructibles par les joueurs adverses
@@ -659,7 +659,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     private boolean seraJoueurVictorieux(InstanceJeu instanceCourante,ArrayList<Joueur> joueurs){
-        boolean gagnant = false;
         int[] batimentsPlacables = getNombreBatimentsConstructible(instanceCourante,joueurs);
         for(Joueur joueurCourant: joueurs) {
             // Si on peut placer un temple et que ca nous donne la victoire
@@ -669,7 +668,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             // Si on peut placer une tour et que ca nous donne la victoire
             if(batimentsPlacables[2]==1 && (joueurCourant.getNbTours()==1 && (joueurCourant.getNbHuttes()==0 || joueurCourant.getNbTemples()==0))) return true;
         }
-        return gagnant;
+        return false;
     }
 
     public boolean estFinTemps(){
