@@ -646,7 +646,7 @@ public class PanelPlateau extends JPanel {
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
             }
             else if (scrollValue == 3){
-                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+250,x/12,y/12, null);
+                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+265,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j + 1].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum());
@@ -658,13 +658,13 @@ public class PanelPlateau extends JPanel {
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
             }
             else if (scrollValue == 5){
-                g.drawImage(ombre_0, x-tileWidth/2-300, y-verticalOffset/2-300,x/12,y/12, null);
+                g.drawImage(ombre_0, x-tileWidth/2-265, y-verticalOffset/2+260,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
             }
             else if (scrollValue == 6){
-                g.drawImage(ombre_1, x-tileWidth/2-400, y-verticalOffset/2-200,x/12,y/12, null);
+                g.drawImage(ombre_1, x-tileWidth/2-270, y-verticalOffset/2-50,x/12,y/12, null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum());
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j - 1].getNum());
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum());
