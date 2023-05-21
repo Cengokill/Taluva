@@ -40,8 +40,8 @@ public class PanelMenu extends JPanel {
     int hauteur_background;
     int hauteur_bouton;
     int hauteur_menu_options;
-    static int index_son;
-    static int index_musique;
+    public static int index_sonPanel;
+    public static int index_musiquePanel;
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
@@ -363,7 +363,7 @@ public class PanelMenu extends JPanel {
         g.drawImage(ecriture_Sons,(int) (posX_gauche1+(taille_slider_x/2.33)),(int) (posY_slider1*0.85),taille_sons,(int) (taille_sons/1.91),null);
         if(select_gauche1) g.drawImage(bouton_gauche_hover,posX_gauche1,posY_slider1,taille_btn,taille_btn,null);
         else g.drawImage(bouton_gauche,posX_gauche1,posY_slider1,taille_btn,taille_btn,null);
-        g.drawImage(sliders[index_son],posX_gauche1,posY_slider1,taille_slider_x,taille_slider_y,null);
+        g.drawImage(sliders[index_sonPanel],posX_gauche1,posY_slider1,taille_slider_x,taille_slider_y,null);
         if(select_droit1) g.drawImage(bouton_droit_hover,posX_droit1,posY_slider1,taille_btn,taille_btn,null);
         else g.drawImage(bouton_droit,posX_droit1,posY_slider1,taille_btn,taille_btn,null);
 
@@ -373,7 +373,7 @@ public class PanelMenu extends JPanel {
         g.drawImage(ecriture_Musiques,(int) (posX_gauche1+(taille_slider_x/2.66)),(int) (posY_slider2*0.9),taille_musiques,(int) (taille_musiques/2.64),null);
         if(select_gauche2) g.drawImage(bouton_gauche_hover,posX_gauche2,posY_slider2,taille_btn,taille_btn,null);
         else g.drawImage(bouton_gauche,posX_gauche2,posY_slider2,taille_btn,taille_btn,null);
-        g.drawImage(sliders[index_musique],x,posY_slider2,taille_slider_x,taille_slider_y,null);
+        g.drawImage(sliders[index_musiquePanel],x,posY_slider2,taille_slider_x,taille_slider_y,null);
         if(select_droit2) g.drawImage(bouton_droit_hover,posX_droit2,posY_slider2,taille_btn,taille_btn,null);
         else g.drawImage(bouton_droit,posX_droit2,posY_slider2,taille_btn,taille_btn,null);
     }
@@ -630,16 +630,16 @@ public class PanelMenu extends JPanel {
             if(f.exists() && f.canRead()){
                 FileInputStream file2 = new FileInputStream(f);
                 ObjectInputStream in2 = new ObjectInputStream(file2);
-                index_son=in2.readInt();
-                index_musique=in2.readInt();
+                index_sonPanel =in2.readInt();
+                index_musiquePanel =in2.readInt();
                 estPleinEcran=in2.readBoolean();
                 System.out.println(estPleinEcran);
                 //estPleinEcran=in2.readBoolean();
                 in2.close();
                 file2.close();
             }else{
-                index_son=3;
-                index_musique=3;
+                index_sonPanel =3;
+                index_musiquePanel =3;
                 estPleinEcran=false;
             }
         } catch (Exception e) {

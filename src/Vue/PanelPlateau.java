@@ -117,7 +117,6 @@ public class PanelPlateau extends JPanel {
             else displayHoverMaison(g);
         }
 
-
         //}else{
         // TODO Affiche fin de la partie
         //}
@@ -918,6 +917,7 @@ public class PanelPlateau extends JPanel {
         timerValue=0;
         if (indexMessageErreur==0) {
             controleur.placeEtage(i, j, i2, j_modified, tuileAPoser[1][0], i3, i4, tuileAPoser[2][0]);
+            jeu.playSons(0);
             detectionPlusAucunCoupAJouer();
             return true;
         }
@@ -988,6 +988,7 @@ public class PanelPlateau extends JPanel {
                 if (peutPoserTemple(i, j)) {
                     enSelection = false;
                     controleur.placeBatiment(i, j, Coup.TEMPLE);
+
                 }
             }
             scrollValue = 1;//on met la valeur de scrollValue à 1 car si elle est à 0 la prochaine tuile ne s'affichera pas

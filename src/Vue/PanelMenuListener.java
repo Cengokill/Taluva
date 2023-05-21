@@ -1,14 +1,10 @@
 package Vue;
 
-import Modele.Jeu.MusicPlayer;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
-
-import static Vue.ImageLoader.*;
 
 public class PanelMenuListener implements MouseListener  {
 
@@ -472,7 +468,11 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.fenetre.panelPlateau.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.panelVignette.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.fenetre.buttonPanel.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.jeu.indexSon = panelMenu.index_sonPanel;
+                panelMenu.jeu.indexMusique = panelMenu.index_musiquePanel;
                 panelMenu.jeu.initialiseMusique();
+                panelMenu.jeu.initialiseSons();
+
             }else{
                 panelMenu.afficheErreur = true;
             }
@@ -499,17 +499,17 @@ public class PanelMenuListener implements MouseListener  {
         }
         if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;
         // Options réglables
-        if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_son==5)) panelMenu.index_son++;
-        if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_son==0)) panelMenu.index_son--;
-        if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musique==5)) panelMenu.index_musique++;
-        if(estCurseurSurBoutonGauche_2(e) && !(panelMenu.index_musique==0)) panelMenu.index_musique--;
+        if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_sonPanel ==5)) panelMenu.index_sonPanel++;
+        if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_sonPanel ==0)) panelMenu.index_sonPanel--;
+        if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musiquePanel ==5)) panelMenu.index_musiquePanel++;
+        if(estCurseurSurBoutonGauche_2(e) && !(panelMenu.index_musiquePanel ==0)) panelMenu.index_musiquePanel--;
         // Choix Confirmer/Annuler
         if(estCurseurSurBoutonAnnuler(e)) panelMenu.clicOptions=false;
         // TODO SAUVEGARDER LES PARAMETRES
         if(estCurseurSurBoutonValider(e)){
             setFullscreen();
             setVolume();
-            PanelMenu.setParametre(panelMenu.index_musique,panelMenu.index_son,panelMenu.estPleinEcran);
+            PanelMenu.setParametre(panelMenu.index_musiquePanel,panelMenu.index_sonPanel,panelMenu.estPleinEcran);
             panelMenu.clicOptions = false;
         }
 
@@ -546,8 +546,8 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     private void setVolume(){
-        panelMenu.jeu.indexMusique = panelMenu.index_musique;
-        panelMenu.jeu.indexSon = panelMenu.index_son;
+        panelMenu.jeu.indexMusique = panelMenu.index_musiquePanel;
+        panelMenu.jeu.indexSon = panelMenu.index_sonPanel;
     }
 
     @Override

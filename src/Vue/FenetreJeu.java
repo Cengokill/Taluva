@@ -116,8 +116,6 @@ public class FenetreJeu extends Container {
         setBackgroundColor();
         boucle();
         tempsDebutPartie = System.currentTimeMillis();
-        index_musique = jeu.indexMusique;
-        index_son = jeu.indexSon;
     }
 
     public void setHandCursor(){
@@ -209,6 +207,9 @@ public class FenetreJeu extends Container {
                 afficheMenuOptions(g2d);
                 if(afficheOptions){
                     afficheParametre(g2d);
+                }else{
+                    index_musique = jeu.indexMusique;
+                    index_son = jeu.indexSon;
                 }
             }
 

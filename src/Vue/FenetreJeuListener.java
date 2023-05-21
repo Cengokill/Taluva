@@ -58,6 +58,8 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             //touche echap
             if(keyCode == KeyEvent.VK_ESCAPE){
                 select_menu_options = !select_menu_options;
+                fenetreJeu.index_musique = fenetreJeu.jeu.indexMusique;
+                fenetreJeu.index_son = fenetreJeu.jeu.indexSon;
                 fenetreJeu.afficheOptions = false;
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -107,10 +109,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             int largeur = posX_annuler + largeur_bouton;
             int hauteur = posY_annuler + largeur_bouton;
             if(e.getX() >= posX_annuler && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur){
+                fenetreJeu.panelPlateau.estSurBouton = true;
                 FenetreJeu.estSurBoutonAnnuler = true;
                 return true;
             }
             FenetreJeu.estSurBoutonAnnuler = false;
+            fenetreJeu.panelPlateau.estSurBouton = false;
             return false;
         }
 
@@ -118,10 +122,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             int largeur = posX_refaire + largeur_bouton;
             int hauteur = posY_refaire + largeur_bouton;
             if(e.getX() >= posX_refaire && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur){
+                fenetreJeu.panelPlateau.estSurBouton = true;
                 FenetreJeu.estSurBoutonRefaire = true;
                 return true;
             }
             FenetreJeu.estSurBoutonRefaire = false;
+            fenetreJeu.panelPlateau.estSurBouton = false;
             return false;
         }
 
@@ -141,10 +147,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             int largeur = posX_options_echap + largeur_bouton;
             int hauteur = posY_options_echap + largeur_bouton;
             if(e.getX() >= posX_options_echap && e.getX() <= largeur && e.getY() >= posY_options_echap && e.getY() <= hauteur){
+                fenetreJeu.panelPlateau.estSurBouton = true;
                 FenetreJeu.estSurBoutonOptions = true;
                 return true;
             }
             FenetreJeu.estSurBoutonOptions = false;
+            fenetreJeu.panelPlateau.estSurBouton = false;
             return false;
         }
 
@@ -282,6 +290,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             fenetreJeu.getJeu().indexMusique = fenetreJeu.index_musique;
             fenetreJeu.getJeu().indexSon = fenetreJeu.index_son;
             fenetreJeu.jeu.initialiseMusique();
+            fenetreJeu.jeu.initialiseSons();
         }
 
 

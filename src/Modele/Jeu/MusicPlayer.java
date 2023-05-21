@@ -23,6 +23,11 @@ public class MusicPlayer {
         }
     }
 
+    public void drain(){clip.drain();}
+
+    public void resetClip(){
+        clip.setFramePosition(0);
+    };
     public void play() {
         clip.start();
     }

@@ -1,5 +1,6 @@
 package Controleur;
 
+import Modele.Jeu.Coup;
 import Modele.Jeu.Plateau.Hexagone;
 import Modele.Jeu.Jeu;
 import Patterns.CollecteurEvenements;

@@ -9,6 +9,7 @@ import Structures.Position.Point2D;
 import Structures.Position.Position;
 
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class Jeu extends Observable implements Serializable{
     public byte type_jeu;
     Plateau plateau;
     public MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
+    public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
+    private AudioInputStream audioInputStream;
     private Tuile tuile_courante;
     private int delai, delai_avant_pioche;
     AbstractIA IA0 =null, IA1 = null, IA2 = null, IA3 = null;
@@ -57,6 +60,7 @@ public class Jeu extends Observable implements Serializable{
             delai = 0;//800;
         }
         debug = false;
+        initialiseSons();
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, String difficulte) throws CloneNotSupportedException {
@@ -145,14 +149,29 @@ public class Jeu extends Observable implements Serializable{
             if(indexMusique==0) musicVolume=-100000;
             else musicVolume = (-30)+indexMusique*13;
 
-            int sonVolume;
-            if(indexSon==0) sonVolume=-100000;
-            else sonVolume = (-30)+indexSon*13;
-
             musicPlayer.setVolume(musicVolume);
             musicPlayer.loop();
         }
     }
+
+    public void initialiseSons(){
+        MusicPlayer placerTuile =new MusicPlayer("Musiques/placertuile.wav");
+        sonPlayer.add(placerTuile);
+        MusicPlayer placerBatiment =new MusicPlayer("Musiques/construireBatiment.wav");
+        sonPlayer.add(placerBatiment);
+    }
+
+    public void playSons(int indexAJouer){
+        int sonVolume;
+        if(indexSon==0) sonVolume=-100000;
+        else sonVolume = (-30)+indexSon*20;
+        MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
+        sonCourant.resetClip();
+        sonCourant.setVolume(sonVolume);
+        sonCourant.play();
+    }
+
+
 
     public void lancePartie() throws CloneNotSupportedException {
         initPioche();
@@ -252,6 +271,7 @@ public class Jeu extends Observable implements Serializable{
                 return;
             }
             getPlateau().joueCoup(coupTuile);
+            playSons(0);
             if(coupBatiment.typePlacement == Coup.HUTTE){
                 int propagation = 0;
                 //On créer un tableau contenant toutes les coordonées où l'on doit propager
@@ -364,6 +384,7 @@ public class Jeu extends Observable implements Serializable{
         }
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=Coup.SELECTEUR_BATIMENT){
+            playSons(1);
             if(type_bat == Coup.HUTTE){
                 for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
                     joueurs[jCourant].incrementeHutte();
