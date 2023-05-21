@@ -16,6 +16,7 @@ import static Vue.ImageLoader.select_fin_partie;
 public class InstanceJeu {
     private Plateau plateau;
     private ArrayList<Tuile> pioche;
+    private Tuile tuilePiochee;
     private Joueur[] joueurs;
     private byte jCourant;
     private Color couleur_joueur;
@@ -59,7 +60,23 @@ public class InstanceJeu {
     }
 
     public Tuile pioche(){
-        return pioche.remove(0);
+        tuilePiochee = pioche.get(0);
+        pioche.remove(0);
+        return tuilePiochee;
+    }
+
+    public Tuile setTuilePiochee(){//ne supprime pas la tuile piochée de la pioche
+        tuilePiochee = pioche.get(0);
+        return tuilePiochee;
+    }
+
+    public Tuile setTuilePiochee(Tuile tuile){//ne supprime pas la tuile piochée de la pioche
+        tuilePiochee = tuile;
+        return tuilePiochee;
+    }
+
+    public Tuile getTuilePiochee(){
+        return tuilePiochee;
     }
 
     public Joueur[] getJoueurs(){

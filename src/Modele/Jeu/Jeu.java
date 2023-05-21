@@ -90,14 +90,15 @@ public class Jeu extends Observable implements Serializable{
         } else if (difficulte.compareTo("Difficile") == 0) {
             difficulteIA = AbstractIA.INTELLIGENTE;
         }
-        IA0 = AbstractIA.nouvelle(this, (byte)0, difficulteIA);
-        IA1 = AbstractIA.nouvelle(this, (byte)1, difficulteIA);
+        IA0 = AbstractIA.nouvelle(this, (byte)0, AbstractIA.MOYENNE);
+        IA1 = AbstractIA.nouvelle(this, (byte)1, AbstractIA.MOYENNE);
         IA2 = AbstractIA.nouvelle(this, (byte)2, difficulteIA);
         IA3 = AbstractIA.nouvelle(this, (byte)3, difficulteIA);
         if (nomJoueur0.compareTo("IA") == 0) {
             IA0.setPrenom("IA" + (nbIA + 1));
             nbIA++;
             joueurs[0] = IA0;
+            System.out.println("IA0");
         }else{
             joueurs[0] = new Joueur(Joueur.HUMAIN, (byte)1, nomJoueur0);
         }
@@ -106,6 +107,7 @@ public class Jeu extends Observable implements Serializable{
             IA1.setPrenom("IA" + (nbIA + 1));
             nbIA++;
             joueurs[1] = IA1;
+            System.out.println("IA1");
         }else{
             joueurs[1] = new Joueur(Joueur.HUMAIN, (byte)2, nomJoueur1);
         }
@@ -145,7 +147,7 @@ public class Jeu extends Observable implements Serializable{
             if(indexSon==0) sonVolume=-100000;
             else sonVolume = (-30)+indexSon*13;
 
-            musicPlayer.setVolume(musicVolume);
+            musicPlayer.setVolume(-100000);
             musicPlayer.loop();
         }
     }
@@ -514,12 +516,16 @@ public class Jeu extends Observable implements Serializable{
         }
         //mélange la pioche
         long seed = 12345L;
-        //Collections.shuffle(pioche, new Random(seed));
-        Collections.shuffle(pioche);
+        Collections.shuffle(pioche, new Random(seed));
+        //Collections.shuffle(pioche);
     }
 
     public byte[] getTuilesAPoser() {
         return tuileAPoser;
+    }
+
+    public Tuile getTuileCourante() {
+        return tuile_courante;
     }
 
     public void joueurPlaceEtage(Coup coup) {
@@ -578,10 +584,6 @@ public class Jeu extends Observable implements Serializable{
             joueurs[jCourant].startChrono();
         }
         return false;
-    }
-
-    public Tuile getTuileCourante() {
-        return tuile_courante;
     }
 
     public int getTaillePioche(){
