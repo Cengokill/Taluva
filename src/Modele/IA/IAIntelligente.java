@@ -680,7 +680,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             }
             double tempsArrondi = tempsEcoule / 1000;// Convertir en secondes
             tempsArrondi = Math.round(tempsArrondi * 10) / 10.0;// Arrondir au dixième
-            return tempsArrondi >= jeu.getTempsTour()*0.9;
+            return tempsArrondi >= jeu.getTempsTour()*0.92;
         }
         return false;
     }
