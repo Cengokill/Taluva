@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Suppression booleen estFinPartie dans Jeu">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/IA/IAAleatoire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/IA/IAAleatoire.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TaluvaMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaluvaMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Historique.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Plateau.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Plateau/Plateau.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,6 +157,8 @@
       <workItem from="1684522607927" duration="3866000" />
       <workItem from="1684533073548" duration="3184000" />
       <workItem from="1684563262985" duration="28646000" />
+      <workItem from="1684690871278" duration="3187000" />
+      <workItem from="1684696455436" duration="7070000" />
     </task>
     <task id="LOCAL-00010" summary="Changement controles">
       <created>1682586246895</created>

@@ -8,6 +8,7 @@ import Patterns.Observable;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -38,12 +39,12 @@ public class Jeu extends Observable implements Serializable{
     byte[] tuileAPoser = new byte[5];
     public boolean timerActif, debug, estPiochee, unefoisIA;
 
-    boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie;
+    boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie,IApeutjouer;
     boolean estFinPartie;
     public boolean peutPiocher =true;
 
     public LinkedList<Tuile> pioche;
-    private static int taille_pioche;
+
 
     public boolean doitCalculerEmplacementPossible;
 
@@ -66,7 +67,6 @@ public class Jeu extends Observable implements Serializable{
         if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
         jCourant = 0;
         nb_joueurs = nbJoueurs;
-        taille_pioche = 12 * nb_joueurs;
         int nbIA = 0;
 
         if (tempsChrono.compareTo("Infini") == 0) {
@@ -420,8 +420,8 @@ public class Jeu extends Observable implements Serializable{
                 if(getJoueurCourant().type_joueur==Joueur.IA) {
                     if(peutPiocher) {
                         pioche();
-                        peutPiocher=true;
                     }
+                    peutPiocher=true;
                     try {
                         joueIA();
                     } catch (CloneNotSupportedException ex) {
@@ -430,8 +430,9 @@ public class Jeu extends Observable implements Serializable{
                 }else{
                     if(peutPiocher) {
                         pioche();
-                        peutPiocher=true;
+
                     }
+                    peutPiocher=true;
                 }
             });
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
@@ -590,7 +591,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public int getTaillePioche(){
-        return taille_pioche;
+        return pioche.size();
     }
 
     public void annuler() {
@@ -601,7 +602,17 @@ public class Jeu extends Observable implements Serializable{
             }
             if(stock.typeBatiment==Coup.TUILE){
                 doitCalculerEmplacementPossible = true;
-                pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+                System.out.println(tuile_courante.biome0+" biome0");
+                System.out.println(tuile_courante.biome1+" biome1");
+                pioche.addFirst(tuile_courante);
+                tuile_courante=(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+
+                tuileAPoser[0] = tuile_courante.biome0;
+                tuileAPoser[1] = tuile_courante.biome1;
+                tuileAPoser[2] = (byte) tuile_courante.numero0;
+                tuileAPoser[3] = (byte) tuile_courante.numero1;
+                tuileAPoser[4] = (byte) tuile_courante.numero2;
+
             } else if(stock.typeBatiment == Coup.TEMPLE) {
                 joueurs[jCourant].decrementeTemple();
             } else if (stock.typeBatiment == Coup.TOUR) {
@@ -622,12 +633,20 @@ public class Jeu extends Observable implements Serializable{
         Stock stock =plateau.refaire();
         if(stock!=null) {
             if (stock.typeBatiment == Coup.TUILE) {
-                pioche.removeFirst();
+                tuile_courante=pioche.getFirst();
+                tuileAPoser[0] = tuile_courante.biome0;
+                tuileAPoser[1] = tuile_courante.biome1;
+                tuileAPoser[2] = (byte) tuile_courante.numero0;
+                tuileAPoser[3] = (byte) tuile_courante.numero1;
+                tuileAPoser[4] = (byte) tuile_courante.numero2;
             } else if (stock.typeBatiment == Coup.TEMPLE) {
+                peutPiocher=false;
                 joueurs[jCourant].incrementeTemple();
             } else if (stock.typeBatiment == Coup.TOUR) {
+                peutPiocher=false;
                 joueurs[jCourant].incrementeTour();
             } else {
+                peutPiocher=false;
                 for (int i = 0; i < stock.nbBatiment; i++) {
                     joueurs[jCourant].incrementeHutte();
                 }
@@ -636,17 +655,13 @@ public class Jeu extends Observable implements Serializable{
                 changeJoueur();
             }
             changePhase();
+            if (joueurs[jCourant].type_joueur==Joueur.IA&&stock.typeBatiment==Coup.TUILE){
+                IApeutjouer=false;
+            }else {
+                IApeutjouer=true;
+            }
         }
     }
-
-    public void sauvegarder() {
-        System.out.println("Sauvegarder non implémenté");
-    }
-
-    public void charger() {
-        System.out.println("Charger non implémenté");
-    }
-
     public byte getNumJoueurCourant(){
         return jCourant;
     }

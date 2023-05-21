@@ -58,10 +58,11 @@ public class Historique implements Serializable {
                 stock.setTerrain2(tete.biome2);
                 return stock;
             } else {
-                int hauteur = carte[tete.batimentLigne][tete.batimentColonne].getHauteur();
+                int hauteur;
                 int rendbatiment = 0;
                 byte typeDeBatiment = tete.typePlacement;
                 while (passe.size() != 0 && tete.typePlacement != Coup.TUILE) {
+                    hauteur= carte[tete.batimentLigne][tete.batimentColonne].getHauteur();
                     carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone(null, (byte) (hauteur),
                             carte[tete.batimentLigne][tete.batimentColonne].getBiomeTerrain(), (byte) 0,
                             (byte) carte[tete.batimentColonne][tete.batimentColonne].getLigneVolcan(),
@@ -69,7 +70,7 @@ public class Historique implements Serializable {
                     rendbatiment+= hauteur;
                     futur.addFirst(tete);
                     passe.removeFirst();
-                    if (passe.size() != 0) {//TODO ici
+                    if (passe.size() != 0) {
                         tete = passe.getFirst();
                     }
                 }
