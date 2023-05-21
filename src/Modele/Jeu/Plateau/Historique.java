@@ -103,11 +103,11 @@ public class Historique implements Serializable {
                 while(peutRefaire()&& tete.typePlacement!=Coup.TUILE){
                     hauteur = carte[tete.batimentLigne][tete.batimentColonne].getHauteur();
                     byte batiment = 0;
-                    if (tete.typePlacement == 1) {
+                    if (tete.typePlacement == Coup.HUTTE) {
                         batiment = Hexagone.HUTTE;
-                    } else if (tete.typePlacement == 2) {
+                    } else if (tete.typePlacement == Coup.TEMPLE) {
                         batiment = Hexagone.TEMPLE;
-                    } else if (tete.typePlacement == 3) {
+                    } else if (tete.typePlacement == Coup.TOUR) {
                         batiment = Hexagone.TOUR;
                     }
                     carte[tete.batimentLigne][tete.batimentColonne] = new Hexagone(tete.getCouleurJoueur(), (byte) (hauteur),
