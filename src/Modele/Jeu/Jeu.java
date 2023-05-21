@@ -600,6 +600,7 @@ public class Jeu extends Observable implements Serializable{
                 changeJoueur();
             }
             if(stock.typeBatiment==Coup.TUILE){
+                doitCalculerEmplacementPossible = true;
                 pioche.addFirst(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
             } else if(stock.typeBatiment == Coup.TEMPLE) {
                 joueurs[jCourant].decrementeTemple();
