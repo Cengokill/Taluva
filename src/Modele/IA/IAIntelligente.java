@@ -638,12 +638,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
         for(Joueur joueurCourant: joueursAEvaluer){
             score += joueurCourant.getNbVillages();
-
             // Score de previsualisation (en prévision du futur)
             score += (batimentsPlacables[0]*joueurCourant.getNbTemples())*(poids_temple/5);
             score += batimentsPlacables[1]*joueurCourant.getNbHuttes()*(poids_hutte/5);
             score += (batimentsPlacables[2]*joueurCourant.getNbTours())*(poids_tour/5);
-
             // Score de placement
             score += joueurCourant.getNbHuttesPlacees() * poids_hutte;
             score += joueurCourant.getNbToursPlacees() * poids_tour;
