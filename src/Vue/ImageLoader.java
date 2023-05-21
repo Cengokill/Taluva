@@ -520,77 +520,148 @@ public class ImageLoader {
         return reducedOpacityImage;
     }
 
-    public static BufferedImage getTileImageFromId(int id, int numero_texture) {
+    public static BufferedImage getTileImageFromId(int id, int numero_texture, boolean onPose) {
         if (id == VIDE) {
             return voidTile;
         }
         if (id == GRASS) {
-            if (numero_texture == 0) {
-                return grassTile_0_SP;
-            }
-            if (numero_texture == 1) {
-                return grassTile_1_SP;
-            }
-            if (numero_texture == 2) {
-                return grassTile_2_SP;
+            if(onPose){
+                if (numero_texture == 0) {
+                    return grassTile_0;
+                }
+                if (numero_texture == 1) {
+                    return grassTile_1;
+                }
+                if (numero_texture == 2) {
+                    return grassTile_2;
+                }
+            }else{
+                if (numero_texture == 0) {
+                    return grassTile_0_SP;
+                }
+                if (numero_texture == 1) {
+                    return grassTile_1_SP;
+                }
+                if (numero_texture == 2) {
+                    return grassTile_2_SP;
+                }
             }
         }
         if (id == VOLCAN) {
-            if (numero_texture == 0) {
-                return volcanTile_0_SP;
+            if(onPose){
+                if (numero_texture == 0) {
+                    return volcanTile_0;
+                }
+                if (numero_texture == 1) {
+                    return volcanTile_1;
+                }
+                if (numero_texture == 2) {
+                    return volcanTile_2;
+                }
+            }else{
+                if (numero_texture == 0) {
+                    return volcanTile_0_SP;
+                }
+                if (numero_texture == 1) {
+                    return volcanTile_1_SP;
+                }
+                if (numero_texture == 2) {
+                    return volcanTile_2_SP;
+                }
             }
-            if (numero_texture == 1) {
-                return volcanTile_1_SP;
-            }
-            if (numero_texture == 2) {
-                return volcanTile_2_SP;
-            }
+
         }
-        /*if (id == HUTTE) {
-            return hutteTile;
-        }*/
         if (id == DESERT) {
-            if (numero_texture == 0) {
-                return desertTile_0_SP;
-            }
-            if (numero_texture == 1) {
-                return desertTile_1_SP;
-            }
-            if (numero_texture == 2) {
-                return desertTile_2_SP;
+            if(onPose){
+                if (numero_texture == 0) {
+                    return desertTile_0;
+                }
+                if (numero_texture == 1) {
+                    return desertTile_1;
+                }
+                if (numero_texture == 2) {
+                    return desertTile_2;
+                }
+            }else{
+                if (numero_texture == 0) {
+                    return desertTile_0_SP;
+                }
+                if (numero_texture == 1) {
+                    return desertTile_1_SP;
+                }
+                if (numero_texture == 2) {
+                    return desertTile_2_SP;
+                }
             }
         }
         if (id == MONTAGNE) {
-            if (numero_texture == 0) {
-                return montagneTile_0_SP;
+            if(onPose){
+                if (numero_texture == 0) {
+                    return montagneTile_0;
+                }
+                if (numero_texture == 1) {
+                    return montagneTile_1;
+                }
+                if (numero_texture == 2) {
+                    return montagneTile_2;
+                }
+            }else{
+                if (numero_texture == 0) {
+                    return montagneTile_0_SP;
+                }
+                if (numero_texture == 1) {
+                    return montagneTile_1_SP;
+                }
+                if (numero_texture == 2) {
+                    return montagneTile_2_SP;
+                }
             }
-            if (numero_texture == 1) {
-                return montagneTile_1_SP;
-            }
-            if (numero_texture == 2) {
-                return montagneTile_2_SP;
-            }
+
         }
         if (id == FORET) {
-            if (numero_texture == 0) {
-                return foretTile_0_SP;
-            }
-            if (numero_texture == 1) {
-                return foretTile_1_SP;
-            }
-            if (numero_texture == 2) {
-                return foretTile_2_SP;
+            if(onPose){
+                if (numero_texture == 0) {
+                    return foretTile_0;
+                }
+                if (numero_texture == 1) {
+                    return foretTile_1;
+                }
+                if (numero_texture == 2) {
+                    return foretTile_2;
+                }
+            }else{
+                if (numero_texture == 0) {
+                    return foretTile_0_SP;
+                }
+                if (numero_texture == 1) {
+                    return foretTile_1_SP;
+                }
+                if (numero_texture == 2) {
+                    return foretTile_2_SP;
+                }
             }
         }
         if (id == LAC) {
-            if (numero_texture == 0) {
-                return lacTile_0_SP;
-            }
-            if (numero_texture == 1) {
-                return lacTile_1_SP;
-            }
-            if (numero_texture == 2) {
-                return lacTile_2_SP;
+            if(onPose){
+                if (numero_texture == 0) {
+                    return lacTile_0;
+                }
+                if (numero_texture == 1) {
+                    return lacTile_1;
+                }
+                if (numero_texture == 2) {
+                    return lacTile_2;
+                }
+            }else{
+                if (numero_texture == 0) {
+                    return lacTile_0_SP;
+                }
+                if (numero_texture == 1) {
+                    return lacTile_1_SP;
+                }
+                if (numero_texture == 2) {
+                    return lacTile_2_SP;
+                }
             }
         }
         if (id == WATER) {
