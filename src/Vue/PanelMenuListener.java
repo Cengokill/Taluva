@@ -17,6 +17,7 @@ public class PanelMenuListener implements MouseListener  {
     public PanelMenu panelMenu;
     public String type_jeu = "local";
 
+
     public PanelMenuListener(PanelMenu menu) {
         super();
         panelMenu = menu;
@@ -209,7 +210,6 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_btnChoix;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
             panelMenu.select_valider = true;
-            System.out.println("valider");
             return true;
         }
         panelMenu.select_valider = false;
@@ -469,9 +469,9 @@ public class PanelMenuListener implements MouseListener  {
                 // On passe du menu au jeu
                 ImageLoader.loadImages();
                 panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
-                panelMenu.fenetre.panelPlateau.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.fenetre.panelVignette.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.fenetre.buttonPanel.setBounds(0, 0, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.panelPlateau.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.panelVignette.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.buttonPanel.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
                 panelMenu.jeu.initialiseMusique();
             }else{
                 panelMenu.afficheErreur = true;
@@ -535,12 +535,12 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             gd.setFullScreenWindow(panelMenu.frame);
         }else{
-            panelMenu.fenetre.setSize(panelMenu.tailleFenetre);
-            panelMenu.setSize(panelMenu.tailleFenetre);
-            panelMenu.frame.setSize(panelMenu.tailleFenetre);
             panelMenu.frame.setDefaultCloseOperation(panelMenu.frame.EXIT_ON_CLOSE);
             gd.setFullScreenWindow(null);
             panelMenu.frame.setExtendedState(Frame.NORMAL);
+            panelMenu.fenetre.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
+            panelMenu.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
+            panelMenu.frame.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
             panelMenu.frame.setLocationRelativeTo(null);
         }
     }
@@ -561,10 +561,6 @@ public class PanelMenuListener implements MouseListener  {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(estCurseurSurBouton_Local(e)) System.out.println("local");
-        if(estCurseurSurBouton_Reseau(e)) System.out.println("reseau");
-        if(estCurseurSurBouton_Options(e)) System.out.println("options");
-        if(estCurseurSurBouton_Quitter(e)) System.out.println("quitter");
         try {
             verif(e);
         } catch (IOException ex) {

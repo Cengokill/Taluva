@@ -71,7 +71,8 @@ public class FenetreJeu extends Container {
         FenetreJeu.jeu = jeu;
         customFont = Font.createFont(Font.TRUETYPE_FONT, new File("ressources/BOOKOSB.TTF"));
         frame = getFMenu();
-        frame.setMinimumSize(new Dimension(800, 700));
+        frame.setMinimumSize(new Dimension(1366, 768));
+        frame.setMaximumSize(new Dimension(3840, 2160));
         initFrame();
         initLayeredPanel();
         initMenu();
@@ -108,6 +109,7 @@ public class FenetreJeu extends Container {
 
     public void initRenduJeu(String nomJoueur1, String nomJoueur2, String nomJoueur3, String nomJoueur4, int nbJoueur, String tempsChrono, String difficulte) throws CloneNotSupportedException {
         jeu.initPartie(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
+        estPleinEcran = panelMenu.estPleinEcran;
         initFrame();
         initPanels(controleur);
         initKeyBoardAndMouseListener();
@@ -388,10 +390,15 @@ public class FenetreJeu extends Container {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         //Définit la taille de la fenêtre à 60% de la taille de l'écran
-        if(panelMenu!=null)frame.setSize(panelMenu.getSize());
-        else frame.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
+        if(panelMenu!=null){
+            frame.setBounds(panelMenu.frame.getBounds().x, panelMenu.frame.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+        }
+        else{
+            frame.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
+            frame.setLocationRelativeTo(null);
+        }
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+
     }
 
     public JFrame getFMenu(){

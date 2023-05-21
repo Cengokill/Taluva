@@ -62,7 +62,7 @@ public class PanelMenu extends JPanel {
     boolean select_PleinEcran;
     boolean select_Daltonien;
     boolean select_Extension, chargeParametre;
-    static boolean estPleinEcran;
+    public static boolean estPleinEcran;
     boolean Daltonien;
     boolean Extension;
     boolean select_valider;
@@ -589,7 +589,7 @@ public class PanelMenu extends JPanel {
 
 
     public void boucle(){
-        Timer timer = new Timer(5, new ActionListener() {
+        Timer timer = new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
@@ -597,7 +597,6 @@ public class PanelMenu extends JPanel {
         });
         timer.start();
     }
-
     public void metAJour() {
         if(afficheErreur) timerValue++;
         if(chargeParametre){

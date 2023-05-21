@@ -273,7 +273,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 gd.setFullScreenWindow(fenetreJeu.frame);
             }else{
                 gd.setFullScreenWindow(null);
-                fenetreJeu.frame.setExtendedState(Frame.NORMAL);
+                fenetreJeu.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
+                fenetreJeu.frame.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
+                fenetreJeu.panelPlateau.setSize(dim.width * 6 / 10, dim.height * 6 / 10);
                 fenetreJeu.frame.setLocationRelativeTo(null);
             }
         }

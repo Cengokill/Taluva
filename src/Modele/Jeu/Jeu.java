@@ -45,6 +45,8 @@ public class Jeu extends Observable implements Serializable{
     public LinkedList<Tuile> pioche;
     private static int taille_pioche;
 
+    public boolean doitCalculerEmplacementPossible;
+
     public Jeu(byte type_jeu){
         this.type_jeu = type_jeu;
         if(type_jeu == CONSOLE) {
@@ -411,6 +413,7 @@ public class Jeu extends Observable implements Serializable{
             return;
         }
         jCourant = (byte) ((jCourant + 1) % nb_joueurs);
+        doitCalculerEmplacementPossible = true;
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
         if(type_jeu==GRAPHIQUE){
             Timer timer = new Timer(delai_avant_pioche, e -> {

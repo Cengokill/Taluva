@@ -27,6 +27,8 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.ImageLoader.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PanelPlateau extends JPanel {
     /////////////////////////////////////////////////////
@@ -54,6 +56,9 @@ public class PanelPlateau extends JPanel {
     public boolean estSurBouton;
     public int vitesse;
 
+    ArrayList<TripletDePosition> afficheEmplacementPosable;
+
+
     public PanelPlateau(FenetreJeu t, ControleurMediateur controleur, Jeu jeu) {
         nombreCoeurs = runtime.availableProcessors();
         // Obtenir la référence à l'objet MemoryMXBean
@@ -80,6 +85,8 @@ public class PanelPlateau extends JPanel {
         initCouleursJoueurs();
         estSurBouton = false;
         poseTile = true;
+        afficheEmplacementPosable = new ArrayList<>();
+        jeu.doitCalculerEmplacementPossible = true;
         boucle();
 
         cameraOffset.x -= fenetreJeu.frame.getWidth()/2 -1000;
@@ -201,6 +208,7 @@ public class PanelPlateau extends JPanel {
                 affiche(g, map, tileWidth, verticalOffset, ligne, colonne);
             }
         }
+        jeu.doitCalculerEmplacementPossible = false;
     }
 
     private void affiche(Graphics g, Hexagone[][] map, int tileWidth, int verticalOffset, int ligne, int colonne) {
@@ -466,6 +474,9 @@ public class PanelPlateau extends JPanel {
 
     private void afficherFiltreVolcan(Graphics g, Hexagone[][] map, int ligne, int colonne, int drawX, int drawY, int heightoffset) {
         int j2 = convertionTileMapToHexagonal(ligne, colonne);
+        if(jeu.doitCalculerEmplacementPossible){
+            calculDirectionsLibres(ligne, colonne, drawX, drawY, heightoffset - 50, j2);
+        }
         if (map[ligne][colonne].getBiomeTerrain() == VOLCAN) {
             illumineVolcanLibre(g, ligne, colonne, drawX, drawY, heightoffset - 50, j2);
             afficheDirectionsLibres(g, ligne, colonne, drawX, drawY, heightoffset - 50, j2);
@@ -499,37 +510,54 @@ public class PanelPlateau extends JPanel {
         }
         return colonneAjustee;
     }
+    private void afficheDirectionsLibres(Graphics g,int ligne, int colonne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
+        for(TripletDePosition tripletCourant : afficheEmplacementPosable){
+            if(tripletCourant.getVolcan().ligne()==volcanDrawX && tripletCourant.getVolcan().colonne()==volcanDrawY && tripletCourant.getTile1().ligne() == heightoffset){
+                g.drawImage(placable, tripletCourant.getVolcan().ligne(), tripletCourant.getVolcan().colonne() - tripletCourant.getTile1().ligne(), null);
+            }
+        }
+    }
+    private void calculDirectionsLibres(int ligne, int colonne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
+        boolean elementExistant = false;
 
-    private void afficheDirectionsLibres(Graphics g, int ligne, int colonne, int volcanDrawX, int volcanDrawY, int heightoffset, int colonneAjustee) {
-        if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee, ligne - 1, colonneAjustee + 1))==0) {
-            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee].placable = true;
-            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee + 1].placable = true;
-            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+        for (TripletDePosition triplet : afficheEmplacementPosable) {
+            if (triplet.getVolcan().ligne()==volcanDrawX && triplet.getVolcan().colonne() == volcanDrawY && triplet.getTile1().ligne()==heightoffset){
+                elementExistant = true;
+                break;
+            }
         }
-        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee + 1, ligne, colonne + 1))==0) {
-            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee + 1].placable = true;
-            jeu.getPlateau().getCarte()[ligne][colonneAjustee + 1].placable = true;
-            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
-        }
-        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne + 1, ligne + 1, colonneAjustee + 1))==0) {
-            jeu.getPlateau().getCarte()[ligne][colonne + 1].placable = true;
-            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
-            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
-        }
-        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee + 1, ligne + 1, colonneAjustee))==0) {
-            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
-            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
-            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
-        }
-        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee, ligne, colonne - 1))==0) {
-            jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee].placable = true;
-            jeu.getPlateau().getCarte()[ligne][colonne - 1].placable = true;
-            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
-        }
-        else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne - 1, ligne - 1, colonneAjustee))==0) {
-            jeu.getPlateau().getCarte()[ligne][colonne - 1].placable = true;
-            jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee].placable = true;
-            g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+        if (!elementExistant) {
+            if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee, ligne - 1, colonneAjustee + 1)) == 0) {
+                jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee].placable = true;
+                jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee + 1].placable = true;
+                afficheEmplacementPosable.add(new TripletDePosition(new Position(volcanDrawX, volcanDrawY), new Position(heightoffset, 0), new Position(0, 0)));
+                //g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+            } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne - 1, colonneAjustee + 1, ligne, colonne + 1)) == 0) {
+                jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee + 1].placable = true;
+                jeu.getPlateau().getCarte()[ligne][colonneAjustee + 1].placable = true;
+                afficheEmplacementPosable.add(new TripletDePosition(new Position(volcanDrawX, volcanDrawY), new Position(heightoffset, 0), new Position(0, 0)));
+                //g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+            } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne + 1, ligne + 1, colonneAjustee + 1)) == 0) {
+                jeu.getPlateau().getCarte()[ligne][colonne + 1].placable = true;
+                jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
+                afficheEmplacementPosable.add(new TripletDePosition(new Position(volcanDrawX, volcanDrawY), new Position(heightoffset, 0), new Position(0, 0)));
+                //g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+            } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee + 1, ligne + 1, colonneAjustee)) == 0) {
+                jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
+                jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee + 1].placable = true;
+                afficheEmplacementPosable.add(new TripletDePosition(new Position(volcanDrawX, volcanDrawY), new Position(heightoffset, 0), new Position(0, 0)));
+                //g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+            } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne + 1, colonneAjustee, ligne, colonne - 1)) == 0) {
+                jeu.getPlateau().getCarte()[ligne + 1][colonneAjustee].placable = true;
+                jeu.getPlateau().getCarte()[ligne][colonne - 1].placable = true;
+                afficheEmplacementPosable.add(new TripletDePosition(new Position(volcanDrawX, volcanDrawY), new Position(heightoffset, 0), new Position(0, 0)));
+                //g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+            } else if ((controleur.peutPlacerTuile(ligne, colonne, ligne, colonne - 1, ligne - 1, colonneAjustee)) == 0) {
+                jeu.getPlateau().getCarte()[ligne][colonne - 1].placable = true;
+                jeu.getPlateau().getCarte()[ligne - 1][colonneAjustee].placable = true;
+                afficheEmplacementPosable.add(new TripletDePosition(new Position(volcanDrawX, volcanDrawY), new Position(heightoffset, 0), new Position(0, 0)));
+                //g.drawImage(placable, volcanDrawX, volcanDrawY - heightoffset, null);
+            }
         }
     }
 
