@@ -244,20 +244,20 @@ public class FenetreJeu extends Container {
                 //menu d'options
                 largeur_menu_options = (int) Math.min(Math.max(Math.min(largeur*0.8, hauteur*0.8), 400), 800);
                 hauteur_menu_options = largeur_menu_options;
-                posX_menu_options = (largeur - largeur_menu_options)/2;
-                posY_menu_options = (hauteur - hauteur_menu_options)/2;
+                posX_menu_options = (int) (largeur/2 - (menu_options.getWidth()/1.5)/2);
+                posY_menu_options = getHeight()/2;
                 largeur_bouton_dans_options = (int) (largeur_menu_options * 0.4);
                 hauteur_bouton_dans_options = (int) (largeur_bouton_dans_options * rapport_bouton_dans_options);
-                posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2 + 20;
+                posX_save = posX_menu_options + (bouton_save.getWidth()/3)*2;
                 posX_options = posX_menu_options + largeur_menu_options/2 - bouton_options.getWidth()/16;
-                posY_options_echap = (int) (posY_menu_options + hauteur_menu_options/2);
-                posY_save = (int) (posY_menu_options + hauteur_menu_options * 0.15);
+                posY_options_echap = posY_save;
+                posY_save = (int) (posY_menu_options + (int)(menu_options.getHeight()/1.5)/4) - 10;
                 posY_load = (int) (posY_save + hauteur_menu_options * 0.20);
-                posX_tuto = (int) (largeur / 1.2);
+                posX_tuto = (int) (getWidth() - 50 - largeur_bouton * 1.6);
                 posY_tuto =  (int)(hauteur / 1.3);
-                posX_Echap = posX_tuto + 5;
+                posX_Echap = getWidth() - 50 - echap_button.getWidth()/5;
                 posY_Echap = posY_joueur_courant;
-                posY_quitter = (int) (hauteur_menu_options * 0.90);
+                posY_quitter = posY_save;
                 //fenêtre de score
                 largeur_fenetre_score = (int) (largeur_bouton * 3.6);
                 hauteur_fenetre_score = (int) (largeur_fenetre_score * rapport_fenetre_score);
@@ -418,7 +418,7 @@ public class FenetreJeu extends Container {
         fenetre_score_4 = lisImageBuf("fenetre_score_4");
         timer = lisImageBuf("Timer");
         joueur_courant = lisImageBuf("Joueur_courant");
-        echap_button = lisImageBuf("Menu/Options");
+        echap_button = lisImageBuf("Menu/echap_icon");
         return new JFrame() {
             @Override
             public void paint(Graphics g) {
@@ -765,26 +765,26 @@ public class FenetreJeu extends Container {
     public static void afficheMenuOptions(Graphics g) {
         if (select_menu_options) {
             g.drawImage(menu_dark_filter, 0, 0, 3000, 3000, null);
-            g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
-            afficheBoutonOptions(g);
+            g.drawImage(menu_options, posX_menu_options, posY_menu_options, (int)(menu_options.getWidth()/1.5), (int)(menu_options.getHeight()/1.5), null);
             afficheBoutonLoad(g);
             afficheBoutonSave(g);
+            afficheBoutonOptions(g);
             afficheBoutonQuitter(g);
         }
     }
 
     public static void afficheBoutonOptions(Graphics g) {
         if(select_options)
-            g.drawImage(bouton_options_select, posX_options, posY_options_echap, bouton_options_select.getWidth()/8, bouton_options_select.getHeight()/8,null);
+            g.drawImage(bouton_options_select, posX_save + bouton_load_select.getWidth(), posY_options_echap, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
         else
-            g.drawImage(bouton_options, posX_options, posY_options_echap, bouton_options.getWidth()/8, bouton_options.getHeight()/8,null);
+            g.drawImage(bouton_options, posX_save + bouton_load_select.getWidth(), posY_options_echap, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
     }
 
     public static void afficheBoutonLoad(Graphics g) {
         if(select_load)
-            g.drawImage(bouton_load_select, posX_save + posX_save/4, posY_save, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
+            g.drawImage(bouton_load_select, posX_save + bouton_load_select.getWidth()/2, posY_save, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
         else
-            g.drawImage(bouton_load, posX_save + posX_save/4, posY_save, bouton_load.getWidth() / 3, bouton_load.getHeight() / 3,null);
+            g.drawImage(bouton_load, posX_save + bouton_load.getWidth()/2, posY_save, bouton_load.getWidth() / 3, bouton_load.getHeight() / 3,null);
     }
 
     public static void afficheBoutonSave(Graphics g) {
@@ -802,17 +802,17 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheBoutonEchap(Graphics g) {
-        if(tuto_on)
-            g.drawImage(echap_button, posX_Echap, posY_Echap, largeur_bouton, largeur_bouton,null);
+        if(true)
+            g.drawImage(echap_button, posX_Echap, posY_Echap, echap_button.getWidth() /5, echap_button.getHeight()/5,null);
         else
-            g.drawImage(echap_button, posX_Echap, posY_Echap, largeur_bouton, largeur_bouton,null);
+            g.drawImage(echap_button, posX_Echap, posY_Echap, echap_button.getWidth() /5, echap_button.getHeight() /5,null);
     }
 
     public static void afficheBoutonQuitter(Graphics g) {
         /*if(select_quitter)
             g.drawImage(bouton_quitter_select, (int)(posX_save*1.12), posY_quitter, bouton_quitter_select.getWidth() / 6, bouton_quitter_select.getHeight() / 6,null);
         else*/
-            g.drawImage(bouton_quitter, (int)(posX_save*1.12), posY_quitter, bouton_quitter.getWidth() / 6, bouton_quitter.getHeight() / 6,null);
+            g.drawImage(bouton_quitter, posX_save + bouton_load_select.getWidth() + bouton_load_select.getWidth()/2 , posY_quitter, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
     }
 
     public static void afficheBoutonAnnuler(Graphics g) {
