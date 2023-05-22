@@ -3,6 +3,7 @@ package Vue;
 import Controleur.ControleurMediateur;
 import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
+import Modele.Jeu.MusicPlayer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,6 +38,7 @@ public class FenetreJeu extends Container {
     public static ArrayList<Joueur> joueurs_tries;
     public static boolean estFenetreScoreChargee = false, estImageTuilePiocheeFinale=false;
 
+    public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
     public boolean afficheOptions;
     public static boolean estSurBoutonOptions, estSurBoutonAnnuler, estSurBoutonRefaire, estSurBoutonQuitterOptions, estSurBoutonQuitterFinPartie;
 
@@ -83,6 +85,7 @@ public class FenetreJeu extends Container {
         afficheOptions = false;
         frame.setVisible(true);
         loadImageOption();
+        initialiseSons();
     }
 
     public void initMenuJeu() throws IOException {
@@ -109,6 +112,8 @@ public class FenetreJeu extends Container {
 
     public void initRenduJeu(String nomJoueur1, String nomJoueur2, String nomJoueur3, String nomJoueur4, int nbJoueur, String tempsChrono, String difficulte) throws CloneNotSupportedException {
         jeu.initPartie(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
+        select_fin_partie = false;
+        ecran_fin_partie = false;
         estPleinEcran = panelMenu.estPleinEcran;
         initFrame();
         initPanels(controleur);
@@ -1052,6 +1057,24 @@ public class FenetreJeu extends Container {
         }
         return image;
     }
+
+    public void initialiseSons(){
+        MusicPlayer placerTuile =new MusicPlayer("Musiques/clicBouton.wav");
+        sonPlayer.add(placerTuile);
+        MusicPlayer placerBatiment =new MusicPlayer("Musiques/selectionBouton.wav");
+        sonPlayer.add(placerBatiment);
+    }
+
+    public void playSons(int indexAJouer){
+        int sonVolume;
+        if(index_son==0) sonVolume=-100000;
+        else sonVolume = (-30)+index_son*20;
+        MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
+        sonCourant.resetClip();
+        sonCourant.setVolume(sonVolume);
+        sonCourant.play();
+    }
+
     public void metAJour(){
         repaint();
     }

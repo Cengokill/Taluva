@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 
 import static Vue.ImageLoader.*;
 
@@ -67,6 +68,8 @@ public class PanelMenu extends JPanel {
     boolean Extension;
     boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
+    boolean afficheErreur,peutJouerSon;
+
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
     boolean afficheErreur;
 
@@ -77,6 +80,7 @@ public class PanelMenu extends JPanel {
     String[] choixDifficulte = { "Facile", "Intermediaire", "Difficile"};
     JComboBox<String> listeChrono = new JComboBox<>(choixChrono);
     JComboBox<String> listeDifficulte = new JComboBox<>(choixDifficulte);
+    public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
 
 
     int nbJoueurs = 0;
@@ -105,20 +109,14 @@ public class PanelMenu extends JPanel {
         ecriture_Extension = lisImage("/Options/Activer_extension");
         configPartieBackground = lisImageBuf("background_choix_partie");
         plus = lisImageBuf("plus");
-        plus_select = lisImageBuf("plus_select");
         moins = lisImageBuf("moins");
-        moins_select = lisImageBuf("moins_select");
         rouge = lisImageBuf("rouge");
         vert = lisImageBuf("vert");
         bleu = lisImageBuf("bleu");
         violet = lisImageBuf("violet");
 
         valider = lisImageBuf("valider");
-        valider_select = lisImageBuf("valider_select");
-        valider_clic = lisImageBuf("valider_presse");
-        valider_gris = lisImageBuf("valider_gris");
         fermer = lisImageBuf("fermer");
-
 
         // hover
         bouton_Local_hover = applyRedFilter(bouton_Local);
@@ -225,6 +223,7 @@ public class PanelMenu extends JPanel {
         musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
+        initialiseSons();
         boucle();//Timer
     }
 
@@ -248,6 +247,23 @@ public class PanelMenu extends JPanel {
             frame.setExtendedState(Frame.NORMAL);
             frame.setLocationRelativeTo(null);
         }
+    }
+
+    public void initialiseSons(){
+        MusicPlayer placerTuile =new MusicPlayer("Musiques/clicBouton.wav");
+        sonPlayer.add(placerTuile);
+        MusicPlayer placerBatiment =new MusicPlayer("Musiques/selectionBouton.wav");
+        sonPlayer.add(placerBatiment);
+    }
+
+    public void playSons(int indexAJouer){
+        int sonVolume;
+        if(index_sonPanel==0) sonVolume=-100000;
+        else sonVolume = (-30)+index_sonPanel*20;
+        MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
+        sonCourant.resetClip();
+        sonCourant.setVolume(sonVolume);
+        sonCourant.play();
     }
 
     private void limiterNombreCaractereNomJoueur() {
@@ -500,24 +516,18 @@ public class PanelMenu extends JPanel {
         }
         if (nbJoueurs >= 2) {
             nomJoueur2.setVisible(true);
-            peut_addIA = true;
-            peut_addJoueur = true;
         }
         if (nbJoueurs >= 3) {
             nomJoueur3.setVisible(true);
-            peut_addIA = true;
-            peut_addJoueur = true;
         }
         if (nbJoueurs == 4) {
             nomJoueur4.setVisible(true);
-            peut_addIA = false;
-            peut_addJoueur = false;
         }
         if (nbJoueurs == 1) {
-            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins, largeur_bouton_moins, largeur_bouton_moins, null);
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 0*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
         if (nbJoueurs == 2) {
-            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 1*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
         if (nbJoueurs == 3) {
             g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 2*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
@@ -572,20 +582,18 @@ public class PanelMenu extends JPanel {
         largeur_menu_options = hauteur_background/2;
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
         //boutons menu création partie
-        largeur_bouton_plus = (int) (largeur_background*0.04);
-        largeur_bouton_moins = (int) (largeur_bouton_plus*0.8);
-        largeur_bouton_valider = (int) (largeur_background*0.11);
+        largeur_bouton_plus = (int) (largeur_background*0.06);
+        largeur_bouton_moins = (int) (largeur_bouton_plus*0.6);
+        largeur_bouton_valider = (int) (largeur_background*0.09);
         largeur_bouton_fermer = (int) (largeur_background*0.08);
         largeur_cadre = (int) (largeur_background*0.05);
-        largeur_textJoueur = (int) (largeur_background*0.17);
-        posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
-        posY_bouton_valider = (int) (posY_background + hauteur_background*0.77);
-        posX_bouton_plus_joueur = (int) (posX_background + largeur_background*0.16);
-        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.37);
-        posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.27);
-        posX_textJoueur = (int) (posX_background + largeur_background*0.15);
+        largeur_textJoueur = (int) (largeur_background*0.16);
+        posX_bouton_plus_joueur = (int) (posX_background + largeur_background*0.12);
+        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.31);
+        posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.29);
+        posX_textJoueur = (int) (posX_background + largeur_background*0.055);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
-        posYChronoList = posY_textJoueur;
+        posYChronoList = posY_bouton_plus_joueur + 5;
         posXChronoList = (int) (largeur_background*0.68);
         posXDifficulteList = posXChronoList;
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.26);
@@ -594,6 +602,9 @@ public class PanelMenu extends JPanel {
         posX_bouton_moins = (int) (posX_cadre + largeur_cadre*1.5);
         posY_bouton_moins = (int) (posY_cadre + largeur_cadre*0.2);
         decalageY_couleur = (int) (hauteur_background*0.13);
+        posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
+        posY_bouton_valider = (int) (posY_background + hauteur_background*0.78);
+        posX_bouton_fermer = getWidth() - 100;
     }
 
     private void afficheMessageErreur(Graphics g) {

@@ -157,8 +157,12 @@ public class Jeu extends Observable implements Serializable{
     public void initialiseSons(){
         MusicPlayer placerTuile =new MusicPlayer("Musiques/placertuile.wav");
         sonPlayer.add(placerTuile);
-        MusicPlayer placerBatiment =new MusicPlayer("Musiques/construireBatiment.wav");
+        MusicPlayer placerBatiment = new MusicPlayer("Musiques/construireHutte.wav");
         sonPlayer.add(placerBatiment);
+        MusicPlayer placerTemple = new MusicPlayer("Musiques/construireTemple.wav");
+        sonPlayer.add(placerTemple);
+        MusicPlayer placerTour = new MusicPlayer("Musiques/construireTour.wav");
+        sonPlayer.add(placerTour);
     }
 
     public void playSons(int indexAJouer){
@@ -170,8 +174,6 @@ public class Jeu extends Observable implements Serializable{
         sonCourant.setVolume(sonVolume);
         sonCourant.play();
     }
-
-
 
     public void lancePartie() throws CloneNotSupportedException {
         initPioche();
@@ -384,16 +386,19 @@ public class Jeu extends Observable implements Serializable{
         }
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=Coup.SELECTEUR_BATIMENT){
-            playSons(1);
+
             if(type_bat == Coup.HUTTE){
+                playSons(1);
                 for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
                     joueurs[jCourant].incrementeHutte();
                 }
             }
             if(type_bat == Coup.TEMPLE) {
+                playSons(2);
                 joueurs[jCourant].incrementeTemple();
             }
             else if(type_bat == Coup.TOUR) {
+                playSons(3);
                 joueurs[jCourant].incrementeTour();
             }
             doit_placer_batiment = false;
