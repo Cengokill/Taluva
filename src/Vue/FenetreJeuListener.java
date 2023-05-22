@@ -394,7 +394,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         @Override
         public void mouseDragged(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e) || SwingUtilities.isMiddleMouseButton(e)) {
-                if (select_menu_options) {
+                if (select_menu_options || select_fin_partie || fenetreJeu.getJeu().getPlateau().estVide()) {
                     return;
                 }
                 clicDroiteEnfonce = true;
