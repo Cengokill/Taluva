@@ -29,12 +29,10 @@ public class Plateau implements Serializable, Cloneable {
     public Plateau(){
         initPlateau();
         initHistorique();
-        initQuantitePions();
+        //initQuantitePions();
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
-        TripletDePosition tripletDeBase = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
-        tripletsPossible.add(tripletDeBase);
     }
 
     public Plateau copie(){
@@ -84,6 +82,18 @@ public class Plateau implements Serializable, Cloneable {
     private void initPositionsLibres() {
         positions_libres = new ArrayList<>();
         positions_libres_batiments = new ArrayList<>();
+        TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
+        TripletDePosition tripletDeBase2 = new TripletDePosition(new Position(30,29),new Position(31,30),new Position(31,29));
+        TripletDePosition tripletDeBase3 = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
+        TripletDePosition tripletDeBase4 = new TripletDePosition(new Position(31,29),new Position(32,29),new Position(32,28));
+        TripletDePosition tripletDeBase5 = new TripletDePosition(new Position(31,28),new Position(31,29),new Position(32,28));
+        TripletDePosition tripletDeBase6 = new TripletDePosition(new Position(30,28),new Position(31,29),new Position(31,28));
+        tripletsPossible.add(tripletDeBase1);
+        tripletsPossible.add(tripletDeBase2);
+        tripletsPossible.add(tripletDeBase3);
+        tripletsPossible.add(tripletDeBase4);
+        tripletsPossible.add(tripletDeBase5);
+        tripletsPossible.add(tripletDeBase6);
     }
 
     private void initQuantitePions() {
