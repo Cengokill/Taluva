@@ -364,6 +364,11 @@ public class FenetreJeu extends Container {
                 taille_texte_finPartie = (int) (hauteur_fin_partie*0.035);
                 posX_finPartie = (largeur - largeur_fin_partie)/2;
                 posY_finPartie = (hauteur - hauteur_fin_partie)/2;
+                //bouton retour fin partie
+                hauteur_retour_finPartie = (int) (hauteur_fin_partie*0.12);
+                largeur_retour_finPartie = (int) (hauteur_retour_finPartie / rapport_bouton_dans_options);
+                posX_retour_finPartie = (int) (posX_finPartie + largeur_fin_partie *0.61);
+                posY_retour_finPartie = (int) (posY_finPartie + hauteur_fin_partie*0.83);
                 largeur_cadre = (int) (largeur_fin_partie * 0.917);
                 hauteur_cadre = (int) (largeur_cadre * rapport_cadre);
                 posX_cadre = (int) (posX_finPartie+largeur_fin_partie*0.040);
@@ -377,7 +382,7 @@ public class FenetreJeu extends Container {
                 posX_tours_finPartie = (int) (posX_cadre + largeur_fin_partie*0.653);
                 posX_score_finPartie = (int) (posX_cadre + largeur_fin_partie*0.785);
                 posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.23);
-                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.665);
+                posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.710);
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -776,8 +781,11 @@ public class FenetreJeu extends Container {
                 zero_2 = "";
             }
             g.drawString(zero_1+temps_minutes+":"+zero_2+temps_secondes, posX_temps_partie, posY_temps_partie);
-            afficheBoutonRetour(g);
-        }
+            if(select_retour)
+                g.drawImage(bouton_retour_select, posX_retour_finPartie, posY_retour_finPartie, largeur_retour_finPartie, hauteur_retour_finPartie,null);
+            else
+                g.drawImage(bouton_retour, posX_retour_finPartie, posY_retour_finPartie, largeur_retour_finPartie, hauteur_retour_finPartie,null);;
+            }
     }
 
     public static void afficheMenuOptions(Graphics g) {

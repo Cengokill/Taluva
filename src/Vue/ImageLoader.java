@@ -38,7 +38,7 @@ public class ImageLoader {
             menu_options, menu_dark_filter;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posX_options_echap, posY_options_echap, largeur_bouton_options,
             posY_load, posY_save, posY_retour, posY_parametres, posX_annuler, posY_annuler, posX_refaire, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
-            posX_timer, posY_timer, largeur_timer, hauteur_timer,
+            posX_timer, posY_timer, largeur_timer, hauteur_timer, posX_retour_finPartie, posY_retour_finPartie, largeur_retour_finPartie, hauteur_retour_finPartie,
             posX_joueur_courant, posY_joueur_courant, posX_prenom, posY_prenom_j0, posY_prenom_j1, posY_prenom_j2, posY_prenom_j3, posX_huttes, posX_tours, posX_temples,
             posY_scores_j0, posY_scores_j1, posY_scores_j2, posY_scores_j3, posX_nb_tuiles_pioche, posY_nb_tuiles_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
             largeur_tuile, hauteur_tuile, largeur_fin_partie, hauteur_fin_partie;

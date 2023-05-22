@@ -16,8 +16,6 @@ public class Plateau implements Serializable, Cloneable {
     final int LIGNES = 60;
     final int COLONNES = 60;
     protected Hexagone[][] carte;
-    protected byte[] quantitePionJoueur1;
-    protected byte[] quantitePionJoueur2;
 
     public int nbHuttesDisponiblesJoueur = 0; // Pour eviter d'aller dans le negatif lors de la propagation
     private Historique historique;
@@ -29,7 +27,6 @@ public class Plateau implements Serializable, Cloneable {
     public Plateau(){
         initPlateau();
         initHistorique();
-        //initQuantitePions();
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
@@ -38,9 +35,7 @@ public class Plateau implements Serializable, Cloneable {
     public Plateau copie(){
         Plateau p = new Plateau();
         p.historique = this.historique.copie();
-        p.quantitePionJoueur1 = this.quantitePionJoueur1.clone();
-        p.quantitePionJoueur2 = this.quantitePionJoueur2.clone();
-        p.nbHuttesDisponiblesJoueur = this.nbHuttesDisponiblesJoueur; // putain kiki oublie pas ca
+        p.nbHuttesDisponiblesJoueur = this.nbHuttesDisponiblesJoueur;
         p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
         p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
         p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
@@ -96,18 +91,6 @@ public class Plateau implements Serializable, Cloneable {
         positions_libres_batiments = new ArrayList<>();
     }
 
-    private void initQuantitePions() {
-        quantitePionJoueur1 = new byte[3];
-        quantitePionJoueur2 = new byte[3];
-        quantitePionJoueur1[0]=10 ;
-        quantitePionJoueur2[0]=10;
-        quantitePionJoueur1[1]=10 ;
-        quantitePionJoueur2[1]=10;
-        quantitePionJoueur1[2]=10 ;
-        quantitePionJoueur2[2]=10;
-    }
-
-
     private void initPlateau() {
         carte = new Hexagone[LIGNES][COLONNES];
         remplirPlateau();
@@ -123,23 +106,6 @@ public class Plateau implements Serializable, Cloneable {
 
     public Hexagone[][] getCarte() {
         return carte;
-    }
-
-    // check si la condition de victoire du nb de pi?ces est bonne
-    public boolean aGagneJoueur1(int joueur){
-        int nb_pion_vite_J1 = 0;
-        for (int j = 0; j<3;j++){
-            if(quantitePionJoueur1[j]==0 && joueur==1)nb_pion_vite_J1++;
-            if(quantitePionJoueur2[j]==0 && joueur==2)nb_pion_vite_J1++;
-        }
-        return nb_pion_vite_J1 >= 2;
-    }
-    public boolean tousLesMeme(int x1 , int y1 , int x2 ,int y2 ,int x3 ,int y3){
-        return carte[x1][y1].getHauteur() == carte[x2][y2].getHauteur() && carte[x1][y1].getHauteur() == carte[x3][y3].getHauteur();
-    }
-
-    public boolean estHexagoneLibre(int ligne, int colonne){
-        return carte[ligne][colonne].getBiomeTerrain() <= 1;
     }
 
     public boolean estDansTripletsPossibles(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
@@ -1014,23 +980,6 @@ public class Plateau implements Serializable, Cloneable {
         }
         return nouveauPlateau;
     }
-
-    private byte[][] copyPions() {
-        byte[][] nbPions = new byte[2][3];
-
-        System.arraycopy(this.quantitePionJoueur1, 0, nbPions[0], 0, this.quantitePionJoueur1.length);
-        System.arraycopy(this.quantitePionJoueur2, 0, nbPions[1], 0, this.quantitePionJoueur2.length);
-        return nbPions;
-    }
-    /*
-
-    private ArrayList<Position> copyPositionsLibres() {
-        ArrayList<Position> positions_libres = new ArrayList<>();
-        for (Position positions_libre : this.positions_libres) {
-            positions_libres.add(positions_libre.copy());
-        }
-        return positions_libres;
-    }*/
 
     private ArrayList<Position> copyPositionsLibresBatiment() {
         ArrayList<Position> positions_libres_batiments = new ArrayList<>();
