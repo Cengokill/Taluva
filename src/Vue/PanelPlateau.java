@@ -889,6 +889,7 @@ public class PanelPlateau extends JPanel {
     }
 
     public void placerTuiles(int i, int j) {
+        if(select_menu_options || clicBoutonPauseEchap || estSurBouton) return;
         //System.out.println("placerTuiles");
         int j_modified = convertionTileMapToHexagonal(i, j);
 

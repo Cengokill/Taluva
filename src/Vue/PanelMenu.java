@@ -70,6 +70,7 @@ public class PanelMenu extends JPanel {
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
 
+
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
     JTextField nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4;
@@ -114,7 +115,6 @@ public class PanelMenu extends JPanel {
 
         valider = lisImageBuf("valider");
         fermer = lisImageBuf("fermer");
-
 
         // hover
         bouton_Local_hover = applyRedFilter(bouton_Local);

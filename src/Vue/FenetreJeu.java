@@ -112,6 +112,8 @@ public class FenetreJeu extends Container {
 
     public void initRenduJeu(String nomJoueur1, String nomJoueur2, String nomJoueur3, String nomJoueur4, int nbJoueur, String tempsChrono, String difficulte) throws CloneNotSupportedException {
         jeu.initPartie(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
+        select_fin_partie = false;
+        ecran_fin_partie = false;
         estPleinEcran = panelMenu.estPleinEcran;
         initFrame();
         initPanels(controleur);
