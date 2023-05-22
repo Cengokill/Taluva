@@ -201,7 +201,7 @@ public class PanelMenuListener implements MouseListener  {
         return false;
     }
 
-    public boolean estCurseurSurBoutonValider(MouseEvent e){//valider du menu paramètres
+    public boolean estCurseurSurBoutonValider(MouseEvent e){
         int startx = panelMenu.posX_btnValider;
         int starty = panelMenu.posY_btnChoix;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
@@ -219,39 +219,32 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_bouton_fermer;
         int starty = panelMenu.posY_bouton_fermer;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_fermer && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_fermer && !panelMenu.clicOptions) {
-            panelMenu.estConfigPartie = false;
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            panelMenu.listeChrono.setVisible(false);
-            panelMenu.listeDifficulte.setVisible(false);
             return true;
         }
         return false;
     }
 
     public boolean estCurseurSurBoutonAddJoueur(MouseEvent e){
-        if(!panelMenu.estConfigPartie || !panelMenu.peut_addJoueur) return false;
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
         int startx = panelMenu.posX_bouton_plus_joueur;
         int starty = panelMenu.posY_bouton_plus_joueur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
-           panelMenu.select_addJoueur = true;
-           return true;
+            return true;
         }
-        panelMenu.select_addJoueur = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonAddIA(MouseEvent e){
-        if(!panelMenu.estConfigPartie || !panelMenu.peut_addIA) return false;
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
         int startx = panelMenu.posX_bouton_plus_ia;
         int starty = panelMenu.posY_bouton_plus_joueur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
-            panelMenu.select_addIA = true;
             return true;
         }
-        panelMenu.select_addIA = false;
         return false;
     }
 
@@ -261,26 +254,7 @@ public class PanelMenuListener implements MouseListener  {
         }
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nbJoueurs = 0;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions && panelMenu.nbJoueurs==1) {
             return true;
         }
         return false;
@@ -292,26 +266,7 @@ public class PanelMenuListener implements MouseListener  {
         }
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins+panelMenu.decalageY_couleur;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nbJoueurs = 1;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions && panelMenu.nbJoueurs==2) {
             return true;
         }
         return false;
@@ -323,28 +278,7 @@ public class PanelMenuListener implements MouseListener  {
         }
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins+2*panelMenu.decalageY_couleur;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nbJoueurs = 2;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-
-
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions && panelMenu.nbJoueurs==3) {
             return true;
         }
 
@@ -357,42 +291,21 @@ public class PanelMenuListener implements MouseListener  {
         }
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins+3*panelMenu.decalageY_couleur;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nbJoueurs = 3;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-
-
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions && panelMenu.nbJoueurs==4) {
             return true;
         }
         return false;
     }
 
-    public boolean estCurseurSurBoutonValiderConfig(MouseEvent e){
-        if(!panelMenu.peut_valider) return false;
-        int largeur = panelMenu.posX_bouton_valider + panelMenu.largeur_bouton_valider;
-        int hauteur = panelMenu.posY_bouton_valider + panelMenu.largeur_bouton_valider;
-        if(e.getX() >= panelMenu.posX_bouton_valider && e.getX() <= largeur && e.getY() >= panelMenu.posY_bouton_valider && e.getY() <= hauteur) {
-            panelMenu.select_valider = true;
+    public boolean estCurseurSurBoutonValiderConfig(MouseEvent e)  throws CloneNotSupportedException{
+        if (!panelMenu.estConfigPartie) {
+            return false;
+        }
+        int startx = panelMenu.posX_bouton_valider;
+        int starty = panelMenu.posY_bouton_valider;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_valider && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_valider && !panelMenu.clicOptions) {
             return true;
         }
-        panelMenu.select_valider = false;
         return false;
     }
 
@@ -400,36 +313,70 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
             panelMenu.nbJoueurs = 0;
             panelMenu.estConfigPartie = true;
+            panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Options(e)){
             panelMenu.clicOptions = !panelMenu.clicOptions;
+            panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Quitter(e)){
+            panelMenu.playSons(0);
             System.exit(0);
         }
         // Options cochables
-        if(estCurseurSurBoutonPleinEcran(e)) panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
+        if(estCurseurSurBoutonPleinEcran(e)){
+            panelMenu.playSons(0);
+            panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
+        }
         if(estCurseurSurBoutonDaltonien(e)){
+            panelMenu.playSons(0);
             panelMenu.Daltonien = !panelMenu.Daltonien;
         }
         if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;
         // Options réglables
-        if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_sonPanel ==5)) panelMenu.index_sonPanel++;
-        if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_sonPanel ==0)) panelMenu.index_sonPanel--;
-        if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musiquePanel ==5)) panelMenu.index_musiquePanel++;
-        if(estCurseurSurBoutonGauche_2(e) && !(panelMenu.index_musiquePanel ==0)) panelMenu.index_musiquePanel--;
+        if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_sonPanel ==5)){
+            panelMenu.playSons(0);
+            panelMenu.index_sonPanel++;
+        }
+        if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_sonPanel ==0)){
+            panelMenu.playSons(0);
+            panelMenu.index_sonPanel--;
+        }
+        if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musiquePanel ==5)){
+            panelMenu.playSons(0);
+            panelMenu.index_musiquePanel++;
+        }
+        if(estCurseurSurBoutonGauche_2(e) && !(panelMenu.index_musiquePanel ==0)){
+            panelMenu.playSons(0);
+            panelMenu.index_musiquePanel--;
+        }
         // Choix Confirmer/Annuler
-        if(estCurseurSurBoutonAnnuler(e)) panelMenu.clicOptions=false;
+        if(estCurseurSurBoutonAnnuler(e)){
+            panelMenu.playSons(0);
+            panelMenu.clicOptions=false;
+        }
         // TODO SAUVEGARDER LES PARAMETRES
         if(estCurseurSurBoutonValider(e)){
+            panelMenu.playSons(0);
             setFullscreen();
             setVolume();
             PanelMenu.setParametre(panelMenu.index_musiquePanel,panelMenu.index_sonPanel,panelMenu.estPleinEcran);
             panelMenu.clicOptions = false;
         }
 
-        estCurseurSurBoutonFermer(e);
+        // Creation de la partie
+        if (estCurseurSurBoutonFermer(e)){
+            panelMenu.playSons(0);
+            panelMenu.estConfigPartie = false;
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            panelMenu.listeChrono.setVisible(false);
+            panelMenu.listeDifficulte.setVisible(false);
+        }
         if(estCurseurSurBoutonAddJoueur(e)){
+            panelMenu.playSons(0);
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -457,6 +404,7 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
         }
         if(estCurseurSurBoutonAddIA(e)){
+            panelMenu.playSons(0);
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -482,12 +430,101 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.nomJoueur4.setVisible(true);
             }
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+        };
+        if(estCurseurSurBoutonMoins1(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nbJoueurs = 0;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
         }
-        estCurseurSurBoutonMoins1(e);
-        estCurseurSurBoutonMoins2(e);
-        estCurseurSurBoutonMoins3(e);
-        estCurseurSurBoutonMoins4(e);
+        if(estCurseurSurBoutonMoins2(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nbJoueurs = 1;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+        }
+        if(estCurseurSurBoutonMoins3(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nbJoueurs = 2;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+        }
+        if(estCurseurSurBoutonMoins4(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nbJoueurs = 3;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+        }
         if(estCurseurSurBoutonValiderConfig(e)){
+            panelMenu.playSons(0);
             if (panelMenu.nbJoueurs >= 2) {
                 String nomJoueur1 = panelMenu.nomJoueur1.getText();
                 String nomJoueur2 = panelMenu.nomJoueur2.getText();
@@ -583,16 +620,29 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public class DetectionSurvol extends MouseMotionAdapter {
+        private boolean sonJoue = false;
         @Override
         public void mouseMoved(MouseEvent e) {
-            if ((estCurseurSurBoutonValiderConfig(e))||(estCurseurSurBoutonAddIA(e))||(estCurseurSurBoutonAddJoueur(e))
-                    ||estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
-                    estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
-                    estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
-                if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setHandCursor();
-                //m.metAJour();
-            }else{
-                if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setStandardCursor();
+            try {
+                if (estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
+                        estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
+                        estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)
+                        ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)
+                        ||estCurseurSurBoutonMoins1(e) || estCurseurSurBoutonMoins2(e) || estCurseurSurBoutonMoins3(e) || estCurseurSurBoutonMoins4(e) || estCurseurSurBoutonValiderConfig(e)) {
+                    if (!sonJoue) {
+                        panelMenu.playSons(1);
+                        sonJoue = true;
+                    }
+                    if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setHandCursor();
+                    //m.metAJour();
+                }else{
+                    if (sonJoue) {
+                        sonJoue = false;
+                    }
+                    if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setStandardCursor();
+                }
+            } catch (CloneNotSupportedException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }
