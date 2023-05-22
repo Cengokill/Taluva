@@ -13,6 +13,7 @@ import static Vue.ImageLoader.*;
 
 public class FenetreJeuListener extends MouseAdapter implements MouseWheelListener {
     private final FenetreJeu fenetreJeu;
+    private boolean sonJoue = false;
 
     // TODO enlever bug de KILLIAN qui fait qu'on peut plus bouger la pièce avec les flèches et z marche plus
     public FenetreJeuListener(FenetreJeu fenetreJeu) {
@@ -235,18 +236,43 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(fenetreJeu.afficheOptions){
                 // PARAMETRES
                 // Options cochables
-                if(estCurseurSurBoutonPleinEcran(e)) fenetreJeu.estPleinEcran = !fenetreJeu.estPleinEcran;
-                if(estCurseurSurBoutonDaltonien(e)) fenetreJeu.Daltonien = !fenetreJeu.Daltonien;
-                if(estCurseurSurBoutonExtension(e)) fenetreJeu.Extension = !fenetreJeu.Extension;
+                if(estCurseurSurBoutonPleinEcran(e)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.estPleinEcran = !fenetreJeu.estPleinEcran;
+                }
+                if(estCurseurSurBoutonDaltonien(e)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.Daltonien = !fenetreJeu.Daltonien;
+                }
+                if(estCurseurSurBoutonExtension(e)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.Extension = !fenetreJeu.Extension;
+                }
                 // Options réglables
-                if(estCurseurSurBoutonDroit_1(e) && !(fenetreJeu.index_son==5)) fenetreJeu.index_son++;
-                if(estCurseurSurBoutonGauche_1(e) && !(fenetreJeu.index_son==0)) fenetreJeu.index_son--;
-                if(estCurseurSurBoutonDroit_2(e) && !(fenetreJeu.index_musique==5)) fenetreJeu.index_musique++;
-                if(estCurseurSurBoutonGauche_2(e) && !(fenetreJeu.index_musique==0)) fenetreJeu.index_musique--;
+                if(estCurseurSurBoutonDroit_1(e) && !(fenetreJeu.index_son==5)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.index_son++;
+                }
+                if(estCurseurSurBoutonGauche_1(e) && !(fenetreJeu.index_son==0)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.index_son--;
+                }
+                if(estCurseurSurBoutonDroit_2(e) && !(fenetreJeu.index_musique==5)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.index_musique++;
+                }
+                if(estCurseurSurBoutonGauche_2(e) && !(fenetreJeu.index_musique==0)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.index_musique--;
+                }
                 // Choix Confirmer/Annuler
-                if(estCurseurSurBoutonAnnuler(e)) fenetreJeu.afficheOptions=false;
+                if(estCurseurSurBoutonAnnuler(e)){
+                    fenetreJeu.playSons(0);
+                    fenetreJeu.afficheOptions=false;
+                }
                 // TODO SAUVEGARDER LES PARAMETRES
                 if(estCurseurSurBoutonValider(e)){
+                    fenetreJeu.playSons(0);
                     setFullscreen();
                     setVolume();
                     PanelMenu.setParametre(fenetreJeu.index_musique,fenetreJeu.index_son,fenetreJeu.estPleinEcran);
@@ -254,23 +280,27 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 }
             }else{
                 if (estSurTuto(e)) {
+                    fenetreJeu.playSons(0);
                     tuto_on = !tuto_on;
                 }
                 if (estSurAnnuler(e)) {
+                    fenetreJeu.playSons(0);
                     fenetreJeu.annuler();
 
                 }
                 if (estSurRefaire(e)) {
+                    fenetreJeu.playSons(0);
                     fenetreJeu.refaire();
                 }
                 if(estSurRetour(e)){
-                    System.out.println("Retour");
+                    fenetreJeu.playSons(0);
                     clicBoutonPauseEchap = false;
                     select_retour = false;
                 }
                 if (estSurQuitter(e)) {
                     fenetreJeu.getJeu().musicPlayer.stop();
                     fenetreJeu.layeredPane.removeAll();
+                    fenetreJeu.playSons(0);
                     clicBoutonPauseEchap = false;
                     // On passe du menu au jeu
                     try {
@@ -286,15 +316,19 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 fenetreJeu.panelPlateau.annuleConstruction(e);
 
                 if (estSurBoutonOptionsEchap(e)) {
+                    fenetreJeu.playSons(0);
                     clicBoutonPauseEchap = true;
                 }
                 if (estSurSauvegarder(e)) {
+                    fenetreJeu.playSons(0);
                     FenetreJeu.sauvegarder();
                 }
                 if (estSurCharger(e)) {
+                    fenetreJeu.playSons(0);
                     FenetreJeu.charger();
                 }
                 if (estSurParametres(e)) {
+                    fenetreJeu.playSons(0);
                     PanelMenu.loadParametre();
                     fenetreJeu.afficheOptions = true;
                 }
@@ -372,14 +406,21 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 hoverTilePosition = e.getPoint();
             }
         }
-
         @Override
         public void mouseMoved(MouseEvent e) {
+
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurRetour(e) || estSurQuitter(e) || estSurBoutonOptionsEchap(e) || estSurSauvegarder(e) || estSurCharger(e) || estSurParametres(e) || estCurseurSurBoutonGauche_1(e)||
                     estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)
                     ||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
+                if (!sonJoue) {
+                    fenetreJeu.playSons(1);
+                    sonJoue = true;
+                }
                 fenetreJeu.setHandCursor();
             }else{
+                if (sonJoue) {
+                    sonJoue = false;
+                }
                 fenetreJeu.setStandardCursor();
             }
             hoverTilePosition = e.getPoint();

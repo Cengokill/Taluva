@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 
 import static Vue.ImageLoader.*;
 
@@ -67,7 +68,7 @@ public class PanelMenu extends JPanel {
     boolean Extension;
     boolean select_valider;
     boolean select_annuler;
-    boolean afficheErreur;
+    boolean afficheErreur,peutJouerSon;
 
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
@@ -76,6 +77,7 @@ public class PanelMenu extends JPanel {
     String[] choixDifficulte = { "Facile", "Intermediaire", "Difficile"};
     JComboBox<String> listeChrono = new JComboBox<>(choixChrono);
     JComboBox<String> listeDifficulte = new JComboBox<>(choixDifficulte);
+    public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
 
 
     int nbJoueurs = 0;
@@ -145,6 +147,7 @@ public class PanelMenu extends JPanel {
         clicOptions = false;
         afficheErreur = false;
         chargeParametre = true;
+        peutJouerSon = true;
         // Eléments de l'interface
         frame = f;
         this.layeredPane = layeredPane;
@@ -219,6 +222,7 @@ public class PanelMenu extends JPanel {
         musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
+        initialiseSons();
         boucle();//Timer
     }
 
@@ -242,6 +246,23 @@ public class PanelMenu extends JPanel {
             frame.setExtendedState(Frame.NORMAL);
             frame.setLocationRelativeTo(null);
         }
+    }
+
+    public void initialiseSons(){
+        MusicPlayer placerTuile =new MusicPlayer("Musiques/clicBouton.wav");
+        sonPlayer.add(placerTuile);
+        MusicPlayer placerBatiment =new MusicPlayer("Musiques/selectionBouton.wav");
+        sonPlayer.add(placerBatiment);
+    }
+
+    public void playSons(int indexAJouer){
+        int sonVolume;
+        if(index_sonPanel==0) sonVolume=-100000;
+        else sonVolume = (-30)+index_sonPanel*20;
+        MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
+        sonCourant.resetClip();
+        sonCourant.setVolume(sonVolume);
+        sonCourant.play();
     }
 
     private void limiterNombreCaractereNomJoueur() {
