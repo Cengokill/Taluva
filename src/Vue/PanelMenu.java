@@ -72,6 +72,7 @@ public class PanelMenu extends JPanel {
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
+    public static boolean estEnChargement = false, aAfficheChargement = false;
 
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
@@ -81,7 +82,7 @@ public class PanelMenu extends JPanel {
     JComboBox<String> listeChrono = new JComboBox<>(choixChrono);
     JComboBox<String> listeDifficulte = new JComboBox<>(choixDifficulte);
     public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
-
+    BufferedImage chargement;
 
     int nbJoueurs = 0;
 
@@ -122,6 +123,9 @@ public class PanelMenu extends JPanel {
         valider_gris = lisImageBuf("valider_gris");
         valider_clic = lisImageBuf("valider_presse");
         fermer = lisImageBuf("fermer");
+
+        chargement = lisImageBuf("chargement");
+
 
         // hover
         bouton_Local_hover = applyRedFilter(bouton_Local);
@@ -480,10 +484,55 @@ public class PanelMenu extends JPanel {
         afficheChoix(g);
     }
 
+
     public void paint(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (estEnChargement) {
+            g2d.drawImage(chargement, 0, 0, getWidth(), getHeight(), null);
+            this.nomJoueur1.setVisible(false);
+            this.nomJoueur2.setVisible(false);
+            this.nomJoueur3.setVisible(false);
+            this.nomJoueur4.setVisible(false);
+            this.listeChrono.setVisible(false);
+            this.listeDifficulte.setVisible(false);
+
+            if (aAfficheChargement) {
+                String nomJoueur1 = this.nomJoueur1.getText();
+                String nomJoueur2 = this.nomJoueur2.getText();
+                String nomJoueur3 = this.nomJoueur3.getText();
+                String nomJoueur4 = this.nomJoueur4.getText();
+                String tempsChrono = (String) this.listeChrono.getSelectedItem();
+                String difficulte = (String) this.listeDifficulte.getSelectedItem();
+                int nbJoueur = this.nbJoueurs;
+
+                PanelMenu.estConfigPartie = false;
+
+
+                //efface tout le contenu de la frame
+                this.layeredPane.removeAll();
+                this.musicPlayer.stop();
+
+                // On passe du menu au jeu
+                loadImages();
+                try {
+                    this.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException(e);
+                }
+                this.fenetre.panelPlateau.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
+                this.fenetre.panelVignette.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
+                this.fenetre.buttonPanel.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
+                this.jeu.indexSon = this.index_sonPanel;
+                this.jeu.indexMusique = this.index_musiquePanel;
+                this.jeu.initialiseMusique();
+                this.jeu.initialiseSons();
+            }
+            aAfficheChargement = true;
+            return;
+        }
+
         calculeRapportsEtPositions();
         afficheBackground(g2d);
         if(clicOptions){
