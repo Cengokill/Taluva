@@ -249,13 +249,14 @@ public class FenetreJeu extends Container {
                 hauteur_menu_options = largeur_menu_options;
                 posX_menu_options = (largeur - largeur_menu_options)/2;
                 posY_menu_options = (hauteur - hauteur_menu_options)/2;
-                largeur_bouton_dans_options = (int) (largeur_menu_options * 0.7);
+                largeur_bouton_dans_options = (int) (largeur_menu_options * 0.6);
                 hauteur_bouton_dans_options = (int) (largeur_bouton_dans_options * rapport_bouton_dans_options);
                 posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2;
-                posY_save = (int) (posY_menu_options + hauteur_menu_options * 0.10);
-                posY_load = (int) (posY_save + hauteur_menu_options * 0.20);
-                posY_parametres = (int) (posY_load + hauteur_menu_options * 0.20);
-                posY_retour= (int) (posY_parametres + hauteur_menu_options * 0.20);
+                posY_retour= (int) (posY_menu_options + hauteur_menu_options * 0.10);
+                posY_save = (int) (posY_retour + hauteur_menu_options * 0.16);
+                posY_load = (int) (posY_save + hauteur_menu_options * 0.16);
+                posY_parametres = (int) (posY_load + hauteur_menu_options * 0.16);
+                posY_quitter = (int) (posY_parametres + hauteur_menu_options * 0.16);
                 //bouton options en jeu
                 posX_options_echap = (int) (largeur - largeur*0.08);
                 posY_options_echap = posY_fenetre_score;
@@ -414,6 +415,8 @@ public class FenetreJeu extends Container {
         bouton_parametres_select = lisImageBuf("Menu/bouton_parametres_select");
         bouton_retour = lisImageBuf("Menu/bouton_retour");
         bouton_retour_select = lisImageBuf("Menu/bouton_retour_select");
+        bouton_quitter = lisImageBuf("Menu/bouton_menu_echap_quitter");
+        bouton_quitter_select = lisImageBuf("Menu/bouton_menu_echap_quitter_select");
         bouton_annuler = lisImageBuf("Annuler");
         bouton_annuler = lisImageBuf("Annuler");
         bouton_annuler_select = lisImageBuf("Annuler_select");
@@ -776,10 +779,11 @@ public class FenetreJeu extends Container {
         if(clicBoutonPauseEchap){
             g.drawImage(menu_dark_filter, 0, 0, 3000, 3000, null);
             g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
+            afficheBoutonRetour(g);
             afficheBoutonLoad(g);
             afficheBoutonSave(g);
             afficheBoutonParametres(g);
-            afficheBoutonRetour(g);
+            afficheBoutonQuitter(g);
         }
     }
 
@@ -788,6 +792,13 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_options_echap_select, posX_options_echap, posY_options_echap, largeur_bouton, largeur_bouton, null);
         else
             g.drawImage(bouton_options_echap, posX_options_echap, posY_options_echap, largeur_bouton, largeur_bouton, null);
+    }
+
+    public static void afficheBoutonRetour(Graphics g) {
+        if(select_retour)
+            g.drawImage(bouton_retour_select, posX_save, posY_retour, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
+        else
+            g.drawImage(bouton_retour, posX_save, posY_retour, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);;
     }
 
     public static void afficheBoutonSave(Graphics g) {
@@ -811,11 +822,11 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_parametres, posX_save, posY_parametres, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
     }
 
-    public static void afficheBoutonRetour(Graphics g) {
-        if(select_retour)
-            g.drawImage(bouton_retour_select, posX_save, posY_retour, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
+    public static void afficheBoutonQuitter(Graphics g) {
+        if(select_quitter)
+            g.drawImage(bouton_quitter_select, posX_save, posY_quitter, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
         else
-            g.drawImage(bouton_retour, posX_save, posY_retour, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);;
+            g.drawImage(bouton_quitter, posX_save, posY_quitter, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);;
     }
 
     public static void afficheBoutonAnnuler(Graphics g) {//pendant le jeu

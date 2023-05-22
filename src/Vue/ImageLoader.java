@@ -59,6 +59,7 @@ public class ImageLoader {
     public static boolean select_retour;
     public static boolean select_annuler;
     public static boolean select_refaire;
+    public static boolean select_quitter;
     public static boolean clicBoutonPauseEchap, clicBoutonParametres;
     public static boolean tuto_on;
     public static boolean select_fin_partie;
