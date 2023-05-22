@@ -201,7 +201,7 @@ public class PanelMenuListener implements MouseListener  {
         return false;
     }
 
-    public boolean estCurseurSurBoutonValider(MouseEvent e){
+    public boolean estCurseurSurBoutonValider(MouseEvent e){//valider du menu paramètres
         int startx = panelMenu.posX_btnValider;
         int starty = panelMenu.posY_btnChoix;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.taille_btn && e.getY() >= starty && e.getY() <= starty+ panelMenu.taille_btn && panelMenu.clicOptions) {
@@ -232,76 +232,26 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBoutonAddJoueur(MouseEvent e){
-        if (!panelMenu.estConfigPartie) {
-            return false;
-        }
+        if(!panelMenu.estConfigPartie || !panelMenu.peut_addJoueur) return false;
         int startx = panelMenu.posX_bouton_plus_joueur;
         int starty = panelMenu.posY_bouton_plus_joueur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            if (panelMenu.nbJoueurs == 0) {
-                panelMenu.nomJoueur1.setEnabled(true);
-                panelMenu.nomJoueur1.setText("");
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur2.setEnabled(true);
-                panelMenu.nomJoueur2.setText("");
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur3.setEnabled(true);
-                panelMenu.nomJoueur3.setText("");
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur4.setEnabled(true);
-                panelMenu.nomJoueur4.setText("");
-                panelMenu.nomJoueur4.setVisible(true);
-            }
-            panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
-            return true;
+           panelMenu.select_addJoueur = true;
+           return true;
         }
+        panelMenu.select_addJoueur = false;
         return false;
     }
 
     public boolean estCurseurSurBoutonAddIA(MouseEvent e){
-        if (!panelMenu.estConfigPartie) {
-            return false;
-        }
+        if(!panelMenu.estConfigPartie || !panelMenu.peut_addIA) return false;
         int startx = panelMenu.posX_bouton_plus_ia;
         int starty = panelMenu.posY_bouton_plus_joueur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            if (panelMenu.nbJoueurs == 0) {
-                panelMenu.nomJoueur1.setEnabled(false);
-                panelMenu.nomJoueur1.setText("IA");
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur2.setEnabled(false);
-                panelMenu.nomJoueur2.setText("IA");
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur3.setEnabled(false);
-                panelMenu.nomJoueur3.setText("IA");
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur4.setEnabled(false);
-                panelMenu.nomJoueur4.setText("IA");
-                panelMenu.nomJoueur4.setVisible(true);
-            }
-            panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+            panelMenu.select_addIA = true;
             return true;
         }
+        panelMenu.select_addIA = false;
         return false;
     }
 
@@ -434,50 +384,15 @@ public class PanelMenuListener implements MouseListener  {
         return false;
     }
 
-    public boolean estCurseurSurBoutonValiderConfig(MouseEvent e)  throws CloneNotSupportedException{
-        if (!panelMenu.estConfigPartie) {
-            return false;
-        }
-        int startx = panelMenu.posX_bouton_valider;
-        int starty = panelMenu.posY_bouton_valider;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_valider && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_valider && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs >= 2) {
-                String nomJoueur1 = panelMenu.nomJoueur1.getText();
-                String nomJoueur2 = panelMenu.nomJoueur2.getText();
-                String nomJoueur3 = panelMenu.nomJoueur3.getText();
-                String nomJoueur4 = panelMenu.nomJoueur4.getText();
-                String tempsChrono = (String) panelMenu.listeChrono.getSelectedItem();
-                String difficulte = (String) panelMenu.listeDifficulte.getSelectedItem();
-                int nbJoueur = panelMenu.nbJoueurs;
-
-                PanelMenu.estConfigPartie = false;
-                panelMenu.nomJoueur1.setVisible(false);
-                panelMenu.nomJoueur2.setVisible(false);
-                panelMenu.nomJoueur3.setVisible(false);
-                panelMenu.nomJoueur4.setVisible(false);
-                panelMenu.listeChrono.setVisible(false);
-                panelMenu.listeDifficulte.setVisible(false);
-
-                //efface tout le contenu de la frame
-                panelMenu.layeredPane.removeAll();
-                panelMenu.musicPlayer.stop();
-
-                // On passe du menu au jeu
-                ImageLoader.loadImages();
-                panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
-                panelMenu.fenetre.panelPlateau.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.fenetre.panelVignette.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.fenetre.buttonPanel.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.jeu.indexSon = panelMenu.index_sonPanel;
-                panelMenu.jeu.indexMusique = panelMenu.index_musiquePanel;
-                panelMenu.jeu.initialiseMusique();
-                panelMenu.jeu.initialiseSons();
-
-            }else{
-                panelMenu.afficheErreur = true;
-            }
+    public boolean estCurseurSurBoutonValiderConfig(MouseEvent e){
+        if(!panelMenu.peut_valider) return false;
+        int largeur = panelMenu.posX_bouton_valider + panelMenu.largeur_bouton_valider;
+        int hauteur = panelMenu.posY_bouton_valider + panelMenu.largeur_bouton_valider;
+        if(e.getX() >= panelMenu.posX_bouton_valider && e.getX() <= largeur && e.getY() >= panelMenu.posY_bouton_valider && e.getY() <= hauteur) {
+            panelMenu.select_valider = true;
             return true;
         }
+        panelMenu.select_valider = false;
         return false;
     }
 
@@ -514,13 +429,101 @@ public class PanelMenuListener implements MouseListener  {
         }
 
         estCurseurSurBoutonFermer(e);
-        estCurseurSurBoutonAddJoueur(e);
-        estCurseurSurBoutonAddIA(e);
+        if(estCurseurSurBoutonAddJoueur(e)){
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            if (panelMenu.nbJoueurs == 0) {
+                panelMenu.nomJoueur1.setEnabled(true);
+                panelMenu.nomJoueur1.setText("");
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur2.setEnabled(true);
+                panelMenu.nomJoueur2.setText("");
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur3.setEnabled(true);
+                panelMenu.nomJoueur3.setText("");
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur4.setEnabled(true);
+                panelMenu.nomJoueur4.setText("");
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+            panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+        }
+        if(estCurseurSurBoutonAddIA(e)){
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            if (panelMenu.nbJoueurs == 0) {
+                panelMenu.nomJoueur1.setEnabled(false);
+                panelMenu.nomJoueur1.setText("IA");
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur2.setEnabled(false);
+                panelMenu.nomJoueur2.setText("IA");
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur3.setEnabled(false);
+                panelMenu.nomJoueur3.setText("IA");
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur4.setEnabled(false);
+                panelMenu.nomJoueur4.setText("IA");
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+            panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+        }
         estCurseurSurBoutonMoins1(e);
         estCurseurSurBoutonMoins2(e);
         estCurseurSurBoutonMoins3(e);
         estCurseurSurBoutonMoins4(e);
-        estCurseurSurBoutonValiderConfig(e);
+        if(estCurseurSurBoutonValiderConfig(e)){
+            if (panelMenu.nbJoueurs >= 2) {
+                String nomJoueur1 = panelMenu.nomJoueur1.getText();
+                String nomJoueur2 = panelMenu.nomJoueur2.getText();
+                String nomJoueur3 = panelMenu.nomJoueur3.getText();
+                String nomJoueur4 = panelMenu.nomJoueur4.getText();
+                String tempsChrono = (String) panelMenu.listeChrono.getSelectedItem();
+                String difficulte = (String) panelMenu.listeDifficulte.getSelectedItem();
+                int nbJoueur = panelMenu.nbJoueurs;
+
+                PanelMenu.estConfigPartie = false;
+                panelMenu.nomJoueur1.setVisible(false);
+                panelMenu.nomJoueur2.setVisible(false);
+                panelMenu.nomJoueur3.setVisible(false);
+                panelMenu.nomJoueur4.setVisible(false);
+                panelMenu.listeChrono.setVisible(false);
+                panelMenu.listeDifficulte.setVisible(false);
+
+                //efface tout le contenu de la frame
+                panelMenu.layeredPane.removeAll();
+                panelMenu.musicPlayer.stop();
+
+                // On passe du menu au jeu
+                ImageLoader.loadImages();
+                panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
+                panelMenu.fenetre.panelPlateau.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.panelVignette.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.fenetre.buttonPanel.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
+                panelMenu.jeu.indexSon = panelMenu.index_sonPanel;
+                panelMenu.jeu.indexMusique = panelMenu.index_musiquePanel;
+                panelMenu.jeu.initialiseMusique();
+                panelMenu.jeu.initialiseSons();
+
+            }else{
+                panelMenu.afficheErreur = true;
+            }
+        }
     }
 
     public void setFullscreen(){
@@ -582,7 +585,8 @@ public class PanelMenuListener implements MouseListener  {
     public class DetectionSurvol extends MouseMotionAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
+            if ((estCurseurSurBoutonValiderConfig(e))||(estCurseurSurBoutonAddIA(e))||(estCurseurSurBoutonAddJoueur(e))
+                    ||estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
                     estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
                     estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
                 if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setHandCursor();

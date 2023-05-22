@@ -60,6 +60,7 @@ public class ImageLoader {
     public static boolean select_annuler;
     public static boolean select_refaire;
     public static boolean select_quitter;
+    public static boolean select_tuto;
     public static boolean clicBoutonPauseEchap, clicBoutonParametres;
     public static boolean tuto_on;
     public static boolean select_fin_partie;
@@ -74,9 +75,9 @@ public class ImageLoader {
     public static BufferedImage desertTile_0_Red, desertTile_1_Red, desertTile_2_Red;
     public static BufferedImage montagneTile_0_Red, montagneTile_1_Red, montagneTile_2_Red;
     public static BufferedImage lacTile_0_Red, lacTile_1_Red, lacTile_2_Red;
-    public static BufferedImage tileErreur, placable, plus, moins;
+    public static BufferedImage tileErreur, placable, plus, plus_select, moins, moins_select;
 
-    public static BufferedImage configPartieBackground, rouge, vert, violet, bleu, fermer, valider;
+    public static BufferedImage configPartieBackground, rouge, vert, violet, bleu, fermer, valider, valider_select, valider_clic, valider_gris;
 
     public static BufferedImage
             plateau_hautGauche_etage1,

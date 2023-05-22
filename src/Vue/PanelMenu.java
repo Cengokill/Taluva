@@ -65,8 +65,9 @@ public class PanelMenu extends JPanel {
     public static boolean estPleinEcran;
     boolean Daltonien;
     boolean Extension;
-    boolean select_valider;
+    boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
+    boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
     boolean afficheErreur;
 
     static boolean estConfigPartie = false;
@@ -104,13 +105,18 @@ public class PanelMenu extends JPanel {
         ecriture_Extension = lisImage("/Options/Activer_extension");
         configPartieBackground = lisImageBuf("background_choix_partie");
         plus = lisImageBuf("plus");
+        plus_select = lisImageBuf("plus_select");
         moins = lisImageBuf("moins");
+        moins_select = lisImageBuf("moins_select");
         rouge = lisImageBuf("rouge");
         vert = lisImageBuf("vert");
         bleu = lisImageBuf("bleu");
         violet = lisImageBuf("violet");
 
         valider = lisImageBuf("valider");
+        valider_select = lisImageBuf("valider_select");
+        valider_clic = lisImageBuf("valider_presse");
+        valider_gris = lisImageBuf("valider_gris");
         fermer = lisImageBuf("fermer");
 
 
@@ -132,7 +138,7 @@ public class PanelMenu extends JPanel {
         loadParametre();
 
         timerValue=0;
-        //bool�ens
+        //booléens
         select_local = false;
         select_options = false;
         select_quitter = false;
@@ -473,29 +479,45 @@ public class PanelMenu extends JPanel {
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, largeur, hauteur);
         g2d.drawImage(configPartieBackground, posX_background ,posY_background , largeur_background, hauteur_background, null);
-        g2d.drawImage(plus, posX_bouton_plus_joueur, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
-        g2d.drawImage(plus, posX_bouton_plus_ia, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
+        if(select_addJoueur && peut_addJoueur)
+            g2d.drawImage(plus_select, posX_bouton_plus_joueur, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
+        else
+            g2d.drawImage(plus, posX_bouton_plus_joueur, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
+        if(select_addIA && peut_addIA)
+            g2d.drawImage(plus_select, posX_bouton_plus_ia, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
+        else
+            g2d.drawImage(plus, posX_bouton_plus_ia, posY_bouton_plus_joueur, largeur_bouton_plus, largeur_bouton_plus, null);
         BufferedImage[] couleurs = {rouge, bleu, vert, violet};
         for(int i = 0; i < nbJoueurs; i++) {
             g2d.drawImage(couleurs[i], posX_cadre, posY_cadre + i*decalageY_couleur, largeur_cadre, largeur_cadre, null);
         }
+        if(nbJoueurs <2) peut_valider = false;
+        else peut_valider = true;
         if (nbJoueurs >= 1) {
             nomJoueur1.setVisible(true);
+            peut_addIA = true;
+            peut_addJoueur = true;
         }
         if (nbJoueurs >= 2) {
             nomJoueur2.setVisible(true);
+            peut_addIA = true;
+            peut_addJoueur = true;
         }
         if (nbJoueurs >= 3) {
             nomJoueur3.setVisible(true);
+            peut_addIA = true;
+            peut_addJoueur = true;
         }
         if (nbJoueurs == 4) {
             nomJoueur4.setVisible(true);
+            peut_addIA = false;
+            peut_addJoueur = false;
         }
         if (nbJoueurs == 1) {
-            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 0*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins, largeur_bouton_moins, largeur_bouton_moins, null);
         }
         if (nbJoueurs == 2) {
-            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 1*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
+            g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
         if (nbJoueurs == 3) {
             g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 2*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
@@ -503,9 +525,14 @@ public class PanelMenu extends JPanel {
         if (nbJoueurs == 4) {
             g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 3*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
-
-        g2d.drawImage(fermer, posX_bouton_fermer, 10, largeur_bouton_fermer, largeur_bouton_fermer, null);
-        g2d.drawImage(valider, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
+        if(select_valider && peut_valider)
+            g2d.drawImage(valider_select, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
+        else if(clic_valider && peut_valider)
+            g2d.drawImage(valider_clic, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
+        else if(!select_valider && peut_valider)
+            g2d.drawImage(valider, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
+        else
+            g2d.drawImage(valider_gris, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
         nomJoueur1.setBounds(posX_textJoueur, posY_textJoueur, largeur_textJoueur, 40);
         nomJoueur2.setBounds(posX_textJoueur, posY_textJoueur+decalageY_couleur, largeur_textJoueur, 40);
         nomJoueur3.setBounds(posX_textJoueur, posY_textJoueur+2*decalageY_couleur, largeur_textJoueur, 40);
@@ -545,18 +572,20 @@ public class PanelMenu extends JPanel {
         largeur_menu_options = hauteur_background/2;
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
         //boutons menu création partie
-        largeur_bouton_plus = (int) (largeur_background*0.06);
-        largeur_bouton_moins = (int) (largeur_bouton_plus*0.6);
-        largeur_bouton_valider = (int) (largeur_background*0.09);
+        largeur_bouton_plus = (int) (largeur_background*0.04);
+        largeur_bouton_moins = (int) (largeur_bouton_plus*0.8);
+        largeur_bouton_valider = (int) (largeur_background*0.11);
         largeur_bouton_fermer = (int) (largeur_background*0.08);
         largeur_cadre = (int) (largeur_background*0.05);
-        largeur_textJoueur = (int) (largeur_background*0.16);
-        posX_bouton_plus_joueur = (int) (posX_background + largeur_background*0.12);
-        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.31);
-        posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.29);
-        posX_textJoueur = (int) (posX_background + largeur_background*0.055);
+        largeur_textJoueur = (int) (largeur_background*0.17);
+        posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
+        posY_bouton_valider = (int) (posY_background + hauteur_background*0.77);
+        posX_bouton_plus_joueur = (int) (posX_background + largeur_background*0.16);
+        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.37);
+        posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.27);
+        posX_textJoueur = (int) (posX_background + largeur_background*0.15);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
-        posYChronoList = posY_bouton_plus_joueur + 5;
+        posYChronoList = posY_textJoueur;
         posXChronoList = (int) (largeur_background*0.68);
         posXDifficulteList = posXChronoList;
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.26);
@@ -565,9 +594,6 @@ public class PanelMenu extends JPanel {
         posX_bouton_moins = (int) (posX_cadre + largeur_cadre*1.5);
         posY_bouton_moins = (int) (posY_cadre + largeur_cadre*0.2);
         decalageY_couleur = (int) (hauteur_background*0.13);
-        posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
-        posY_bouton_valider = (int) (posY_background + hauteur_background*0.78);
-        posX_bouton_fermer = getWidth() - 100;
     }
 
     private void afficheMessageErreur(Graphics g) {
