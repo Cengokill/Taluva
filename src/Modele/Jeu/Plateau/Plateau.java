@@ -1022,8 +1022,8 @@ public class Plateau implements Serializable, Cloneable {
         System.arraycopy(this.quantitePionJoueur2, 0, nbPions[1], 0, this.quantitePionJoueur2.length);
         return nbPions;
     }
-    /*
 
+    /*
     private ArrayList<Position> copyPositionsLibres() {
         ArrayList<Position> positions_libres = new ArrayList<>();
         for (Position positions_libre : this.positions_libres) {
