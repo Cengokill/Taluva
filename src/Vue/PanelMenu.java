@@ -69,9 +69,7 @@ public class PanelMenu extends JPanel {
     boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
-
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
-    boolean afficheErreur;
 
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
@@ -149,6 +147,7 @@ public class PanelMenu extends JPanel {
         clicOptions = false;
         afficheErreur = false;
         chargeParametre = true;
+        peutJouerSon = true;
         // Eléments de l'interface
         frame = f;
         this.layeredPane = layeredPane;
