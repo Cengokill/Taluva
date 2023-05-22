@@ -9,6 +9,7 @@ import com.sun.tools.javac.Main;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TaluvaMain {
     public final static byte CONSOLE = 0;
@@ -31,7 +32,12 @@ public class TaluvaMain {
             for(int i = 0; i < nb_parties; i++) {
                 long startTimePartie = System.currentTimeMillis();
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
-                jeu.initPartie("IA", "IA", "IA", "IA", 2, "Infini", "Difficile");
+                ArrayList<String> difficultes = new ArrayList<>();
+                difficultes.add("Difficile");
+                difficultes.add("Difficile");
+                difficultes.add("Difficile");
+                difficultes.add("Difficile");
+                jeu.initPartie("IA", "IA", "IA", "IA", 2, "Infini", difficultes);
                 for(Joueur joueur : jeu.getJoueurs()){
                     if(joueur.getTypeJoueur()!=Joueur.IA) {
                         System.err.println("Le joueur " + joueur.getPrenom() + " n'est pas une IA. Le mode CONSOLE doit etre active uniquement si tous les joueurs sont des IA.");
