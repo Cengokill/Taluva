@@ -44,15 +44,15 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     InstanceJeu instance;
     @Override
     public CoupValeur joue() {
+        System.out.println("JOUE IA");
         debut = System.currentTimeMillis();
         long seed = 12345L;
         r = new Random(seed);
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
-        if(jeu.getJoueurCourantClasse().getPrenom().equals("IA1")) {
-            System.out.println("IA1");
-            plateauIA.affiche();
-        }
+        System.out.println(jeu.getJoueurCourantClasse().getPrenom());
+        //plateauIA.affiche();
+        //System.exit(0);
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
         this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur());
         instance.setTuilePiochee(jeu.getTuileCourante());//définit la tuile piochée de l'instance sans la retirer de la pioche, puisque à ce moment le jeu a déjà retiré la tuile de la pioche
@@ -186,10 +186,14 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             CoupValeur coupDuo = meilleursCoups.get(i);
             InstanceJeu instanceCourante = new InstanceJeu(copiePioche(instance.getPioche()),instance.getPlateau().copie(),copyJoueurs(instance.getJoueurs()),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur());
             Plateau plateauCopie = instanceCourante.getPlateau();
+            System.out.println("AVANT: ");
+            plateauCopie.affiche();
             //joue le coup Tuile
             plateauCopie.joueCoup(coupDuo.getCoupT());
             //joue le coup Batiment
             plateauCopie.joueCoup(coupDuo.getCoupB());
+            System.out.println("APRES: ");
+            plateauCopie.affiche();
             instanceCourante.changeJoueur();
             valeur = Math.min(valeur, miniMaxJoueurA(instanceCourante, horizon-1, alpha, beta));
             if (alpha >= valeur) {
@@ -561,7 +565,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         Plateau plateauCopie = instanceCourante.getPlateau().copie();
         ArrayList<Coup> coupsPossiblesARenvoyer = new ArrayList<>();
         ArrayList<Position> positionsPossiblesBatiment = plateauCopie.getPositions_libres_batiments();
-        plateauCopie.affiche();
+        //plateauCopie.affiche();
         byte joueur_courant = instanceCourante.getJoueurCourant();
         Color color_joueur_courant = instanceCourante.getJoueurCourantClasse().getCouleur();
         // On parcours toutes les positions possibles
