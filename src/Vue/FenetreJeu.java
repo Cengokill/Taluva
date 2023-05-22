@@ -891,7 +891,6 @@ public class FenetreJeu extends Container {
             out.writeObject(jeu.getJoueurs());
             out.close();
             fichierOut.close();
-
         } catch (Exception e) {
             throw new RuntimeException("Impossible de sauvegarder cette partie.\n" + e);
         }

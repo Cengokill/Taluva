@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class MusicPlayer {
+public class MusicPlayer{
 
     private Clip clip;
     private FloatControl volumeControl;

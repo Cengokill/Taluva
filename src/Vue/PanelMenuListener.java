@@ -233,9 +233,9 @@ public class PanelMenuListener implements MouseListener  {
 
     public boolean estCurseurSurBoutonAddJoueur(MouseEvent e){
         if(!panelMenu.estConfigPartie || !panelMenu.peut_addJoueur) return false;
-        int largeur = panelMenu.posX_bouton_plus_joueur + panelMenu.largeur_bouton_plus;
-        int hauteur = panelMenu.posY_bouton_plus_joueur + panelMenu.largeur_bouton_plus;
-        if(e.getX() >= panelMenu.posX_bouton_plus_joueur && e.getX() <= largeur&& e.getY() >= panelMenu.posY_bouton_plus_joueur && e.getY() <= hauteur) {
+        int startx = panelMenu.posX_bouton_plus_joueur;
+        int starty = panelMenu.posY_bouton_plus_joueur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
            panelMenu.select_addJoueur = true;
            return true;
         }
@@ -245,9 +245,9 @@ public class PanelMenuListener implements MouseListener  {
 
     public boolean estCurseurSurBoutonAddIA(MouseEvent e){
         if(!panelMenu.estConfigPartie || !panelMenu.peut_addIA) return false;
-        int largeur = panelMenu.posX_bouton_plus_ia + panelMenu.largeur_bouton_plus;
-        int hauteur = panelMenu.posY_bouton_plus_joueur + panelMenu.largeur_bouton_plus;
-        if(e.getX() >= panelMenu.posX_bouton_plus_ia && e.getX() <= largeur && e.getY() >= panelMenu.posY_bouton_plus_joueur && e.getY() <= hauteur) {
+        int startx = panelMenu.posX_bouton_plus_ia;
+        int starty = panelMenu.posY_bouton_plus_joueur;
+        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
             panelMenu.select_addIA = true;
             return true;
         }
@@ -400,36 +400,70 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
             panelMenu.nbJoueurs = 0;
             panelMenu.estConfigPartie = true;
+            panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Options(e)){
             panelMenu.clicOptions = !panelMenu.clicOptions;
+            panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Quitter(e)){
+            panelMenu.playSons(0);
             System.exit(0);
         }
         // Options cochables
-        if(estCurseurSurBoutonPleinEcran(e)) panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
+        if(estCurseurSurBoutonPleinEcran(e)){
+            panelMenu.playSons(0);
+            panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
+        }
         if(estCurseurSurBoutonDaltonien(e)){
+            panelMenu.playSons(0);
             panelMenu.Daltonien = !panelMenu.Daltonien;
         }
         if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;
         // Options réglables
-        if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_sonPanel ==5)) panelMenu.index_sonPanel++;
-        if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_sonPanel ==0)) panelMenu.index_sonPanel--;
-        if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musiquePanel ==5)) panelMenu.index_musiquePanel++;
-        if(estCurseurSurBoutonGauche_2(e) && !(panelMenu.index_musiquePanel ==0)) panelMenu.index_musiquePanel--;
+        if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_sonPanel ==5)){
+            panelMenu.playSons(0);
+            panelMenu.index_sonPanel++;
+        }
+        if(estCurseurSurBoutonGauche_1(e) && !(panelMenu.index_sonPanel ==0)){
+            panelMenu.playSons(0);
+            panelMenu.index_sonPanel--;
+        }
+        if(estCurseurSurBoutonDroit_2(e) && !(panelMenu.index_musiquePanel ==5)){
+            panelMenu.playSons(0);
+            panelMenu.index_musiquePanel++;
+        }
+        if(estCurseurSurBoutonGauche_2(e) && !(panelMenu.index_musiquePanel ==0)){
+            panelMenu.playSons(0);
+            panelMenu.index_musiquePanel--;
+        }
         // Choix Confirmer/Annuler
-        if(estCurseurSurBoutonAnnuler(e)) panelMenu.clicOptions=false;
+        if(estCurseurSurBoutonAnnuler(e)){
+            panelMenu.playSons(0);
+            panelMenu.clicOptions=false;
+        }
         // TODO SAUVEGARDER LES PARAMETRES
         if(estCurseurSurBoutonValider(e)){
+            panelMenu.playSons(0);
             setFullscreen();
             setVolume();
             PanelMenu.setParametre(panelMenu.index_musiquePanel,panelMenu.index_sonPanel,panelMenu.estPleinEcran);
             panelMenu.clicOptions = false;
         }
 
-        estCurseurSurBoutonFermer(e);
+        // Creation de la partie
+        if (estCurseurSurBoutonFermer(e)){
+            panelMenu.playSons(0);
+            panelMenu.estConfigPartie = false;
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            panelMenu.listeChrono.setVisible(false);
+            panelMenu.listeDifficulte.setVisible(false);
+        }
         if(estCurseurSurBoutonAddJoueur(e)){
+            panelMenu.playSons(0);
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -457,6 +491,7 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
         }
         if(estCurseurSurBoutonAddIA(e)){
+            panelMenu.playSons(0);
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -482,12 +517,101 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.nomJoueur4.setVisible(true);
             }
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
+        };
+        if(estCurseurSurBoutonMoins1(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nbJoueurs = 0;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
         }
-        estCurseurSurBoutonMoins1(e);
-        estCurseurSurBoutonMoins2(e);
-        estCurseurSurBoutonMoins3(e);
-        estCurseurSurBoutonMoins4(e);
+        if(estCurseurSurBoutonMoins2(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nbJoueurs = 1;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+        }
+        if(estCurseurSurBoutonMoins3(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nbJoueurs = 2;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+        }
+        if(estCurseurSurBoutonMoins4(e)){
+            panelMenu.playSons(0);
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nbJoueurs = 3;
+            }
+            panelMenu.nomJoueur1.setVisible(false);
+            panelMenu.nomJoueur2.setVisible(false);
+            panelMenu.nomJoueur3.setVisible(false);
+            panelMenu.nomJoueur4.setVisible(false);
+
+
+            if (panelMenu.nbJoueurs == 1) {
+                panelMenu.nomJoueur1.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 2) {
+                panelMenu.nomJoueur2.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 3) {
+                panelMenu.nomJoueur3.setVisible(true);
+            }
+            if (panelMenu.nbJoueurs == 4) {
+                panelMenu.nomJoueur4.setVisible(true);
+            }
+        }
         if(estCurseurSurBoutonValiderConfig(e)){
+            panelMenu.playSons(0);
             if (panelMenu.nbJoueurs >= 2) {
                 String nomJoueur1 = panelMenu.nomJoueur1.getText();
                 String nomJoueur2 = panelMenu.nomJoueur2.getText();
@@ -523,8 +647,6 @@ public class PanelMenuListener implements MouseListener  {
             }else{
                 panelMenu.afficheErreur = true;
             }
-        }else{
-            panelMenu.clic_valider = false;
         }
     }
 
@@ -557,15 +679,11 @@ public class PanelMenuListener implements MouseListener  {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(estCurseurSurBoutonValiderConfig(e)){
-            panelMenu.clic_valider = true;
-        }else{
-            panelMenu.clic_valider = false;
-        }
     }
 
     @Override
@@ -589,6 +707,7 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public class DetectionSurvol extends MouseMotionAdapter {
+        private boolean sonJoue = false;
         @Override
         public void mouseMoved(MouseEvent e) {
             if ((estCurseurSurBoutonValiderConfig(e))||(estCurseurSurBoutonAddIA(e))||(estCurseurSurBoutonAddJoueur(e))
