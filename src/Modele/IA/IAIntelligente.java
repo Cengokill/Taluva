@@ -101,6 +101,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     public int evaluation(InstanceJeu instance){
         int score = 0;
         int nouveauPoidsHutte = 1;
+        int nouveauPoidsTour = 1;
         // batimentsPlacablesNombre[0] -> nombre de temples constructibles par les joueurs adverses
         // batimentsPlacablesNombre[1] -> nombre de huttes constructibles par les joueurs adverses
         // batimentsPlacablesNombre[2] -> nombre de tours constructibles par les joueurs adverses
@@ -128,8 +129,12 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     return Integer.MIN_VALUE;
                 }
             }
-            //si le joueur a placé 2 bâtiments de chaque type
-            if(joueurCourant.getNbTemples() == 0 || joueurCourant.getNbTours() == 0) nouveauPoidsHutte = 5;
+            //si le joueur a placé 2 bâtiments de chaque type, on augmente le poids des bâtimetns restants
+            if(joueurCourant.getNbTemples()==0 && joueurCourant.getNbHuttes()==0){
+                nouveauPoidsTour= 500;
+            }else if(joueurCourant.getNbTemples()==0 && joueurCourant.getNbTours()==0) {
+                nouveauPoidsHutte = 20;
+            }
             //si le joueur ne peut plus construire de huttes
             else if(joueurCourant.getNbHuttes() == 0){
                 if(i == jCourant) {
@@ -142,7 +147,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             //sinon son score se calcule en fonction des bâtiments qu'il a placés
             score += (batimentsPlacablesNombre[0]*joueurCourant.getNbTemples())*(poids_temple);
             score += batimentsPlacablesNombre[1]*joueurCourant.getNbHuttes()*(poids_hutte*nouveauPoidsHutte);
-            score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour);
+            score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour*nouveauPoidsTour);
         }
         return score/joueurs.length;
     }
