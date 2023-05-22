@@ -586,6 +586,9 @@ public class Plateau implements Serializable, Cloneable {
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
+            if(estVide()){
+                tripletsPossible = new ArrayList<>();
+            }
             coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
             coup.oldTerrain2=carte[coup.tile2Ligne][coup.tile2Colonne].getBiomeTerrain();
             carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.volcanLigne][coup.volcanColonne].getNum());
