@@ -116,7 +116,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public boolean estSurAnnuler(MouseEvent e) {//ok
             int largeur = posX_annuler + largeur_bouton;
             int hauteur = posY_annuler + largeur_bouton;
-            if(e.getX() >= posX_annuler && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur){
+            if(e.getX() >= posX_annuler && e.getX() <= largeur && e.getY() >= posY_annuler && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 fenetreJeu.panelPlateau.estSurBouton = true;
                 select_annuler = true;
                 return true;
@@ -129,7 +129,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public boolean estSurScoreboard(MouseEvent e){
             int largeur = posX_fenetre_score + largeur_fenetre_score;
             int hauteur = posY_fenetre_score + hauteur_fenetre_score;
-            if(e.getX() >= 0 && e.getX() <= largeur && e.getY() >= 0 && e.getY() <= hauteur){
+            if(e.getX() >= 0 && e.getX() <= largeur && e.getY() >= 0 && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 fenetreJeu.panelPlateau.estSurScoreboard = true;
                 return true;
             }
@@ -140,7 +140,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public boolean estSurRefaire(MouseEvent e) {//ok
             int largeur = posX_refaire + largeur_bouton;
             int hauteur = posY_refaire + largeur_bouton;
-            if(e.getX() >= posX_refaire && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur){
+            if(e.getX() >= posX_refaire && e.getX() <= largeur && e.getY() >= posY_refaire && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 fenetreJeu.panelPlateau.estSurBouton = true;
                 select_refaire = true;
                 return true;
@@ -153,7 +153,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public boolean estSurBoutonOptionsEchap(MouseEvent e) {//bouton de pause dans le jeu (ou en cliquant sur Echap)
             int largeur = posX_options_echap + largeur_bouton;
             int hauteur = posY_options_echap + largeur_bouton;
-            if(e.getX() >= posX_options_echap && e.getX() <= largeur && e.getY() >= posY_options_echap && e.getY() <= hauteur){
+            if(e.getX() >= posX_options_echap && e.getX() <= largeur && e.getY() >= posY_options_echap && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 fenetreJeu.panelPlateau.estSurBouton = true;
                 select_menu_options = true;
                 return true;
@@ -167,7 +167,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(!clicBoutonPauseEchap) return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_retour + hauteur_bouton_dans_options;
-            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_retour && e.getY() <= hauteur){
+            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_retour && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 select_retour = true;
                 select_save = false;
                 select_load = false;
@@ -183,7 +183,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(!clicBoutonPauseEchap) return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_save + hauteur_bouton_dans_options;
-            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_save && e.getY() <= hauteur){
+            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_save && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 select_save = true;
                 select_load = false;
                 select_parametres = false;
@@ -199,7 +199,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(!clicBoutonPauseEchap) return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_load + hauteur_bouton_dans_options;
-            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_load && e.getY() <= hauteur){
+            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_load && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 select_load = true;
                 select_save = false;
                 select_parametres = false;
@@ -215,7 +215,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(!clicBoutonPauseEchap) return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_parametres + hauteur_bouton_dans_options;
-            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_parametres && e.getY() <= hauteur){
+            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_parametres && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 select_parametres = true;
                 select_save = false;
                 select_load = false;
@@ -231,7 +231,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(!clicBoutonPauseEchap) return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_quitter + hauteur_bouton_dans_options;
-            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur){
+            if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 select_quitter = true;
                 select_save = false;
                 select_load = false;
@@ -247,7 +247,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(!select_fin_partie) return false;
             int largeur = posX_retour_finPartie + largeur_retour_finPartie;
             int hauteur = posY_retour_finPartie + hauteur_retour_finPartie;
-            if(e.getX() >= posX_retour_finPartie && e.getX() <= largeur && e.getY() >= posY_retour_finPartie && e.getY() <= hauteur){
+            if(e.getX() >= posX_retour_finPartie && e.getX() <= largeur && e.getY() >= posY_retour_finPartie && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
                 select_retour = true;
                 return true;
             }
@@ -318,6 +318,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 }
                 if(estSurRetour(e)){
                     fenetreJeu.playSons(0);
+                    fenetreJeu.retourDebug = true;
                     clicBoutonPauseEchap = false;
                     select_retour = false;
                 }

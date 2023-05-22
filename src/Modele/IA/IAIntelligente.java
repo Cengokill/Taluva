@@ -349,9 +349,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
         CoupValeur coupAFaire;
         ArrayList<TripletDePosition> coupsTuilePossibles = instanceJeu.getPlateau().getTripletsPossibles();
-        //affichetripletpossible();
         ArrayList<Coup> coupTuileBatimentsAEvaluer = new ArrayList<>();
-        ArrayList<Coup> coupTuileBatimentsAEvaluer2 = new ArrayList<>();
 
         // On parcourt toutes les tuiles pour trouver les meilleures.
         debut_test = System.currentTimeMillis();
@@ -363,7 +361,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupT);
 
             int scoreTuile_courante = evaluationScoreTuile(instanceCourante);
-            //int scoreTuile_courante = evaluation(instanceCourante);
             // si le coup est aussi bien que notre meilleur on le rajoute
             if(scoreTuile_courante==scoreTuile_max){
                 coupTuileBatimentsAEvaluer.add(coupT);
@@ -389,26 +386,24 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupCourant);
             coupAFaire = choisirCoupBatiment(coupCourant,instanceCourante);
 
-            if(coupAFaire!=null){
+            if(coupAFaire!=null) {
                 score_courant = coupAFaire.getValeur();
                 // si le coup est aussi bien que notre meilleur on le rajoute
-                if(score_courant==scoreBatiment_max){
+                if (score_courant == scoreBatiment_max) {
                     coupARenvoyer.add(coupAFaire);
-                    if(estFinTemps()){
+                    if (estFinTemps()) {
                         return coupARenvoyer;
                     }
                 }
                 // si le coup est mieux on efface la liste, et on met là jour la valeur du meilleur coup
-                else if(score_courant>scoreBatiment_max){
+                else if (score_courant > scoreBatiment_max) {
                     scoreBatiment_max = score_courant;
                     coupARenvoyer = new ArrayList<>();
                     coupARenvoyer.add(coupAFaire);
-                    if(estFinTemps()){
+                    if (estFinTemps()) {
                         return coupARenvoyer;
                     }
                 }
-            }else{ // TODO on essaie toutes les tuiles qu'on n'a pas essayé, si on ne peut tout de meme pas jouer l'IA a perdu.
-
             }
         }
         fin_test2 = System.currentTimeMillis();
