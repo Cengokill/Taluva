@@ -46,9 +46,10 @@ public class PanelMenu extends JPanel {
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
-    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posYChronoList, posXChronoList, posXDifficulteList, posYDifficulteList,  posX_bouton_plus_ia, posX_bouton_moins, posY_bouton_moins, posX_cadre, posY_cadre, posX_textJoueur, posY_textJoueur,
-    posX_bouton_valider, posY_bouton_valider, posX_bouton_fermer, posY_bouton_fermer;
-    public int largeur_bouton_plus, largeur_bouton_moins, largeur_cadre, largeur_bouton_valider, largeur_bouton_fermer, largeur_textJoueur, decalageY_couleur;
+    public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posYChronoList, posXChronoList, posXDifficulteList, posYDifficulteList,  posX_bouton_plus_ia, posX_bouton_moins,
+            posY_bouton_moins, posX_cadre, posY_cadre, posX_textJoueur, posY_textJoueur, posX_bouton_valider, posY_bouton_valider, posX_bouton_fermer, posY_bouton_fermer,
+    hauteur_textJoueur, largeur_bouton_plus, largeur_bouton_moins, largeur_cadre, largeur_bouton_valider, largeur_bouton_fermer, largeur_textJoueur, largeur_textDifficulte,
+            decalageY_couleur;
     private int timerValue;
     private JTextField field_joueur1;
     boolean select_local;
@@ -172,14 +173,14 @@ public class PanelMenu extends JPanel {
         listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
         layeredPane.add(listeChrono, JLayeredPane.POPUP_LAYER);
         revalidate();
-        repaint();
+        metAJour();
 
         listeDifficulte.setVisible(true);
         listeDifficulte.setBackground(Color.WHITE);
         listeDifficulte.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
         layeredPane.add(listeDifficulte, JLayeredPane.POPUP_LAYER);
         revalidate();
-        repaint();
+        metAJour();
 
         nomJoueur1 = new JTextField(15);
         nomJoueur1.setVisible(true);
@@ -187,7 +188,7 @@ public class PanelMenu extends JPanel {
         nomJoueur1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
         layeredPane.add(nomJoueur1, JLayeredPane.POPUP_LAYER);
         revalidate();
-        repaint();
+        metAJour();
 
         nomJoueur2 = new JTextField(15);
         nomJoueur2.setVisible(true);
@@ -195,7 +196,7 @@ public class PanelMenu extends JPanel {
         nomJoueur2.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur2, JLayeredPane.POPUP_LAYER);
         revalidate();
-        repaint();
+        metAJour();
 
         nomJoueur3 = new JTextField(15);
         nomJoueur3.setVisible(true);
@@ -203,7 +204,7 @@ public class PanelMenu extends JPanel {
         nomJoueur3.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur3, JLayeredPane.POPUP_LAYER);
         revalidate();
-        repaint();
+        metAJour();
 
         nomJoueur4 = new JTextField(15);
         nomJoueur4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
@@ -211,7 +212,7 @@ public class PanelMenu extends JPanel {
         nomJoueur4.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur4, JLayeredPane.POPUP_LAYER);
         revalidate();
-        repaint();
+        metAJour();
 
         nomJoueur1.setVisible(false);
         nomJoueur2.setVisible(false);
@@ -553,15 +554,15 @@ public class PanelMenu extends JPanel {
         else if(clic_valider && peut_valider) {
             g2d.drawImage(valider_clic, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
         }
-        nomJoueur1.setBounds(posX_textJoueur, posY_textJoueur, largeur_textJoueur, 40);
-        nomJoueur2.setBounds(posX_textJoueur, posY_textJoueur+decalageY_couleur, largeur_textJoueur, 40);
-        nomJoueur3.setBounds(posX_textJoueur, posY_textJoueur+2*decalageY_couleur, largeur_textJoueur, 40);
-        nomJoueur4.setBounds(posX_textJoueur, posY_textJoueur+3*decalageY_couleur, largeur_textJoueur, 40);
+        nomJoueur1.setBounds(posX_textJoueur, posY_textJoueur, largeur_textJoueur, hauteur_textJoueur);
+        nomJoueur2.setBounds(posX_textJoueur, posY_textJoueur+decalageY_couleur, largeur_textJoueur, hauteur_textJoueur);
+        nomJoueur3.setBounds(posX_textJoueur, posY_textJoueur+2*decalageY_couleur, largeur_textJoueur, hauteur_textJoueur);
+        nomJoueur4.setBounds(posX_textJoueur, posY_textJoueur+3*decalageY_couleur, largeur_textJoueur, hauteur_textJoueur);
 
         listeChrono.setVisible(true);
         listeDifficulte.setVisible(true);
-        listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textJoueur + 35, 40);
-        listeDifficulte.setBounds(posXDifficulteList, posYDifficulteList, largeur_textJoueur + 35, 40);
+        listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte.setBounds(posXDifficulteList, posYDifficulteList, largeur_textDifficulte, hauteur_textJoueur);
     }
 
     private void calculeRapportsEtPositions() {
@@ -593,27 +594,29 @@ public class PanelMenu extends JPanel {
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
         //boutons menu création partie
         largeur_bouton_plus = (int) (largeur_background*0.045);
-        largeur_bouton_moins = (int) (largeur_bouton_plus*0.6);
+        largeur_bouton_moins = (int) (largeur_bouton_plus*0.7);
         largeur_bouton_valider = (int) (largeur_background*0.11);
         largeur_bouton_fermer = (int) (largeur_background*0.08);
         largeur_cadre = (int) (largeur_background*0.05);
+        hauteur_textJoueur = (int) (largeur_bouton_moins*0.9);
         largeur_textJoueur = (int) (largeur_background*0.17);
+        largeur_textDifficulte = (int) (largeur_textJoueur*0.7);
         posX_bouton_plus_joueur = (int) (posX_background + largeur_background*0.15);
-        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.35);
+        posX_bouton_plus_ia = (int) (posX_background + largeur_background*0.37);
         posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.27);
         posX_textJoueur = (int) (posX_background + largeur_background*0.15);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
         posYChronoList = posY_textJoueur;
-        posXChronoList = (int) (largeur_background*0.68);
+        posXChronoList = (int) (posX_bouton_plus_ia+largeur_background*0.36);
         posXDifficulteList = posXChronoList;
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.26);
         posX_cadre = (int) (posX_textJoueur + largeur_background*0.18);
         posY_cadre = (int) (posY_textJoueur - hauteur_background*0.02);
-        posX_bouton_moins = (int) (posX_cadre + largeur_cadre*1.5);
-        posY_bouton_moins = (int) (posY_cadre + largeur_cadre*0.2);
-        decalageY_couleur = (int) (hauteur_background*0.13);
+        posX_bouton_moins = (int) (posX_textJoueur - largeur_background*0.05);
+        posY_bouton_moins = (int) (posY_cadre + largeur_cadre*0.22);
+        decalageY_couleur = (int) (hauteur_background*0.15);
         posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
-        posY_bouton_valider = (int) (posY_background + hauteur_background*0.78);
+        posY_bouton_valider = (int) (posY_background + hauteur_background*0.82);
     }
 
     private void afficheMessageErreur(Graphics g) {
