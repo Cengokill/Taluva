@@ -77,11 +77,6 @@ public class Plateau implements Serializable, Cloneable {
 
     private void initTripletsPossibles() {
         tripletsPossible = new ArrayList<>();
-    }
-
-    private void initPositionsLibres() {
-        positions_libres = new ArrayList<>();
-        positions_libres_batiments = new ArrayList<>();
         TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
         TripletDePosition tripletDeBase2 = new TripletDePosition(new Position(30,29),new Position(31,30),new Position(31,29));
         TripletDePosition tripletDeBase3 = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
@@ -94,6 +89,11 @@ public class Plateau implements Serializable, Cloneable {
         tripletsPossible.add(tripletDeBase4);
         tripletsPossible.add(tripletDeBase5);
         tripletsPossible.add(tripletDeBase6);
+    }
+
+    private void initPositionsLibres() {
+        positions_libres = new ArrayList<>();
+        positions_libres_batiments = new ArrayList<>();
     }
 
     private void initQuantitePions() {
