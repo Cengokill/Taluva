@@ -19,6 +19,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
     public FenetreJeuListener(FenetreJeu fenetreJeu) {
         super();
         this.fenetreJeu = fenetreJeu;
+        clicBoutonPauseEchap = false;
 
         this.fenetreJeu.panelPlateau.mouseHandler = new MouseHandler();
         this.fenetreJeu.panelPlateau.addMouseListener(this.fenetreJeu.panelPlateau.mouseHandler);
