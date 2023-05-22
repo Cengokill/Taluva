@@ -262,25 +262,6 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nbJoueurs = 0;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
             return true;
         }
         return false;
@@ -293,25 +274,6 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins+panelMenu.decalageY_couleur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nbJoueurs = 1;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
             return true;
         }
         return false;
@@ -324,27 +286,6 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins+2*panelMenu.decalageY_couleur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nbJoueurs = 2;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-
-
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
             return true;
         }
 
@@ -358,27 +299,6 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_bouton_moins;
         int starty = panelMenu.posY_bouton_moins+3*panelMenu.decalageY_couleur;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_moins && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_moins && !panelMenu.clicOptions) {
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nbJoueurs = 3;
-            }
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-
-
-            if (panelMenu.nbJoueurs == 1) {
-                panelMenu.nomJoueur1.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 2) {
-                panelMenu.nomJoueur2.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 3) {
-                panelMenu.nomJoueur3.setVisible(true);
-            }
-            if (panelMenu.nbJoueurs == 4) {
-                panelMenu.nomJoueur4.setVisible(true);
-            }
             return true;
         }
         return false;
