@@ -22,6 +22,7 @@ public class Plateau implements Serializable, Cloneable {
     private ArrayList<Position> positions_libres;
 
     private ArrayList<TripletDePosition> tripletsPossible;
+    private ArrayList<TripletDePosition> joueurTripletsPossible;
     private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
@@ -31,6 +32,7 @@ public class Plateau implements Serializable, Cloneable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
+        initJoueurTripletsPossibles();
     }
 
     public Plateau copie(){
@@ -85,17 +87,23 @@ public class Plateau implements Serializable, Cloneable {
     private void initTripletsPossibles() {
         tripletsPossible = new ArrayList<>();
         TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
+        tripletsPossible.add(tripletDeBase1);
+    }
+
+    private void initJoueurTripletsPossibles(){
+        joueurTripletsPossible = new ArrayList<>();
+        TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
         TripletDePosition tripletDeBase2 = new TripletDePosition(new Position(30,29),new Position(31,30),new Position(31,29));
         TripletDePosition tripletDeBase3 = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
         TripletDePosition tripletDeBase4 = new TripletDePosition(new Position(31,29),new Position(32,29),new Position(32,28));
         TripletDePosition tripletDeBase5 = new TripletDePosition(new Position(31,28),new Position(31,29),new Position(32,28));
         TripletDePosition tripletDeBase6 = new TripletDePosition(new Position(30,28),new Position(31,29),new Position(31,28));
-        tripletsPossible.add(tripletDeBase1);
-        tripletsPossible.add(tripletDeBase2);
-        tripletsPossible.add(tripletDeBase3);
-        tripletsPossible.add(tripletDeBase4);
-        tripletsPossible.add(tripletDeBase5);
-        tripletsPossible.add(tripletDeBase6);
+        joueurTripletsPossible.add(tripletDeBase1);
+        joueurTripletsPossible.add(tripletDeBase2);
+        joueurTripletsPossible.add(tripletDeBase3);
+        joueurTripletsPossible.add(tripletDeBase4);
+        joueurTripletsPossible.add(tripletDeBase5);
+        joueurTripletsPossible.add(tripletDeBase6);
     }
 
     private void initPositionsLibres() {
@@ -122,6 +130,15 @@ public class Plateau implements Serializable, Cloneable {
 
     public boolean estDansTripletsPossibles(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
         for(TripletDePosition triplet : tripletsPossible){
+            // Attention le Point X des triplets correspond toujours au volcan !!
+            if (peutPlacerTuileFromTriplet(ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, ligneTile2, colonneTile2, triplet))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean estDansJoueurTripletsPossibles(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
+        for(TripletDePosition triplet : joueurTripletsPossible){
             // Attention le Point X des triplets correspond toujours au volcan !!
             if (peutPlacerTuileFromTriplet(ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, ligneTile2, colonneTile2, triplet))
                 return true;
@@ -364,7 +381,7 @@ public class Plateau implements Serializable, Cloneable {
         }
 
         // Premiere tuile posée
-        if(estVide() && estDansTripletsPossibles(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)){
+        if(estVide() && estDansJoueurTripletsPossibles(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)){
             return 0;
         }
 
@@ -586,9 +603,6 @@ public class Plateau implements Serializable, Cloneable {
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
-            if(estVide()){
-                tripletsPossible = new ArrayList<>();
-            }
             coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
             coup.oldTerrain2=carte[coup.tile2Ligne][coup.tile2Colonne].getBiomeTerrain();
             carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.volcanLigne][coup.volcanColonne].getNum());
