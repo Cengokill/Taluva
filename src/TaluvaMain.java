@@ -15,7 +15,7 @@ public class TaluvaMain {
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException, FontFormatException {
         byte type_jeu = GRAPHIQUE;
-        int nb_parties = 100;
+        int nb_parties = 10;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
         jeu.AFFICHAGE = true;
