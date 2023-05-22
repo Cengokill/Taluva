@@ -43,6 +43,7 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.select_quitter = false;
             panelMenu.select_reseau = false;
             panelMenu.select_local = true;
+            PanelMenu.estEnChargement = false;
             this.type_jeu = "local";
             return true;
         }
@@ -61,6 +62,7 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.select_quitter = false;
             panelMenu.select_local = false;
             panelMenu.select_reseau = true;
+            PanelMenu.estEnChargement = false;
             this.type_jeu = "reseau";
             return true;
         }
@@ -526,36 +528,7 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBoutonValiderConfig(e)){
             panelMenu.playSons(0);
             if (panelMenu.nbJoueurs >= 2) {
-                String nomJoueur1 = panelMenu.nomJoueur1.getText();
-                String nomJoueur2 = panelMenu.nomJoueur2.getText();
-                String nomJoueur3 = panelMenu.nomJoueur3.getText();
-                String nomJoueur4 = panelMenu.nomJoueur4.getText();
-                String tempsChrono = (String) panelMenu.listeChrono.getSelectedItem();
-                String difficulte = (String) panelMenu.listeDifficulte.getSelectedItem();
-                int nbJoueur = panelMenu.nbJoueurs;
-
-                PanelMenu.estConfigPartie = false;
-                panelMenu.nomJoueur1.setVisible(false);
-                panelMenu.nomJoueur2.setVisible(false);
-                panelMenu.nomJoueur3.setVisible(false);
-                panelMenu.nomJoueur4.setVisible(false);
-                panelMenu.listeChrono.setVisible(false);
-                panelMenu.listeDifficulte.setVisible(false);
-
-                //efface tout le contenu de la frame
-                panelMenu.layeredPane.removeAll();
-                panelMenu.musicPlayer.stop();
-
-                // On passe du menu au jeu
-                ImageLoader.loadImages();
-                panelMenu.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
-                panelMenu.fenetre.panelPlateau.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.fenetre.panelVignette.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.fenetre.buttonPanel.setBounds(panelMenu.getBounds().x, panelMenu.getBounds().y, panelMenu.getWidth(), panelMenu.getHeight());
-                panelMenu.jeu.indexSon = panelMenu.index_sonPanel;
-                panelMenu.jeu.indexMusique = panelMenu.index_musiquePanel;
-                panelMenu.jeu.initialiseMusique();
-                panelMenu.jeu.initialiseSons();
+                PanelMenu.estEnChargement = true;
 
             }else{
                 panelMenu.afficheErreur = true;

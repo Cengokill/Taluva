@@ -7,6 +7,7 @@ import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
 import Structures.Position.Point2D;
 import Structures.Position.Position;
+import Vue.PanelMenu;
 
 
 import javax.sound.sampled.*;
@@ -141,6 +142,8 @@ public class Jeu extends Observable implements Serializable{
 
         pioche = new LinkedList<>();
         lancePartie();
+        PanelMenu.estEnChargement = false;
+        PanelMenu.aAfficheChargement = false;
     }
 
     public void initialiseMusique(){
