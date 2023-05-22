@@ -242,6 +242,8 @@ public class FenetreJeu extends Container {
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 11, hauteur / 11), 80), 190);
                 hauteur_bouton = largeur_bouton;
+                posX_tuto = (int) (largeur / 1.2);
+                posY_tuto =  (int)(hauteur / 1.3);
                 //menu d'options
                 largeur_menu_options = (int) Math.min(Math.max(Math.min(largeur*0.8, hauteur*0.8), 400), 800);
                 hauteur_menu_options = largeur_menu_options;
@@ -252,11 +254,8 @@ public class FenetreJeu extends Container {
                 posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2;
                 posY_save = (int) (posY_menu_options + hauteur_menu_options * 0.10);
                 posY_load = (int) (posY_save + hauteur_menu_options * 0.20);
-                posX_tuto = (int) (largeur / 1.2);
-                posY_tuto =  (int)(hauteur / 1.3);
-                posX_Echap = posX_tuto + 5;
-                posY_Echap = posY_joueur_courant;
-                posY_quitter = (int) (hauteur_menu_options * 0.90);
+                posY_parametres = (int) (posY_load + hauteur_menu_options * 0.20);
+                posY_retour= (int) (posY_parametres + hauteur_menu_options * 0.20);
                 //bouton options en jeu
                 posX_options_echap = (int) (largeur - largeur*0.08);
                 posY_options_echap = posY_fenetre_score;
@@ -411,15 +410,15 @@ public class FenetreJeu extends Container {
         bouton_save_select = lisImageBuf("Menu/bouton_sauvegarder_select");
         bouton_load = lisImageBuf("Menu/bouton_charger");
         bouton_load_select = lisImageBuf("Menu/bouton_charger_select");
-        bouton_retour = lisImageBuf("Menu/Retour");
-        bouton_retour_select = lisImageBuf("Menu/Retour_select");
-        bouton_quitter = lisImageBuf("Quitter");
+        bouton_parametres = lisImageBuf("Menu/bouton_parametres");
+        bouton_parametres_select = lisImageBuf("Menu/bouton_parametres_select");
+        bouton_retour = lisImageBuf("Menu/bouton_retour");
+        bouton_retour_select = lisImageBuf("Menu/bouton_retour_select");
         bouton_annuler = lisImageBuf("Annuler");
         bouton_annuler = lisImageBuf("Annuler");
         bouton_annuler_select = lisImageBuf("Annuler_select");
         bouton_refaire = lisImageBuf("Refaire");
         bouton_refaire_select = lisImageBuf("Refaire_select");
-        //bouton_refaire_select = lisImageBuf("Refaire_select");
         bouton_tuto_on = lisImageBuf("Tuto_on");
         bouton_tuto_off = lisImageBuf("Tuto_off");
         bouton_options_echap = lisImageBuf("Options");
@@ -695,9 +694,7 @@ public class FenetreJeu extends Container {
                 if(jeu.getPioche().size()>0)
                     g.drawImage(pioche[jeu.getPioche().size()-1], posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche, null);
             }
-
         }
-
     }
 
     public static void afficheFinPartie(Graphics g) {
@@ -771,30 +768,23 @@ public class FenetreJeu extends Container {
                 zero_2 = "";
             }
             g.drawString(zero_1+temps_minutes+":"+zero_2+temps_secondes, posX_temps_partie, posY_temps_partie);
-            afficheBoutonQuitter(g);
+            afficheBoutonRetour(g);
         }
     }
 
     public static void afficheMenuOptions(Graphics g) {
-        if (select_menu_options) {
+        if(clicBoutonPauseEchap){
             g.drawImage(menu_dark_filter, 0, 0, 3000, 3000, null);
             g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
-            //afficheBoutonOptions(g);
             afficheBoutonLoad(g);
             afficheBoutonSave(g);
-            afficheBoutonQuitter(g);
+            afficheBoutonParametres(g);
+            afficheBoutonRetour(g);
         }
     }
 
-    public static void afficheBoutonOptions(Graphics g) {//menu principal
-        if(select_options)
-            g.drawImage(bouton_options_echap_select, posX_options_echap, posY_options_echap, largeur_bouton_options, largeur_bouton_options,null);
-        else
-            g.drawImage(bouton_options_echap, posX_options_echap, posY_options_echap, largeur_bouton_options, largeur_bouton_options,null);
-    }
-
     public static void afficheBoutonOptionsEchap(Graphics g) {//pendant le jeu
-        if(estSurBoutonOptions)
+        if(select_menu_options)
             g.drawImage(bouton_options_echap_select, posX_options_echap, posY_options_echap, largeur_bouton, largeur_bouton, null);
         else
             g.drawImage(bouton_options_echap, posX_options_echap, posY_options_echap, largeur_bouton, largeur_bouton, null);
@@ -814,32 +804,39 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_load, posX_save, posY_load, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
     }
 
-    public static void afficheBoutonTuto(Graphics g) {
-        if(tuto_on)
-            g.drawImage(bouton_tuto_on, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6), null);
+    public static void afficheBoutonParametres(Graphics g) {//menu principal
+        if(select_parametres)
+            g.drawImage(bouton_parametres_select, posX_save, posY_parametres, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
         else
-            g.drawImage(bouton_tuto_off, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6),null);
+            g.drawImage(bouton_parametres, posX_save, posY_parametres, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
     }
 
-    public static void afficheBoutonQuitter(Graphics g) {
-        if(estSurBoutonQuitterOptions)
-            g.drawImage(bouton_quitter_select, (int)(posX_save*1.12), posY_quitter, bouton_quitter_select.getWidth() / 6, bouton_quitter_select.getHeight() / 6,null);
+    public static void afficheBoutonRetour(Graphics g) {
+        if(select_retour)
+            g.drawImage(bouton_retour_select, posX_save, posY_retour, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);
         else
-            g.drawImage(bouton_quitter, posX_save + bouton_load_select.getWidth() + bouton_load_select.getWidth()/2 , posY_quitter, bouton_load_select.getWidth() / 3, bouton_load_select.getHeight() / 3,null);
+            g.drawImage(bouton_retour, posX_save, posY_retour, largeur_bouton_dans_options, hauteur_bouton_dans_options,null);;
     }
 
     public static void afficheBoutonAnnuler(Graphics g) {//pendant le jeu
-        if(estSurBoutonAnnuler)
+        if(select_annuler)
             g.drawImage(bouton_annuler_select, posX_annuler, posY_annuler, largeur_bouton, largeur_bouton,null);
         else
             g.drawImage(bouton_annuler,  posX_annuler, posY_annuler, largeur_bouton, largeur_bouton,null);
     }
 
     public static void afficheBoutonRefaire(Graphics g) {//pendant le jeu
-        if(estSurBoutonRefaire)
+        if(select_refaire)
             g.drawImage(bouton_refaire_select, posX_refaire, posY_refaire, largeur_bouton, largeur_bouton,null);
         else
             g.drawImage(bouton_refaire, posX_refaire, posY_refaire,  largeur_bouton, largeur_bouton,null);
+    }
+
+    public static void afficheBoutonTuto(Graphics g) {
+        if(tuto_on)
+            g.drawImage(bouton_tuto_on, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6), null);
+        else
+            g.drawImage(bouton_tuto_off, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6),null);
     }
 
     public static void annuler(){

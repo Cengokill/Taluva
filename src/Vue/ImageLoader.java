@@ -34,11 +34,11 @@ public class ImageLoader {
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
     public static BufferedImage bouton_save, bouton_save_select, bouton_load, bouton_load_select, bouton_retour, bouton_retour_select, bouton_annuler, bouton_annuler_select, bouton_suggestion,
-            bouton_refaire, bouton_refaire_select, bouton_quitter, bouton_quitter_select, bouton_tuto_off, bouton_tuto_on, bouton_options_echap, bouton_options_echap_select,
+            bouton_refaire, bouton_refaire_select, bouton_tuto_off, bouton_tuto_on, bouton_options_echap, bouton_options_echap_select, bouton_parametres, bouton_parametres_select, bouton_quitter, bouton_quitter_select,
             menu_options, menu_dark_filter;
     public static int posX_fenetre_score, posY_fenetre_score, posX_boutons, posX_save, posX_options_echap, posY_options_echap, largeur_bouton_options,
-            posY_load, posY_save, posX_annuler, posY_annuler, posX_refaire, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
-            posX_Echap, posY_Echap, posX_timer, posY_timer, largeur_timer, hauteur_timer,
+            posY_load, posY_save, posY_retour, posY_parametres, posX_annuler, posY_annuler, posX_refaire, posY_refaire, posY_quitter, posX_tuto, posY_tuto,
+            posX_timer, posY_timer, largeur_timer, hauteur_timer,
             posX_joueur_courant, posY_joueur_courant, posX_prenom, posY_prenom_j0, posY_prenom_j1, posY_prenom_j2, posY_prenom_j3, posX_huttes, posX_tours, posX_temples,
             posY_scores_j0, posY_scores_j1, posY_scores_j2, posY_scores_j3, posX_nb_tuiles_pioche, posY_nb_tuiles_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
             largeur_tuile, hauteur_tuile, largeur_fin_partie, hauteur_fin_partie;
@@ -52,15 +52,15 @@ public class ImageLoader {
             posY_temples_score_j0, posY_temples_score_j1, posY_temples_score_j2, posY_temples_score_j3;
     public static double tempsDebutPartie, tempsFinPartie, tempsPartie;
     public static int posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche;
-    public static boolean select_options;
     public static boolean select_menu_options;
     public static boolean select_save;
     public static boolean select_load;
-    public static boolean select_annuler;
+    public static boolean select_parametres;
     public static boolean select_retour;
+    public static boolean select_annuler;
     public static boolean select_refaire;
+    public static boolean clicBoutonPauseEchap, clicBoutonParametres;
     public static boolean tuto_on;
-    public static boolean select_quitter;
     public static boolean select_fin_partie;
     public static BufferedImage echap_button;
 
