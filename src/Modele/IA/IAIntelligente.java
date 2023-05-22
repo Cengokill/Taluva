@@ -49,6 +49,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         r = new Random(seed);
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
+        if(jeu.getJoueurCourantClasse().getPrenom().equals("IA1")) {
+            System.out.println("IA1");
+            plateauIA.affiche();
+        }
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
         this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur());
         instance.setTuilePiochee(jeu.getTuileCourante());//définit la tuile piochée de l'instance sans la retirer de la pioche, puisque à ce moment le jeu a déjà retiré la tuile de la pioche
@@ -548,6 +552,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             return null;
         }
         CoupValeur coupARenvoyer = new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
+        System.out.println("----------------------");
         return coupARenvoyer;
     }
 
@@ -556,8 +561,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         Plateau plateauCopie = instanceCourante.getPlateau().copie();
         ArrayList<Coup> coupsPossiblesARenvoyer = new ArrayList<>();
         ArrayList<Position> positionsPossiblesBatiment = plateauCopie.getPositions_libres_batiments();
+        plateauCopie.affiche();
         byte joueur_courant = instanceCourante.getJoueurCourant();
-        Color color_joueur_courant = instanceCourante.getJoueur(joueur_courant).getCouleur();
+        Color color_joueur_courant = instanceCourante.getJoueurCourantClasse().getCouleur();
         // On parcours toutes les positions possibles
         for (int position = 0; position < positionsPossiblesBatiment.size(); position++) {
             Coup coupB = null;
@@ -567,6 +573,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
                 //si le bâtiment est plaçable
                 if (batimentsPlacable[batimentChoisit] == 1) {
+                    System.out.println("batimentChoisit : " + batimentChoisit);
                     Joueur jCourantCopie = instanceCourante.getJoueur(joueur_courant);
                     Joueur[] joueurs = instanceCourante.getJoueurs();
                     Plateau plateauCopie2 = plateauCopie.copie();
