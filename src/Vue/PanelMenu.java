@@ -42,7 +42,8 @@ public class PanelMenu extends JPanel {
     int hauteur_bouton;
     int hauteur_menu_options;
     public static int index_sonPanel;
-    public static int index_musiquePanel;
+    public int index_sonPanelAvant;
+    public static int index_musiquePanel,index_musiquePanelAvant;
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
             posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
             posX_btnAnnuler,posX_btnValider,posY_btnChoix;
@@ -263,10 +264,14 @@ public class PanelMenu extends JPanel {
     public void playSons(int indexAJouer) {
         int sonVolume;
         if (index_sonPanel == 0) sonVolume = -100000;
-        else sonVolume = (-30) + index_sonPanel * 20;
+        else sonVolume = (-30) + index_sonPanel * 17;
         MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
+        if(indexAJouer==0){
+            sonCourant.setVolume(-25+sonVolume);
+        }else{
+            sonCourant.setVolume(-20+sonVolume);
+        }
         sonCourant.resetClip();
-        sonCourant.setVolume(sonVolume);
         sonCourant.play();
     }
 
