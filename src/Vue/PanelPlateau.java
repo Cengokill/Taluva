@@ -53,7 +53,7 @@ public class PanelPlateau extends JPanel {
     Runtime runtime = Runtime.getRuntime();
     public int nombreCoeurs;
     public double memoireLibre;
-    public boolean estSurBouton;
+    public boolean estSurBouton, estSurScoreboard;
     public int vitesse;
 
     ArrayList<TripletDePosition> afficheEmplacementPosable;
@@ -111,7 +111,7 @@ public class PanelPlateau extends JPanel {
         g2d.scale(zoomFactor, zoomFactor);
         displayHexagonMap(g);
         //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
-        if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA && !estSurBouton && !clicBoutonPauseEchap) {
+        if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA && !estSurBouton && !clicBoutonPauseEchap && !estSurScoreboard) {
             affichePrevisualisationPropagation(g);
             if(poseTile) displayHoverTile(g);
             else displayHoverMaison(g);
