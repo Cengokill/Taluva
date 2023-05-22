@@ -348,7 +348,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         int score_courant;
         ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
         CoupValeur coupAFaire;
-        ArrayList<TripletDePosition> coupsTuilePossibles = instance.getPlateau().getTripletsPossibles();
+        ArrayList<TripletDePosition> coupsTuilePossibles = instanceJeu.getPlateau().getTripletsPossibles();
         //affichetripletpossible();
         ArrayList<Coup> coupTuileBatimentsAEvaluer = new ArrayList<>();
         ArrayList<Coup> coupTuileBatimentsAEvaluer2 = new ArrayList<>();
@@ -553,7 +553,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             return null;
         }
         CoupValeur coupARenvoyer = new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
-        System.out.println("----------------------");
         return coupARenvoyer;
     }
 
@@ -574,7 +573,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
                 //si le bâtiment est plaçable
                 if (batimentsPlacable[batimentChoisit] == 1) {
-                    System.out.println("batimentChoisit : " + batimentChoisit);
                     Joueur jCourantCopie = instanceCourante.getJoueur(joueur_courant);
                     Joueur[] joueurs = instanceCourante.getJoueurs();
                     Plateau plateauCopie2 = plateauCopie.copie();

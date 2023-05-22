@@ -32,7 +32,6 @@ public class Plateau implements Serializable, Cloneable {
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
-        initJoueurTripletsPossibles();
     }
 
     public Plateau copie(){
@@ -87,23 +86,17 @@ public class Plateau implements Serializable, Cloneable {
     private void initTripletsPossibles() {
         tripletsPossible = new ArrayList<>();
         TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
-        tripletsPossible.add(tripletDeBase1);
-    }
-
-    private void initJoueurTripletsPossibles(){
-        joueurTripletsPossible = new ArrayList<>();
-        TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
         TripletDePosition tripletDeBase2 = new TripletDePosition(new Position(30,29),new Position(31,30),new Position(31,29));
         TripletDePosition tripletDeBase3 = new TripletDePosition(new Position(31,29),new Position(31,30),new Position(32,29));
         TripletDePosition tripletDeBase4 = new TripletDePosition(new Position(31,29),new Position(32,29),new Position(32,28));
         TripletDePosition tripletDeBase5 = new TripletDePosition(new Position(31,28),new Position(31,29),new Position(32,28));
         TripletDePosition tripletDeBase6 = new TripletDePosition(new Position(30,28),new Position(31,29),new Position(31,28));
-        joueurTripletsPossible.add(tripletDeBase1);
-        joueurTripletsPossible.add(tripletDeBase2);
-        joueurTripletsPossible.add(tripletDeBase3);
-        joueurTripletsPossible.add(tripletDeBase4);
-        joueurTripletsPossible.add(tripletDeBase5);
-        joueurTripletsPossible.add(tripletDeBase6);
+        tripletsPossible.add(tripletDeBase1);
+        tripletsPossible.add(tripletDeBase2);
+        tripletsPossible.add(tripletDeBase3);
+        tripletsPossible.add(tripletDeBase4);
+        tripletsPossible.add(tripletDeBase5);
+        tripletsPossible.add(tripletDeBase6);
     }
 
     private void initPositionsLibres() {
@@ -381,7 +374,7 @@ public class Plateau implements Serializable, Cloneable {
         }
 
         // Premiere tuile posée
-        if(estVide() && estDansJoueurTripletsPossibles(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)){
+        if(estVide() && estDansTripletsPossibles(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)){
             return 0;
         }
 
