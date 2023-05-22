@@ -233,9 +233,9 @@ public class PanelMenuListener implements MouseListener  {
 
     public boolean estCurseurSurBoutonAddJoueur(MouseEvent e){
         if(!panelMenu.estConfigPartie || !panelMenu.peut_addJoueur) return false;
-        int startx = panelMenu.posX_bouton_plus_joueur;
-        int starty = panelMenu.posY_bouton_plus_joueur;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
+        int largeur = panelMenu.posX_bouton_plus_joueur + panelMenu.largeur_bouton_plus;
+        int hauteur = panelMenu.posY_bouton_plus_joueur + panelMenu.largeur_bouton_plus;
+        if(e.getX() >= panelMenu.posX_bouton_plus_joueur && e.getX() <= largeur&& e.getY() >= panelMenu.posY_bouton_plus_joueur && e.getY() <= hauteur) {
            panelMenu.select_addJoueur = true;
            return true;
         }
@@ -245,9 +245,9 @@ public class PanelMenuListener implements MouseListener  {
 
     public boolean estCurseurSurBoutonAddIA(MouseEvent e){
         if(!panelMenu.estConfigPartie || !panelMenu.peut_addIA) return false;
-        int startx = panelMenu.posX_bouton_plus_ia;
-        int starty = panelMenu.posY_bouton_plus_joueur;
-        if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_plus && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_plus && !panelMenu.clicOptions) {
+        int largeur = panelMenu.posX_bouton_plus_ia + panelMenu.largeur_bouton_plus;
+        int hauteur = panelMenu.posY_bouton_plus_joueur + panelMenu.largeur_bouton_plus;
+        if(e.getX() >= panelMenu.posX_bouton_plus_ia && e.getX() <= largeur && e.getY() >= panelMenu.posY_bouton_plus_joueur && e.getY() <= hauteur) {
             panelMenu.select_addIA = true;
             return true;
         }
@@ -523,6 +523,8 @@ public class PanelMenuListener implements MouseListener  {
             }else{
                 panelMenu.afficheErreur = true;
             }
+        }else{
+            panelMenu.clic_valider = false;
         }
     }
 
@@ -555,11 +557,15 @@ public class PanelMenuListener implements MouseListener  {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(estCurseurSurBoutonValiderConfig(e)){
+            panelMenu.clic_valider = true;
+        }else{
+            panelMenu.clic_valider = false;
+        }
     }
 
     @Override
