@@ -259,10 +259,12 @@ public class PanelMenu extends JPanel {
     }
 
     public void initialiseSons(){
-        MusicPlayer placerTuile =new MusicPlayer("Musiques/clicBouton.wav");
-        sonPlayer.add(placerTuile);
-        MusicPlayer placerBatiment =new MusicPlayer("Musiques/selectionBouton.wav");
-        sonPlayer.add(placerBatiment);
+        MusicPlayer clicBouton =new MusicPlayer("Musiques/clicBouton.wav");
+        sonPlayer.add(clicBouton);
+        MusicPlayer selectionBouton =new MusicPlayer("Musiques/selectionBouton.wav");
+        sonPlayer.add(selectionBouton);
+        MusicPlayer confirmerBouton =new MusicPlayer("Musiques/confirmerBouton.wav");
+        sonPlayer.add(confirmerBouton);
     }
 
     public void playSons(int indexAJouer) {
