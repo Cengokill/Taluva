@@ -80,7 +80,10 @@ public class PanelMenu extends JPanel {
     String[] choixChrono = { "Infini", "15 sec", "30 sec", "1 min" };
     String[] choixDifficulte = { "Facile", "Intermediaire", "Difficile"};
     JComboBox<String> listeChrono = new JComboBox<>(choixChrono);
-    JComboBox<String> listeDifficulte = new JComboBox<>(choixDifficulte);
+    JComboBox<String> listeDifficulte1 = new JComboBox<>(choixDifficulte);
+    JComboBox<String> listeDifficulte2 = new JComboBox<>(choixDifficulte);
+    JComboBox<String> listeDifficulte3 = new JComboBox<>(choixDifficulte);
+    JComboBox<String> listeDifficulte4 = new JComboBox<>(choixDifficulte);
     public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
     BufferedImage chargement;
 
@@ -180,10 +183,31 @@ public class PanelMenu extends JPanel {
         revalidate();
         metAJour();
 
-        listeDifficulte.setVisible(true);
-        listeDifficulte.setBackground(Color.WHITE);
-        listeDifficulte.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
-        layeredPane.add(listeDifficulte, JLayeredPane.POPUP_LAYER);
+        listeDifficulte1.setVisible(false);
+        listeDifficulte1.setBackground(Color.WHITE);
+        listeDifficulte1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(listeDifficulte1, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        metAJour();
+
+        listeDifficulte2.setVisible(false);
+        listeDifficulte2.setBackground(Color.WHITE);
+        listeDifficulte2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(listeDifficulte2, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        metAJour();
+
+        listeDifficulte3.setVisible(false);
+        listeDifficulte3.setBackground(Color.WHITE);
+        listeDifficulte3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(listeDifficulte3, JLayeredPane.POPUP_LAYER);
+        revalidate();
+        metAJour();
+
+        listeDifficulte4.setVisible(false);
+        listeDifficulte4.setBackground(Color.WHITE);
+        listeDifficulte4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        layeredPane.add(listeDifficulte4, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
@@ -496,38 +520,13 @@ public class PanelMenu extends JPanel {
             this.nomJoueur3.setVisible(false);
             this.nomJoueur4.setVisible(false);
             this.listeChrono.setVisible(false);
-            this.listeDifficulte.setVisible(false);
+            this.listeDifficulte1.setVisible(false);
+            this.listeDifficulte2.setVisible(false);
+            this.listeDifficulte3.setVisible(false);
+            this.listeDifficulte4.setVisible(false);
 
             if (aAfficheChargement) {
-                String nomJoueur1 = this.nomJoueur1.getText();
-                String nomJoueur2 = this.nomJoueur2.getText();
-                String nomJoueur3 = this.nomJoueur3.getText();
-                String nomJoueur4 = this.nomJoueur4.getText();
-                String tempsChrono = (String) this.listeChrono.getSelectedItem();
-                String difficulte = (String) this.listeDifficulte.getSelectedItem();
-                int nbJoueur = this.nbJoueurs;
-
-                PanelMenu.estConfigPartie = false;
-
-
-                //efface tout le contenu de la frame
-                this.layeredPane.removeAll();
-                this.musicPlayer.stop();
-
-                // On passe du menu au jeu
-                loadImages();
-                try {
-                    this.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficulte);
-                } catch (CloneNotSupportedException e) {
-                    throw new RuntimeException(e);
-                }
-                this.fenetre.panelPlateau.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
-                this.fenetre.panelVignette.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
-                this.fenetre.buttonPanel.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
-                this.jeu.indexSon = this.index_sonPanel;
-                this.jeu.indexMusique = this.index_musiquePanel;
-                this.jeu.initialiseMusique();
-                this.jeu.initialiseSons();
+                confirmerConfiguration();
             }
             aAfficheChargement = true;
             return;
@@ -546,6 +545,46 @@ public class PanelMenu extends JPanel {
             afficheBoutonOptions(g2d);
             afficheBoutonQuitter(g2d);
         }
+    }
+
+    private void confirmerConfiguration() {
+        String nomJoueur1 = this.nomJoueur1.getText();
+        String nomJoueur2 = this.nomJoueur2.getText();
+        String nomJoueur3 = this.nomJoueur3.getText();
+        String nomJoueur4 = this.nomJoueur4.getText();
+        String tempsChrono = (String) this.listeChrono.getSelectedItem();
+        String difficulte1 = (String) this.listeDifficulte1.getSelectedItem();
+        String difficulte2 = (String) this.listeDifficulte2.getSelectedItem();
+        String difficulte3 = (String) this.listeDifficulte3.getSelectedItem();
+        String difficulte4 = (String) this.listeDifficulte4.getSelectedItem();
+        ArrayList<String> difficultes = new ArrayList<>();
+        difficultes.add(difficulte1);
+        difficultes.add(difficulte2);
+        difficultes.add(difficulte3);
+        difficultes.add(difficulte4);
+        int nbJoueur = this.nbJoueurs;
+
+        PanelMenu.estConfigPartie = false;
+
+
+        //efface tout le contenu de la frame
+        this.layeredPane.removeAll();
+        this.musicPlayer.stop();
+
+        // On passe du menu au jeu
+        loadImages();
+        try {
+            this.fenetre.initRenduJeu(nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4, nbJoueur, tempsChrono, difficultes);
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        this.fenetre.panelPlateau.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
+        this.fenetre.panelVignette.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
+        this.fenetre.buttonPanel.setBounds(this.getBounds().x, this.getBounds().y, this.getWidth(), this.getHeight());
+        this.jeu.indexSon = this.index_sonPanel;
+        this.jeu.indexMusique = this.index_musiquePanel;
+        this.jeu.initialiseMusique();
+        this.jeu.initialiseSons();
     }
 
     private void afficherConfigPartie(Graphics2D g2d) {
@@ -614,9 +653,11 @@ public class PanelMenu extends JPanel {
         nomJoueur4.setBounds(posX_textJoueur, posY_textJoueur+3*decalageY_couleur, largeur_textJoueur, hauteur_textJoueur);
 
         listeChrono.setVisible(true);
-        listeDifficulte.setVisible(true);
         listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textDifficulte, hauteur_textJoueur);
-        listeDifficulte.setBounds(posXDifficulteList, posYDifficulteList, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte1.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte2.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur+decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte3.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur+2*decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte4.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur+3*decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
     }
 
     private void calculeRapportsEtPositions() {
@@ -668,7 +709,7 @@ public class PanelMenu extends JPanel {
         posY_cadre = (int) (posY_textJoueur - hauteur_background*0.02);
         posX_bouton_moins = (int) (posX_textJoueur - largeur_background*0.05);
         posY_bouton_moins = (int) (posY_cadre + largeur_cadre*0.22);
-        decalageY_couleur = (int) (hauteur_background*0.15);
+        decalageY_couleur = (int) (hauteur_background*0.12);
         posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
         posY_bouton_valider = (int) (posY_background + hauteur_background*0.82);
     }

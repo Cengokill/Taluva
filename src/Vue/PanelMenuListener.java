@@ -379,7 +379,7 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.nomJoueur3.setVisible(false);
             panelMenu.nomJoueur4.setVisible(false);
             panelMenu.listeChrono.setVisible(false);
-            panelMenu.listeDifficulte.setVisible(false);
+            panelMenu.listeDifficulte1.setVisible(false);
         }
         if(estCurseurSurBoutonAddJoueur(e)){
             panelMenu.playSons(0);
@@ -419,21 +419,27 @@ public class PanelMenuListener implements MouseListener  {
                 panelMenu.nomJoueur1.setEnabled(false);
                 panelMenu.nomJoueur1.setText("IA");
                 panelMenu.nomJoueur1.setVisible(true);
+                panelMenu.listeDifficulte1.setVisible(true);
+
             }
             if (panelMenu.nbJoueurs == 1) {
                 panelMenu.nomJoueur2.setEnabled(false);
                 panelMenu.nomJoueur2.setText("IA");
                 panelMenu.nomJoueur2.setVisible(true);
+                panelMenu.listeDifficulte2.setVisible(true);
+
             }
             if (panelMenu.nbJoueurs == 2) {
                 panelMenu.nomJoueur3.setEnabled(false);
                 panelMenu.nomJoueur3.setText("IA");
                 panelMenu.nomJoueur3.setVisible(true);
+                panelMenu.listeDifficulte3.setVisible(true);
             }
             if (panelMenu.nbJoueurs == 3) {
                 panelMenu.nomJoueur4.setEnabled(false);
                 panelMenu.nomJoueur4.setText("IA");
                 panelMenu.nomJoueur4.setVisible(true);
+                panelMenu.listeDifficulte4.setVisible(true);
             }
             panelMenu.nbJoueurs = Math.min(panelMenu.nbJoueurs + 1, 4);
         };
@@ -442,6 +448,7 @@ public class PanelMenuListener implements MouseListener  {
             if (panelMenu.nbJoueurs == 1) {
                 panelMenu.nbJoueurs = 0;
             }
+            panelMenu.listeDifficulte1.setVisible(false);
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -464,6 +471,8 @@ public class PanelMenuListener implements MouseListener  {
             if (panelMenu.nbJoueurs == 2) {
                 panelMenu.nbJoueurs = 1;
             }
+            panelMenu.listeDifficulte2.setVisible(false);
+
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -486,6 +495,7 @@ public class PanelMenuListener implements MouseListener  {
             if (panelMenu.nbJoueurs == 3) {
                 panelMenu.nbJoueurs = 2;
             }
+            panelMenu.listeDifficulte3.setVisible(false);
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -510,6 +520,8 @@ public class PanelMenuListener implements MouseListener  {
             if (panelMenu.nbJoueurs == 4) {
                 panelMenu.nbJoueurs = 3;
             }
+            panelMenu.listeDifficulte4.setVisible(false);
+
             panelMenu.nomJoueur1.setVisible(false);
             panelMenu.nomJoueur2.setVisible(false);
             panelMenu.nomJoueur3.setVisible(false);
@@ -533,7 +545,6 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.playSons(0);
             if (panelMenu.nbJoueurs >= 2) {
                 PanelMenu.estEnChargement = true;
-
             }else{
                 panelMenu.afficheErreur = true;
             }

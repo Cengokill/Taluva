@@ -64,7 +64,7 @@ public class Jeu extends Observable implements Serializable{
         initialiseSons();
     }
 
-    public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, String difficulte) throws CloneNotSupportedException {
+    public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
         //jCourant = (byte) new Random().nextInt(nb_joueurs-1);
         if(nomJoueur0.isBlank()) nomJoueur0 = "Joueur 1";
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
@@ -92,15 +92,38 @@ public class Jeu extends Observable implements Serializable{
         joueurs = new Joueur[nb_joueurs];
 
         byte difficulteIA = AbstractIA.ALEATOIRE;
-        if (difficulte.compareTo("Intermediaire") == 0) {
+        if (difficultes.get(0).compareTo("Intermediaire") == 0) {
             difficulteIA = AbstractIA.MOYENNE;
-        } else if (difficulte.compareTo("Difficile") == 0) {
+        } else if (difficultes.get(0).compareTo("Difficile") == 0) {
             difficulteIA = AbstractIA.INTELLIGENTE;
         }
+
         IA0 = AbstractIA.nouvelle(this, (byte)0, difficulteIA);
+
+        difficulteIA = AbstractIA.ALEATOIRE;
+        if (difficultes.get(1).compareTo("Intermediaire") == 0) {
+            difficulteIA = AbstractIA.MOYENNE;
+        } else if (difficultes.get(1).compareTo("Difficile") == 0) {
+            difficulteIA = AbstractIA.INTELLIGENTE;
+        }
         IA1 = AbstractIA.nouvelle(this, (byte)1, difficulteIA);
+
+        difficulteIA = AbstractIA.ALEATOIRE;
+        if (difficultes.get(2).compareTo("Intermediaire") == 0) {
+            difficulteIA = AbstractIA.MOYENNE;
+        } else if (difficultes.get(2).compareTo("Difficile") == 0) {
+            difficulteIA = AbstractIA.INTELLIGENTE;
+        }
         IA2 = AbstractIA.nouvelle(this, (byte)2, difficulteIA);
+
+        difficulteIA = AbstractIA.ALEATOIRE;
+        if (difficultes.get(3).compareTo("Intermediaire") == 0) {
+            difficulteIA = AbstractIA.MOYENNE;
+        } else if (difficultes.get(3).compareTo("Difficile") == 0) {
+            difficulteIA = AbstractIA.INTELLIGENTE;
+        }
         IA3 = AbstractIA.nouvelle(this, (byte)3, difficulteIA);
+
         if (nomJoueur0.compareTo("IA") == 0) {
             IA0.setPrenom("IA" + (nbIA + 1));
             nbIA++;
