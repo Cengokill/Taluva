@@ -27,6 +27,7 @@ public class Plateau implements Serializable, Cloneable {
     public Plateau(){
         initPlateau();
         initHistorique();
+        //initQuantitePions();
         initPlateau();
         initPositionsLibres();
         initTripletsPossibles();
