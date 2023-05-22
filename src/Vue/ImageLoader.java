@@ -21,7 +21,7 @@ public class ImageLoader {
     public static final BufferedImage[] chrono = new BufferedImage[nb_aiguilles]; public static final BufferedImage[] pioche = new BufferedImage[9];
     public static final BufferedImage[] tuile_piochee = new BufferedImage[taille_tuile_piochee];
     public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, chronoBleu, chronoRouge;
-    public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
+    public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, wrongTile4, wrongTile5, wrongTile6, wrongTile7, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2,grassTile_0_SP, grassTile_1_SP, grassTile_2_SP;
     public static BufferedImage volcanTile_0, volcanTile_1, volcanTile_2,volcanTile_0_SP, volcanTile_1_SP, volcanTile_2_SP;
@@ -447,6 +447,10 @@ public class ImageLoader {
         wrongTile1 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_1");
         wrongTile2 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_2");
         wrongTile3 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_3");
+        wrongTile4 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_4");
+        wrongTile5 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_5");
+        wrongTile6 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_6");
+        wrongTile7 = lisImageBuf("/Plateau/Hexagones/Textures/Wrong_height_7");
     }
 
     private static void readAndFilterContoursImages() {

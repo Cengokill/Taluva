@@ -465,6 +465,18 @@ public class PanelPlateau extends JPanel {
             if (map[ligne][colonne].getHauteur() == 3) {
                 g.drawImage(wrongTile3, drawX, drawY - heightoffset + 5, null);
             }
+            if (map[ligne][colonne].getHauteur() == 4) {
+                g.drawImage(wrongTile4, drawX, drawY - heightoffset + 5, null);
+            }
+            if (map[ligne][colonne].getHauteur() == 5) {
+                g.drawImage(wrongTile5, drawX, drawY - heightoffset + 5, null);
+            }
+            if (map[ligne][colonne].getHauteur() == 6) {
+                g.drawImage(wrongTile6, drawX, drawY - heightoffset + 5, null);
+            }
+            if (map[ligne][colonne].getHauteur() == 7) {
+                g.drawImage(wrongTile7, drawX, drawY - heightoffset + 5, null);
+            }
         }
     }
 
