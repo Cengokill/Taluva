@@ -363,7 +363,7 @@ public class PanelMenuListener implements MouseListener  {
         }
         // TODO SAUVEGARDER LES PARAMETRES
         if(estCurseurSurBoutonValider(e)){
-            panelMenu.playSons(0);
+            panelMenu.playSons(2);
             setFullscreen();
             setVolume();
             PanelMenu.setParametre(panelMenu.index_musiquePanel,panelMenu.index_sonPanel,panelMenu.estPleinEcran);
@@ -542,7 +542,7 @@ public class PanelMenuListener implements MouseListener  {
             }
         }
         if(estCurseurSurBoutonValiderConfig(e)){
-            panelMenu.playSons(0);
+            panelMenu.playSons(2);
             if (panelMenu.nbJoueurs >= 2) {
                 PanelMenu.estEnChargement = true;
             }else{

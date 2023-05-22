@@ -19,6 +19,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
     public FenetreJeuListener(FenetreJeu fenetreJeu) {
         super();
         this.fenetreJeu = fenetreJeu;
+        clicBoutonPauseEchap = false;
 
         this.fenetreJeu.panelPlateau.mouseHandler = new MouseHandler();
         this.fenetreJeu.panelPlateau.addMouseListener(this.fenetreJeu.panelPlateau.mouseHandler);
@@ -122,6 +123,17 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             select_annuler = false;
             fenetreJeu.panelPlateau.estSurBouton = false;
+            return false;
+        }
+
+        public boolean estSurScoreboard(MouseEvent e){
+            int largeur = posX_fenetre_score + largeur_fenetre_score;
+            int hauteur = posY_fenetre_score + hauteur_fenetre_score;
+            if(e.getX() >= 0 && e.getX() <= largeur && e.getY() >= 0 && e.getY() <= hauteur){
+                fenetreJeu.panelPlateau.estSurScoreboard = true;
+                return true;
+            }
+            fenetreJeu.panelPlateau.estSurScoreboard = false;
             return false;
         }
 
@@ -393,7 +405,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         @Override
         public void mouseDragged(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e) || SwingUtilities.isMiddleMouseButton(e)) {
-                if (select_menu_options) {
+                if (select_menu_options || select_fin_partie || fenetreJeu.getJeu().getPlateau().estVide()) {
                     return;
                 }
                 clicDroiteEnfonce = true;
@@ -424,6 +436,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
         @Override
         public void mouseMoved(MouseEvent e) {
+            estSurScoreboard(e);
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurRetour(e) || estSurQuitter(e) || estSurBoutonOptionsEchap(e) || estSurSauvegarder(e)
                     || estSurCharger(e) || estSurParametres(e) || estSurRetourFinPartie(e) || estCurseurSurBoutonGauche_1(e)|| estCurseurSurBoutonGauche_2(e)
                     ||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)

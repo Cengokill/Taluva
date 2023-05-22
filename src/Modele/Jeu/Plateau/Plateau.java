@@ -37,9 +37,20 @@ public class Plateau implements Serializable, Cloneable {
         Plateau p = new Plateau();
         p.historique = this.historique.copie();
         p.nbHuttesDisponiblesJoueur = this.nbHuttesDisponiblesJoueur;
-        p.positions_libres = (ArrayList<Position>) this.positions_libres.clone();
-        p.positions_libres_batiments = (ArrayList<Position>) this.positions_libres_batiments.clone();
-        p.tripletsPossible = (ArrayList<TripletDePosition>) this.tripletsPossible.clone();
+
+        p.positions_libres = new ArrayList<>();
+        for(Position posCourante: this.positions_libres){
+            p.positions_libres.add(posCourante);
+        }
+        p.positions_libres_batiments = new ArrayList<>();
+        for(Position posCourante: this.positions_libres_batiments){
+            p.positions_libres_batiments.add(posCourante);
+        }
+        p.tripletsPossible = new ArrayList<>();
+        for(TripletDePosition posCourante: this.tripletsPossible){
+            p.tripletsPossible.add(posCourante);
+        }
+
         p.carte = new Hexagone[LIGNES][COLONNES];
         for(int i=0;i<LIGNES;i++){
             for(int j=0;j<COLONNES;j++){
@@ -575,6 +586,9 @@ public class Plateau implements Serializable, Cloneable {
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
+            if(estVide()){
+                tripletsPossible = new ArrayList<>();
+            }
             coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
             coup.oldTerrain2=carte[coup.tile2Ligne][coup.tile2Colonne].getBiomeTerrain();
             carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.volcanLigne][coup.volcanColonne].getNum());
