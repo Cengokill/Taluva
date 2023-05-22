@@ -12,6 +12,7 @@ import Structures.Position.TripletDePosition;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class IAIntelligente extends AbstractIA implements Serializable {
@@ -60,7 +61,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,2);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,1);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
 
@@ -474,6 +475,30 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return jCourantCopie;
     }
 
+    private boolean possedePosition(ArrayList<Position> posAutour, Position pos){
+        for(Position posCourant : posAutour){
+            if(posCourant.ligne() == pos.ligne() && posCourant.colonne() == pos.colonne()) return true;
+        }
+        return false;
+    }
+
+    private ArrayList<Position> posVillage(ArrayList<Position> posAutour,InstanceJeu instanceAEvaluer){
+        ArrayList<Position> aAjouter = new ArrayList<>();
+        for(Position posCourante : posAutour){
+            ArrayList<Position> posAutourCourant = instanceAEvaluer.getPlateau().getCiteAutour(posCourante.ligne(),posCourante.colonne(),instance.getJoueurCourantClasse().getCouleur());
+            for(Position posCourante2 : posAutourCourant){
+                ArrayList<Position> posAutourCourant2 = instanceAEvaluer.getPlateau().getCiteAutour(posCourante2.ligne(),posCourante2.colonne(),instance.getJoueurCourantClasse().getCouleur());
+                for(Position posCourante3 : posAutourCourant2){
+                    if(!possedePosition(posAutour,posCourante3) && !possedePosition(aAjouter,posCourante3)){
+                        aAjouter.add(posCourante3);
+                    }
+                }
+            }
+        }
+        aAjouter.addAll(posAutour);
+        return aAjouter;
+    }
+
     private CoupValeur choisirCoupBatiment(Coup coupT, InstanceJeu instance) {
         int i=0, score_max = Integer.MIN_VALUE;
         int score_courant;
@@ -485,6 +510,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         }
 
         while(i < coupsBatimentPossible.size()){
+            score_courant = 0;
             Plateau plateauCopie2 = instanceCourante.getPlateau().copie();
             Coup coupCourant = coupsBatimentPossible.get(i);
             ArrayList<Coup> coupPropagation = new ArrayList<>();
@@ -522,8 +548,31 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                 batiment = coupCourant.typePlacement;
                 augmenteBatimentsJoueur(batiment,joueurAEvaluer,0);
             }
+
+            // TEST //
+            if(coupCourant.typePlacement==HUTTE){
+                System.out.println("////////////////////////////////////////");
+                ArrayList<ArrayList<Point2D>> posVillage = instanceAEvaluer.getPlateau().getTousLesVillagesVoisins(coupCourant.batimentLigne,coupCourant.batimentColonne,joueurAEvaluer.getCouleur());
+                for(ArrayList<Point2D> village : posVillage){
+                    System.out.println("---Village--- : "+village.size());
+                    for(Point2D posBat : village){
+                        if(posBat!=null){
+                            System.out.println("posBat");
+                            if(instanceAEvaluer.getPlateau().getBatiment(posBat.getPointX(),posBat.getPointY())==Coup.TEMPLE) score_courant = -50000;
+                            if(village.size()-1>3) score_courant = -50000;
+                            //System.out.println("posBat i: "+posBat.getPointX() +" j: "+posBat.getPointY());
+                        }
+                    }
+
+                }
+                System.out.println("////////////////////////////////////////");
+            }
             // On évalue la nouvelle instance
-            score_courant = evaluationScoreInstance(instanceAEvaluer);
+            score_courant += evaluationScoreInstance(instanceAEvaluer);
+            /*if(!instanceCourante.getPlateau().aCiteAutour(coupCourant.batimentLigne,coupCourant.batimentColonne,instanceCourante.getJoueurCourantClasse().getCouleur())){ // TEST
+                score_courant = score_courant*1000;
+            }*/
+            System.out.println("Scoremax: "+score_max +" scoreCourant: "+score_courant);
             //score_courant = evaluation(instanceAEvaluer);
             if(score_courant == score_max){
                 coupsBatimentARenvoyer.add(coupCourant);
@@ -675,7 +724,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         //if(seraJoueurVictorieux(instanceCourante,joueurs)) return Integer.MAX_VALUE; // (!) potentiellement lourd
 
         // on evalue pas dans la boucle pour eviter de parcour nbJoueurs fois la carte
-        //int score = evaluerVillages(instanceCourante,joueurs);
+        //score += evaluerVillages(instanceCourante,joueurs);
         return score;
     }
 

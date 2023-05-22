@@ -163,7 +163,7 @@ public class Plateau implements Serializable, Cloneable {
     private boolean estBatiment(int i,int j){
         return carte[i][j].getBatiment()==HUTTE||carte[i][j].getBatiment()==TEMPLE||carte[i][j].getBatiment()==TOUR;
     }
-    private ArrayList<ArrayList<Point2D>> getTousLesVillagesVoisins(int x, int y, Color color_joueur){
+    public ArrayList<ArrayList<Point2D>> getTousLesVillagesVoisins(int x, int y, Color color_joueur){
         ArrayList<ArrayList<Point2D>> listeVillages = new ArrayList<>();
         ArrayList<Point2D> listeDesHutesVoisines_1 = new ArrayList<>();
         ArrayList<Point2D> listeDesHutesVoisines_2 = new ArrayList<>();
@@ -230,7 +230,7 @@ public class Plateau implements Serializable, Cloneable {
 
         return listeVillages;
     }
-    private ArrayList<Point2D> positionBatVillageCourant(ArrayList<Point2D> listeDesHutesVoisines, Color color_joueur){
+    public ArrayList<Point2D> positionBatVillageCourant(ArrayList<Point2D> listeDesHutesVoisines, Color color_joueur){
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
             Point2D HuteCourant = listeDesHutesVoisines.get(i);
@@ -923,6 +923,30 @@ public class Plateau implements Serializable, Cloneable {
             }
         }
         return bool;
+    }
+
+    public ArrayList<Position> getCiteAutour(int i, int j, Color color_joueur){
+        ArrayList<Position> citeAutour = new ArrayList<>();
+        if(possedeBatiment(i-1,j,color_joueur)) citeAutour.add(new Position(i-1,j));
+        if(possedeBatiment(i+1,j,color_joueur)) citeAutour.add(new Position(i+1,j));
+        if(possedeBatiment(i,j-1,color_joueur)) citeAutour.add(new Position(i,j-1));
+        if(possedeBatiment(i,j+1,color_joueur)) citeAutour.add(new Position(i,j+1));
+        if(i%2==1){
+            if(possedeBatiment(i-1,j-1,color_joueur)) {
+                citeAutour.add(new Position(i-1,j-1));
+            }
+            if(possedeBatiment(i+1,j-1,color_joueur)) {
+                citeAutour.add(new Position(i+1,j-1));
+            }
+        }else{
+            if(possedeBatiment(i-1,j+1,color_joueur)) {
+                citeAutour.add(new Position(i-1,j+1));
+            }
+            if(possedeBatiment(i+1,j+1,color_joueur)) {
+                citeAutour.add(new Position(i+1,j+1));;
+            }
+        }
+        return citeAutour;
     }
 
 
