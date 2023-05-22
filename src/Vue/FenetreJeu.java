@@ -1074,9 +1074,14 @@ public class FenetreJeu extends Container {
 
     public void playSons(int indexAJouer){
         int sonVolume;
-        if(index_son==0) sonVolume=-100000;
-        else sonVolume = (-30)+index_son*20;
+        if (index_son == 0) sonVolume = -100000;
+        else sonVolume = (-30) + index_son * 17;
         MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
+        if(indexAJouer==0){
+            sonCourant.setVolume(-25+sonVolume);
+        }else{
+            sonCourant.setVolume(-20+sonVolume);
+        }
         sonCourant.resetClip();
         sonCourant.setVolume(sonVolume);
         sonCourant.play();

@@ -318,6 +318,8 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Options(e)){
+            panelMenu.index_sonPanelAvant = panelMenu.index_sonPanel;
+            panelMenu.index_musiquePanelAvant = panelMenu.index_musiquePanel;
             panelMenu.clicOptions = !panelMenu.clicOptions;
             panelMenu.playSons(0);
         }
@@ -354,6 +356,8 @@ public class PanelMenuListener implements MouseListener  {
         }
         // Choix Confirmer/Annuler
         if(estCurseurSurBoutonAnnuler(e)){
+            panelMenu.index_sonPanel = panelMenu.index_sonPanelAvant;
+            panelMenu.index_musiquePanel = panelMenu.index_musiquePanelAvant;
             panelMenu.playSons(0);
             panelMenu.clicOptions=false;
         }
