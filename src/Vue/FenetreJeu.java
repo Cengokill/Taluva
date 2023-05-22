@@ -39,7 +39,7 @@ public class FenetreJeu extends Container {
     public static boolean estFenetreScoreChargee = false, estImageTuilePiocheeFinale=false;
 
     public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
-    public boolean afficheOptions;
+    public boolean afficheOptions,retourDebug;
     public static boolean estSurBoutonOptions, estSurBoutonAnnuler, estSurBoutonRefaire, estSurBoutonQuitterOptions, estSurBoutonQuitterFinPartie;
 
     public int index_son,index_musique,posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
@@ -83,6 +83,7 @@ public class FenetreJeu extends Container {
         setBackgroundColor();
         select_menu_options = false;
         afficheOptions = false;
+        retourDebug = false;
         frame.setVisible(true);
         loadImageOption();
         initialiseSons();

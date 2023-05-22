@@ -1034,9 +1034,11 @@ public class PanelPlateau extends JPanel {
         //System.out.println("SOURIS i: "+i+" j: "+j);
         //System.out.println("aCiterAutour: "+jeu.getPlateau().aCiteAutour(i,j,jeu.getNumJoueurCourant()));
 
-
-        if(poseTile) placerTuiles(i,j);
-        else placeBatiment(i, j);
+        if(!fenetreJeu.retourDebug){
+            if(poseTile) placerTuiles(i,j);
+            else placeBatiment(i, j);
+        }
+        fenetreJeu.retourDebug = false;
         //jeu.unefoisIA=true; // POUR IA mettre en commentaire
     }
 

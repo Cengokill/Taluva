@@ -22,6 +22,7 @@ public class Plateau implements Serializable, Cloneable {
     private ArrayList<Position> positions_libres;
 
     private ArrayList<TripletDePosition> tripletsPossible;
+    private ArrayList<TripletDePosition> joueurTripletsPossible;
     private ArrayList<Position> positions_libres_batiments;
 
     public Plateau(){
@@ -122,6 +123,15 @@ public class Plateau implements Serializable, Cloneable {
 
     public boolean estDansTripletsPossibles(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
         for(TripletDePosition triplet : tripletsPossible){
+            // Attention le Point X des triplets correspond toujours au volcan !!
+            if (peutPlacerTuileFromTriplet(ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, ligneTile2, colonneTile2, triplet))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean estDansJoueurTripletsPossibles(int ligneVolcan, int colonneVolcan, int ligneTile1, int colonneTile1, int ligneTile2, int colonneTile2) {
+        for(TripletDePosition triplet : joueurTripletsPossible){
             // Attention le Point X des triplets correspond toujours au volcan !!
             if (peutPlacerTuileFromTriplet(ligneVolcan, colonneVolcan, ligneTile1, colonneTile1, ligneTile2, colonneTile2, triplet))
                 return true;
@@ -586,9 +596,6 @@ public class Plateau implements Serializable, Cloneable {
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
-            if(estVide()){
-                tripletsPossible = new ArrayList<>();
-            }
             coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
             coup.oldTerrain2=carte[coup.tile2Ligne][coup.tile2Colonne].getBiomeTerrain();
             carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.volcanLigne][coup.volcanColonne].getNum());

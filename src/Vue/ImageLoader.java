@@ -101,7 +101,7 @@ public class ImageLoader {
 
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
-        background = lisImageBuf("/Plateau/background_plateau_x4_carre_2");
+        background = lisImageBuf("/Plateau/background_plateau_x4_carre");
         readTilesImages();
         readChronoImages();
         readTuilePiochee();

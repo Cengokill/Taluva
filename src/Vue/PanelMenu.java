@@ -656,10 +656,10 @@ public class PanelMenu extends JPanel {
 
         listeChrono.setVisible(true);
         listeChrono.setBounds(posXChronoList, posYChronoList, largeur_textDifficulte, hauteur_textJoueur);
-        listeDifficulte1.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur, largeur_textDifficulte, hauteur_textJoueur);
-        listeDifficulte2.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur+decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
-        listeDifficulte3.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur+2*decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
-        listeDifficulte4.setBounds((int) (posX_textJoueur + largeur_textJoueur*1.8), posY_textJoueur+3*decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte1.setBounds(posXDifficulteList, posY_textJoueur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte2.setBounds(posXDifficulteList, posY_textJoueur+decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte3.setBounds(posXDifficulteList, posY_textJoueur+2*decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
+        listeDifficulte4.setBounds(posXDifficulteList, posY_textJoueur+3*decalageY_couleur, largeur_textDifficulte, hauteur_textJoueur);
     }
 
     private void calculeRapportsEtPositions() {
@@ -705,7 +705,7 @@ public class PanelMenu extends JPanel {
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
         posYChronoList = posY_textJoueur;
         posXChronoList = (int) (posX_bouton_plus_ia+largeur_background*0.36);
-        posXDifficulteList = posXChronoList;
+        posXDifficulteList = (int) (posX_textJoueur + largeur_textJoueur*1.75);
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.26);
         posX_cadre = (int) (posX_textJoueur + largeur_background*0.18);
         posY_cadre = (int) (posY_textJoueur - hauteur_background*0.02);

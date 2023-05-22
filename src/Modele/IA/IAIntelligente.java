@@ -49,10 +49,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         r = new Random(seed);
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
-        if(jeu.getJoueurCourantClasse().getPrenom().equals("IA1")) {
-            System.out.println("IA1");
-            plateauIA.affiche();
-        }
+        System.out.println(jeu.getJoueurCourantClasse().getPrenom());
+        //plateauIA.affiche();
+        //System.exit(0);
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
         this.instance = new InstanceJeu(pioche, plateauIA, jeu.getJoueurs(),jeu.getNbJoueurs(), jeu.getNumJoueurCourant(),jeu.getJoueurCourant().getCouleur());
         instance.setTuilePiochee(jeu.getTuileCourante());//définit la tuile piochée de l'instance sans la retirer de la pioche, puisque à ce moment le jeu a déjà retiré la tuile de la pioche
@@ -101,6 +100,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     public int evaluation(InstanceJeu instance){
         int score = 0;
         int nouveauPoidsHutte = 1;
+        int nouveauPoidsTour = 1;
         // batimentsPlacablesNombre[0] -> nombre de temples constructibles par les joueurs adverses
         // batimentsPlacablesNombre[1] -> nombre de huttes constructibles par les joueurs adverses
         // batimentsPlacablesNombre[2] -> nombre de tours constructibles par les joueurs adverses
@@ -128,8 +128,12 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     return Integer.MIN_VALUE;
                 }
             }
-            //si le joueur a placé 2 bâtiments de chaque type
-            if(joueurCourant.getNbTemples() == 0 || joueurCourant.getNbTours() == 0) nouveauPoidsHutte = 5;
+            //si le joueur a placé 2 bâtiments de chaque type, on augmente le poids des bâtimetns restants
+            if(joueurCourant.getNbTemples()==0 && joueurCourant.getNbHuttes()==0){
+                nouveauPoidsTour= 500;
+            }else if(joueurCourant.getNbTemples()==0 && joueurCourant.getNbTours()==0) {
+                nouveauPoidsHutte = 20;
+            }
             //si le joueur ne peut plus construire de huttes
             else if(joueurCourant.getNbHuttes() == 0){
                 if(i == jCourant) {
@@ -142,7 +146,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             //sinon son score se calcule en fonction des bâtiments qu'il a placés
             score += (batimentsPlacablesNombre[0]*joueurCourant.getNbTemples())*(poids_temple);
             score += batimentsPlacablesNombre[1]*joueurCourant.getNbHuttes()*(poids_hutte*nouveauPoidsHutte);
-            score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour);
+            score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour*nouveauPoidsTour);
         }
         return score/joueurs.length;
     }
@@ -344,10 +348,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         int score_courant;
         ArrayList<CoupValeur> coupARenvoyer = new ArrayList<>();
         CoupValeur coupAFaire;
-        ArrayList<TripletDePosition> coupsTuilePossibles = instance.getPlateau().getTripletsPossibles();
-        //affichetripletpossible();
+        ArrayList<TripletDePosition> coupsTuilePossibles = instanceJeu.getPlateau().getTripletsPossibles();
         ArrayList<Coup> coupTuileBatimentsAEvaluer = new ArrayList<>();
-        ArrayList<Coup> coupTuileBatimentsAEvaluer2 = new ArrayList<>();
 
         // On parcourt toutes les tuiles pour trouver les meilleures.
         debut_test = System.currentTimeMillis();
@@ -359,7 +361,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupT);
 
             int scoreTuile_courante = evaluationScoreTuile(instanceCourante);
-            //int scoreTuile_courante = evaluation(instanceCourante);
             // si le coup est aussi bien que notre meilleur on le rajoute
             if(scoreTuile_courante==scoreTuile_max){
                 coupTuileBatimentsAEvaluer.add(coupT);
@@ -375,7 +376,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         }
         if(coupTuileBatimentsAEvaluer.size()>taille_max_tuiles_a_tester){
             coupTuileBatimentsAEvaluer = new ArrayList<>(coupTuileBatimentsAEvaluer.subList(0,taille_max_tuiles_a_tester));
-            coupTuileBatimentsAEvaluer2 = new ArrayList<>(coupTuileBatimentsAEvaluer);
         }
         fin_test = System.currentTimeMillis();
         // Pour toutes les meilleures tuiles trouvées :
@@ -386,26 +386,24 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupCourant);
             coupAFaire = choisirCoupBatiment(coupCourant,instanceCourante);
 
-            if(coupAFaire!=null){
+            if(coupAFaire!=null) {
                 score_courant = coupAFaire.getValeur();
                 // si le coup est aussi bien que notre meilleur on le rajoute
-                if(score_courant==scoreBatiment_max){
+                if (score_courant == scoreBatiment_max) {
                     coupARenvoyer.add(coupAFaire);
-                    if(estFinTemps()){
+                    if (estFinTemps()) {
                         return coupARenvoyer;
                     }
                 }
                 // si le coup est mieux on efface la liste, et on met là jour la valeur du meilleur coup
-                else if(score_courant>scoreBatiment_max){
+                else if (score_courant > scoreBatiment_max) {
                     scoreBatiment_max = score_courant;
                     coupARenvoyer = new ArrayList<>();
                     coupARenvoyer.add(coupAFaire);
-                    if(estFinTemps()){
+                    if (estFinTemps()) {
                         return coupARenvoyer;
                     }
                 }
-            }else{ // TODO on essaie toutes les tuiles qu'on n'a pas essayé, si on ne peut tout de meme pas jouer l'IA a perdu.
-                System.out.println("coupAFaire null A DEBUGGUER -> IAintelligente 308");
             }
         }
         fin_test2 = System.currentTimeMillis();
@@ -483,7 +481,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         InstanceJeu instanceCourante = new InstanceJeu(instance.getPioche(),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur());
         ArrayList<Coup> coupsBatimentPossible = getTousLesCoupsPossiblesDesBatiments(instanceCourante);
         if(coupsBatimentPossible.size()==0){
-            System.out.println("coupsBatimentPossible.size()==0");
+            instanceCourante.getPlateau().affiche();
         }
 
         while(i < coupsBatimentPossible.size()){
@@ -547,12 +545,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             i++;
         }
         if(coupsBatimentARenvoyer.size()==0){
-            System.out.println("batiment null");
-            System.exit(0);
             return null;
         }
         CoupValeur coupARenvoyer = new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
-        System.out.println("----------------------");
         return coupARenvoyer;
     }
 
@@ -561,7 +556,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         Plateau plateauCopie = instanceCourante.getPlateau().copie();
         ArrayList<Coup> coupsPossiblesARenvoyer = new ArrayList<>();
         ArrayList<Position> positionsPossiblesBatiment = plateauCopie.getPositions_libres_batiments();
-        plateauCopie.affiche();
+        //plateauCopie.affiche();
         byte joueur_courant = instanceCourante.getJoueurCourant();
         Color color_joueur_courant = instanceCourante.getJoueurCourantClasse().getCouleur();
         // On parcours toutes les positions possibles
@@ -573,7 +568,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             for (int batimentChoisit = 0; batimentChoisit < batimentsPlacable.length; batimentChoisit++) {
                 //si le bâtiment est plaçable
                 if (batimentsPlacable[batimentChoisit] == 1) {
-                    System.out.println("batimentChoisit : " + batimentChoisit);
                     Joueur jCourantCopie = instanceCourante.getJoueur(joueur_courant);
                     Joueur[] joueurs = instanceCourante.getJoueurs();
                     Plateau plateauCopie2 = plateauCopie.copie();
