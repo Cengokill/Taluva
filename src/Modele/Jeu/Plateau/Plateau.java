@@ -376,7 +376,7 @@ public class Plateau implements Serializable, Cloneable {
         }
 
         // Premiere tuile posée
-        if(estVide() && (ligneVolcan>=carte.length/2-1) && (ligneVolcan<=carte.length/2+4) && (colonneVolcan>=carte.length/2-2) && (colonneVolcan<=carte.length/2)){
+        if(estVide() && estDansTripletsPossibles(ligneVolcan,colonneVolcan,ligneTile1,colonneTile1,ligneTile2,colonneTile2)){
             return 0;
         }
 
