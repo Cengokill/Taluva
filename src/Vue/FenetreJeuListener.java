@@ -54,7 +54,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 fenetreJeu.jeu.debug = !fenetreJeu.jeu.debug;
             }
             if(keyCode == KeyEvent.VK_S){
-                fenetreJeu.jeu.switchIAJoueur(fenetreJeu.jeu.getNumJoueurCourant());
+                //fenetreJeu.jeu.switchIAJoueur(fenetreJeu.jeu.getNumJoueurCourant());
             }
             //touche echap
             if(keyCode == KeyEvent.VK_ESCAPE){
@@ -231,6 +231,18 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             return false;
         }
 
+        public boolean estSurRetourFinPartie(MouseEvent e) {
+            if(!select_fin_partie) return false;
+            int largeur = posX_retour_finPartie + largeur_retour_finPartie;
+            int hauteur = posY_retour_finPartie + hauteur_retour_finPartie;
+            if(e.getX() >= posX_retour_finPartie && e.getX() <= largeur && e.getY() >= posY_retour_finPartie && e.getY() <= hauteur){
+                select_retour = true;
+                return true;
+            }
+            select_retour = false;
+            return false;
+        }
+
         @Override
         public void mouseClicked(MouseEvent e) {
             if(fenetreJeu.afficheOptions){
@@ -332,6 +344,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     PanelMenu.loadParametre();
                     fenetreJeu.afficheOptions = true;
                 }
+                if(estSurRetourFinPartie(e)){
+                    fenetreJeu.playSons(0);
+                    select_fin_partie = false;
+                }
             }
         }
         private void setFullscreen(){
@@ -408,9 +424,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
         @Override
         public void mouseMoved(MouseEvent e) {
-
-            if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurRetour(e) || estSurQuitter(e) || estSurBoutonOptionsEchap(e) || estSurSauvegarder(e) || estSurCharger(e) || estSurParametres(e) || estCurseurSurBoutonGauche_1(e)||
-                    estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)
+            if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurRetour(e) || estSurQuitter(e) || estSurBoutonOptionsEchap(e) || estSurSauvegarder(e)
+                    || estSurCharger(e) || estSurParametres(e) || estSurRetourFinPartie(e) || estCurseurSurBoutonGauche_1(e)|| estCurseurSurBoutonGauche_2(e)
+                    ||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)
                     ||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
                 if (!sonJoue) {
                     fenetreJeu.playSons(1);
