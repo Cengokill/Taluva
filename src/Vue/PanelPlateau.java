@@ -921,6 +921,8 @@ public class PanelPlateau extends JPanel {
             jeu.playSons(0);
             detectionPlusAucunCoupAJouer();
             return true;
+        }else{
+            fenetreJeu.playSons(3);
         }
         return false;
     }
