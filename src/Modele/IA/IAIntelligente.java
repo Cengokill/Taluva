@@ -478,12 +478,15 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         ArrayList<Coup> coupsBatimentARenvoyer = new ArrayList<>();
         InstanceJeu instanceCourante = new InstanceJeu(instance.getPioche(),instance.getPlateau().copie(),instance.getJoueurs(),instance.getNbJoueurs(), instance.getJoueurCourant(), instance.getCouleurJoueur());
         ArrayList<Coup> coupsBatimentPossible = getTousLesCoupsPossiblesDesBatiments(instanceCourante);
+        if(coupsBatimentPossible.size()==0){
+            System.out.println("coupsBatimentPossible.size()==0");
+        }
 
         while(i < coupsBatimentPossible.size()){
             Plateau plateauCopie2 = instanceCourante.getPlateau().copie();
             Coup coupCourant = coupsBatimentPossible.get(i);
             ArrayList<Coup> coupPropagation = new ArrayList<>();
-            if (coupCourant.typePlacement == HUTTE){
+            if (coupCourant.typePlacement == Coup.HUTTE){
                 //On créer un tableau contenant toutes les coordonées où l'on doit propager
                 ArrayList<Point2D> aPropager = instance.getPlateau().previsualisePropagation(coupCourant.batimentLigne, coupCourant.batimentColonne, instance.getCouleurJoueur());
                 //On place la hutte classique sans propagation
@@ -527,6 +530,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                 coupsBatimentARenvoyer.add(coupCourant);
                 score_max = score_courant;
             }
+            if(coupsBatimentARenvoyer.size()==0){
+            }
 
             if(coupPropagation.size()>0){
                 for(Coup coupPropager: coupPropagation){
@@ -539,6 +544,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         }
         if(coupsBatimentARenvoyer.size()==0){
             System.out.println("batiment null");
+            System.exit(0);
             return null;
         }
         CoupValeur coupARenvoyer = new CoupValeur(coupT,coupsBatimentARenvoyer.get(r.nextInt(coupsBatimentARenvoyer.size())),score_max);
@@ -735,6 +741,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     public boolean estFinTemps(){
         if (jeu.getTimerActif()) {
+            System.out.println("Appel à estFinTemps()");
             double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurs()[instance.getJoueurCourant()].getTempsTemp();
             if (tempsEcoule >= 20000000) {
                 tempsEcoule = 0.0;
