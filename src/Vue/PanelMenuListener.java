@@ -219,13 +219,6 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_bouton_fermer;
         int starty = panelMenu.posY_bouton_fermer;
         if(e.getX() >= startx && e.getX() <= startx+panelMenu.largeur_bouton_fermer && e.getY() >= starty && e.getY() <= starty+panelMenu.largeur_bouton_fermer && !panelMenu.clicOptions) {
-            panelMenu.estConfigPartie = false;
-            panelMenu.nomJoueur1.setVisible(false);
-            panelMenu.nomJoueur2.setVisible(false);
-            panelMenu.nomJoueur3.setVisible(false);
-            panelMenu.nomJoueur4.setVisible(false);
-            panelMenu.listeChrono.setVisible(false);
-            panelMenu.listeDifficulte.setVisible(false);
             return true;
         }
         return false;
@@ -630,13 +623,21 @@ public class PanelMenuListener implements MouseListener  {
         private boolean sonJoue = false;
         @Override
         public void mouseMoved(MouseEvent e) {
-            if ((estCurseurSurBoutonValiderConfig(e))||(estCurseurSurBoutonAddIA(e))||(estCurseurSurBoutonAddJoueur(e))
-                    ||estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
+            if (estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
                     estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
-                    estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
+                    estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)
+                    ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)
+                    ||estCurseurSurBoutonMoins1(e) || estCurseurSurBoutonMoins2(e) || estCurseurSurBoutonMoins3(e) || estCurseurSurBoutonMoins4(e) || estCurseurSurBoutonValiderConfig(e)) {
+                if (!sonJoue) {
+                    panelMenu.playSons(1);
+                    sonJoue = true;
+                }
                 if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setHandCursor();
                 //m.metAJour();
             }else{
+                if (sonJoue) {
+                    sonJoue = false;
+                }
                 if(panelMenu!=null && panelMenu.fenetre!=null) panelMenu.fenetre.setStandardCursor();
             }
         }

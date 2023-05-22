@@ -260,10 +260,10 @@ public class PanelMenu extends JPanel {
         sonPlayer.add(placerBatiment);
     }
 
-    public void playSons(int indexAJouer){
+    public void playSons(int indexAJouer) {
         int sonVolume;
-        if(index_sonPanel==0) sonVolume=-100000;
-        else sonVolume = (-30)+index_sonPanel*20;
+        if (index_sonPanel == 0) sonVolume = -100000;
+        else sonVolume = (-30) + index_sonPanel * 20;
         MusicPlayer sonCourant = sonPlayer.get(indexAJouer);
         sonCourant.resetClip();
         sonCourant.setVolume(sonVolume);

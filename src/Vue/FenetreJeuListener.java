@@ -563,10 +563,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         int startx = fenetreJeu.posX_btnAnnuler;
         int starty = fenetreJeu.posY_btnChoix;
         if(e.getX() >= startx && e.getX() <= startx+ fenetreJeu.taille_btnParametre && e.getY() >= starty && e.getY() <= starty+ fenetreJeu.taille_btnParametre && fenetreJeu.afficheOptions) {
-            //fenetreJeu.select_annuler2 = true;
+            fenetreJeu.select_annuler2 = true;
             return true;
         }
-        //fenetreJeu.select_annuler2 = false;
+        fenetreJeu.select_annuler2 = false;
         return false;
     }
 

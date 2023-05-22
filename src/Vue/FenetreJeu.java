@@ -46,7 +46,7 @@ public class FenetreJeu extends Container {
             posX_btnAnnuler,posX_btnValider,posY_btnChoix, taille_btnParametre;
 
     public boolean select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
-            select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider;
+            select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler2;
     public static BufferedImage fenetre_score_courante,options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
             ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
     public static int indice_chrono, indice_tuilePiochee;
@@ -1012,7 +1012,7 @@ public class FenetreJeu extends Container {
         posY_btnChoix = (int) (y+taille_slider_y*4.75);
         posX_btnAnnuler = x-(taille_slider_x)/6;
 
-        if(select_annuler) g.drawImage(btn_annuler_hover,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);
+        if(select_annuler2) g.drawImage(btn_annuler_hover,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);
         else g.drawImage(btn_annuler,posX_btnAnnuler,posY_btnChoix,taille_btn,taille_btn,null);
         if(select_valider) g.drawImage(btn_valider_hover,posX_btnValider,posY_btnChoix,taille_btn,taille_btn,null);
         else g.drawImage(btn_valider,posX_btnValider,posY_btnChoix,taille_btn,taille_btn,null);
