@@ -1078,6 +1078,7 @@ public class FenetreJeu extends Container {
     }
 
     public void playSons(int indexAJouer){
+        if(indexAJouer==3 && retourDebug) return;
         int sonVolume;
         if (index_son == 0) sonVolume = -100000;
         else sonVolume = (-30) + index_son * 17;

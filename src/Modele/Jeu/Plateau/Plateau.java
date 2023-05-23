@@ -26,7 +26,7 @@ public class Plateau implements Serializable, Cloneable {
     private ArrayList<TripletDePosition> joueurTripletsPossible;
     private ArrayList<Position> positions_libres_batiments;
 
-    private int nbTuilePlacee = 0;
+    public int nbTuilePlacee = 0;
 
     public Plateau(){
         initPlateau();
@@ -54,6 +54,13 @@ public class Plateau implements Serializable, Cloneable {
         return p;
     }
 
+    public void resetPlacable(){
+        for(int i=0; i<LIGNES;i++){
+            for(int j=0; j<COLONNES;j++){
+                carte[i][j].placable = false;
+            }
+        }
+    }
     public void affiche(){
         int tronquer = 21;
         System.out.println("Plateau :");
@@ -76,7 +83,7 @@ public class Plateau implements Serializable, Cloneable {
         return super.clone();
     }
 
-    private void initTripletsPossibles() {
+    public void initTripletsPossibles() {
         tripletsPossible = new ArrayList<>();
         TripletDePosition tripletDeBase1 = new TripletDePosition(new Position(30,28),new Position(30,29),new Position(31,29));
         TripletDePosition tripletDeBase2 = new TripletDePosition(new Position(30,29),new Position(31,30),new Position(31,29));

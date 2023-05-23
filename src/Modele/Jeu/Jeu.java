@@ -29,6 +29,8 @@ public class Jeu extends Observable implements Serializable{
     public static boolean AFFICHAGE;
     public byte type_jeu;
     Plateau plateau;
+
+    private boolean aAnnuler;
     public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     public transient ArrayList<ArrayList<MusicPlayer>> sonPlayer = new ArrayList<>();
     private AudioInputStream audioInputStream;
@@ -61,6 +63,7 @@ public class Jeu extends Observable implements Serializable{
             delai = 200;//800;
         }
         debug = false;
+        aAnnuler = false;
         initialiseSons();
     }
 
@@ -322,7 +325,9 @@ public class Jeu extends Observable implements Serializable{
                 jVainqueur = (byte) ((jCourant + 1) % nb_joueurs);
                 return;
             }
+            if(aAnnuler) pioche();
             getPlateau().joueCoup(coupTuile);
+            aAnnuler = false;
             playSons(0);
             if(coupBatiment.typePlacement == Coup.HUTTE){
                 int propagation = 0;
@@ -421,6 +426,8 @@ public class Jeu extends Observable implements Serializable{
         if (doit_placer_batiment) {
             return false;
         }
+        if(aAnnuler) pioche();
+        aAnnuler = false;
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         isJoueurCourantPerdu();
         doit_placer_batiment = true;
@@ -436,7 +443,6 @@ public class Jeu extends Observable implements Serializable{
         }
         plateau.placeBatiment(jCourant, getJoueurCourant().getCouleur(), ligne,colonne, type_bat);
         if(type_bat!=Coup.SELECTEUR_BATIMENT){
-
             if(type_bat == Coup.HUTTE){
                 playSons(1);
                 for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(ligne,colonne);hauteur++) {
@@ -681,10 +687,14 @@ public class Jeu extends Observable implements Serializable{
                 changeJoueur();
             }
             if(stock.typeBatiment==Coup.TUILE){
-                doitCalculerEmplacementPossible = true;
-                System.out.println(tuile_courante.biome0+" biome0");
-                System.out.println(tuile_courante.biome1+" biome1");
+                aAnnuler = true;
                 pioche.addFirst(tuile_courante);
+                if(pioche.size()+1==12*nb_joueurs){
+                    plateau.resetPlacable();
+                    plateau.nbTuilePlacee=0;
+                    plateau.initTripletsPossibles();
+                }
+                doitCalculerEmplacementPossible = true;
                 tuile_courante=(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
 
                 tuileAPoser[0] = tuile_courante.biome0;
@@ -704,15 +714,14 @@ public class Jeu extends Observable implements Serializable{
             }
             changePhase();
             peutPiocher=false;
-
         }
-
     }
 
     public void refaire() {
         Stock stock =plateau.refaire();
         if(stock!=null) {
             if (stock.typeBatiment == Coup.TUILE) {
+                aAnnuler = false;
                 tuile_courante=pioche.getFirst();
                 tuileAPoser[0] = tuile_courante.biome0;
                 tuileAPoser[1] = tuile_courante.biome1;

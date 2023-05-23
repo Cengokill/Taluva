@@ -323,6 +323,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     select_retour = false;
                 }
                 if (estSurQuitter(e)) {
+                    fenetreJeu.retourDebug = true;
                     fenetreJeu.getJeu().musicPlayer.stop();
                     fenetreJeu.layeredPane.removeAll();
                     fenetreJeu.playSons(0);
