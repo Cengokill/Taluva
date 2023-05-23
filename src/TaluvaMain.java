@@ -15,8 +15,8 @@ public class TaluvaMain {
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException, FontFormatException {
-        byte type_jeu = GRAPHIQUE;
-        int nb_parties = 100;
+        byte type_jeu = CONSOLE;
+        int nb_parties = 200;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
         jeu.AFFICHAGE = true;
@@ -34,7 +34,7 @@ public class TaluvaMain {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
                 ArrayList<String> difficultes = new ArrayList<>();
                 difficultes.add("Difficile");
-                difficultes.add("Test");
+                difficultes.add("Intermediaire");
                 difficultes.add("Difficile");
                 difficultes.add("Difficile");
                 jeu.initPartie("IA", "IA", "IA", "IA", 2, "Infini", difficultes);
