@@ -1046,4 +1046,12 @@ public class Plateau implements Serializable, Cloneable {
     public int getCOLONNES(){
         return COLONNES;
     }
+
+    public void copiePlateau(Hexagone[][]carte){
+        for(int i = 0 ; i<getCOLONNES();i++){
+            for(int j =0 ;j<getLIGNES();j++){
+                this.carte[i][j]=carte[i][j];
+            }
+        }
+    }
 }

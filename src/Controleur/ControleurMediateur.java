@@ -63,12 +63,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
 
-    public void sauvegarder() {
-        FenetreJeu.sauvegarder();
+    public void sauvegarder() {//FenetreJeu.sauvegarder();
     }
 
 
-    public void charger() {FenetreJeu.charger();}
+    public void charger() {//FenetreJeu.charger();
+    }
 
 
 }
