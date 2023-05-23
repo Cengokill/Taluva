@@ -113,7 +113,9 @@ public class PanelPlateau extends JPanel {
         //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
         if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA && !estSurBouton && !clicBoutonPauseEchap && !estSurScoreboard && !jeu.estFinPartie()) {//&& jeu.estPiochee &&jeu.getTuileCourante()!=null
             affichePrevisualisationPropagation(g);
-            if(poseTile) displayHoverTile(g);
+            if(poseTile){
+                if(jeu.aPiocher) displayHoverTile(g);
+            }
             else displayHoverMaison(g);
         }
 
