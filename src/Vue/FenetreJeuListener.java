@@ -168,7 +168,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurRetour(MouseEvent e) {
-            //    true                       false/true ->            inverse
             if(!clicBoutonPauseEchap||FenetreJeu.afficheSave||FenetreJeu.afficheLoad)return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_retour + hauteur_bouton_dans_options;
@@ -298,25 +297,25 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
                     e.getY()>=posY_optionSaveBouton&&e.getY()<=posY_optionSaveBouton+hauteur_boutonSave ){
                 FenetreJeu.charger(0);
-                FenetreJeu.afficheLoad=false;
+                //FenetreJeu.afficheLoad=false;
                 return true;
             }
             else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
                     e.getY()>=posY_optionSaveBouton+decalageY_save*1  && e.getY()<=posY_optionSaveBouton+decalageY_save*1+hauteur_boutonSave ){
                 FenetreJeu.charger(1);
-                FenetreJeu.afficheLoad=false;
+                //FenetreJeu.afficheLoad=false;
                 return true;
             }
             else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
                     e.getY()>=posY_optionSaveBouton+decalageY_save*2  && e.getY()<=posY_optionSaveBouton+decalageY_save*2+hauteur_boutonSave ) {
                 FenetreJeu.charger(2);
-                FenetreJeu.afficheLoad=false;
+                //FenetreJeu.afficheLoad=false;
                 return true;
             }
             else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
                     e.getY()>=posY_optionSaveBouton+decalageY_save*3  && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave ){
                 FenetreJeu.charger(3);
-                FenetreJeu.afficheLoad=false;
+                //FenetreJeu.afficheLoad=false;
                 return true;
 
             }
