@@ -130,7 +130,7 @@ public class PanelMenu extends JPanel {
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
-        background = lisImage("ocean");
+        background = lisImage("taluva_background");
         bouton_Jouer = lisImage("jouer");
         bouton_Jouer_select = lisImage("jouer_select");
         bouton_Local_clic = lisImage("jouer_clic");
@@ -730,7 +730,7 @@ public class PanelMenu extends JPanel {
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
-        posY_Jouer = hauteur_background/6;
+        posY_Jouer = hauteur_background/4;
         int decalageY = hauteur_background/8;
         posY_Options = posY_Jouer + decalageY;
         posY_Credits = posY_Options + decalageY;
