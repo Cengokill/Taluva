@@ -62,8 +62,8 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai_avant_pioche = 200;//800;
-            delai = 200;//800;
+            delai_avant_pioche = 1500;
+            delai = 1200;
         }
         debug = false;
         initialiseSons();
@@ -269,7 +269,7 @@ public class Jeu extends Observable implements Serializable{
         if(joueurs[n].type_joueur == Joueur.IA){
             joueurs[n] = new Joueur(Joueur.HUMAIN, numero, "Joueur "+numero);
         }else{
-            joueurs[n] = AbstractIA.nouvelle(this, numero, AbstractIA.INTELLIGENTE);
+            joueurs[n] = AbstractIA.nouvelle(this, numero, AbstractIA.ALEATOIRE);
         }
         joueurs[n].setNbHuttes(nbHuttes);
         joueurs[n].setNbTemples(nbTemples);

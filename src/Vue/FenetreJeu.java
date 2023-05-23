@@ -491,7 +491,7 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheTimer(Graphics g) {
-        if(jeu.getTimerActif()) {
+        if(jeu.getTimerActif() && jeu.getJoueurCourantClasse().getTypeJoueur()==Joueur.IA) {
             g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
             Font font = new Font("Bookman Old Style", Font.BOLD, 29);
             g.setFont(font);
