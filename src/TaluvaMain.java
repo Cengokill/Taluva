@@ -16,7 +16,7 @@ public class TaluvaMain {
     public final static byte GRAPHIQUE = 1;
     public static void main(String[] args) throws IOException, CloneNotSupportedException, FontFormatException {
         byte type_jeu = GRAPHIQUE;
-        int nb_parties = 10;
+        int nb_parties = 100;
         Jeu jeu = new Jeu(type_jeu);
         int[] victoires_defaites = new int[2];
         jeu.AFFICHAGE = true;
@@ -34,7 +34,7 @@ public class TaluvaMain {
                 System.out.println("Partie " + (i+1) + "/" + nb_parties);
                 ArrayList<String> difficultes = new ArrayList<>();
                 difficultes.add("Difficile");
-                difficultes.add("Difficile");
+                difficultes.add("Test");
                 difficultes.add("Difficile");
                 difficultes.add("Difficile");
                 jeu.initPartie("IA", "IA", "IA", "IA", 2, "Infini", difficultes);
@@ -45,10 +45,8 @@ public class TaluvaMain {
                     }
                 }
                 while (!jeu.estFinPartie()) {
-                    if(!jeu.pioche()) {//si pioche non vide, l'IA joue, sinon la partie est finie
-                        System.out.println("pioche non vide");
-                        jeu.joueIA();
-                    }
+                    jeu.pioche();
+                    jeu.joueIA();
                 }
                 if(jeu.jVainqueur == 0 && jeu.getJoueurs()[0].calculScore() != jeu.getJoueurs()[1].calculScore()){
                     victoires_defaites[0]++;

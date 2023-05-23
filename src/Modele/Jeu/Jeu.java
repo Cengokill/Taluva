@@ -57,8 +57,8 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai_avant_pioche = 0;//800;
-            delai = 0;//800;
+            delai_avant_pioche = 200;//800;
+            delai = 200;//800;
         }
         debug = false;
         initialiseSons();
@@ -484,34 +484,68 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void changeJoueur() {
-        if(estFinPartie()){
+        if(estFinPartie() || pioche.isEmpty()){
+            estFinPartie = true;
+            tuile_courante = null;
+            estPartieFinie = true;
+            select_fin_partie = true;
+            if(AFFICHAGE) System.out.println("Partie terminee, pioche vide !");
+            ArrayList<Joueur> joueurs_copie = new ArrayList<>();
+            ArrayList<Joueur> joueurs_tries = new ArrayList<>();
+            for (int i = 0; i < getJoueurs().length; i++) {
+                joueurs_copie.add(getJoueurs()[i]);
+            }
+            int score_meilleur = Integer.MIN_VALUE;
+            int indice_meilleur_joueur = -1;
+            int score_courant;
+            while (joueurs_copie.size() > 1) {
+                for (int i = 0; i < joueurs_copie.size(); i++) {
+                    score_courant = joueurs_copie.get(i).calculScore();
+                    if (score_courant > score_meilleur) {
+                        score_meilleur = score_courant;
+                        indice_meilleur_joueur = i;
+                        jVainqueur = (byte) indice_meilleur_joueur;
+                    }
+                }
+                joueurs_tries.add(joueurs_copie.get(indice_meilleur_joueur));
+                joueurs_copie.remove(indice_meilleur_joueur);
+                indice_meilleur_joueur = -1;
+                score_meilleur = Integer.MIN_VALUE;
+            }
+            if(AFFICHAGE){
+                afficheScore();
+            }
             return;
+        }else{
+            System.out.println("changeJoueur() : pas fin de la partie");
         }
         jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         doitCalculerEmplacementPossible = true;
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
         if(type_jeu==GRAPHIQUE){
-            Timer timer = new Timer(delai_avant_pioche, e -> {
-                if(getJoueurCourant().type_joueur==Joueur.IA) {
-                    if(peutPiocher) {
-                        pioche();
-                    }
-                    peutPiocher=true;
-                    try {
-                        joueIA();
-                    } catch (CloneNotSupportedException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }else{
-                    if(peutPiocher) {
-                        pioche();
+            if(tuile_courante!=null) {
+                Timer timer = new Timer(delai_avant_pioche, e -> {
+                    if (getJoueurCourant().type_joueur == Joueur.IA) {
+                        if (peutPiocher) {
+                            pioche();
+                        }
+                        peutPiocher = true;
+                        try {
+                            joueIA();
+                        } catch (CloneNotSupportedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    } else {
+                        if (peutPiocher) {
+                            pioche();
 
+                        }
+                        peutPiocher = true;
                     }
-                    peutPiocher=true;
-                }
-            });
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-            timer.start();
+                });
+                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                timer.start();
+            }
         }
     }
 
@@ -595,8 +629,8 @@ public class Jeu extends Observable implements Serializable{
         }
         //mélange la pioche
         long seed = 12345L;
-        Collections.shuffle(pioche, new Random(seed));
-        //Collections.shuffle(pioche);
+        //Collections.shuffle(pioche, new Random(seed));
+        Collections.shuffle(pioche);
     }
 
     public byte[] getTuilesAPoser() {
@@ -611,37 +645,7 @@ public class Jeu extends Observable implements Serializable{
         plateau.joueCoup(coup);
     }
 
-    public boolean pioche() {
-        if(pioche.isEmpty()){
-            estPartieFinie = true;
-            if(AFFICHAGE) System.out.println("Partie terminee, pioche vide !");
-            ArrayList<Joueur> joueurs_copie = new ArrayList<>();
-            ArrayList<Joueur> joueurs_tries = new ArrayList<>();
-            for (int i = 0; i < getJoueurs().length; i++) {
-                joueurs_copie.add(getJoueurs()[i]);
-            }
-            int score_meilleur = Integer.MIN_VALUE;
-            int indice_meilleur_joueur = -1;
-            int score_courant;
-            while (joueurs_copie.size() > 1) {
-                for (int i = 0; i < joueurs_copie.size(); i++) {
-                    score_courant = joueurs_copie.get(i).calculScore();
-                    if (score_courant > score_meilleur) {
-                        score_meilleur = score_courant;
-                        indice_meilleur_joueur = i;
-                        jVainqueur = (byte) indice_meilleur_joueur;
-                    }
-                }
-                joueurs_tries.add(joueurs_copie.get(indice_meilleur_joueur));
-                joueurs_copie.remove(indice_meilleur_joueur);
-                indice_meilleur_joueur = -1;
-                score_meilleur = Integer.MIN_VALUE;
-            }
-            if(AFFICHAGE){
-                afficheScore();
-            }
-            return true;
-        }
+    public void pioche() {
         playSons(4);
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
@@ -663,11 +667,10 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu==GRAPHIQUE){//chrono uniquement en mode GRAPHIQUE
             joueurs[jCourant].startChrono();
         }
-        return false;
     }
 
     public int getTaillePioche(){
-        return pioche.size();
+        return nb_joueurs*12;
     }
 
     public void annuler() {
