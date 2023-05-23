@@ -140,7 +140,9 @@ public class PanelMenu extends JPanel {
         bouton_Credits = lisImage("credits");
         bouton_Credits_select = lisImage("credits_select");
         bouton_Credits_clic = lisImage("credits_clic");
-        bouton_Quitter = lisImage("bouton_quitter");
+        bouton_Quitter = lisImage("quitter");
+        bouton_Quitter_select = lisImage("quitter_select");
+        bouton_Quitter_clic = lisImage("quitter_clic");
         options_background = lisImage("/Options/Options_background");
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
@@ -728,7 +730,7 @@ public class PanelMenu extends JPanel {
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
-        posY_Jouer = hauteur_background/7;
+        posY_Jouer = hauteur_background/6;
         int decalageY = hauteur_background/8;
         posY_Options = posY_Jouer + decalageY;
         posY_Credits = posY_Options + decalageY;
