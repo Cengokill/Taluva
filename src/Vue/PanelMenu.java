@@ -27,7 +27,7 @@ public class PanelMenu extends JPanel {
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
     final BufferedImage[] sliders = new BufferedImage[6];
-    BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Reseau_hover,bouton_Options_hover,bouton_Quitter_hover,
+    BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Options_hover, bouton_Options_clic,bouton_Quitter_hover,
             options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
             ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
     Dimension tailleEcran, tailleFenetre;
@@ -94,7 +94,9 @@ public class PanelMenu extends JPanel {
         background = lisImage("ocean");
         bouton_Local = lisImage("bouton_local");
         bouton_Reseau = lisImage("bouton_reseau");
-        bouton_Options = lisImage("bouton_options");
+        bouton_Options = lisImage("parametres");
+        bouton_Options_hover = lisImage("parametres_select");
+        bouton_Options_clic = lisImage("parametres_clic");
         bouton_Quitter = lisImage("bouton_quitter");
         options_background = lisImage("/Options/Options_background");
         for(int i=0; i < sliders.length;i++){
@@ -132,8 +134,6 @@ public class PanelMenu extends JPanel {
 
         // hover
         bouton_Local_hover = applyRedFilter(bouton_Local);
-        bouton_Reseau_hover = applyRedFilter(bouton_Reseau);
-        bouton_Options_hover = applyRedFilter(bouton_Options);
         bouton_Quitter_hover = applyRedFilter(bouton_Quitter);
         bouton_droit_hover = applyRedFilter(bouton_droit);
         bouton_gauche_hover = applyRedFilter(bouton_gauche);
@@ -393,10 +393,7 @@ public class PanelMenu extends JPanel {
         if(select_local) g.drawImage(bouton_Local_hover, posX_boutons-(largeur_background/9), posY_Local, largeur_bouton, hauteur_bouton, null);
         else g.drawImage(bouton_Local, posX_boutons-(largeur_background/9), posY_Local, largeur_bouton, hauteur_bouton, null);
     }
-    public void afficheBoutonReseau(Graphics g) {
-        if(select_reseau) g.drawImage(bouton_Reseau_hover, posX_boutons+(largeur_background/9), posY_Local, largeur_bouton, hauteur_bouton,null);
-        else g.drawImage(bouton_Reseau, posX_boutons+(largeur_background/9), posY_Local, largeur_bouton, hauteur_bouton,null);
-    }
+
     public void afficheBoutonOptions(Graphics g) {
         if(select_options) g.drawImage(bouton_Options_hover, posX_boutons, posY_Options, largeur_bouton, hauteur_bouton,null);
         else g.drawImage(bouton_Options, posX_boutons, posY_Options, largeur_bouton, hauteur_bouton,null);
@@ -543,7 +540,6 @@ public class PanelMenu extends JPanel {
             afficheMessageErreur(g2d);
         } else{
             afficheBoutonLocal(g2d);
-            afficheBoutonReseau(g2d);
             afficheBoutonOptions(g2d);
             afficheBoutonQuitter(g2d);
         }
@@ -665,7 +661,7 @@ public class PanelMenu extends JPanel {
     private void calculeRapportsEtPositions() {
         largeur = layeredPane.getWidth();
         hauteur = layeredPane.getHeight();
-        double rapport_bouton=1;
+        double rapport_bouton=179.0/692.0;
         double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
         double rapport_background = 0.5625;
         double rapport_actuel = (double) hauteur /(double) largeur;
@@ -681,6 +677,7 @@ public class PanelMenu extends JPanel {
             posX_background=(largeur -largeur_background)/2;
             posY_background=0;
         }
+        //boutons menu principal du jeu
         largeur_bouton=largeur_background/7;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
