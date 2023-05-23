@@ -309,7 +309,11 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 }
                 if (estSurAnnuler(e)) {
                     fenetreJeu.playSons(0);
-                    fenetreJeu.annuler();
+                    try {
+                        fenetreJeu.annuler();
+                    } catch (CloneNotSupportedException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                 }
                 if (estSurRefaire(e)) {
@@ -474,7 +478,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     if(scrollValue == 1) scrollValue = 6;
                     else scrollValue--;
                 }
-                fenetreJeu.panelPlateau.miseAJour();
+                //fenetreJeu.panelPlateau.miseAJour();
             } else {
                 int wheelRotation = e.getWheelRotation();
                 double prevZoomFactor = zoomFactor;
