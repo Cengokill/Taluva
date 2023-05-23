@@ -41,7 +41,7 @@ public class PanelPlateau extends JPanel {
     final ControleurMediateur controleur;
     public final FenetreJeu fenetreJeu;
     public final Jeu jeu;
-    private int index_water=0, index_bat_precedent=-1,posX_bat_precedent=-1,posY_bat_precedent=-1,indexMessageErreur=0,timerValue=0;
+    private int index_bat_precedent=-1,posX_bat_precedent=-1,posY_bat_precedent=-1,indexMessageErreur=0,timerValue=0;
 
     private ArrayList<Position> emplacementPropagation;
 
@@ -191,13 +191,8 @@ public class PanelPlateau extends JPanel {
     }
 
     public void miseAJour() {
-        if(jeu.doitCalculerEmplacementPossible){
-
-        }
+        if(scrollValue==0 && jeu.doit_placer_tuile()) scrollValue = 1;
         repaint();
-        if(index_water==3){
-            index_water=0;
-        }else index_water++;
     }
 
     private void changerPoseTile() {

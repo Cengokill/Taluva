@@ -206,17 +206,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         return valeur;
     }
 
-    public ArrayList<Tuile> ajoutTuilesPioche(LinkedList<Tuile> pioche_du_jeu){//15 tuiles différentes
-        ArrayList<Tuile> pioche = new ArrayList<>();
-        //calcule tous les coups avec chaque tuile de la pioche
-        for(int tuileIndex = 0; tuileIndex<pioche_du_jeu.size(); tuileIndex++){
-            if(!contientTuile(pioche,pioche_du_jeu.get(tuileIndex))){
-                pioche.add(pioche_du_jeu.get(tuileIndex));
-            }
-        }
-        return pioche;
-    }
-
     public boolean contientTuile(ArrayList<Tuile> listeTuiles, Tuile t){
         for(int tuileIndex = 0; tuileIndex < listeTuiles.size(); tuileIndex++){
             if(listeTuiles.get(tuileIndex).biome0 == t.biome0 && listeTuiles.get(tuileIndex).biome1 == t.biome1){
@@ -228,32 +217,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
 
     private int evaluationScoreTuile(InstanceJeu instanceCourante){
-        // TODO si c'est pas trop lourd, on peut rajouter de la profondeur
-        /*final int[] scoreJoueur = new int[1];
-        final int[] scoreAdverse = new int[1];
-
-        // On regarde les points pour l'IA sur un thread
-        Thread iaThread = new Thread(() -> {
-            scoreJoueur[0] = evaluationTuile(instanceCourante, true);
-        });
-
-        // On regarde les points pour le joueur adverse sur un autre thread
-        Thread iaThread2 = new Thread(() -> {
-            scoreAdverse[0] = evaluationTuile(instanceCourante, false);
-        });
-
-        iaThread.start();
-        iaThread2.start();
-
-        try { // On attend la fin des calculs des threads
-            iaThread.join();
-            iaThread2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return scoreJoueur[0] - scoreAdverse[0];*/
-
         int scoreJoueur = evaluationTuile(instanceCourante,true);
         int scoreAdverse = evaluationTuile(instanceCourante,false);
         return scoreJoueur-scoreAdverse;
@@ -296,6 +259,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             score += (batimentsPlacablesNombre[2]*joueurCourant.getNbTours())*(poids_tour);
         }
         // TODO à completer (par exemple isoler un temple ou couper un gros village en 2...)
+
+
         return score/joueurs.size();
     }
 
@@ -364,6 +329,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             plateauCopie.joueCoup(coupT);
 
             int scoreTuile_courante = evaluationScoreTuile(instanceCourante);
+
             // si le coup est aussi bien que notre meilleur on le rajoute
             if(scoreTuile_courante==scoreTuile_max){
                 coupTuileBatimentsAEvaluer.add(coupT);
@@ -560,8 +526,8 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     for(Point2D posBat : village){
                         if(posBat!=null){
                             //System.out.println("posBat");
-                            if(instanceAEvaluer.getPlateau().getBatiment(posBat.getPointX(),posBat.getPointY())==Coup.TEMPLE) score_courant = -50000;
-                            if(village.size()-1>3) score_courant = -50000;
+                            if(instanceAEvaluer.getPlateau().getBatiment(posBat.getPointX(),posBat.getPointY())==Coup.TEMPLE) score_courant = -200;
+                            if(village.size()-1>3) score_courant = -200;
                             //System.out.println("posBat i: "+posBat.getPointX() +" j: "+posBat.getPointY());
                         }
                     }

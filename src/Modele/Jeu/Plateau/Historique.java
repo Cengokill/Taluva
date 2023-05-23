@@ -29,9 +29,17 @@ public class Historique implements Serializable {
 
     public Historique copie() {
         Historique h = new Historique();
-        h.passe = (LinkedList<Coup>) passe.clone();
-        h.futur = (LinkedList<Coup>) futur.clone();
+        h.passe = copie(passe);
+        h.futur = copie(futur);
         return h;
+    }
+
+    private LinkedList<Coup> copie(LinkedList<Coup>aCopier){
+        LinkedList<Coup> aRenvoyer = new LinkedList<>();
+        while(aCopier.size()!=0){
+            aRenvoyer.addLast(aCopier.getFirst());
+        }
+        return aRenvoyer;
     }
     private static void afficheTabPosition(ArrayList<Position> positions){
         for(Position posCourante: positions){
