@@ -50,7 +50,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         r = new Random(seed);
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
-        System.out.println(jeu.getJoueurCourantClasse().getPrenom());
+        //System.out.println(jeu.getJoueurCourantClasse().getPrenom());
         //plateauIA.affiche();
         //System.exit(0);
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();
@@ -231,7 +231,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     private int evaluationScoreTuile(InstanceJeu instanceCourante){
         // TODO si c'est pas trop lourd, on peut rajouter de la profondeur
-        final int[] scoreJoueur = new int[1];
+        /*final int[] scoreJoueur = new int[1];
         final int[] scoreAdverse = new int[1];
 
         // On regarde les points pour l'IA sur un thread
@@ -254,7 +254,11 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             e.printStackTrace();
         }
 
-        return scoreJoueur[0] - scoreAdverse[0];
+        return scoreJoueur[0] - scoreAdverse[0];*/
+
+        int scoreJoueur = evaluationTuile(instanceCourante,true);
+        int scoreAdverse = evaluationTuile(instanceCourante,false);
+        return scoreJoueur-scoreAdverse;
     }
 
     private int evaluationTuile(InstanceJeu instanceCourante, boolean estJoueurCourant){
@@ -284,7 +288,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         for(Joueur joueurCourant: joueurs){
             if(batimentsPlacablesNombre[0] == 0 && batimentsPlacablesNombre[1] == 0 && batimentsPlacablesNombre[2] == 0) return Integer.MIN_VALUE;
             if(seraJoueurVictorieux(instanceCourante,joueurs)) return Integer.MAX_VALUE;
-            else if(joueurCourant.getNbTemples() == 0 || joueurCourant.getNbTours() == 0){
+            if(joueurCourant.getNbTemples() == 0 || joueurCourant.getNbTours() == 0){
                 nouveauPoidsHutte = 5;
             }else if(joueurCourant.getNbHuttes() == 0){
                 return 0;
@@ -551,13 +555,13 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
             // TEST //
             if(coupCourant.typePlacement==HUTTE){
-                System.out.println("////////////////////////////////////////");
+                //System.out.println("////////////////////////////////////////");
                 ArrayList<ArrayList<Point2D>> posVillage = instanceAEvaluer.getPlateau().getTousLesVillagesVoisins(coupCourant.batimentLigne,coupCourant.batimentColonne,joueurAEvaluer.getCouleur());
                 for(ArrayList<Point2D> village : posVillage){
-                    System.out.println("---Village--- : "+village.size());
+                    //System.out.println("---Village--- : "+village.size());
                     for(Point2D posBat : village){
                         if(posBat!=null){
-                            System.out.println("posBat");
+                            //System.out.println("posBat");
                             if(instanceAEvaluer.getPlateau().getBatiment(posBat.getPointX(),posBat.getPointY())==Coup.TEMPLE) score_courant = -50000;
                             if(village.size()-1>3) score_courant = -50000;
                             //System.out.println("posBat i: "+posBat.getPointX() +" j: "+posBat.getPointY());
@@ -565,14 +569,14 @@ public class IAIntelligente extends AbstractIA implements Serializable {
                     }
 
                 }
-                System.out.println("////////////////////////////////////////");
+                //System.out.println("////////////////////////////////////////");
             }
             // On évalue la nouvelle instance
             score_courant += evaluationScoreInstance(instanceAEvaluer);
             /*if(!instanceCourante.getPlateau().aCiteAutour(coupCourant.batimentLigne,coupCourant.batimentColonne,instanceCourante.getJoueurCourantClasse().getCouleur())){ // TEST
                 score_courant = score_courant*1000;
             }*/
-            System.out.println("Scoremax: "+score_max +" scoreCourant: "+score_courant);
+            //System.out.println("Scoremax: "+score_max +" scoreCourant: "+score_courant);
             //score_courant = evaluation(instanceAEvaluer);
             if(score_courant == score_max){
                 coupsBatimentARenvoyer.add(coupCourant);
@@ -666,7 +670,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     }
 
     private int evaluationScoreInstance(InstanceJeu instanceCourante){
-        final int[] scoreJoueur = new int[1];
+        /*final int[] scoreJoueur = new int[1];
         final int[] scoreAdverse = new int[1];
 
         // On regarde les points pour l'IA sur un thread
@@ -689,7 +693,11 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             e.printStackTrace();
         }
 
-        return scoreJoueur[0] - scoreAdverse[0];
+        return scoreJoueur[0] - scoreAdverse[0];*/
+
+        int scoreJoueur = evaluationInstance(instanceCourante,true);
+        int scoreAdverse = evaluationInstance(instanceCourante,false);
+        return scoreJoueur - scoreAdverse;
     }
 
     private int evaluationInstance(InstanceJeu instanceCourante, boolean estJoueurCourant){
