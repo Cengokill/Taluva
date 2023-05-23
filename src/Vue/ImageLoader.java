@@ -41,7 +41,7 @@ public class ImageLoader {
             posX_timer, posY_timer, largeur_timer, hauteur_timer, posX_retour_finPartie, posY_retour_finPartie, largeur_retour_finPartie, hauteur_retour_finPartie,
             posX_joueur_courant, posY_joueur_courant, posX_prenom, posY_prenom_j0, posY_prenom_j1, posY_prenom_j2, posY_prenom_j3, posX_huttes, posX_tours, posX_temples,
             posY_scores_j0, posY_scores_j1, posY_scores_j2, posY_scores_j3, posX_nb_tuiles_pioche, posY_nb_tuiles_pioche, posX_messageErreur,posY_messageErreur, posY_options, posX_menu_options, posY_menu_options,
-            largeur_tuile, hauteur_tuile, largeur_fin_partie, hauteur_fin_partie;
+            largeur_tuile, hauteur_tuile, largeur_fin_partie, hauteur_fin_partie,posX_BoutonSave,posY_BoutonSave1,posY_BoutonSave2,posY_BoutonSave3,posY_BoutonSave4;
     public static int largeur_fenetre_score, hauteur_fenetre_score, largeur, hauteur, largeur_bouton, hauteur_bouton, largeur_bouton_dans_options,
             hauteur_bouton_dans_options, largeur_joueur_courant, hauteur_joueur_courant,hauteurMessageErreur,largeurMessageErreur, largeur_menu_options,
             hauteur_menu_options, largeur_chrono, posX_chrono, posY_chrono, largeur_aiguille, posX_aiguille, posY_aiguille, posX_tuilePiochee, posY_tuilePiochee, largeur_tuilePiochee,
@@ -50,6 +50,8 @@ public class ImageLoader {
     largeur_hutte_score, largeur_tour_score, largeur_temple_score, posX_huttes_score, posX_tours_score, posX_temples_score, posY_huttes_score_j0,
             posY_huttes_score_j1, posY_huttes_score_j2, posY_huttes_score_j3, posY_tours_score_j0, posY_tours_score_j1, posY_tours_score_j2, posY_tours_score_j3,
             posY_temples_score_j0, posY_temples_score_j1, posY_temples_score_j2, posY_temples_score_j3;
+    public static int posX_optionSave , posY_optionSave,largeur_optionSave ,hauteur_optionSave,largeur_boutonSave,hauteur_boutonSave,decalageY_save,posX_optionSaveBouton,posY_optionSaveBouton ,texte_saveX ,
+    texte_savey,texte_saveXvide,posY_btnAnnulerSave,posX_btnAnnulerSave;
     public static double tempsDebutPartie, tempsFinPartie, tempsPartie;
     public static int posX_pioche, posY_pioche, largeur_pioche, hauteur_pioche;
     public static boolean select_menu_options;
@@ -61,7 +63,7 @@ public class ImageLoader {
     public static boolean select_refaire;
     public static boolean select_quitter;
     public static boolean select_tuto;
-    public static boolean clicBoutonPauseEchap, clicBoutonParametres;
+    public static boolean clicBoutonPauseEchap, clicBoutonSave;
     public static boolean tuto_on;
     public static boolean select_fin_partie;
     public static BufferedImage echap_button;
@@ -308,10 +310,10 @@ public class ImageLoader {
         int nbMaison;
         if(hauteurTerrain>=7) nbMaison = 7;
         else nbMaison = hauteurTerrain;
-        if(color_player == Color.RED) return huttes_rouges[nbMaison-1];
-        else if (color_player == Color.BLUE) return huttes_bleues[nbMaison-1];
-        else if (color_player == Color.GREEN) return huttes_vertes[nbMaison-1];
-        else if (color_player == Color.MAGENTA) return huttes_violettes[nbMaison-1];
+        if(color_player.equals(Color.RED)) return huttes_rouges[nbMaison-1];
+        else if (color_player.equals(Color.BLUE)) return huttes_bleues[nbMaison-1];
+        else if (color_player.equals(Color.GREEN)) return huttes_vertes[nbMaison-1];
+        else if (color_player.equals(Color.MAGENTA)) return huttes_violettes[nbMaison-1];
         else{
             System.err.println("Erreur : aucune hutte ne correspond à la couleur "+color_player+".");
             return null;

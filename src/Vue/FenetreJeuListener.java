@@ -20,6 +20,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         super();
         this.fenetreJeu = fenetreJeu;
         clicBoutonPauseEchap = false;
+        clicBoutonSave=false;
 
         this.fenetreJeu.panelPlateau.mouseHandler = new MouseHandler();
         this.fenetreJeu.panelPlateau.addMouseListener(this.fenetreJeu.panelPlateau.mouseHandler);
@@ -60,6 +61,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             //touche echap
             if(keyCode == KeyEvent.VK_ESCAPE){
                 clicBoutonPauseEchap = !clicBoutonPauseEchap;
+                if(clicBoutonSave==true){
+                    clicBoutonSave=false;
+                }
                 fenetreJeu.index_musique = fenetreJeu.jeu.indexMusique;
                 fenetreJeu.index_son = fenetreJeu.jeu.indexSon;
                 fenetreJeu.afficheOptions = false;
@@ -164,7 +168,8 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurRetour(MouseEvent e) {
-            if(!clicBoutonPauseEchap) return false;
+            //    true                       false/true ->            inverse
+            if(!clicBoutonPauseEchap||FenetreJeu.afficheSave||FenetreJeu.afficheLoad)return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_retour + hauteur_bouton_dans_options;
             if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_retour && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
@@ -180,7 +185,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurSauvegarder(MouseEvent e) {
-            if(!clicBoutonPauseEchap) return false;
+            if(!clicBoutonPauseEchap||FenetreJeu.afficheSave||FenetreJeu.afficheLoad)return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_save + hauteur_bouton_dans_options;
             if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_save && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
@@ -196,7 +201,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurCharger(MouseEvent e) {
-            if(!clicBoutonPauseEchap) return false;
+            if(!clicBoutonPauseEchap||FenetreJeu.afficheSave||FenetreJeu.afficheLoad)return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_load + hauteur_bouton_dans_options;
             if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_load && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
@@ -212,7 +217,8 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurParametres(MouseEvent e) {
-            if(!clicBoutonPauseEchap) return false;
+            //       true                   false                   false
+            if(!clicBoutonPauseEchap||FenetreJeu.afficheSave||FenetreJeu.afficheLoad)return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_parametres + hauteur_bouton_dans_options;
             if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_parametres && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
@@ -228,7 +234,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
 
         public boolean estSurQuitter(MouseEvent e) {
-            if(!clicBoutonPauseEchap) return false;
+            if(!clicBoutonPauseEchap||FenetreJeu.afficheSave||FenetreJeu.afficheLoad)return false;
             int largeur = posX_save + largeur_bouton_dans_options;
             int hauteur = posY_quitter + hauteur_bouton_dans_options;
             if(e.getX() >= posX_save && e.getX() <= largeur && e.getY() >= posY_quitter && e.getY() <= hauteur && !fenetreJeu.afficheOptions){
@@ -252,6 +258,73 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 return true;
             }
             select_retour = false;
+            return false;
+        }
+        public boolean estSurSave(MouseEvent e){
+            if(!FenetreJeu.afficheSave){
+               return false;
+            }
+            if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton&&e.getY()<=posY_optionSaveBouton+hauteur_boutonSave ){
+                FenetreJeu.sauvegarder(0);
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*1  && e.getY()<=posY_optionSaveBouton+decalageY_save*1+hauteur_boutonSave ){
+                FenetreJeu.sauvegarder(1);
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*2  && e.getY()<=posY_optionSaveBouton+decalageY_save*2+hauteur_boutonSave ) {
+                FenetreJeu.sauvegarder(2);
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*3  && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave ){
+                FenetreJeu.sauvegarder(3);
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton*2.2  && e.getX()<=posX_optionSaveBouton*2.2+largeur_bouton &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*3.2 && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave+largeur_bouton ){
+                FenetreJeu.afficheSave=false;
+                return true;
+            }
+            return false;
+        }
+        public boolean estSurload(MouseEvent e){
+            if(!FenetreJeu.afficheLoad){
+                return false;
+            }
+            if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton&&e.getY()<=posY_optionSaveBouton+hauteur_boutonSave ){
+                FenetreJeu.charger(0);
+                FenetreJeu.afficheLoad=false;
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*1  && e.getY()<=posY_optionSaveBouton+decalageY_save*1+hauteur_boutonSave ){
+                FenetreJeu.charger(1);
+                FenetreJeu.afficheLoad=false;
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*2  && e.getY()<=posY_optionSaveBouton+decalageY_save*2+hauteur_boutonSave ) {
+                FenetreJeu.charger(2);
+                FenetreJeu.afficheLoad=false;
+                return true;
+            }
+            else if(e.getX()>=posX_optionSaveBouton  && e.getX()<=posX_optionSaveBouton+largeur_boutonSave &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*3  && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave ){
+                FenetreJeu.charger(3);
+                FenetreJeu.afficheLoad=false;
+                return true;
+
+            }
+            else if(e.getX()>=posX_optionSaveBouton*2.2  && e.getX()<=posX_optionSaveBouton*2.2+largeur_bouton &&
+                    e.getY()>=posY_optionSaveBouton+decalageY_save*3.2 && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave+largeur_bouton ){
+                FenetreJeu.afficheLoad=false;
+                return true;
+            }
             return false;
         }
 
@@ -323,7 +396,6 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     select_retour = false;
                 }
                 if (estSurQuitter(e)) {
-                    fenetreJeu.retourDebug = true;
                     fenetreJeu.getJeu().musicPlayer.stop();
                     fenetreJeu.layeredPane.removeAll();
                     fenetreJeu.playSons(0);
@@ -345,13 +417,16 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     fenetreJeu.playSons(0);
                     clicBoutonPauseEchap = true;
                 }
+                if (estSurload(e)){}
+                if(estSurSave(e)){}
                 if (estSurSauvegarder(e)) {
                     fenetreJeu.playSons(0);
-                    FenetreJeu.sauvegarder();
+                    FenetreJeu.afficheSave=true;
+
                 }
                 if (estSurCharger(e)) {
                     fenetreJeu.playSons(0);
-                    FenetreJeu.charger();
+                    FenetreJeu.afficheLoad=true;
                 }
                 if (estSurParametres(e)) {
                     fenetreJeu.playSons(0);
@@ -362,6 +437,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     fenetreJeu.playSons(0);
                     select_fin_partie = false;
                 }
+
             }
         }
         private void setFullscreen(){
