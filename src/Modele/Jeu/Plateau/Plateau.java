@@ -149,7 +149,7 @@ public class Plateau implements Serializable, Cloneable {
     public ArrayList<Point2D> positionsBatsVillage(int x, int y, Color color_joueur){
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
         Point2D positionHutte = new Point2D(x,y);
-        listeDesHutesVoisines.add(positionHutte);
+        //listeDesHutesVoisines.add(positionHutte);
 
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
