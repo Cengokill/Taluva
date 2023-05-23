@@ -15,12 +15,15 @@ import java.util.LinkedList;
 
 public class AbstractIA extends Joueur implements Runnable{
     protected Jeu jeu;
-    public static LinkedList<Tuile> pioche;
     private static int type_IA;
     public static final byte ALEATOIRE = 0;
     public static final byte MOYENNE = 1;
     public static final byte INTELLIGENTE = 2;
-    private byte numero;
+    public static final byte TEST = 3;
+    public static int poids_temple = 1000;
+    public static int poids_tour = 100;
+    public static int poids_hutte = 1;
+    public static int numero;
 
     public AbstractIA(byte type, byte n, String prenom) {
         super(type, n, prenom);
@@ -33,9 +36,11 @@ public class AbstractIA extends Joueur implements Runnable{
         if(type_IA == ALEATOIRE) {
             resultat = new IAAleatoire(n);
         }else if(type_IA == INTELLIGENTE) {
-            resultat = new IAIntelligente(n, 1);
+            resultat = new IAIntelligente(n, 2);
         }else if(type_IA == MOYENNE) {
-            resultat = new IAMoyenne(n);
+            resultat = new IAMoyenne(n, 2);
+        }else if(type_IA == TEST) {
+            resultat = new IATest(n, 1);
         }
         if (resultat != null) {
             resultat.jeu = j;

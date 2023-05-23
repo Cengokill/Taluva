@@ -17,9 +17,6 @@ import java.util.*;
 
 public class IAIntelligente extends AbstractIA implements Serializable {
     public int taille_max_tuiles_a_tester = 20;
-    public static int poids_temple = 1000;
-    public static int poids_tour = 100;
-    public static int poids_hutte = 1;
     public static int TEMPLE = 0;
     public static int HUTTE = 1;
     public static int TOUR = 2;
@@ -29,6 +26,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     double debut_test, fin_test, temps_test;
     double debut_test2, fin_test2, temps_test2;
     private int profondeur;
+    InstanceJeu instance;
 
     public IAIntelligente(byte n, int profondeur) {
         super(IA, n, "IA"+n);
@@ -41,8 +39,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
     // TODO -> TROUVER UNE VALEUR DE COUP POUR LAQUELLE ON SE DIT QU'ON LA RETURN (coup de tuile et coup de bat)
     // TODO -> METTRE UN MINUTEUR DYNAMIQUE par exemple au debut 1 secondes puis 2 puis... jusqu'a 5-10 à voir
     // TODO -> POUR L'INSTANT 3 JOUEURS C'EST UNE SEULE ENTITE (si c'est pas lourd on peut faire pour chaque joueur et valoriser la pénalisation du plus en avance)
-
-    InstanceJeu instance;
     @Override
     public CoupValeur joue() {
         debut = System.currentTimeMillis();
@@ -61,7 +57,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsTuile(instance,jeu.getTuileCourante());
             return meilleursCoupsTab.get(0);
         }
-        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,1);
+        ArrayList<CoupValeur> meilleursCoupsTab = meilleursCoupsInstance(instance,profondeur);
         return meilleursCoupsTab.get(r.nextInt(meilleursCoupsTab.size()));
     }
 
@@ -799,7 +795,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     public boolean estFinTemps(){
         if (jeu.getTimerActif()) {
-            System.out.println("Appel à estFinTemps()");
             double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurs()[instance.getJoueurCourant()].getTempsTemp();
             if (tempsEcoule >= 20000000) {
                 tempsEcoule = 0.0;
