@@ -35,7 +35,7 @@ public class Hexagone implements Serializable {
         this.couleur_joueur = null;
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
-        this.numeroTexture = (byte) ((int)(Math.random() * 2) + 1);
+        this.numeroTexture = 0;
         this.volcan_i = volcan_i;
         this.volcan_j = volcan_j;
     }
@@ -45,7 +45,7 @@ public class Hexagone implements Serializable {
         this.hauteur = hauteur;
         this.biomeTerrain = biomeTerrain;
         this.batiment = batiment;
-        this.numeroTexture = (byte) ((int)(Math.random() * 2) + 1);
+        this.numeroTexture = 0;//(byte) ((int)(Math.random() * 2) + 1);
         this.volcan_i = volcan_i;
         this.volcan_j = volcan_j;
     }

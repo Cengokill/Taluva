@@ -9,6 +9,7 @@ import Structures.Position.TripletDePosition;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
 
@@ -25,6 +26,8 @@ public class Plateau implements Serializable, Cloneable {
     private ArrayList<TripletDePosition> joueurTripletsPossible;
     private ArrayList<Position> positions_libres_batiments;
 
+    private int nbTuilePlacee = 0;
+
     public Plateau(){
         initPlateau();
         initHistorique();
@@ -34,30 +37,20 @@ public class Plateau implements Serializable, Cloneable {
         initTripletsPossibles();
     }
 
-    public Plateau copie(){
+    public Plateau copie() {
         Plateau p = new Plateau();
         p.historique = this.historique.copie();
         p.nbHuttesDisponiblesJoueur = this.nbHuttesDisponiblesJoueur;
 
-        p.positions_libres = new ArrayList<>();
-        for(Position posCourante: this.positions_libres){
-            p.positions_libres.add(posCourante);
-        }
-        p.positions_libres_batiments = new ArrayList<>();
-        for(Position posCourante: this.positions_libres_batiments){
-            p.positions_libres_batiments.add(posCourante);
-        }
-        p.tripletsPossible = new ArrayList<>();
-        for(TripletDePosition posCourante: this.tripletsPossible){
-            p.tripletsPossible.add(posCourante);
-        }
+        p.positions_libres = new ArrayList<>(this.positions_libres);
+        p.positions_libres_batiments = new ArrayList<>(this.positions_libres_batiments);
+        p.tripletsPossible = new ArrayList<>(this.tripletsPossible);
 
         p.carte = new Hexagone[LIGNES][COLONNES];
-        for(int i=0;i<LIGNES;i++){
-            for(int j=0;j<COLONNES;j++){
-                p.carte[i][j] = this.carte[i][j];
-            }
+        for (int i = 0; i < LIGNES; i++) {
+            System.arraycopy(this.carte[i], 0, p.carte[i], 0, COLONNES);
         }
+
         return p;
     }
 
@@ -542,31 +535,27 @@ public class Plateau implements Serializable, Cloneable {
     }
 
 
-    public void metAjourPositionsLibres(ArrayList<Position> listeVoisins){
-        ArrayList<Position> aSupprimer = new ArrayList<>();
-        ArrayList<TripletDePosition> tripletsaSupprimer = new ArrayList<>();
-        for(Position p : listeVoisins){
-            //si p est dans positions_libres et n'est pas de l'eau, on l'enl?ve
-            if(!estHexagoneVide(p.ligne(), p.colonne())) {
-                aSupprimer.add(p);
+    public void metAjourPositionsLibres(ArrayList<Position> listeVoisins) {
+        for (int i = listeVoisins.size() - 1; i >= 0; i--) {
+            Position p = listeVoisins.get(i);
+            if (!estHexagoneVide(p.ligne(), p.colonne())) {
+                listeVoisins.remove(i);
             }
         }
-        //System.out.println("Pour ?tre sur taille AVANT: "+listeVoisins.size());
 
-        for(Position p : aSupprimer){
-            listeVoisins.remove(p);
-            for(TripletDePosition t : tripletsPossible){
-                if(((t.getVolcan().ligne()==p.ligne() && t.getVolcan().colonne()==p.colonne())||(t.getTile1().ligne()==p.ligne() && t.getTile1().colonne()==p.colonne())||(t.getTile2().ligne()==p.ligne() && t.getTile2().colonne()==p.colonne()))
-                        ||!estHexagoneVide(t.getVolcan().ligne(),t.getVolcan().colonne())||!estHexagoneVide(t.getTile1().ligne(),t.getTile1().colonne())||!estHexagoneVide(t.getTile2().ligne(),t.getTile2().colonne())){
-                    tripletsaSupprimer.add(t);
+        for (int i = tripletsPossible.size() - 1; i >= 0; i--) {
+            TripletDePosition t = tripletsPossible.get(i);
+            Position volcano = t.getVolcan();
+            Position tile1 = t.getTile1();
+            Position tile2 = t.getTile2();
 
-                }
+            if (!estHexagoneVide(volcano.ligne(), volcano.colonne())
+                    || !estHexagoneVide(tile1.ligne(), tile1.colonne())
+                    || !estHexagoneVide(tile2.ligne(), tile2.colonne())) {
+                tripletsPossible.remove(i);
             }
         }
-        //System.out.println("Pour ?tre sur taille APRES: "+listeVoisins.size());
-        for(TripletDePosition t : tripletsaSupprimer){
-            tripletsPossible.remove(t);
-        }
+
         positions_libres.addAll(listeVoisins);
     }
 
@@ -575,14 +564,13 @@ public class Plateau implements Serializable, Cloneable {
         return l < 0 || l >= LIGNES || c < 0 || c >= COLONNES;
     }
 
-    public boolean estHexagoneVide(int l, int c){
-        if(estCaseHorsPlateau(l,c)){
+    public boolean estHexagoneVide(int l, int c) {
+        if (estCaseHorsPlateau(l, c)) {
             return false;
         }
-        if(carte[l][c].getBiomeTerrain()==Hexagone.VIDE){
-            return true;
-        }
-        return carte[l][c].getBiomeTerrain() == Hexagone.WATER;
+
+        byte terrain = carte[l][c].getBiomeTerrain();
+        return terrain == Hexagone.VIDE || terrain == Hexagone.WATER;
     }
     public boolean estVolcan(int l, int c){
         return carte[l][c].getBiomeTerrain() == Hexagone.VOLCAN;
@@ -596,6 +584,7 @@ public class Plateau implements Serializable, Cloneable {
         Color color_joueur = coup.getCouleurJoueur();
         int hauteur = carte[coup.volcanLigne][coup.volcanColonne].getHauteur();
         if (coup.typePlacement == Coup.TUILE) {
+            nbTuilePlacee++;
             coup.oldTerrain1=carte[coup.tile1Ligne][coup.tile1Colonne].getBiomeTerrain();
             coup.oldTerrain2=carte[coup.tile2Ligne][coup.tile2Colonne].getBiomeTerrain();
             carte[coup.volcanLigne][coup.volcanColonne] = new Hexagone((byte) (hauteur + 1), Hexagone.VOLCAN, (byte)coup.volcanLigne, (byte)coup.volcanColonne, carte[coup.volcanLigne][coup.volcanColonne].getNum());
@@ -830,60 +819,76 @@ public class Plateau implements Serializable, Cloneable {
         return carte[i][j].getBatiment();
     }
 
-    public boolean peutPoserTemple(int i,int j,Color color_joueur){
+    public boolean peutPoserTemple(int i, int j, Color color_joueur) {
         // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUN TEMPLE ET VILLAGE ASSEZ GRAND)
-        boolean PeutClassique = true;
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
-        if(pointsVillage.size()<=3) PeutClassique =  false;                             // On verifie que la hauteur est d'au moins 3
-        for(Point2D p : pointsVillage){                                                 // On verifie que la cité ne possède pas déjà une tour
-            if(estTemple(p.getPointX(),p.getPointY())) PeutClassique =  false;
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i, j, color_joueur);
+        if (pointsVillage.size() <= 3) {
+            return false; // On vérifie que la hauteur est d'au moins 3
         }
-        if(PeutClassique && aCiteAutour(i,j,color_joueur)) return true;
+        for (Point2D p : pointsVillage) {
+            if (estTemple(p.getPointX(), p.getPointY())) {
+                return false; // On vérifie que la cité ne possède pas déjà une tour
+            }
+        }
+        if (aCiteAutour(i, j, color_joueur)) {
+            return true;
+        }
 
         // CAS POUR GERER ISOLATION DE TEMPLE
-        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,color_joueur);
-        boolean[] peut = new boolean[Villages.size()];
-        for(int k=0;k<Villages.size();k++){
-            peut[k]=true;
-            ArrayList<Point2D> pointsVillageCourant = Villages.get(k);
-            if(pointsVillageCourant.size()<=3){
-                peut[k]=false;
-            }
-            for(Point2D p : pointsVillageCourant){
-                if(p==null) peut[k]=false;
-                else if(estTemple(p.getPointX(),p.getPointY())) peut[k]=false;
-            }
-            if(peut[k] && aCiteAutour(i,j,color_joueur)) return true;
-        }
-        return false;
-    }
-
-    public boolean peutPoserTour(int i,int j,Color color_joueur){
-        // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUNE TOUR ET HAUTEUR>=3)
-        boolean PeutClassique = true;
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
-        if(getHauteurTuile(i,j)<3) PeutClassique = false;                            // On verifie que la hauteur est d'au moins 3
-        for(Point2D p : pointsVillage){                                              // On verifie que la cité ne possède pas déjà une tour
-            if(estTour(p.getPointX(),p.getPointY())) PeutClassique = false;
-        }
-        if(PeutClassique && aCiteAutour(i,j,color_joueur)) return true;
-
-        // CAS POUR GERER ISOLATION DE TOUR
-        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,color_joueur);
-        boolean[] peut = new boolean[Villages.size()];
-        for(int k=0;k<Villages.size();k++){
-            peut[k]=true;
-            ArrayList<Point2D> pointsVillageCourant = Villages.get(k);
-            if(getHauteurTuile(i,j)<3) peut[k]=false;
-            else{
-                for(Point2D p : pointsVillageCourant){
-                    if(p==null) peut[k]=false;
-                    else if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
+        boolean templePossible = false;
+        ArrayList<ArrayList<Point2D>> villages = getTousLesVillagesVoisins(i, j, color_joueur);
+        for (ArrayList<Point2D> pointsVillageCourant : villages) {
+            if (pointsVillageCourant.size() > 3) {
+                boolean villageValide = true;
+                for (Point2D p : pointsVillageCourant) {
+                    if (p == null || estTemple(p.getPointX(), p.getPointY())) {
+                        villageValide = false;
+                        break;
+                    }
+                }
+                if (villageValide) {
+                    templePossible = true;
+                    break;
                 }
             }
-            if(peut[k] && aCiteAutour(i,j,color_joueur)) return true;
         }
-        return false;
+        return templePossible;
+    }
+
+    public boolean peutPoserTour(int i, int j, Color color_joueur) {
+        // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUNE TOUR ET HAUTEUR >= 3)
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i, j, color_joueur);
+        if (getHauteurTuile(i, j) < 3) {
+            return false; // On vérifie que la hauteur est d'au moins 3
+        }
+        for (Point2D p : pointsVillage) {
+            if (estTour(p.getPointX(), p.getPointY())) {
+                return false; // On vérifie que la cité ne possède pas déjà une tour
+            }
+        }
+        if (aCiteAutour(i, j, color_joueur)) {
+            return true;
+        }
+
+        // CAS POUR GERER ISOLATION DE TOUR
+        boolean tourPossible = false;
+        ArrayList<ArrayList<Point2D>> villages = getTousLesVillagesVoisins(i, j, color_joueur);
+        for (ArrayList<Point2D> pointsVillageCourant : villages) {
+            if (getHauteurTuile(i, j) >= 3) {
+                boolean villageValide = true;
+                for (Point2D p : pointsVillageCourant) {
+                    if (p == null || estTour(p.getPointX(), p.getPointY())) {
+                        villageValide = false;
+                        break;
+                    }
+                }
+                if (villageValide) {
+                    tourPossible = true;
+                    break;
+                }
+            }
+        }
+        return tourPossible;
     }
 
     // TOUJOURS verifier qu'il reste le bâtiment dans l'inventaire du joueur avant de la poser
@@ -972,13 +977,14 @@ public class Plateau implements Serializable, Cloneable {
     }
 
     public boolean estVide(){
-        for (Hexagone[] hexagones : carte) {
+        /*for (Hexagone[] hexagones : carte) {
             for (int j = 0; j < carte[0].length; j++) {
                 if (hexagones[j].getBiomeTerrain() != Hexagone.VIDE && hexagones[j].getBiomeTerrain() != Hexagone.WATER)
                     return false;
             }
         }
-        return true;
+        return true;*/
+        return nbTuilePlacee==0;
     }
 
     public void supprimePosBatiment(Position pos){
