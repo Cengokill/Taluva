@@ -30,7 +30,10 @@ public class Jeu extends Observable implements Serializable{
     public byte type_jeu;
     Plateau plateau;
 
-    private boolean aAnnuler;
+    public LinkedList<Coup> historiqueDeCoup,historiqueDeCoupARefaire;
+
+    public LinkedList<Tuile> tuilepiochee;
+    public boolean annulation;
     public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     public transient ArrayList<ArrayList<MusicPlayer>> sonPlayer = new ArrayList<>();
     private AudioInputStream audioInputStream;
@@ -59,12 +62,15 @@ public class Jeu extends Observable implements Serializable{
         if(type_jeu == CONSOLE) {
             delai = 0;
         }else{
-            delai_avant_pioche = 200;//800;
-            delai = 200;//800;
+            delai_avant_pioche = 1500;
+            delai = 1200;
         }
         debug = false;
-        aAnnuler = false;
         initialiseSons();
+        historiqueDeCoup = new LinkedList<>();
+        historiqueDeCoupARefaire = new LinkedList<>();
+        tuilepiochee = new LinkedList<>();
+        annulation = false;
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
@@ -263,7 +269,7 @@ public class Jeu extends Observable implements Serializable{
         if(joueurs[n].type_joueur == Joueur.IA){
             joueurs[n] = new Joueur(Joueur.HUMAIN, numero, "Joueur "+numero);
         }else{
-            joueurs[n] = AbstractIA.nouvelle(this, numero, AbstractIA.INTELLIGENTE);
+            joueurs[n] = AbstractIA.nouvelle(this, numero, AbstractIA.ALEATOIRE);
         }
         joueurs[n].setNbHuttes(nbHuttes);
         joueurs[n].setNbTemples(nbTemples);
@@ -325,9 +331,8 @@ public class Jeu extends Observable implements Serializable{
                 jVainqueur = (byte) ((jCourant + 1) % nb_joueurs);
                 return;
             }
-            if(aAnnuler) pioche();
             getPlateau().joueCoup(coupTuile);
-            aAnnuler = false;
+            historiqueDeCoup.add(coupTuile);
             playSons(0);
             if(coupBatiment.typePlacement == Coup.HUTTE){
                 int propagation = 0;
@@ -350,10 +355,10 @@ public class Jeu extends Observable implements Serializable{
                     getJoueurCourant().incrementeHutte();
                 }
             }
-
             doit_placer_batiment = true;
             doit_placer_tuile = false;
             Timer timer = new Timer(delai, e -> {
+                historiqueDeCoup.add(new Coup(jCourant,getJoueurCourant().getCouleur(),coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement));
                 joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
                 doit_placer_batiment = false;
                 doit_placer_tuile = true;
@@ -426,8 +431,6 @@ public class Jeu extends Observable implements Serializable{
         if (doit_placer_batiment) {
             return false;
         }
-        if(aAnnuler) pioche();
-        aAnnuler = false;
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         isJoueurCourantPerdu();
         doit_placer_batiment = true;
@@ -656,6 +659,7 @@ public class Jeu extends Observable implements Serializable{
         playSons(4);
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
+        tuilepiochee.add(tuile_courante);
         pioche.remove(0);
         if(AFFICHAGE) //System.out.println("Tuiles dans la pioche : " + pioche.size());
         if(type_jeu==GRAPHIQUE) {
@@ -680,7 +684,27 @@ public class Jeu extends Observable implements Serializable{
         return nb_joueurs*12;
     }
 
-    public void annuler() {
+    public void annuler() throws CloneNotSupportedException {
+        if (historiqueDeCoup.isEmpty()) {
+            return;  // Pas d'historique de coup à annuler
+        }
+
+        Coup dernierCoup = historiqueDeCoup.removeLast();  // Récupérer le dernier coup effectué
+
+        Plateau plateau = new Plateau();  // Créer un nouveau plateau vide
+
+        // Refaire tous les coups restants dans l'historique
+        for (Coup coup : historiqueDeCoup) {
+            plateau.joueCoup(coup);
+        }
+
+        this.plateau = plateau;  // Mettre à jour le plateau actuel avec l'état précédent
+
+        // Ajouter le dernier coup annulé dans l'historique de coups à refaire
+        historiqueDeCoupARefaire.add(dernierCoup);
+    }
+
+    /*public void annuler() {
         Stock stock = plateau.annuler();
         if(stock!=null) {
             if (stock.changementDeJoueur == false) {
@@ -715,12 +739,34 @@ public class Jeu extends Observable implements Serializable{
             changePhase();
             peutPiocher=false;
         }
-    }
+    }*/
 
     public void refaire() {
+        if (historiqueDeCoupARefaire.isEmpty()) {
+            return;  // Pas de coup à refaire
+        }
+
+        Coup coupARedois = historiqueDeCoupARefaire.removeLast();  // Récupérer le dernier coup à refaire
+
+        Plateau plateau1 = new Plateau();  // Créer un nouveau plateau vide
+
+        // Refaire tous les coups dans l'historique de coups à refaire
+        for (Coup coup : historiqueDeCoupARefaire) {
+            plateau1.joueCoup(coup);
+        }
+
+        plateau1.joueCoup(coupARedois);  // Jouer le dernier coup à refaire sur le plateau
+
+        this.plateau = plateau;  // Mettre à jour le plateau actuel avec l'état refait
+
+        historiqueDeCoup.add(coupARedois);  // Ajouter le coup refait dans l'historique de coups
+    }
+
+    /*public void refaire() {
         Stock stock =plateau.refaire();
         if(stock!=null) {
             if (stock.typeBatiment == Coup.TUILE) {
+                pioche();
                 aAnnuler = false;
                 tuile_courante=pioche.getFirst();
                 tuileAPoser[0] = tuile_courante.biome0;
@@ -750,7 +796,7 @@ public class Jeu extends Observable implements Serializable{
                 IApeutjouer=true;
             }
         }
-    }
+    }*/
     public byte getNumJoueurCourant(){
         return jCourant;
     }

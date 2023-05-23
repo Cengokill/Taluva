@@ -32,41 +32,22 @@ public class PanelMenuListener implements MouseListener  {
 
     }
 
-    public boolean estCurseurSurBouton_Local(MouseEvent e){
+    public boolean estCurseurSurBouton_Jouer(MouseEvent e){
         if (panelMenu.estConfigPartie) {
             return false;
         }
-        int startx = panelMenu.posX_boutons-(panelMenu.largeur_background/9) ;
-        int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
+        int largeur = panelMenu.posX_boutons + panelMenu.largeur_bouton;
+        int hauteur = panelMenu.posY_Jouer + panelMenu.hauteur_bouton;
+        if(e.getX() >= panelMenu.posX_boutons && e.getX() <= largeur && e.getY() >= panelMenu.posY_Jouer && e.getY() <= hauteur && !panelMenu.clicOptions) {
             panelMenu.select_options = false;
             panelMenu.select_quitter = false;
-            panelMenu.select_reseau = false;
-            panelMenu.select_local = true;
+            panelMenu.select_credits = false;
+            panelMenu.select_jouer = true;
             PanelMenu.estEnChargement = false;
             this.type_jeu = "local";
             return true;
         }
-        panelMenu.select_local = false;
-        return false;
-    }
-
-    public boolean estCurseurSurBouton_Reseau(MouseEvent e){
-        if (panelMenu.estConfigPartie) {
-            return false;
-        }
-        int startx = panelMenu.posX_boutons+(panelMenu.largeur_background/9);
-        int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
-            panelMenu.select_options = false;
-            panelMenu.select_quitter = false;
-            panelMenu.select_local = false;
-            panelMenu.select_reseau = true;
-            PanelMenu.estEnChargement = false;
-            this.type_jeu = "reseau";
-            return true;
-        }
-        panelMenu.select_reseau = false;
+        panelMenu.select_jouer = false;
         return false;
     }
 
@@ -77,13 +58,30 @@ public class PanelMenuListener implements MouseListener  {
         int startx = panelMenu.posX_boutons;
         int starty = panelMenu.posY_Options;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
-            panelMenu.select_local = false;
-            panelMenu.select_reseau = false;
+            panelMenu.select_jouer = false;
+            panelMenu.select_credits = false;
             panelMenu.select_quitter = false;
             panelMenu.select_options = true;
             return true;
         }
         panelMenu.select_options = false;
+        return false;
+    }
+
+    public boolean estCurseurSurBouton_Credits(MouseEvent e){
+        if (panelMenu.estConfigPartie) {
+            return false;
+        }
+        int largeur = panelMenu.posX_boutons + panelMenu.largeur_bouton;
+        int hauteur = panelMenu.posY_Credits + panelMenu.hauteur_bouton;
+        if(e.getX() >= panelMenu.posX_boutons && e.getX() <= largeur && e.getY() >= panelMenu.posY_Credits && e.getY() <= hauteur && !panelMenu.clicOptions) {
+            panelMenu.select_jouer = false;
+            panelMenu.select_options = false;
+            panelMenu.select_quitter = false;
+            panelMenu.select_credits = true;
+            return true;
+        }
+        panelMenu.select_credits = false;
         return false;
     }
 
@@ -95,8 +93,8 @@ public class PanelMenuListener implements MouseListener  {
         int starty = panelMenu.posY_Quitter;
         if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
             panelMenu.select_options = false;
-            panelMenu.select_local = false;
-            panelMenu.select_reseau = false;
+            panelMenu.select_jouer = false;
+            panelMenu.select_credits = false;
             panelMenu.select_quitter = true;
             return true;
         }
@@ -312,7 +310,7 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public void verif(MouseEvent e) throws IOException, CloneNotSupportedException {
-        if(estCurseurSurBouton_Local(e) || estCurseurSurBouton_Reseau(e)){
+        if(estCurseurSurBouton_Jouer(e)){
             panelMenu.nbJoueurs = 0;
             panelMenu.estConfigPartie = true;
             panelMenu.playSons(0);
@@ -321,6 +319,10 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.index_sonPanelAvant = panelMenu.index_sonPanel;
             panelMenu.index_musiquePanelAvant = panelMenu.index_musiquePanel;
             panelMenu.clicOptions = !panelMenu.clicOptions;
+            panelMenu.playSons(0);
+        }
+        if(estCurseurSurBouton_Credits(e)){
+            panelMenu.clicCredits = !panelMenu.clicCredits;
             panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Quitter(e)){
@@ -611,7 +613,7 @@ public class PanelMenuListener implements MouseListener  {
         private boolean sonJoue = false;
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurBouton_Local(e)||estCurseurSurBouton_Reseau(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)||
+            if (estCurseurSurBouton_Jouer(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Credits(e)||estCurseurSurBouton_Quitter(e)||
                     estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
                     estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)
                     ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)

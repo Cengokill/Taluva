@@ -3,7 +3,7 @@ package Patterns;
 public interface CollecteurEvenements {
     boolean clicSouris();
     void toucheClavier();
-    void annuler();
+    void annuler() throws CloneNotSupportedException;
     void refaire();
     void sauvegarder();
     void charger();

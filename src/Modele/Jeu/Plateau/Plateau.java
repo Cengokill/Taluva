@@ -149,7 +149,7 @@ public class Plateau implements Serializable, Cloneable {
     public ArrayList<Point2D> positionsBatsVillage(int x, int y, Color color_joueur){
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
         Point2D positionHutte = new Point2D(x,y);
-        listeDesHutesVoisines.add(positionHutte);
+        //listeDesHutesVoisines.add(positionHutte);
 
         int i = 0;
         while (listeDesHutesVoisines.size()!=i){
@@ -826,76 +826,60 @@ public class Plateau implements Serializable, Cloneable {
         return carte[i][j].getBatiment();
     }
 
-    public boolean peutPoserTemple(int i, int j, Color color_joueur) {
+    public boolean peutPoserTemple(int i,int j,Color color_joueur){
         // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUN TEMPLE ET VILLAGE ASSEZ GRAND)
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i, j, color_joueur);
-        if (pointsVillage.size() <= 3) {
-            return false; // On vérifie que la hauteur est d'au moins 3
+        boolean PeutClassique = true;
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
+        if(pointsVillage.size()<=3) PeutClassique =  false;                             // On verifie que la hauteur est d'au moins 3
+        for(Point2D p : pointsVillage){                                                 // On verifie que la cité ne possède pas déjà une tour
+            if(estTemple(p.getPointX(),p.getPointY())) PeutClassique =  false;
         }
-        for (Point2D p : pointsVillage) {
-            if (estTemple(p.getPointX(), p.getPointY())) {
-                return false; // On vérifie que la cité ne possède pas déjà une tour
-            }
-        }
-        if (aCiteAutour(i, j, color_joueur)) {
-            return true;
-        }
+        if(PeutClassique && aCiteAutour(i,j,color_joueur)) return true;
 
         // CAS POUR GERER ISOLATION DE TEMPLE
-        boolean templePossible = false;
-        ArrayList<ArrayList<Point2D>> villages = getTousLesVillagesVoisins(i, j, color_joueur);
-        for (ArrayList<Point2D> pointsVillageCourant : villages) {
-            if (pointsVillageCourant.size() > 3) {
-                boolean villageValide = true;
-                for (Point2D p : pointsVillageCourant) {
-                    if (p == null || estTemple(p.getPointX(), p.getPointY())) {
-                        villageValide = false;
-                        break;
-                    }
-                }
-                if (villageValide) {
-                    templePossible = true;
-                    break;
-                }
+        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,color_joueur);
+        boolean[] peut = new boolean[Villages.size()];
+        for(int k=0;k<Villages.size();k++){
+            peut[k]=true;
+            ArrayList<Point2D> pointsVillageCourant = Villages.get(k);
+            if(pointsVillageCourant.size()<=3){
+                peut[k]=false;
             }
+            for(Point2D p : pointsVillageCourant){
+                if(p==null) peut[k]=false;
+                else if(estTemple(p.getPointX(),p.getPointY())) peut[k]=false;
+            }
+            if(peut[k] && aCiteAutour(i,j,color_joueur)) return true;
         }
-        return templePossible;
+        return false;
     }
 
-    public boolean peutPoserTour(int i, int j, Color color_joueur) {
-        // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUNE TOUR ET HAUTEUR >= 3)
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i, j, color_joueur);
-        if (getHauteurTuile(i, j) < 3) {
-            return false; // On vérifie que la hauteur est d'au moins 3
+    public boolean peutPoserTour(int i,int j,Color color_joueur){
+        // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUNE TOUR ET HAUTEUR>=3)
+        boolean PeutClassique = true;
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
+        if(getHauteurTuile(i,j)<3) PeutClassique = false;                            // On verifie que la hauteur est d'au moins 3
+        for(Point2D p : pointsVillage){                                              // On verifie que la cité ne possède pas déjà une tour
+            if(estTour(p.getPointX(),p.getPointY())) PeutClassique = false;
         }
-        for (Point2D p : pointsVillage) {
-            if (estTour(p.getPointX(), p.getPointY())) {
-                return false; // On vérifie que la cité ne possède pas déjà une tour
-            }
-        }
-        if (aCiteAutour(i, j, color_joueur)) {
-            return true;
-        }
+        if(PeutClassique && aCiteAutour(i,j,color_joueur)) return true;
 
         // CAS POUR GERER ISOLATION DE TOUR
-        boolean tourPossible = false;
-        ArrayList<ArrayList<Point2D>> villages = getTousLesVillagesVoisins(i, j, color_joueur);
-        for (ArrayList<Point2D> pointsVillageCourant : villages) {
-            if (getHauteurTuile(i, j) >= 3) {
-                boolean villageValide = true;
-                for (Point2D p : pointsVillageCourant) {
-                    if (p == null || estTour(p.getPointX(), p.getPointY())) {
-                        villageValide = false;
-                        break;
-                    }
-                }
-                if (villageValide) {
-                    tourPossible = true;
-                    break;
+        ArrayList<ArrayList<Point2D>> Villages = getTousLesVillagesVoisins(i,j,color_joueur);
+        boolean[] peut = new boolean[Villages.size()];
+        for(int k=0;k<Villages.size();k++){
+            peut[k]=true;
+            ArrayList<Point2D> pointsVillageCourant = Villages.get(k);
+            if(getHauteurTuile(i,j)<3) peut[k]=false;
+            else{
+                for(Point2D p : pointsVillageCourant){
+                    if(p==null) peut[k]=false;
+                    else if(estTour(p.getPointX(),p.getPointY())) peut[k]=false;
                 }
             }
+            if(peut[k] && aCiteAutour(i,j,color_joueur)) return true;
         }
-        return tourPossible;
+        return false;
     }
 
     // TOUJOURS verifier qu'il reste le bâtiment dans l'inventaire du joueur avant de la poser

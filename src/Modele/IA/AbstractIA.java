@@ -39,8 +39,6 @@ public class AbstractIA extends Joueur implements Runnable{
             resultat = new IAIntelligente(n, 2);
         }else if(type_IA == MOYENNE) {
             resultat = new IAMoyenne(n, 0);
-        }else if(type_IA == TEST) {
-            resultat = new IATest(n, 1);
         }
         if (resultat != null) {
             resultat.jeu = j;
