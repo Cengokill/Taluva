@@ -837,8 +837,8 @@ public class PanelMenu extends JPanel {
                 estPleinEcran=false;
             }
         } catch (Exception e) {
-            index_sonPanel =3;
-            index_musiquePanel =3;
+            index_sonPanel = 0;
+            index_musiquePanel =0;
             estPleinEcran=false;
             //throw new RuntimeException("Impossible de charger les parametres.\n" + e);
         }
