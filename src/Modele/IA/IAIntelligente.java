@@ -30,7 +30,10 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     public IAIntelligente(byte n, int profondeur) {
         super(IA, n, "IA"+n);
-        this.profondeur = profondeur;
+        this.profondeur = 0;
+        poids_temple = 1000;
+        poids_tour = 200;
+        poids_hutte = 1;
     }
 
     // TODO IMPLEMENTATIONS //
@@ -46,7 +49,6 @@ public class IAIntelligente extends AbstractIA implements Serializable {
         r = new Random(seed);
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
-        //System.out.println(jeu.getJoueurCourantClasse().getPrenom());
         //plateauIA.affiche();
         //System.exit(0);
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();

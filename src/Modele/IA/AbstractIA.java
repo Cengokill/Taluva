@@ -20,10 +20,10 @@ public class AbstractIA extends Joueur implements Runnable{
     public static final byte MOYENNE = 1;
     public static final byte INTELLIGENTE = 2;
     public static final byte TEST = 3;
-    public static int poids_temple = 1000;
-    public static int poids_tour = 100;
-    public static int poids_hutte = 1;
-    public static int numero;
+    public int poids_temple;
+    public int poids_tour;
+    public int poids_hutte;
+    public int numero;
 
     public AbstractIA(byte type, byte n, String prenom) {
         super(type, n, prenom);
