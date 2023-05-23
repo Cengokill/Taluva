@@ -30,6 +30,7 @@ public class Jeu extends Observable implements Serializable{
     public byte type_jeu;
     Plateau plateau;
 
+    public boolean aPiocher;
     public LinkedList<Coup> historiqueDeCoup,historiqueDeCoupARefaire;
 
     public LinkedList<Tuile> tuilepiochee;
@@ -71,6 +72,7 @@ public class Jeu extends Observable implements Serializable{
         historiqueDeCoupARefaire = new LinkedList<>();
         tuilepiochee = new LinkedList<>();
         annulation = false;
+        aPiocher = false;
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
@@ -431,6 +433,7 @@ public class Jeu extends Observable implements Serializable{
         if (doit_placer_batiment) {
             return false;
         }
+        aPiocher = false;
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         isJoueurCourantPerdu();
         doit_placer_batiment = true;
@@ -666,6 +669,7 @@ public class Jeu extends Observable implements Serializable{
             estPiochee = true;
             Timer timer = new Timer(600, e -> {
                 estPiochee = false;
+                aPiocher = true;
             });
             timer.setRepeats(false); // Sert à ne pas répéter l'action
             timer.start();
@@ -842,7 +846,7 @@ public class Jeu extends Observable implements Serializable{
         this.delai=jeu.delai;
         this.debug=jeu.debug;
         this.plateau=jeu.plateau;
-        plateau.copiePlateau(jeu.plateau.getCarte());
+        //plateau.copiePlateau(jeu.plateau.getCarte());
         this.tuile_courante=jeu.tuile_courante;
         this.jCourant=jeu.jCourant;
         this.jVainqueur=jeu.jVainqueur;
