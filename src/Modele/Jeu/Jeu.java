@@ -70,7 +70,7 @@ public class Jeu extends Observable implements Serializable{
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
         if(nomJoueur2.isBlank()) nomJoueur2 = "Joueur 3";
         if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
-        jCourant = 0;
+        jCourant = 1;
         nb_joueurs = nbJoueurs;
         int nbIA = 0;
 
@@ -97,7 +97,7 @@ public class Jeu extends Observable implements Serializable{
         } else if (difficultes.get(0).compareTo("Difficile") == 0) {
             difficulteIA = AbstractIA.INTELLIGENTE;
         }
-
+        System.out.println("IA 1 difficulte : " + difficulteIA);
         IA0 = AbstractIA.nouvelle(this, (byte)0, difficulteIA);
 
         difficulteIA = AbstractIA.ALEATOIRE;
@@ -106,6 +106,7 @@ public class Jeu extends Observable implements Serializable{
         } else if (difficultes.get(1).compareTo("Difficile") == 0) {
             difficulteIA = AbstractIA.INTELLIGENTE;
         }
+        System.out.println("IA 2 difficulte : " + difficulteIA);
         IA1 = AbstractIA.nouvelle(this, (byte)1, difficulteIA);
 
         difficulteIA = AbstractIA.ALEATOIRE;
@@ -517,7 +518,7 @@ public class Jeu extends Observable implements Serializable{
             }
             return;
         }else{
-            System.out.println("changeJoueur() : pas fin de la partie");
+            //System.out.println("changeJoueur() : pas fin de la partie");
         }
         jCourant = (byte) ((jCourant + 1) % nb_joueurs);
         doitCalculerEmplacementPossible = true;
@@ -650,7 +651,7 @@ public class Jeu extends Observable implements Serializable{
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
         pioche.remove(0);
-        if(AFFICHAGE) System.out.println("Tuiles dans la pioche : " + pioche.size());
+        if(AFFICHAGE) //System.out.println("Tuiles dans la pioche : " + pioche.size());
         if(type_jeu==GRAPHIQUE) {
             estPiochee = true;
             Timer timer = new Timer(600, e -> {

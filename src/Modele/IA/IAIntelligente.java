@@ -30,9 +30,9 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     public IAIntelligente(byte n, int profondeur) {
         super(IA, n, "IA"+n);
-        this.profondeur = 0;
+        this.profondeur = 2;
         poids_temple = 1000;
-        poids_tour = 200;
+        poids_tour = 100;
         poids_hutte = 1;
     }
 
@@ -75,7 +75,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
             Plateau plateauCourant = nouvelle_configuration.getPlateau();
             plateauCourant.joueCoup(coupCourant.getCoupT());
             plateauCourant.joueCoup(coupCourant.getCoupB());
-            int valeur = miniMaxJoueurA(nouvelle_configuration, horizon-1, Integer.MIN_VALUE, Integer.MIN_VALUE);
+            int valeur = miniMaxJoueurB(nouvelle_configuration, horizon-1, Integer.MIN_VALUE, Integer.MIN_VALUE);
             //on ajoute un coup même s'il est perdant pour que l'IA ait quand même au moins un coup à jouer
             if(valeur==valeurMax){
                 coups_calcules.add(new CoupValeur(coupCourant.getCoupT(), coupCourant.getCoupB(), valeur));

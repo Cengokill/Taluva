@@ -31,9 +31,9 @@ public class IAMoyenne extends AbstractIA implements Serializable {
     public IAMoyenne(byte n, int profondeur) {
         super(IA, n, "IA"+n);
         this.profondeur = 0;
-        poids_temple = 400;
+        poids_temple = 1000;
         poids_tour = 100;
-        poids_hutte = 5;
+        poids_hutte = 1;
     }
 
     // TODO IMPLEMENTATIONS //
