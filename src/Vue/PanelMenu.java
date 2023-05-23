@@ -27,9 +27,29 @@ public class PanelMenu extends JPanel {
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
     final BufferedImage[] sliders = new BufferedImage[6];
-    BufferedImage background,bouton_Local,bouton_Reseau,bouton_Options,bouton_Quitter,bouton_Local_hover,bouton_Options_hover, bouton_Options_clic,bouton_Quitter_hover,
-            options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
-            ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
+    BufferedImage background;
+    BufferedImage bouton_Jouer, bouton_Jouer_select, bouton_Local_clic;
+    BufferedImage bouton_Options, bouton_Options_select, bouton_Options_clic;
+    BufferedImage bouton_Credits, bouton_Credits_select, bouton_Credits_clic;
+    BufferedImage bouton_Quitter, bouton_Quitter_select, bouton_Quitter_clic;
+    BufferedImage options_background;
+    BufferedImage bouton_droit;
+    BufferedImage bouton_gauche;
+    BufferedImage btn_valider;
+    BufferedImage btn_annuler;
+    BufferedImage coche_non;
+    BufferedImage coche_oui;
+    BufferedImage bouton_droit_hover;
+    BufferedImage bouton_gauche_hover;
+    BufferedImage btn_valider_hover;
+    BufferedImage btn_annuler_hover;
+    BufferedImage coche_non_hover;
+    BufferedImage coche_oui_hover;
+    BufferedImage ecriture_Sons;
+    BufferedImage ecriture_Musiques;
+    BufferedImage ecriture_PleinEcran;
+    BufferedImage ecriture_Daltonien;
+    BufferedImage ecriture_Extension;
     Dimension tailleEcran, tailleFenetre;
     int screenWidth;
     int screenHeight;
@@ -44,20 +64,39 @@ public class PanelMenu extends JPanel {
     public static int index_sonPanel;
     public int index_sonPanelAvant;
     public static int index_musiquePanel,index_musiquePanelAvant;
-    public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_Options, posY_Local, posX_background, posY_background,posY_Reseau,
-            posY_Quitter, posX_menu_options, posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
-            posX_btnAnnuler,posX_btnValider,posY_btnChoix;
+    public int posX_boutons;
+    public int posY_Options;
+    public int posY_Jouer;
+    public int posX_background;
+    public int posY_background;
+    public int posY_Credits;
+    public int posY_Quitter;
+    public int posX_menu_options;
+    public int posX_droit1;
+    public int posX_droit2;
+    public int posX_gauche1;
+    public int posX_gauche2;
+    public int posY_slider2;
+    public int posY_slider1;
+    public int taille_btn;
+    public int posX_coches;
+    public int posY_coche1;
+    public int posY_coche2;
+    public int posY_coche3;
+    public int posX_btnAnnuler;
+    public int posX_btnValider;
+    public int posY_btnChoix;
     public int posX_bouton_plus_joueur, posY_bouton_plus_joueur, posYChronoList, posXChronoList, posXDifficulteList, posYDifficulteList,  posX_bouton_plus_ia, posX_bouton_moins,
             posY_bouton_moins, posX_cadre, posY_cadre, posX_textJoueur, posY_textJoueur, posX_bouton_valider, posY_bouton_valider, posX_bouton_fermer, posY_bouton_fermer,
     hauteur_textJoueur, largeur_bouton_plus, largeur_bouton_moins, largeur_cadre, largeur_bouton_valider, largeur_bouton_fermer, largeur_textJoueur, largeur_textDifficulte,
             decalageY_couleur;
     private int timerValue;
     private JTextField field_joueur1;
-    boolean select_local;
-    boolean select_reseau;
+    boolean select_jouer;
+    boolean select_credits;
     boolean select_options;
     boolean select_quitter;
-    boolean clicOptions;
+    boolean clicOptions, clicCredits;
     boolean select_gauche1;
     boolean select_gauche2;
     boolean select_droit1;
@@ -92,11 +131,15 @@ public class PanelMenu extends JPanel {
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
         background = lisImage("ocean");
-        bouton_Local = lisImage("bouton_local");
-        bouton_Reseau = lisImage("bouton_reseau");
+        bouton_Jouer = lisImage("jouer");
+        bouton_Jouer_select = lisImage("jouer_select");
+        bouton_Local_clic = lisImage("jouer_clic");
         bouton_Options = lisImage("parametres");
-        bouton_Options_hover = lisImage("parametres_select");
+        bouton_Options_select = lisImage("parametres_select");
         bouton_Options_clic = lisImage("parametres_clic");
+        bouton_Credits = lisImage("credits");
+        bouton_Credits_select = lisImage("credits_select");
+        bouton_Credits_clic = lisImage("credits_clic");
         bouton_Quitter = lisImage("bouton_quitter");
         options_background = lisImage("/Options/Options_background");
         for(int i=0; i < sliders.length;i++){
@@ -131,10 +174,7 @@ public class PanelMenu extends JPanel {
 
         chargement = lisImageBuf("chargement");
 
-
-        // hover
-        bouton_Local_hover = applyRedFilter(bouton_Local);
-        bouton_Quitter_hover = applyRedFilter(bouton_Quitter);
+        // si le curseur est sur les boutons
         bouton_droit_hover = applyRedFilter(bouton_droit);
         bouton_gauche_hover = applyRedFilter(bouton_gauche);
         btn_valider_hover = applyRedFilter(btn_valider);
@@ -149,16 +189,17 @@ public class PanelMenu extends JPanel {
 
         timerValue=0;
         //booléens
-        select_local = false;
+        select_jouer = false;
         select_options = false;
         select_quitter = false;
-        select_reseau = false;
+        select_credits = false;
         select_Extension = false;
         select_Daltonien = false;
         select_PleinEcran = false;
         select_valider = false;
         select_annuler = false;
         clicOptions = false;
+        clicCredits = false;
         afficheErreur = false;
         chargeParametre = true;
         // Eléments de l'interface
@@ -389,18 +430,23 @@ public class PanelMenu extends JPanel {
         g.drawImage(background, posX_background ,posY_background , largeur_background, hauteur_background, null);
     }
 
-    public void afficheBoutonLocal(Graphics g) {
-        if(select_local) g.drawImage(bouton_Local_hover, posX_boutons-(largeur_background/9), posY_Local, largeur_bouton, hauteur_bouton, null);
-        else g.drawImage(bouton_Local, posX_boutons-(largeur_background/9), posY_Local, largeur_bouton, hauteur_bouton, null);
+    public void afficheBoutonJouer(Graphics g) {
+        if(select_jouer) g.drawImage(bouton_Jouer_select, posX_boutons, posY_Jouer, largeur_bouton, hauteur_bouton, null);
+        else g.drawImage(bouton_Jouer, posX_boutons, posY_Jouer, largeur_bouton, hauteur_bouton, null);
     }
 
     public void afficheBoutonOptions(Graphics g) {
-        if(select_options) g.drawImage(bouton_Options_hover, posX_boutons, posY_Options, largeur_bouton, hauteur_bouton,null);
+        if(select_options) g.drawImage(bouton_Options_select, posX_boutons, posY_Options, largeur_bouton, hauteur_bouton,null);
         else g.drawImage(bouton_Options, posX_boutons, posY_Options, largeur_bouton, hauteur_bouton,null);
     }
 
+    public void afficheBoutonCredits(Graphics g) {
+        if(select_credits) g.drawImage(bouton_Credits_select, posX_boutons, posY_Credits, largeur_bouton, hauteur_bouton,null);
+        else g.drawImage(bouton_Credits, posX_boutons, posY_Credits, largeur_bouton, hauteur_bouton,null);
+    }
+
     public void afficheBoutonQuitter(Graphics g) {
-        if(select_quitter) g.drawImage(bouton_Quitter_hover, posX_boutons, posY_Quitter, largeur_bouton, hauteur_bouton,null);
+        if(select_quitter) g.drawImage(bouton_Quitter_select, posX_boutons, posY_Quitter, largeur_bouton, hauteur_bouton,null);
         else g.drawImage(bouton_Quitter, posX_boutons, posY_Quitter, largeur_bouton, hauteur_bouton,null);
     }
 
@@ -539,8 +585,9 @@ public class PanelMenu extends JPanel {
             afficherConfigPartie(g2d);
             afficheMessageErreur(g2d);
         } else{
-            afficheBoutonLocal(g2d);
+            afficheBoutonJouer(g2d);
             afficheBoutonOptions(g2d);
+            afficheBoutonCredits(g2d);
             afficheBoutonQuitter(g2d);
         }
     }
@@ -678,13 +725,15 @@ public class PanelMenu extends JPanel {
             posY_background=0;
         }
         //boutons menu principal du jeu
-        largeur_bouton=largeur_background/7;
+        largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
-        posY_Local=0;
-        posY_Options=posY_Local+hauteur_background/3;
-        posY_Quitter=posY_Options+hauteur_background/3;
-        largeur_menu_options = hauteur_background/2;
+        posY_Jouer = hauteur_background/7;
+        int decalageY = hauteur_background/8;
+        posY_Options = posY_Jouer + decalageY;
+        posY_Credits = posY_Options + decalageY;
+        posY_Quitter = posY_Credits + decalageY;
+        largeur_menu_options = decalageY;
         hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
         //boutons menu création partie
         largeur_bouton_plus = (int) (largeur_background*0.045);
