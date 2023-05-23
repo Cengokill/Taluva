@@ -864,7 +864,7 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_tuto_off, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6),null);
     }
 
-    public static void annuler(){
+    public static void annuler() throws CloneNotSupportedException {
         jeu.annuler();
     }
 
