@@ -30,7 +30,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
 
     public IAMoyenne(byte n, int profondeur) {
         super(IA, n, "IA"+n);
-        this.profondeur = 0;
+        this.profondeur = 2;
         poids_temple = 1000;
         poids_tour = 100;
         poids_hutte = 1;
@@ -128,7 +128,7 @@ public class IAMoyenne extends AbstractIA implements Serializable {
                     return Integer.MIN_VALUE;
                 }
             }
-            //si le joueur a placé 2 bâtiments de chaque type, on augmente le poids des bâtimetns restants
+            //si le joueur a placé 2 bâtiments de chaque type, on augmente le poids des bâtiments restants
             if(joueurCourant.getNbTemples()==0 && joueurCourant.getNbHuttes()==0){
                 nouveauPoidsTour= 500;
             }else if(joueurCourant.getNbTemples()==0 && joueurCourant.getNbTours()==0) {
