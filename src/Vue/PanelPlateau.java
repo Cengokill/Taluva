@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import Vue.FenetreJeuListener.MouseHandler;
 import Vue.FenetreJeuListener.KeyboardListener;
 
+import static Modele.Jeu.Jeu.annule;
 import static Vue.Camera.*;
 import static Modele.Jeu.Plateau.EtatPlateau.*;
 import static Modele.Jeu.Plateau.Hexagone.*;
@@ -198,6 +199,9 @@ public class PanelPlateau extends JPanel {
 
     public void miseAJour() {
         if(scrollValue==0 && jeu.doit_placer_tuile()) scrollValue = 1;
+        if (annule) {
+            return;
+        }
         repaint();
     }
 
@@ -1096,32 +1100,30 @@ public class PanelPlateau extends JPanel {
         Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!jeu.annulation){
-                    miseAJour();
-                    int s = scrollValue%3;
-                    if(s==0){//si le sélecteur doit se placer sur la hutte
-                        if(provenanceScroll == 1){//si le sélecteur était à droite
-                            posX_selecteur_vert = Math.max(posX_selecteur_vert_depart, posX_selecteur_vert-vitesse);
-                        }else{
-                            posX_selecteur_vert = posX_selecteur_vert_depart;
-                        }
-                    }else if(s==1){//si le sélecteur doit se placer sur le temple
-                        if(provenanceScroll == 1){//si le sélecteur était à droite
-                            posX_selecteur_vert = Math.max(posX_tiers_selecteur_vert, posX_selecteur_vert-vitesse);
-                        }else if(provenanceScroll == 2){//si le sélecteur était à gauche
-                            posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert, posX_selecteur_vert+vitesse);
-                        }else{
-                            posX_selecteur_vert = posX_tiers_selecteur_vert;
-                        }
-                    }else{//si le sélecteur doit se placer sur la tour
-                        if(provenanceScroll == 2) {//si le sélecteur était à gauche
-                            posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert * 2, posX_selecteur_vert + vitesse);
-                        }else{
-                            posX_selecteur_vert = posX_tiers_selecteur_vert * 2;
-                        }
+                miseAJour();
+                int s = scrollValue%3;
+                if(s==0){//si le sélecteur doit se placer sur la hutte
+                    if(provenanceScroll == 1){//si le sélecteur était à droite
+                        posX_selecteur_vert = Math.max(posX_selecteur_vert_depart, posX_selecteur_vert-vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_selecteur_vert_depart;
                     }
-                    timerValue+=10;
+                }else if(s==1){//si le sélecteur doit se placer sur le temple
+                    if(provenanceScroll == 1){//si le sélecteur était à droite
+                        posX_selecteur_vert = Math.max(posX_tiers_selecteur_vert, posX_selecteur_vert-vitesse);
+                    }else if(provenanceScroll == 2){//si le sélecteur était à gauche
+                        posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert, posX_selecteur_vert+vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_tiers_selecteur_vert;
+                    }
+                }else{//si le sélecteur doit se placer sur la tour
+                    if(provenanceScroll == 2) {//si le sélecteur était à gauche
+                        posX_selecteur_vert = Math.min(posX_tiers_selecteur_vert * 2, posX_selecteur_vert + vitesse);
+                    }else{
+                        posX_selecteur_vert = posX_tiers_selecteur_vert * 2;
+                    }
                 }
+                timerValue+=10;
             }
         });
         timer.start();

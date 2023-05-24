@@ -32,6 +32,18 @@ public class Joueur implements Serializable {
     private int score = 0;
     private byte numero;
 
+    public void reinitialiser() {
+        tempsTotal = 0.0;
+        doitJouer = false;
+        nbHuttesPlacees = 0;
+        nbToursPlacees = 0;
+        nbTemplesPlaces = 0;
+        nbVillages = 0;
+        nbHuttes = 20;
+        nbTours = 2;
+        nbTemples = 3;
+    }
+
     public Joueur(byte type, byte numero, String prenom){
         this.type_joueur = type;
         this.numero = numero;

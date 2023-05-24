@@ -12,6 +12,7 @@ import java.awt.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
+import static Vue.FenetreJeu.jeu;
 import static Vue.ImageLoader.select_fin_partie;
 
 public class InstanceJeu {
@@ -99,24 +100,6 @@ public class InstanceJeu {
         }else{
             return true;
         }
-    }
-
-    public void annuler() {
-        Stock stock = plateau.annuler();
-        /*if(stock!=null) {
-            if (stock.changementDeJoueur == false) {
-                changeJoueur();
-            }
-            if(stock.typeBatiment == TEMPLE) {
-                joueurs[jCourant].decrementeTemple();
-            } else if (stock.typeBatiment == TOUR) {
-                joueurs[jCourant].decrementeTour();
-            } else {
-                for (int i = 0; i < stock.nbBatiment; i++) {
-                    joueurs[jCourant].decrementeHutte();
-                }
-            }
-        }*/
     }
 
     public void changeJoueur() {

@@ -1,5 +1,7 @@
 package Modele.Jeu.Plateau;
 
+import Modele.Jeu.Historique;
+import Modele.Jeu.Jeu;
 import Modele.Jeu.Stock;
 import Modele.Jeu.Coup;
 import Structures.Position.Point2D;
@@ -9,9 +11,9 @@ import Structures.Position.TripletDePosition;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
+import static Vue.FenetreJeu.jeu;
 
 public class Plateau implements Serializable, Cloneable {
     final int LIGNES = 60;
@@ -19,7 +21,6 @@ public class Plateau implements Serializable, Cloneable {
     protected Hexagone[][] carte;
 
     public int nbHuttesDisponiblesJoueur = 0; // Pour eviter d'aller dans le negatif lors de la propagation
-    private Historique historique;
     private ArrayList<Position> positions_libres;
 
     private ArrayList<TripletDePosition> tripletsPossible;
@@ -30,7 +31,6 @@ public class Plateau implements Serializable, Cloneable {
 
     public Plateau(){
         initPlateau();
-        initHistorique();
         //initQuantitePions();
         initPlateau();
         initPositionsLibres();
@@ -39,7 +39,6 @@ public class Plateau implements Serializable, Cloneable {
 
     public Plateau copie() {
         Plateau p = new Plateau();
-        p.historique = this.historique.copie();
         p.nbHuttesDisponiblesJoueur = this.nbHuttesDisponiblesJoueur;
 
         p.positions_libres = new ArrayList<>(this.positions_libres);
@@ -72,10 +71,6 @@ public class Plateau implements Serializable, Cloneable {
             System.out.println();
         }
         System.out.println("------------------------------------------------------------------");
-    }
-
-    private void initHistorique() {
-        historique = new Historique();
     }
 
     @Override
@@ -612,9 +607,6 @@ public class Plateau implements Serializable, Cloneable {
             listeVoisins = voisins(coup.tile2Ligne,coup.tile2Colonne);
             metAjourPositionsLibres(listeVoisins);
             creerTriplets(positions_libres);
-            if(coup.typePlacement!=Coup.SELECTEUR_BATIMENT ) {
-                historique.ajoute(coup);
-            }
 
 
         } else if (coup.typePlacement == Coup.SELECTEUR_BATIMENT || coup.typePlacement == Coup.HUTTE || coup.typePlacement == Coup.TOUR || coup.typePlacement == Coup.TEMPLE){
@@ -636,9 +628,9 @@ public class Plateau implements Serializable, Cloneable {
             }
 
             carte[coup.batimentLigne][coup.batimentColonne] = new Hexagone(color_joueur, (byte) hauteur, carte[coup.batimentLigne][coup.batimentColonne].getBiomeTerrain(), batiment, (byte) carte[coup.batimentLigne][coup.batimentColonne].getLigneVolcan(), (byte) carte[coup.batimentLigne][coup.batimentColonne].getColonneVolcan());
-            if(coup.typePlacement!=Coup.SELECTEUR_BATIMENT ){
-                historique.ajoute(coup);
-            }
+        }
+        if (coup.typePlacement != Coup.SELECTEUR_BATIMENT) {
+            jeu.historique.getPasse().add(coup);
         }
     }
 
@@ -955,17 +947,11 @@ public class Plateau implements Serializable, Cloneable {
     }
     public void joueHexagone(){}
 
-    public void resetHistorique(){
-        initHistorique();
-    }
 
-    public boolean peutAnnuler() {
-        return historique.peutAnnuler();
-    }
 
-    public boolean peutRefaire() {
-        return historique.peutRefaire();
-    }
+
+
+
 
     public boolean estVide(){
         /*for (Hexagone[] hexagones : carte) {
@@ -999,16 +985,6 @@ public class Plateau implements Serializable, Cloneable {
         }
     }
 
-
-    public Stock annuler() {
-        Stock stock =historique.annuler(carte);
-        return stock;
-    }
-
-    public Stock refaire() {
-        Stock stock = historique.refaire(carte);
-        return stock;
-    }
 
     public ArrayList<TripletDePosition> getTripletsPossibles(){
         return tripletsPossible;

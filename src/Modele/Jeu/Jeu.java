@@ -1,7 +1,6 @@
 package Modele.Jeu;
 
 import Modele.IA.AbstractIA;
-import Modele.Jeu.Plateau.Historique;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
@@ -20,9 +19,14 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import static Modele.Jeu.Plateau.Hexagone.*;
+import static Vue.FenetreJeu.jeu;
 import static Vue.ImageLoader.select_fin_partie;
 
+
 public class Jeu extends Observable implements Serializable{
+
+    public static boolean annule = false;
+
     public int indexSon = 0, indexMusique = 0;
     public final static byte CONSOLE = 0;
     public final static byte GRAPHIQUE = 1;
@@ -31,10 +35,7 @@ public class Jeu extends Observable implements Serializable{
     Plateau plateau;
 
     public boolean aPiocher;
-    public LinkedList<Coup> historiqueDeCoup,historiqueDeCoupARefaire;
-
-    public LinkedList<Tuile> tuilepiochee;
-    public boolean annulation;
+    public Historique historique;
     public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     public transient ArrayList<ArrayList<MusicPlayer>> sonPlayer = new ArrayList<>();
     private AudioInputStream audioInputStream;
@@ -56,6 +57,7 @@ public class Jeu extends Observable implements Serializable{
     public LinkedList<Tuile> pioche;
 
 
+
     public boolean doitCalculerEmplacementPossible;
 
     public Jeu(byte type_jeu){
@@ -68,10 +70,7 @@ public class Jeu extends Observable implements Serializable{
         }
         debug = false;
         initialiseSons();
-        historiqueDeCoup = new LinkedList<>();
-        historiqueDeCoupARefaire = new LinkedList<>();
-        tuilepiochee = new LinkedList<>();
-        annulation = false;
+
         aPiocher = false;
     }
 
@@ -238,6 +237,7 @@ public class Jeu extends Observable implements Serializable{
 
     public void lancePartie() throws CloneNotSupportedException {
         initPioche();
+        historique = new Historique(this);
         plateau = new Plateau();
         estPartieFinie = false;
         doit_placer_tuile = true;
@@ -250,11 +250,7 @@ public class Jeu extends Observable implements Serializable{
             }
         }else{
             if (type_jeu == GRAPHIQUE) {
-                Timer timer = new Timer(delai_avant_pioche, e -> {
-                    pioche();
-                });
-                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-                timer.start(); // Démarrez le timer
+                pioche();
             }
         }
     }
@@ -334,7 +330,7 @@ public class Jeu extends Observable implements Serializable{
                 return;
             }
             getPlateau().joueCoup(coupTuile);
-            historiqueDeCoup.add(coupTuile);
+
             playSons(0);
             if(coupBatiment.typePlacement == Coup.HUTTE){
                 int propagation = 0;
@@ -360,7 +356,6 @@ public class Jeu extends Observable implements Serializable{
             doit_placer_batiment = true;
             doit_placer_tuile = false;
             Timer timer = new Timer(delai, e -> {
-                historiqueDeCoup.add(new Coup(jCourant,getJoueurCourant().getCouleur(),coupBatiment.batimentLigne,coupBatiment.batimentColonne,coupBatiment.typePlacement));
                 joueurPlaceBatiment(coupBatiment.batimentLigne, coupBatiment.batimentColonne, coupBatiment.typePlacement);
                 doit_placer_batiment = false;
                 doit_placer_tuile = true;
@@ -409,7 +404,7 @@ public class Jeu extends Observable implements Serializable{
             int[] coupsPossibleCourant = coupJouable(posCourante.ligne(),posCourante.colonne());
             if(coupsPossibleCourant[0]!=0 || coupsPossibleCourant[1]!=0 || coupsPossibleCourant[2]!=0) return;
         }
-        if(Historique.getPasse().size()!=0){
+        if(historique.getPasse().size()!=0){
             setFinPartie();
         }
     }
@@ -662,17 +657,11 @@ public class Jeu extends Observable implements Serializable{
         playSons(4);
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
-        tuilepiochee.add(tuile_courante);
         pioche.remove(0);
         if(AFFICHAGE) //System.out.println("Tuiles dans la pioche : " + pioche.size());
         if(type_jeu==GRAPHIQUE) {
-            estPiochee = true;
-            Timer timer = new Timer(600, e -> {
-                estPiochee = false;
-                aPiocher = true;
-            });
-            timer.setRepeats(false); // Sert à ne pas répéter l'action
-            timer.start();
+            estPiochee = false;
+            aPiocher = true;
         }
         tuileAPoser[0] = tuile_courante.biome0;
         tuileAPoser[1] = tuile_courante.biome1;
@@ -688,82 +677,71 @@ public class Jeu extends Observable implements Serializable{
         return nb_joueurs*12;
     }
 
-    public void annuler() throws CloneNotSupportedException {
-        if (historiqueDeCoup.isEmpty()) {
-            return;  // Pas d'historique de coup à annuler
+    private LinkedList<Tuile> copiePioche(LinkedList<Tuile> piocheACopier) {
+        LinkedList<Tuile> pioche = new LinkedList<>();
+        for (int i = 0; i < piocheACopier.size(); i++) {
+            pioche.add(piocheACopier.get(i));
         }
-
-        Coup dernierCoup = historiqueDeCoup.removeLast();  // Récupérer le dernier coup effectué
-
-        Plateau plateau = new Plateau();  // Créer un nouveau plateau vide
-
-        // Refaire tous les coups restants dans l'historique
-        for (Coup coup : historiqueDeCoup) {
-            plateau.joueCoup(coup);
-        }
-
-        this.plateau = plateau;  // Mettre à jour le plateau actuel avec l'état précédent
-
-        // Ajouter le dernier coup annulé dans l'historique de coups à refaire
-        historiqueDeCoupARefaire.add(dernierCoup);
+        return pioche;
     }
 
-    /*public void annuler() {
-        Stock stock = plateau.annuler();
-        if(stock!=null) {
-            if (stock.changementDeJoueur == false) {
-                changeJoueur();
-            }
-            if(stock.typeBatiment==Coup.TUILE){
-                aAnnuler = true;
-                pioche.addFirst(tuile_courante);
-                if(pioche.size()+1==12*nb_joueurs){
-                    plateau.resetPlacable();
-                    plateau.nbTuilePlacee=0;
-                    plateau.initTripletsPossibles();
-                }
-                doitCalculerEmplacementPossible = true;
-                tuile_courante=(new Tuile((byte)stock.getTerrain1(),(byte)stock.getTerrain2()));
+    public void annuler(){
+        if (historique.passe.size() == 0) {
+            return;
+        }
 
+
+        annule = true;
+        jCourant = 1;
+        for (Joueur joueur : joueurs) {
+            joueur.reinitialiser();
+        }
+
+        Plateau plateau = new Plateau();  // Créer un nouveau plateau vide
+        this.plateau = plateau;  // Mettre à jour le plateau actuel avec l'état précédent
+        this.pioche = copiePioche(historique.pioche);
+
+        changePhase();
+
+
+
+        historique.futur.addFirst(historique.passe.remove(historique.passe.size() - 1));
+        tuile_courante = this.pioche.remove(0);
+        tuileAPoser[0] = tuile_courante.biome0;
+        tuileAPoser[1] = tuile_courante.biome1;
+        tuileAPoser[2] = (byte) tuile_courante.numero0;
+        tuileAPoser[3] = (byte) tuile_courante.numero1;
+        tuileAPoser[4] = (byte) tuile_courante.numero2;
+
+        for (int i = 0; i < historique.passe.size(); i++) {
+
+            Coup coup = historique.passe.remove(0);
+            plateau.joueCoup(coup);
+
+            if (coup.typePlacement == Coup.TUILE) {
+                tuile_courante = this.pioche.remove(0);
                 tuileAPoser[0] = tuile_courante.biome0;
                 tuileAPoser[1] = tuile_courante.biome1;
                 tuileAPoser[2] = (byte) tuile_courante.numero0;
                 tuileAPoser[3] = (byte) tuile_courante.numero1;
                 tuileAPoser[4] = (byte) tuile_courante.numero2;
-
-            } else if(stock.typeBatiment == Coup.TEMPLE) {
-                joueurs[jCourant].decrementeTemple();
-            } else if (stock.typeBatiment == Coup.TOUR) {
-                joueurs[jCourant].decrementeTour();
+                doit_placer_batiment = true;
             } else {
-                for (int i = 0; i < stock.nbBatiment; i++) {
-                    joueurs[jCourant].decrementeHutte();
-                }
+                doit_placer_batiment = false;
             }
-            changePhase();
-            peutPiocher=false;
         }
-    }*/
+        annule = false;
+        doitCalculerEmplacementPossible = true;
+    }
+
 
     public void refaire() {
-        if (historiqueDeCoupARefaire.isEmpty()) {
-            return;  // Pas de coup à refaire
-        }
 
-        Coup coupARedois = historiqueDeCoupARefaire.removeLast();  // Récupérer le dernier coup à refaire
 
         Plateau plateau1 = new Plateau();  // Créer un nouveau plateau vide
 
-        // Refaire tous les coups dans l'historique de coups à refaire
-        for (Coup coup : historiqueDeCoupARefaire) {
-            plateau1.joueCoup(coup);
-        }
-
-        plateau1.joueCoup(coupARedois);  // Jouer le dernier coup à refaire sur le plateau
-
         this.plateau = plateau;  // Mettre à jour le plateau actuel avec l'état refait
 
-        historiqueDeCoup.add(coupARedois);  // Ajouter le coup refait dans l'historique de coups
     }
 
     /*public void refaire() {
@@ -825,9 +803,17 @@ public class Jeu extends Observable implements Serializable{
         if(doit_placer_batiment){
             doit_placer_batiment=false;
             doit_placer_tuile=true;
-        }else {
-            doit_placer_tuile=false;
+            estPiochee = false;
+            aPiocher = true;
+        }
+    }
+
+    public void changePhase2(){
+        if(doit_placer_batiment){
             doit_placer_batiment=true;
+            doit_placer_tuile=false;
+            estPiochee = false;
+            aPiocher = true;
         }
     }
 
