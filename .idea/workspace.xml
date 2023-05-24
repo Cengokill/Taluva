@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="Suppression booleen estFinPartie dans Jeu">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_04_2023_09_48__Changes_.xml" afterDir="false" />
+    <list default="true" id="17ab1e1d-7a4d-4d29-a56f-4f4a2928dffc" name="Changes" comment="suppression* (pardon molière)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modele/Jeu/Jeu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Vue/FenetreJeuListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/FenetreJeuListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Vue/PanelMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vue/PanelMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +160,8 @@
       <workItem from="1684690871278" duration="3187000" />
       <workItem from="1684696455436" duration="7070000" />
       <workItem from="1684860494505" duration="10612000" />
-      <workItem from="1684874991018" duration="3127000" />
+      <workItem from="1684874991018" duration="3799000" />
+      <workItem from="1684914154336" duration="4622000" />
     </task>
     <task id="LOCAL-00010" summary="Changement controles">
       <created>1682586246895</created>
@@ -423,7 +422,28 @@
       <option name="project" value="LOCAL" />
       <updated>1684875176449</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="ça peut causer des bugs donc suppretion">
+      <created>1684878278954</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1684878278954</updated>
+    </task>
+    <task id="LOCAL-00048" summary="suppression* (pardon molière)">
+      <created>1684878439642</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1684878439642</updated>
+    </task>
+    <task id="LOCAL-00049" summary="save vide">
+      <created>1684915698441</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1684915698441</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,9 +473,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Position Y du nombre tuiles dans la pioche à 4 joueurs corrigée" />
-    <MESSAGE value="Bug impossible de jouer en mode CONSOLE corrigé" />
-    <MESSAGE value="Correction bug impossible de jouer en mode CONSOLE" />
     <MESSAGE value="Temps écoulé en secondes" />
     <MESSAGE value="Nouveau booléen timerActif" />
     <MESSAGE value="Calcul du temps des parties en mode CONSOLE" />
@@ -478,25 +495,28 @@
     <MESSAGE value="Suppression booleen estFinPartie dans Jeu" />
     <MESSAGE value="save and load qui marche!!!!!!!!!!!!!!!!!!!!!!!!" />
     <MESSAGE value="cest mieux quand il y a tout" />
-    <option name="LAST_COMMIT_MESSAGE" value="cest mieux quand il y a tout" />
+    <MESSAGE value="ça peut causer des bugs donc suppretion" />
+    <MESSAGE value="suppression* (pardon molière)" />
+    <MESSAGE value="save vide" />
+    <option name="LAST_COMMIT_MESSAGE" value="save vide" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Vue/FenetreJeuListener.java</url>
-          <line>170</line>
+          <line>206</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Vue/FenetreJeuListener.java</url>
-          <line>235</line>
+          <line>271</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Vue/FenetreJeuListener.java</url>
-          <line>185</line>
-          <properties class="Vue.FenetreJeuListener.MouseHandler">
+          <line>221</line>
+          <properties class="Vue.FenetreJeuListener.MouseHandler" method="estSurSauvegarder">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -504,8 +524,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Vue/FenetreJeuListener.java</url>
-          <line>201</line>
-          <properties class="Vue.FenetreJeuListener.MouseHandler">
+          <line>237</line>
+          <properties class="Vue.FenetreJeuListener.MouseHandler" method="estSurCharger">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -513,8 +533,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Vue/FenetreJeuListener.java</url>
-          <line>217</line>
-          <properties class="Vue.FenetreJeuListener.MouseHandler">
+          <line>253</line>
+          <properties class="Vue.FenetreJeuListener.MouseHandler" method="estSurParametres">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>

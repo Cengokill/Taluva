@@ -845,19 +845,21 @@ public class Jeu extends Observable implements Serializable{
         this.nb_joueurs=jeu.nb_joueurs;
         this.delai=jeu.delai;
         this.debug=jeu.debug;
+        this.tuile_courante=jeu.tuile_courante;
+        this.doit_placer_tuile=jeu.doit_placer_tuile;
+        this.doit_placer_batiment=jeu.doit_placer_batiment;
         this.plateau=jeu.plateau;
         //plateau.copiePlateau(jeu.plateau.getCarte());
-        this.tuile_courante=jeu.tuile_courante;
         this.jCourant=jeu.jCourant;
         this.jVainqueur=jeu.jVainqueur;
         this.p=jeu.p;
         this.tuileAPoser=jeu.tuileAPoser;
-        this.doit_placer_tuile=jeu.doit_placer_tuile;
-        this.doit_placer_batiment=jeu.doit_placer_batiment;
+
         this.estPartieFinie= jeu.estFinPartie();
         this.IApeutjouer=jeu.IApeutjouer;
         this.unefoisIA=jeu.unefoisIA;
         this.pioche=jeu.pioche;
         this.doitCalculerEmplacementPossible=true;
+        metAJour();
     }
 }
