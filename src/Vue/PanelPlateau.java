@@ -142,8 +142,7 @@ public class PanelPlateau extends JPanel {
     private void initCameraPosition() {
         cameraOffset.x = -2600;
         cameraOffset.y = -1750;
-        System.out.println(this.fenetreJeu.frame.getWidth());
-        System.out.println(this.fenetreJeu.frame.getHeight());
+
         cameraOffset.x += this.fenetreJeu.frame.getWidth() - 1366;
         cameraOffset.y += this.fenetreJeu.frame.getHeight() - 768;
     }
