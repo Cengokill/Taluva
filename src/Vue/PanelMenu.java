@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
+import static Vue.FenetreJeu.customFont;
 import static Vue.ImageLoader.*;
 
 public class PanelMenu extends JPanel {
@@ -230,35 +231,41 @@ public class PanelMenu extends JPanel {
 
         listeChrono.setVisible(true);
         listeChrono.setBackground(Color.WHITE);
-        listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        Font font = customFont.deriveFont(Font.BOLD,20);
+        listeChrono.setFont(font);
         layeredPane.add(listeChrono, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte1.setVisible(false);
         listeDifficulte1.setBackground(Color.WHITE);
-        listeDifficulte1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte1.setFont(font);
         layeredPane.add(listeDifficulte1, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte2.setVisible(false);
         listeDifficulte2.setBackground(Color.WHITE);
-        listeDifficulte2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte2.setFont(font);
         layeredPane.add(listeDifficulte2, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte3.setVisible(false);
         listeDifficulte3.setBackground(Color.WHITE);
-        listeDifficulte3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte3.setFont(font);
         layeredPane.add(listeDifficulte3, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte4.setVisible(false);
         listeDifficulte4.setBackground(Color.WHITE);
-        listeDifficulte4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte4.setFont(font);
         layeredPane.add(listeDifficulte4, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
@@ -266,14 +273,16 @@ public class PanelMenu extends JPanel {
         nomJoueur1 = new JTextField(15);
         nomJoueur1.setVisible(true);
         nomJoueur1.setBackground(Color.WHITE);
-        nomJoueur1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur1.setFont(font);
         layeredPane.add(nomJoueur1, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         nomJoueur2 = new JTextField(15);
         nomJoueur2.setVisible(true);
-        nomJoueur2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur2.setFont(font);
         nomJoueur2.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur2, JLayeredPane.POPUP_LAYER);
         revalidate();
@@ -281,14 +290,16 @@ public class PanelMenu extends JPanel {
 
         nomJoueur3 = new JTextField(15);
         nomJoueur3.setVisible(true);
-        nomJoueur3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur3.setFont(font);
         nomJoueur3.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur3, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         nomJoueur4 = new JTextField(15);
-        nomJoueur4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur4.setFont(font);
         nomJoueur4.setVisible(true);
         nomJoueur4.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur4, JLayeredPane.POPUP_LAYER);
@@ -815,7 +826,8 @@ public class PanelMenu extends JPanel {
     }
 
     private void afficheMessageErreur(Graphics g) {
-        Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        //Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        Font font = customFont.deriveFont(Font.BOLD,25);
         g.setFont(font);
         g.setColor(Color.WHITE);
         String message = null;

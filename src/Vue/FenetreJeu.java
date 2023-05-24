@@ -497,7 +497,8 @@ public class FenetreJeu extends Container {
     }
 
     private void afficheMessageErreur(Graphics g) {
-        Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
+        Font font = customFont.deriveFont(Font.BOLD,(int) (hauteurMessageErreur*0.6));
+        //Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
         g.setFont(font);
         g.setColor(Color.WHITE);
         String message=null;
@@ -532,7 +533,8 @@ public class FenetreJeu extends Container {
     public static void afficheTimer(Graphics g) {
         if(jeu.getTimerActif() && jeu.getJoueurCourantClasse().getTypeJoueur()==Joueur.IA) {
             g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
-            Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            //Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            Font font = customFont.deriveFont(Font.BOLD,29);
             g.setFont(font);
             g.setColor(Color.WHITE);
             double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurCourant().getTempsTemp();
@@ -644,7 +646,8 @@ public class FenetreJeu extends Container {
         }
         g.drawImage(fenetre_score_courante, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
         //prénom des joueurs 0 et 1
-        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        //Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        Font font = customFont.deriveFont(Font.BOLD,29);
         g.setFont(font);
 
         String joueur_0 = jeu.getJoueurs()[0].getPrenom();
@@ -660,7 +663,8 @@ public class FenetreJeu extends Container {
         g.drawString(joueur_1, posX_prenom, posY_prenom_j1);
 
         //nombre de huttes, tours, temples des joueurs 0 et 1
-        font = new Font("Bookman Old Style", Font.BOLD, 20);
+        //font = new Font("Bookman Old Style", Font.BOLD, 20);
+        font = customFont.deriveFont(Font.BOLD,20);
         g.setFont(font);
         g.setColor(Color.WHITE);
         g.drawImage(hutte_j0, posX_huttes_score, posY_huttes_score_j0, largeur_hutte_score, largeur_hutte_score, null);
@@ -684,7 +688,8 @@ public class FenetreJeu extends Container {
 
         if(jeu.getNbJoueurs()>=3){
             //prénom du joueur 2
-            font = new Font("Bookman Old Style", Font.BOLD, 29);
+            //font = new Font("Bookman Old Style", Font.BOLD, 29);
+            font = customFont.deriveFont(Font.BOLD,29);
             g.setFont(font);
             String joueur_2 = jeu.getJoueurs()[2].getPrenom();
             Color couleur_2 = jeu.getJoueurs()[2].getCouleur();
@@ -692,7 +697,8 @@ public class FenetreJeu extends Container {
             else g.setColor(couleur_2);
             g.drawString(joueur_2, posX_prenom, posY_prenom_j2);
             //nombre de huttes, tours, temples du joueur 2
-            font = new Font("Bookman Old Style", Font.BOLD, 20);
+            //font = new Font("Bookman Old Style", Font.BOLD, 20);
+            font = customFont.deriveFont(Font.BOLD,20);
             g.setFont(font);
             g.setColor(Color.WHITE);
             g.drawImage(hutte_j2, posX_huttes_score, posY_huttes_score_j2, largeur_hutte_score, largeur_hutte_score, null);
@@ -707,7 +713,8 @@ public class FenetreJeu extends Container {
         }
         if(jeu.getNbJoueurs()==4){
             //prénom du joueur 3
-            font = new Font("Bookman Old Style", Font.BOLD, 29);
+            //font = new Font("Bookman Old Style", Font.BOLD, 29);
+            font = customFont.deriveFont(Font.BOLD,29);
             g.setFont(font);
             String joueur_3 = jeu.getJoueurs()[3].getPrenom();
             Color couleur_3 = jeu.getJoueurs()[3].getCouleur();
@@ -715,7 +722,8 @@ public class FenetreJeu extends Container {
             else g.setColor(couleur_3);
             g.drawString(joueur_3, posX_prenom, posY_prenom_j3);
             //nombre de huttes, tours, temples du joueur 3
-            font = new Font("Bookman Old Style", Font.BOLD, 20);
+            //font = new Font("Bookman Old Style", Font.BOLD, 20);
+            font = customFont.deriveFont(Font.BOLD,20);
             g.setFont(font);
             g.setColor(Color.WHITE);
             g.drawImage(hutte_j3, posX_huttes_score, posY_huttes_score_j3, largeur_hutte_score, largeur_hutte_score, null);
@@ -729,7 +737,8 @@ public class FenetreJeu extends Container {
             g.drawString(temples_j3, posX_temples, posY_scores_j3);
         }
         //pioche
-        font = new Font("Bookman Old Style", Font.BOLD, 28);
+        //font = new Font("Bookman Old Style", Font.BOLD, 28);
+        font = customFont.deriveFont(Font.BOLD,28);
         g.setFont(font);
         g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
@@ -781,7 +790,8 @@ public class FenetreJeu extends Container {
                 joueurs_tries.add(joueurs_copie.get(0));
             }
             g.drawImage(finPartie, posX_finPartie, posY_finPartie, largeur_fin_partie, hauteur_fin_partie, null);
-            Font font = new Font("Bookman Old Style", Font.BOLD, taille_texte_finPartie);
+            //Font font = new Font("Bookman Old Style", Font.BOLD, taille_texte_finPartie);
+            Font font = customFont.deriveFont(Font.BOLD,taille_texte_finPartie);
             g.setFont(font);
             g.setColor(Color.BLACK);
             for(int i=0; i<joueurs_tries.size(); i++){
