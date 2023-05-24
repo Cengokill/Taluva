@@ -79,7 +79,6 @@ public class PanelPlateau extends JPanel {
         this.jeu = jeu;
         this.setOpaque(false);
 
-        initCameraPosition();
 
         initTripletHover();
         initCouleursJoueurs();
@@ -87,6 +86,8 @@ public class PanelPlateau extends JPanel {
         poseTile = true;
         afficheEmplacementPosable = new ArrayList<>();
         jeu.doitCalculerEmplacementPossible = true;
+        initCameraPosition();
+
         boucle();
 
         cameraOffset.x -= fenetreJeu.frame.getWidth()/2 -1000;
@@ -113,7 +114,9 @@ public class PanelPlateau extends JPanel {
         //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
         if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA && !estSurBouton && !clicBoutonPauseEchap && !estSurScoreboard && !jeu.estFinPartie()) {//&& jeu.estPiochee &&jeu.getTuileCourante()!=null
             affichePrevisualisationPropagation(g);
-            if(poseTile) displayHoverTile(g);
+            if(poseTile){
+                if(jeu.aPiocher) displayHoverTile(g);
+            }
             else displayHoverMaison(g);
         }
 
@@ -137,8 +140,11 @@ public class PanelPlateau extends JPanel {
     }
 
     private void initCameraPosition() {
-        cameraOffset.x = -2100;
-        cameraOffset.y = -1700;
+        cameraOffset.x = -2600;
+        cameraOffset.y = -1750;
+
+        cameraOffset.x += this.fenetreJeu.frame.getWidth() - 1366;
+        cameraOffset.y += this.fenetreJeu.frame.getHeight() - 768;
     }
 
     private void initCouleursJoueurs() {

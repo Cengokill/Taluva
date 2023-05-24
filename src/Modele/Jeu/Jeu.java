@@ -30,6 +30,7 @@ public class Jeu extends Observable implements Serializable{
     public byte type_jeu;
     Plateau plateau;
 
+    public boolean aPiocher;
     public LinkedList<Coup> historiqueDeCoup,historiqueDeCoupARefaire;
 
     public LinkedList<Tuile> tuilepiochee;
@@ -71,6 +72,7 @@ public class Jeu extends Observable implements Serializable{
         historiqueDeCoupARefaire = new LinkedList<>();
         tuilepiochee = new LinkedList<>();
         annulation = false;
+        aPiocher = false;
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
@@ -431,6 +433,7 @@ public class Jeu extends Observable implements Serializable{
         if (doit_placer_batiment) {
             return false;
         }
+        aPiocher = false;
         plateau.placeEtage(jCourant, volcan_x, volcan_y, tile1_x, tile1_y, terrain1, tile2_x, tile2_y, terrain2);
         isJoueurCourantPerdu();
         doit_placer_batiment = true;
@@ -666,6 +669,7 @@ public class Jeu extends Observable implements Serializable{
             estPiochee = true;
             Timer timer = new Timer(600, e -> {
                 estPiochee = false;
+                aPiocher = true;
             });
             timer.setRepeats(false); // Sert à ne pas répéter l'action
             timer.start();
@@ -828,23 +832,32 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void setJeu(Jeu jeu){
-        this.AFFICHAGE=jeu.AFFICHAGE;
+        indexSon = 0;
+        indexMusique = 0;
+        this.IA0 =jeu.IA0;
+        this.IA1 =jeu.IA1;
+        this.IA2 =jeu.IA2;
+        this.IA3 =jeu.IA3;
+        this.delai= jeu.delai;
+        this.delai_avant_pioche=jeu.delai_avant_pioche;
         this.type_jeu=jeu.type_jeu;
+        this.joueurs=jeu.joueurs;
+        this.nb_joueurs=jeu.nb_joueurs;
         this.delai=jeu.delai;
         this.debug=jeu.debug;
         this.plateau=jeu.plateau;
+        //plateau.copiePlateau(jeu.plateau.getCarte());
         this.tuile_courante=jeu.tuile_courante;
         this.jCourant=jeu.jCourant;
         this.jVainqueur=jeu.jVainqueur;
-        this.joueurs[0]=jeu.joueurs[0];
-        this.joueurs[1]=jeu.joueurs[1];
         this.p=jeu.p;
         this.tuileAPoser=jeu.tuileAPoser;
         this.doit_placer_tuile=jeu.doit_placer_tuile;
         this.doit_placer_batiment=jeu.doit_placer_batiment;
         this.estPartieFinie= jeu.estFinPartie();
-        this.estPartieFinie= jeu.estFinPartie();
+        this.IApeutjouer=jeu.IApeutjouer;
         this.unefoisIA=jeu.unefoisIA;
         this.pioche=jeu.pioche;
+        this.doitCalculerEmplacementPossible=true;
     }
 }

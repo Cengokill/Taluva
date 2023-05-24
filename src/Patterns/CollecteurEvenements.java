@@ -5,6 +5,4 @@ public interface CollecteurEvenements {
     void toucheClavier();
     void annuler() throws CloneNotSupportedException;
     void refaire();
-    void sauvegarder();
-    void charger();
 }
