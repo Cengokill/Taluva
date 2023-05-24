@@ -340,6 +340,7 @@ public class PanelMenuListener implements MouseListener  {
         }
         if(estCurseurSurBouton_Credits(e)){
             panelMenu.clicCredits = !panelMenu.clicCredits;
+            panelMenu.peutAnimerCredits = true;
             panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Quitter(e)){
@@ -348,6 +349,7 @@ public class PanelMenuListener implements MouseListener  {
         }
         if(estCurseurSurBouton_QuitterCredits(e)){
             panelMenu.clicCredits = !panelMenu.clicCredits;
+            panelMenu.peutAnimerCredits = false;
             panelMenu.playSons(0);
         }
         // Options cochables

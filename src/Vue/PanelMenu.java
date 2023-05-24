@@ -27,7 +27,7 @@ public class PanelMenu extends JPanel {
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
     final BufferedImage[] sliders = new BufferedImage[6];
-    BufferedImage background, taluvaTitre, credits_background;
+    BufferedImage background, taluvaTitre, credits_background, credits1, credits2, credits3, credits4, credits5, credits6, credits7;
     BufferedImage bouton_Jouer, bouton_Jouer_select, bouton_Local_clic;
     BufferedImage bouton_Options, bouton_Options_select, bouton_Options_clic;
     BufferedImage bouton_Credits, bouton_Credits_select, bouton_Credits_clic;
@@ -53,7 +53,9 @@ public class PanelMenu extends JPanel {
     int largeur_background, hauteur_background;
     int largeur_bouton;
     int largeur_menu_options;
-    int hauteur_bouton, hauteur_menu_options;
+    int hauteur_bouton, hauteur_menu_options, largeur_credits1, hauteur_credits1;
+    int posX_credits1, posY_credits1, posX_credits2, posY_credits2, posX_credits3, posY_credits3, posX_credits4, posY_credits4, posX_credits5, posY_credits5,
+            posX_credits6, posY_credits6, posX_credits7, posY_credits7;
     int posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits;
     int largeur_nuage1, hauteur_nuage1, posX_nuage1, posY_nuage1, largeur_nuage2, hauteur_nuage2, posX_nuage2, posY_nuage2, decalage_nuage1, decalage_nuage2;
     int largeur_taluvaTitre, hauteur_taluvaTitre, posX_taluvaTitre, posY_taluvaTitre;
@@ -97,7 +99,7 @@ public class PanelMenu extends JPanel {
     boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
-    boolean peutAnimerNuage = true;
+    boolean peutAnimerNuage = true, peutAnimerCredits = false;
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
     public static boolean estEnChargement = false, aAfficheChargement = false;
     static boolean estConfigPartie = false;
@@ -119,6 +121,7 @@ public class PanelMenu extends JPanel {
     double rapport_nuage1 = 400.0/1100.0;
     double rapport_nuage2 = 400.0/1200.0;
     double rapport_taluvaTitre = 500.0/900.0;
+    double rapport_credits1 = 196.0/772.0;
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
@@ -126,6 +129,13 @@ public class PanelMenu extends JPanel {
         nuage2 = lisImage("nuage2");
         taluvaTitre = lisImage("taluva_titre");
         background = lisImage("taluva_background");
+        credits1 = lisImage("credits1");
+        credits2 = lisImage("credits2");
+        credits3 = lisImage("credits3");
+        credits4 = lisImage("credits4");
+        credits5 = lisImage("credits5");
+        credits6 = lisImage("credits6");
+        credits7 = lisImage("credits7");
         credits_background = lisImage("credits_background");
         bouton_Jouer = lisImage("jouer");
         bouton_Jouer_select = lisImage("jouer_select");
@@ -553,14 +563,6 @@ public class PanelMenu extends JPanel {
         afficheChoix(g);
     }
 
-    public void afficheCredits(Graphics g){
-        g.drawImage(credits_background, 0, 0, largeur, hauteur,null);
-        if(select_quitter_credits)
-            g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
-        else
-            g.drawImage(fermer, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
-    }
-
 
     public void paint(Graphics g) {
         super.paintComponent(g);
@@ -754,6 +756,13 @@ public class PanelMenu extends JPanel {
         largeur_quitter_credits = (int) (largeur_background*0.06);
         posX_quitter_credits = (int) (posX_background + largeur_background/2 - largeur_quitter_credits/2);
         posY_quitter_credits = (int) (posY_background + hauteur_background*0.95 - largeur_quitter_credits);
+        largeur_credits1 = (int) (largeur_background*0.4);
+        hauteur_credits1 = (int) (largeur_credits1*rapport_credits1);
+        posY_credits1 = (int) (posY_background + hauteur_background*0.05);
+        if(peutAnimerCredits && clicCredits){
+            posX_credits1 = (int) (posX_background + largeur_background* 0.02);
+            peutAnimerCredits = false;
+        }
         //boutons menu principal du jeu
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
@@ -818,6 +827,17 @@ public class PanelMenu extends JPanel {
         g.drawImage(taluvaTitre, posX_taluvaTitre, posY_taluvaTitre, largeur_taluvaTitre, hauteur_taluvaTitre, null);
     }
 
+    private void afficheCredits(Graphics g) {
+        g.drawImage(credits_background, 0, 0, largeur, hauteur, null);
+        g.drawImage(credits1, posX_credits1, posY_credits1, largeur_credits1, hauteur_credits1, null);
+        //g.drawImage(credits2, posX_credits2, posY_credits2, largeur_credits2, hauteur_credits2, null);
+        if(select_quitter_credits)
+            g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+        else
+            g.drawImage(fermer, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+
+    }
+
     public void boucle(){
         Timer timer = new Timer(50, new ActionListener() {
             @Override
@@ -828,6 +848,11 @@ public class PanelMenu extends JPanel {
                 decalage_nuage2 = (decalage_nuage2+decalage);
                 posX_nuage2 = (posX_background+decalage_nuage2)%largeur_background;
                 posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
+                //crédits
+                if(clicCredits){
+                    posX_credits1 = (posX_credits1+decalage)%largeur_background;
+                }
+
             }
         });
         timer.start();
