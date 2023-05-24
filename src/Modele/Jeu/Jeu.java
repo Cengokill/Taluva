@@ -35,7 +35,7 @@ public class Jeu extends Observable implements Serializable{
     public byte type_jeu;
     Plateau plateau;
 
-    public boolean aPiocher;
+    public boolean aPiocher,iaReflechit;
     public Historique historique;
     public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
     public transient ArrayList<ArrayList<MusicPlayer>> sonPlayer = new ArrayList<>();
@@ -73,6 +73,7 @@ public class Jeu extends Observable implements Serializable{
         initialiseSons();
 
         aPiocher = false;
+        iaReflechit = false;
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
@@ -315,6 +316,7 @@ public class Jeu extends Observable implements Serializable{
     }
 
     private void joueMultiThread(){
+        iaReflechit = true;
         Thread iaThread = new Thread(()-> {
             CoupValeur coupValeur = null;
             try {
@@ -362,6 +364,7 @@ public class Jeu extends Observable implements Serializable{
                 doit_placer_tuile = true;
                 joueurs[jCourant].stopChrono();
                 changeJoueur();
+                iaReflechit = false;
             });
                 timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
                 timer.start(); // Démarrez le timer
@@ -689,10 +692,9 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void annuler(){
-        if (historique.passe.size() == 0) {
+        if (historique.passe.size() == 0 && iaReflechit) {
             return;
         }
-
 
         annule = true;
         jCourant = 0;
