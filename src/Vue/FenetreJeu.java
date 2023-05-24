@@ -5,6 +5,7 @@ import Modele.Jeu.Jeu;
 import Modele.Jeu.Joueur;
 import Modele.Jeu.MusicPlayer;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,9 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static Vue.ImageLoader.*;
 
@@ -40,6 +43,8 @@ public class FenetreJeu extends Container {
 
     public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
     public boolean afficheOptions,retourDebug;
+    public static boolean afficheSave;
+    public static boolean afficheLoad;
     public static boolean estSurBoutonOptions, estSurBoutonAnnuler, estSurBoutonRefaire, estSurBoutonQuitterOptions, estSurBoutonQuitterFinPartie;
 
     public int index_son,index_musique,posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2,posY_slider1, taille_btn, posX_coches, posY_coche1,posY_coche2,posY_coche3,
@@ -48,7 +53,7 @@ public class FenetreJeu extends Container {
     public boolean select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
             select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler2;
     public static BufferedImage fenetre_score_courante,options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
-            ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension;
+            ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension,Image_save;
     public static int indice_chrono, indice_tuilePiochee;
     public static String tempsFixe;
     static BufferedImage hutte_j0 = null;
@@ -66,7 +71,16 @@ public class FenetreJeu extends Container {
     static Color couleur_bleue = new Color(0, 166, 255, 255);
     static int taille_texte_finPartie;
     static Font customFont;
+
+    public static String[]sauvegardes;
+    static File dossier;
+    static String DOSSIER = System.getProperty("user.home") + File.separator + "Taluva" + File.separator + "sauvegardes";
+
     public FenetreJeu(Jeu jeu, ControleurMediateur controleur) throws IOException, FontFormatException {
+        File dossier = new File(DOSSIER);
+        dossier.mkdirs();
+        sauvegardes = dossier.list();
+
         this.controleur = controleur;
         this.controleur.setEngine(this);
         joueurs_tries = new ArrayList<>();
@@ -213,6 +227,11 @@ public class FenetreJeu extends Container {
                 afficheMenuOptions(g2d);
                 if(afficheOptions){
                     afficheParametre(g2d);
+                }if(afficheSave){
+                    afficheSave(g2d);
+                }if(afficheLoad){
+                    afficheLoad(g2d);
+
                 }else{
                     index_musique = jeu.indexMusique;
                     index_son = jeu.indexSon;
@@ -250,11 +269,7 @@ public class FenetreJeu extends Container {
                 hauteur_bouton = largeur_bouton;
                 posX_tuto = (int) (largeur / 1.2);
                 posY_tuto =  (int)(hauteur / 1.3);
-                //menu d'options
-                largeur_menu_options = (int) Math.min(Math.max(Math.min(largeur*0.8, hauteur*0.8), 400), 800);
-                hauteur_menu_options = largeur_menu_options;
-                posX_menu_options = (largeur - largeur_menu_options)/2;
-                posY_menu_options = (hauteur - hauteur_menu_options)/2;
+
                 largeur_bouton_dans_options = (int) (largeur_menu_options * 0.6);
                 hauteur_bouton_dans_options = (int) (largeur_bouton_dans_options * rapport_bouton_dans_options);
                 posX_save = posX_menu_options + largeur_menu_options/2 - largeur_bouton_dans_options/2;
@@ -384,6 +399,32 @@ public class FenetreJeu extends Container {
                 posX_score_finPartie = (int) (posX_cadre + largeur_fin_partie*0.785);
                 posX_temps_partie = (int) (posX_joueur_finPartie + largeur_fin_partie*0.23);
                 posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.710);
+
+                //menu d'options
+
+                largeur_boutonSave=(int)(largeur_joueur_courant*1.7);
+                hauteur_boutonSave=(int)(largeur_joueur_courant*0.4);
+                largeur_optionSave = (int)(largeur_joueur_courant*2.5);
+                hauteur_optionSave = (int)(largeur_joueur_courant*2.5);
+                posX_optionSave= (largeur/2 - largeur_optionSave/2);;
+                posY_optionSave= (hauteur/2 - hauteur_optionSave/2);
+                posX_optionSaveBouton=(int)(posX_optionSave*1.4) ;
+                posY_optionSaveBouton=(int)(posY_optionSave*30);
+                decalageY_save= (int) (hauteur_boutonSave);
+
+                texte_saveXvide=(int)(posX_optionSaveBouton+hauteur_boutonSave*1.85) ;
+                texte_saveX=(int)(posX_optionSaveBouton+hauteur_boutonSave/10);
+                texte_savey=(int)(posY_optionSaveBouton+hauteur_boutonSave/2);
+
+
+                largeur_menu_options = (int) Math.min(Math.max(Math.min(largeur*0.8, hauteur*0.8), 400), 800);
+                hauteur_menu_options = largeur_menu_options;
+                posX_menu_options = (largeur - largeur_menu_options)/2;
+                posY_menu_options = (hauteur - hauteur_menu_options)/2;
+
+                posY_btnAnnulerSave= posX_menu_options *2;
+                posX_btnAnnulerSave= posY_menu_options *2;
+
                 //message d'erreur
                 posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
                 posY_messageErreur = (int) (hauteur*0.8);
@@ -491,7 +532,7 @@ public class FenetreJeu extends Container {
     }
 
     public static void afficheTimer(Graphics g) {
-        if(jeu.getTimerActif()) {
+        if(jeu.getTimerActif() && jeu.getJoueurCourantClasse().getTypeJoueur()==Joueur.IA) {
             g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
             Font font = new Font("Bookman Old Style", Font.BOLD, 29);
             g.setFont(font);
@@ -864,7 +905,7 @@ public class FenetreJeu extends Container {
             g.drawImage(bouton_tuto_off, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6),null);
     }
 
-    public static void annuler(){
+    public static void annuler() throws CloneNotSupportedException {
         jeu.annuler();
     }
 
@@ -889,10 +930,17 @@ public class FenetreJeu extends Container {
         repaint();
     }
 
-    public static void sauvegarder() {
+    public static void sauvegarder(int sauvegarde) {
         try {
-            File fichier = new File("sauvegarde.txt");
-            fichier.delete();
+            File fichier;
+            SimpleDateFormat date = new SimpleDateFormat("yy-MM-dd-HH-mm-ss");
+            String nom =DOSSIER + File.separator+sauvegarde+"_" +"Partie_du_"+date.format(new Date())+".sauvegarde";
+            if (3< sauvegardes.length) {
+                fichier = new File(DOSSIER + File.separator + sauvegardes[sauvegarde]);
+                fichier.delete();
+            }
+
+            fichier = new File(nom);
             fichier.createNewFile();
             FileOutputStream fichierOut = new FileOutputStream(fichier);
             ObjectOutputStream out = new ObjectOutputStream(fichierOut);
@@ -900,24 +948,28 @@ public class FenetreJeu extends Container {
             out.writeObject(jeu.getJoueurs());
             out.close();
             fichierOut.close();
+            File dossier = new File(DOSSIER);
+            sauvegardes = dossier.list();
         } catch (Exception e) {
             throw new RuntimeException("Impossible de sauvegarder cette partie.\n" + e);
         }
+        //TODO reduire les box des save.
     }
 
     public Jeu getJeu(){
         return jeu;
     }
 
-    public static void charger() {
+    public static void charger(int sauvegarde) {
         try {
-            FileInputStream fichier = new FileInputStream("sauvegarde.txt");
+
+            FileInputStream fichier = new FileInputStream(DOSSIER + File.separator + sauvegardes[sauvegarde]);
             ObjectInputStream in = new ObjectInputStream(fichier);
-            Jeu jeu1 = new Jeu((byte)1) ;
-            jeu1 = (Jeu) in.readObject();
+            Jeu jeu1 = (Jeu) in.readObject();
             jeu.setJeu(jeu1);
             in.close();
             fichier.close();
+
         } catch (Exception e) {
             throw new RuntimeException("Impossible de charger cette sauvegarde.\n" + e);
         }
@@ -933,6 +985,44 @@ public class FenetreJeu extends Container {
         afficheSliders(g);
         afficheCochable(g);
         afficheChoix(g);
+    }
+    public void afficheSave(Graphics g){
+        g.drawImage(options_background, posX_optionSave,posY_optionSave , largeur_optionSave,hauteur_optionSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*1,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*2,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*3,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(btn_annuler,(int)(posX_optionSaveBouton*2.2),(int)(posY_optionSaveBouton+decalageY_save*3.2),largeur_bouton,largeur_bouton,null);
+
+
+        for(int i=0 ; i<sauvegardes.length;i++) {
+            g.drawString(FenetreJeu.sauvegardes[i],texte_saveX,texte_savey+i*decalageY_save);
+        }
+        for(int j=sauvegardes.length ;j<4;j++){
+            g.drawString("VIDE",texte_saveXvide,texte_savey+j*decalageY_save);
+        }
+
+
+
+    }
+
+    public void afficheLoad(Graphics g){
+
+        g.drawImage(options_background, posX_optionSave,posY_optionSave , largeur_optionSave,hauteur_optionSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*1,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*2,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*3,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(btn_annuler,(int)(posX_optionSaveBouton*2.2),(int)(posY_optionSaveBouton+decalageY_save*3.2),largeur_bouton,largeur_bouton,null);
+
+
+        for(int i=0 ; i<sauvegardes.length;i++){
+            g.drawString(FenetreJeu.sauvegardes[i],texte_saveX,texte_savey+i*decalageY_save);
+        }
+        for(int j=sauvegardes.length ;j<4;j++){
+            g.drawString("VIDE",texte_saveXvide,texte_savey+j*decalageY_save);
+        }
+
     }
 
     private void afficheSliders(Graphics g){
@@ -1027,12 +1117,12 @@ public class FenetreJeu extends Container {
         else g.drawImage(btn_valider,posX_btnValider,posY_btnChoix,taille_btn,taille_btn,null);
     }
 
-
     public void loadImageOption() throws IOException {
         options_background = lisImage("/Options/Options_background");
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
+        Image_save=lisImageBuf("bouton_image_save");
         bouton_droit = lisImage("/Options/boutons/btn_droit");
         bouton_gauche = lisImage("/Options/boutons/btn_gauche");
         btn_valider = lisImage("/Options/boutons/btn_valider");
