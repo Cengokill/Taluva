@@ -907,9 +907,9 @@ public class FenetreJeu extends Container {
 
     public static void afficheBoutonTuto(Graphics g) {
         if(tuto_on)
-            g.drawImage(bouton_tuto_on, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6), null);
+            g.drawImage(bouton_tuto_on, posX_tuto, posY_tuto, (int) (largeur_bouton * 2.75), (int) (hauteur_bouton * 1.6), null);
         else
-            g.drawImage(bouton_tuto_off, posX_tuto, posY_tuto, (int) (largeur_bouton * 1.6), (int) (hauteur_bouton * 1.6),null);
+            g.drawImage(bouton_tuto_off, posX_tuto, posY_tuto, (int) (largeur_bouton * 2.75), (int) (hauteur_bouton * 1.6),null);
     }
 
     public static void annuler() throws CloneNotSupportedException {
