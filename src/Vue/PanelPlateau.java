@@ -84,6 +84,7 @@ public class PanelPlateau extends JPanel {
         initTripletHover();
         initCouleursJoueurs();
         estSurBouton = false;
+        System.out.println("init ??");
         poseTile = true;
         afficheEmplacementPosable = new ArrayList<>();
         jeu.doitCalculerEmplacementPossible = true;
@@ -98,6 +99,7 @@ public class PanelPlateau extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+
         if (!ImageLoader.loaded) {
             return;
         }
@@ -114,7 +116,7 @@ public class PanelPlateau extends JPanel {
         displayHexagonMap(g);
         //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
         if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA && !estSurBouton && !clicBoutonPauseEchap && !estSurScoreboard && !jeu.estFinPartie()) {//&& jeu.estPiochee &&jeu.getTuileCourante()!=null
-            affichePrevisualisationPropagation(g);
+            System.out.println(poseTile);
             if(poseTile){
                 if(jeu.aPiocher) displayHoverTile(g);
             }

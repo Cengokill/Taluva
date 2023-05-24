@@ -51,7 +51,7 @@ public class Jeu extends Observable implements Serializable{
     byte[] tuileAPoser = new byte[5];
     public boolean timerActif, debug, estPiochee, unefoisIA;
 
-    boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie,IApeutjouer;
+    public boolean doit_placer_tuile,doit_placer_batiment,estPartieFinie,IApeutjouer;
     boolean estFinPartie;
     public boolean peutPiocher =true;
 
@@ -794,12 +794,17 @@ public class Jeu extends Observable implements Serializable{
             changeJoueur();
             EtatPlateau.poseTile = true;
             doit_placer_batiment = false;
+            doit_placer_tuile = true;
         } else {
             EtatPlateau.poseTile = false;
             doit_placer_batiment = true;
+            doit_placer_tuile = false;
         }
+        System.out.println("=========================");
+        System.out.println(coup.typePlacement);
+        System.out.println(EtatPlateau.poseTile);
+        System.out.println(doit_placer_batiment);
         annule = false;
-
     }
 
     /*public void refaire() {
