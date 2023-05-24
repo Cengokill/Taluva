@@ -76,12 +76,11 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
-        //jCourant = (byte) new Random().nextInt(nb_joueurs-1);
         if(nomJoueur0.isBlank()) nomJoueur0 = "Joueur 1";
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
         if(nomJoueur2.isBlank()) nomJoueur2 = "Joueur 3";
         if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
-        jCourant = 1;
+        jCourant = (byte) new Random().nextInt(nb_joueurs-1);
         nb_joueurs = nbJoueurs;
         int nbIA = 0;
 
@@ -664,7 +663,7 @@ public class Jeu extends Observable implements Serializable{
         tuile_courante = pioche.get(0);
         tuilepiochee.add(tuile_courante);
         pioche.remove(0);
-        if(AFFICHAGE) //System.out.println("Tuiles dans la pioche : " + pioche.size());
+        if(AFFICHAGE) System.out.println("Tuiles dans la pioche : " + pioche.size());
         if(type_jeu==GRAPHIQUE) {
             estPiochee = true;
             Timer timer = new Timer(600, e -> {
