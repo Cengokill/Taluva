@@ -875,8 +875,8 @@ public class PanelMenu extends JPanel {
                 int decalage = Math.max(1,largeur_background/1000);
                 decalage_nuage1 = (decalage_nuage1+decalage);
                 decalage_nuage2 = (decalage_nuage2+decalage);
-                posX_nuage2 = (posX_background+decalage_nuage2)%largeur_background;
-                posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
+                posX_nuage2 = (posX_background+decalage_nuage2)%(largeur_background+1);
+                posX_nuage1 = (posX_background+decalage_nuage1)%(largeur_background+1);
                 //crédits
                 if(clicCredits){
                     decalage = Math.max(1,largeur_background/1000);
