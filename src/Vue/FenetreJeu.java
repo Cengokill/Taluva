@@ -266,7 +266,7 @@ public class FenetreJeu extends Container {
                 //boutons général
                 largeur_bouton = Math.min(Math.max(Math.min(largeur / 11, hauteur / 11), 80), 190);
                 hauteur_bouton = largeur_bouton;
-                posX_tuto = (int) (largeur / 1.2);
+                posX_tuto = (int) (largeur / 1.1);
                 posY_tuto =  (int)(hauteur / 1.3);
 
                 largeur_bouton_dans_options = (int) (largeur_menu_options * 0.6);
