@@ -561,7 +561,9 @@ public class PanelMenu extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (estEnChargement) {
-            g2d.drawImage(chargement, 0, 0, getWidth(), getHeight(), null);
+            if (!aAfficheChargement) {
+                g2d.drawImage(chargement, 0, 0, getWidth(), getHeight(), null);
+            }
             this.nomJoueur1.setVisible(false);
             this.nomJoueur2.setVisible(false);
             this.nomJoueur3.setVisible(false);

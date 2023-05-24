@@ -35,7 +35,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         this.fenetreJeu.panelPlateau.setFocusable(true);
         this.fenetreJeu.panelPlateau.addKeyListener(this.fenetreJeu.panelPlateau.keyboardListener);
         fenetreJeu.panelPlateau.requestFocusInWindow();
-        this.fenetreJeu.panelPlateau.mouseHandler.cameraTimer.start();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                fenetreJeu.panelPlateau.mouseHandler.cameraTimer.start();
+            }
+        });
     }
 
      public class KeyboardListener extends KeyAdapter implements KeyListener {
