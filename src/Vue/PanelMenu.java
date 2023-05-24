@@ -50,6 +50,7 @@ public class PanelMenu extends JPanel {
     BufferedImage ecriture_PleinEcran;
     BufferedImage ecriture_Daltonien;
     BufferedImage ecriture_Extension;
+    BufferedImage nuage1;
     Dimension tailleEcran, tailleFenetre;
     int screenWidth;
     int screenHeight;
@@ -61,6 +62,7 @@ public class PanelMenu extends JPanel {
     int hauteur_background;
     int hauteur_bouton;
     int hauteur_menu_options;
+    int largeur_nuage, hauteur_nuage, posX_nuage, posY_nuage;
     public static int index_sonPanel;
     public int index_sonPanelAvant;
     public static int index_musiquePanel,index_musiquePanelAvant;
@@ -130,6 +132,7 @@ public class PanelMenu extends JPanel {
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
+        nuage1 = lisImage("nuage1");
         background = lisImage("taluva_background");
         bouton_Jouer = lisImage("jouer");
         bouton_Jouer_select = lisImage("jouer_select");
@@ -589,6 +592,7 @@ public class PanelMenu extends JPanel {
             afficherConfigPartie(g2d);
             afficheMessageErreur(g2d);
         } else{
+            afficheNuage(g2d);
             afficheBoutonJouer(g2d);
             afficheBoutonOptions(g2d);
             afficheBoutonCredits(g2d);
@@ -712,10 +716,11 @@ public class PanelMenu extends JPanel {
     private void calculeRapportsEtPositions() {
         largeur = layeredPane.getWidth();
         hauteur = layeredPane.getHeight();
-        double rapport_bouton=179.0/692.0;
+        double rapport_bouton = 179.0/692.0;
         double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
         double rapport_background = 0.5625;
         double rapport_actuel = (double) hauteur /(double) largeur;
+        double rapport_nuage = 400.0/1100.0;
         if(rapport_actuel>rapport_background) {// si la fenêtre est plus haute que large
             largeur_background= largeur;
             hauteur_background=(int)(largeur_background*rapport_background);
@@ -728,6 +733,10 @@ public class PanelMenu extends JPanel {
             posX_background=(largeur -largeur_background)/2;
             posY_background=0;
         }
+        //animation
+        largeur_nuage = (int) (largeur_background*0.2);
+        hauteur_nuage = (int) (largeur_nuage*rapport_nuage);
+        posY_nuage = (int) (posY_background + hauteur_background*0.05);
         //boutons menu principal du jeu
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
@@ -783,12 +792,16 @@ public class PanelMenu extends JPanel {
         }
     }
 
+    private void afficheNuage(Graphics g) {
+        g.drawImage(nuage1, posX_nuage, posY_nuage, largeur_nuage, hauteur_nuage, null);
+    }
 
     public void boucle(){
         Timer timer = new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
+                posX_nuage = (posX_nuage+1)%largeur;
             }
         });
         timer.start();
