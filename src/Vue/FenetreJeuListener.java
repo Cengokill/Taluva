@@ -15,6 +15,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
     private final FenetreJeu fenetreJeu;
     private boolean sonJoue = false;
 
+    // Créez un Timer qui s'exécute toutes les 100 millisecondes
+
+
+
     // TODO enlever bug de KILLIAN qui fait qu'on peut plus bouger la pièce avec les flèches et z marche plus
     public FenetreJeuListener(FenetreJeu fenetreJeu) {
         super();
@@ -30,11 +34,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         this.fenetreJeu.panelPlateau.setFocusable(true);
         this.fenetreJeu.panelPlateau.addKeyListener(this.fenetreJeu.panelPlateau.keyboardListener);
         fenetreJeu.panelPlateau.requestFocusInWindow();
-
+        this.fenetreJeu.panelPlateau.mouseHandler.cameraTimer.start();
     }
 
      public class KeyboardListener extends KeyAdapter implements KeyListener {
-
         @Override
         public void keyPressed(KeyEvent e) {
             // Code à exécuter lorsque la touche est enfoncée
@@ -106,6 +109,32 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
     ////////////////////////////
     public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
+
+        public Timer cameraTimer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (select_menu_options || select_annuler || select_refaire || select_tuto || clicBoutonPauseEchap || select_fin_partie || fenetreJeu.getJeu().getPlateau().estVide()) {
+                    return;
+                }
+                Point mousePos = MouseInfo.getPointerInfo().getLocation();
+                SwingUtilities.convertPointFromScreen(mousePos, fenetreJeu.layeredPane);
+
+                int borderSize = 140;
+                int cameraSpeed = 5;
+
+                if (mousePos.x < borderSize) {
+                    cameraOffset.x += cameraSpeed; // Gauche
+                } else if (mousePos.x > fenetreJeu.getWidth() - borderSize) {
+                    cameraOffset.x -= cameraSpeed; // Droite
+                }
+                if (mousePos.y < borderSize) {
+                    cameraOffset.y += cameraSpeed; // Haut
+                } else if (mousePos.y > fenetreJeu.getHeight() - borderSize) {
+                    cameraOffset.y -= cameraSpeed; // Bas
+                }
+            }
+        });
+
 
         public boolean estSurTuto(MouseEvent e) {
             int largeur = posX_boutons + largeur_bouton;
@@ -439,6 +468,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         @Override
         public void mouseMoved(MouseEvent e) {
             estSurScoreboard(e);
+
+
+
+
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurRetour(e) || estSurQuitter(e) || estSurBoutonOptionsEchap(e) || estSurSauvegarder(e)
                     || estSurCharger(e) || estSurParametres(e) || estSurRetourFinPartie(e) || estCurseurSurBoutonGauche_1(e)|| estCurseurSurBoutonGauche_2(e)
                     ||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)
