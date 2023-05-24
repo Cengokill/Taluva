@@ -144,6 +144,20 @@ public class Plateau implements Serializable, Cloneable {
     public ArrayList<Point2D> positionsBatsVillage(int x, int y, Color color_joueur){
         ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
         Point2D positionHutte = new Point2D(x,y);
+        listeDesHutesVoisines.add(positionHutte);
+
+        int i = 0;
+        while (listeDesHutesVoisines.size()!=i){
+            Point2D HuteCourant = listeDesHutesVoisines.get(i);
+            ajouterHuttesVoisines(color_joueur, listeDesHutesVoisines, HuteCourant);
+            i++;
+        }
+        return listeDesHutesVoisines;
+    }
+
+    public ArrayList<Point2D> positionsBatsVillage2(int x, int y, Color color_joueur){
+        ArrayList<Point2D> listeDesHutesVoisines = new ArrayList<>();
+        Point2D positionHutte = new Point2D(x,y);
         //listeDesHutesVoisines.add(positionHutte);
 
         int i = 0;
@@ -821,7 +835,7 @@ public class Plateau implements Serializable, Cloneable {
     public boolean peutPoserTemple(int i,int j,Color color_joueur){
         // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUN TEMPLE ET VILLAGE ASSEZ GRAND)
         boolean PeutClassique = true;
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage2(i,j,color_joueur);
         if(pointsVillage.size()<=3) PeutClassique =  false;                             // On verifie que la hauteur est d'au moins 3
         for(Point2D p : pointsVillage){                                                 // On verifie que la cité ne possède pas déjà une tour
             if(estTemple(p.getPointX(),p.getPointY())) PeutClassique =  false;
@@ -849,7 +863,7 @@ public class Plateau implements Serializable, Cloneable {
     public boolean peutPoserTour(int i,int j,Color color_joueur){
         // CAS CLASSIQUE (ON RENVOIE VRAI SI AUCUNE TOUR ET HAUTEUR>=3)
         boolean PeutClassique = true;
-        ArrayList<Point2D> pointsVillage = positionsBatsVillage(i,j,color_joueur);
+        ArrayList<Point2D> pointsVillage = positionsBatsVillage2(i,j,color_joueur);
         if(getHauteurTuile(i,j)<3) PeutClassique = false;                            // On verifie que la hauteur est d'au moins 3
         for(Point2D p : pointsVillage){                                              // On verifie que la cité ne possède pas déjà une tour
             if(estTour(p.getPointX(),p.getPointY())) PeutClassique = false;
