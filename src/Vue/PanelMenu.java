@@ -33,18 +33,13 @@ public class PanelMenu extends JPanel {
     BufferedImage bouton_Credits, bouton_Credits_select, bouton_Credits_clic;
     BufferedImage bouton_Quitter, bouton_Quitter_select, bouton_Quitter_clic;
     BufferedImage options_background;
-    BufferedImage bouton_droit;
-    BufferedImage bouton_gauche;
-    BufferedImage btn_valider;
-    BufferedImage btn_annuler;
-    BufferedImage coche_non;
-    BufferedImage coche_oui;
-    BufferedImage bouton_droit_hover;
-    BufferedImage bouton_gauche_hover;
-    BufferedImage btn_valider_hover;
-    BufferedImage btn_annuler_hover;
-    BufferedImage coche_non_hover;
-    BufferedImage coche_oui_hover;
+    BufferedImage bouton_droit, bouton_gauche;
+    BufferedImage btn_valider, btn_annuler;
+    BufferedImage fermer, fermer_select;
+    BufferedImage coche_non, coche_oui;
+    BufferedImage bouton_droit_hover, bouton_gauche_hover;
+    BufferedImage btn_valider_hover, btn_annuler_hover;
+    BufferedImage coche_non_hover, coche_oui_hover;
     BufferedImage ecriture_Sons;
     BufferedImage ecriture_Musiques;
     BufferedImage ecriture_PleinEcran;
@@ -59,6 +54,7 @@ public class PanelMenu extends JPanel {
     int largeur_bouton;
     int largeur_menu_options;
     int hauteur_bouton, hauteur_menu_options;
+    int posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits;
     int largeur_nuage1, hauteur_nuage1, posX_nuage1, posY_nuage1, largeur_nuage2, hauteur_nuage2, posX_nuage2, posY_nuage2, decalage_nuage1, decalage_nuage2;
     int largeur_taluvaTitre, hauteur_taluvaTitre, posX_taluvaTitre, posY_taluvaTitre;
     public static int index_sonPanel;
@@ -86,6 +82,7 @@ public class PanelMenu extends JPanel {
     boolean select_credits;
     boolean select_options;
     boolean select_quitter;
+    boolean select_quitter_credits;
     boolean clicOptions, clicCredits;
     boolean select_gauche1;
     boolean select_gauche2;
@@ -146,6 +143,8 @@ public class PanelMenu extends JPanel {
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
+        fermer = lisImage("fermer");
+        fermer_select = lisImage("fermer_select");
         bouton_droit = lisImage("/Options/boutons/btn_droit");
         bouton_gauche = lisImage("/Options/boutons/btn_gauche");
         btn_valider = lisImage("/Options/boutons/btn_valider");
@@ -556,6 +555,10 @@ public class PanelMenu extends JPanel {
 
     public void afficheCredits(Graphics g){
         g.drawImage(credits_background, 0, 0, largeur, hauteur,null);
+        if(select_quitter_credits)
+            g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+        else
+            g.drawImage(fermer, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
     }
 
 
@@ -747,6 +750,10 @@ public class PanelMenu extends JPanel {
         largeur_nuage2 = (int) (largeur_background*0.25);
         hauteur_nuage2 = (int) (largeur_nuage2 *rapport_nuage2);
         posY_nuage2 = (int) (posY_background + hauteur_background*0.02);
+        //menu crédits
+        largeur_quitter_credits = (int) (largeur_background*0.06);
+        posX_quitter_credits = (int) (posX_background + largeur_background/2 - largeur_quitter_credits/2);
+        posY_quitter_credits = (int) (posY_background + hauteur_background*0.95 - largeur_quitter_credits);
         //boutons menu principal du jeu
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
