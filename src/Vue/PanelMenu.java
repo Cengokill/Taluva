@@ -751,7 +751,7 @@ public class PanelMenu extends JPanel {
         posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.27);
         posX_textJoueur = (int) (posX_background + largeur_background*0.15);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
-        posYChronoList = posY_textJoueur;
+        posYChronoList = (int) (posY_textJoueur + hauteur_background*0.05);
         posXChronoList = (int) (posX_bouton_plus_ia+largeur_background*0.36);
         posXDifficulteList = (int) (posX_textJoueur + largeur_textJoueur*1.75);
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.26);
