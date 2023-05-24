@@ -917,7 +917,7 @@ public class PanelMenu extends JPanel {
                 index_sonPanel =in2.readInt();
                 index_musiquePanel =in2.readInt();
                 estPleinEcran=in2.readBoolean();
-                System.out.println(estPleinEcran);
+                //System.out.println(estPleinEcran);
                 //estPleinEcran=in2.readBoolean();
                 in2.close();
                 file2.close();
