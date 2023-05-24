@@ -756,11 +756,23 @@ public class PanelMenu extends JPanel {
         largeur_quitter_credits = (int) (largeur_background*0.06);
         posX_quitter_credits = (int) (posX_background + largeur_background/2 - largeur_quitter_credits/2);
         posY_quitter_credits = (int) (posY_background + hauteur_background*0.95 - largeur_quitter_credits);
-        largeur_credits1 = (int) (largeur_background*0.4);
+        largeur_credits1 = (int) (largeur_background*0.35);
         hauteur_credits1 = (int) (largeur_credits1*rapport_credits1);
-        posY_credits1 = (int) (posY_background + hauteur_background*0.05);
+        posY_credits1 = (int) (posY_background);
+        posY_credits2 = (int) (posY_credits1 + hauteur_credits1*0.85);
+        posY_credits3 = (int) (posY_credits2 + hauteur_credits1*0.85);
+        posY_credits4 = (int) (posY_credits3 + hauteur_credits1*0.85);
+        posY_credits5 = (int) (posY_credits4 + hauteur_credits1*0.85);
+        posY_credits6 = (int) (posY_credits5 + hauteur_credits1*0.85);
+        posY_credits7 = (int) (posY_credits6 + hauteur_credits1*0.85);
         if(peutAnimerCredits && clicCredits){
             posX_credits1 = (int) (posX_background + largeur_background* 0.02);
+            posX_credits2 = (int) (posX_background + largeur_background - largeur_credits1);
+            posX_credits3 = (int) (posX_background + largeur_background* 0.01);
+            posX_credits4 = (int) (posX_background + largeur_background - largeur_credits1);
+            posX_credits5 = (int) (posX_background + largeur_background* 0.02);
+            posX_credits6 = (int) (posX_background + largeur_background - largeur_credits1);
+            posX_credits7 = (int) (posX_background + largeur_background* 0.01);
             peutAnimerCredits = false;
         }
         //boutons menu principal du jeu
@@ -830,7 +842,12 @@ public class PanelMenu extends JPanel {
     private void afficheCredits(Graphics g) {
         g.drawImage(credits_background, 0, 0, largeur, hauteur, null);
         g.drawImage(credits1, posX_credits1, posY_credits1, largeur_credits1, hauteur_credits1, null);
-        //g.drawImage(credits2, posX_credits2, posY_credits2, largeur_credits2, hauteur_credits2, null);
+        g.drawImage(credits2, posX_credits2, posY_credits2, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits3, posX_credits3, posY_credits3, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits4, posX_credits4, posY_credits4, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits5, posX_credits5, posY_credits5, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits6, posX_credits6, posY_credits6, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits7, posX_credits7, posY_credits7, largeur_credits1, hauteur_credits1, null);
         if(select_quitter_credits)
             g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
         else
@@ -850,7 +867,14 @@ public class PanelMenu extends JPanel {
                 posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
                 //crédits
                 if(clicCredits){
+                    decalage = largeur_background/1000;
                     posX_credits1 = (posX_credits1+decalage)%largeur_background;
+                    posX_credits2 = (posX_credits2-decalage)%largeur_background;
+                    posX_credits3 = (posX_credits3+decalage)%largeur_background;
+                    posX_credits4 = (posX_credits4-decalage)%largeur_background;
+                    posX_credits5 = (posX_credits5+decalage)%largeur_background;
+                    posX_credits6 = (posX_credits6-decalage)%largeur_background;
+                    posX_credits7 = (posX_credits7+decalage)%largeur_background;
                 }
 
             }
