@@ -133,12 +133,12 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
 
                 if (mousePos.x < borderSize) {
                     cameraOffset.x += cameraSpeed; // Gauche
-                } else if (mousePos.x > fenetreJeu.getWidth() - borderSize) {
+                } else if (mousePos.x > fenetreJeu.layeredPane.getWidth() - borderSize) {
                     cameraOffset.x -= cameraSpeed; // Droite
                 }
                 if (mousePos.y < borderSize) {
                     cameraOffset.y += cameraSpeed; // Haut
-                } else if (mousePos.y > fenetreJeu.getHeight() - borderSize) {
+                } else if (mousePos.y > fenetreJeu.layeredPane.getHeight() - borderSize) {
                     cameraOffset.y -= cameraSpeed; // Bas
                 }
             }
