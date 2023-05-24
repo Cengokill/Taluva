@@ -243,6 +243,7 @@ public class Jeu extends Observable implements Serializable{
         doit_placer_tuile = true;
         doit_placer_batiment = false;
 
+
         if (estJoueurCourantUneIA()) {
             if (type_jeu == GRAPHIQUE) {//l'IA joue avec un délai
                 pioche();
@@ -720,19 +721,35 @@ public class Jeu extends Observable implements Serializable{
             Coup coup = historique.passe.remove(0);
             plateau.joueCoup(coup);
 
-            if (coup.typePlacement == Coup.TUILE) {
+            if(coup.typePlacement!=Coup.SELECTEUR_BATIMENT){
+                if(coup.typePlacement == Coup.HUTTE){
+                    for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(coup.batimentLigne,coup.batimentColonne);hauteur++) {
+                        joueurs[jCourant].incrementeHutte();
+                    }
+                }
+                if(coup.typePlacement == Coup.TEMPLE) {
+                    joueurs[jCourant].incrementeTemple();
+                }
+                else if(coup.typePlacement == Coup.TOUR) {
+                    joueurs[jCourant].incrementeTour();
+                }
+                doit_placer_batiment = false;
+                doit_placer_tuile = true;
+            }
+
+            if (coup.typePlacement != Coup.TUILE) {
                 tuile_courante = this.pioche.remove(0);
                 tuileAPoser[0] = tuile_courante.biome0;
                 tuileAPoser[1] = tuile_courante.biome1;
                 tuileAPoser[2] = (byte) tuile_courante.numero0;
                 tuileAPoser[3] = (byte) tuile_courante.numero1;
                 tuileAPoser[4] = (byte) tuile_courante.numero2;
-                EtatPlateau.poseTile = false;
-                doit_placer_batiment = true;
-            } else {
                 changeJoueur();
                 EtatPlateau.poseTile = true;
                 doit_placer_batiment = false;
+            } else {
+                EtatPlateau.poseTile = false;
+                doit_placer_batiment = true;
             }
         }
         annule = false;
@@ -741,11 +758,47 @@ public class Jeu extends Observable implements Serializable{
 
 
     public void refaire() {
+        if (historique.futur.size() == 0) {
+            return;
+        }
+        annule = true;
 
 
-        Plateau plateau1 = new Plateau();  // Créer un nouveau plateau vide
+        Coup coup = historique.futur.remove(0);
 
-        this.plateau = plateau;  // Mettre à jour le plateau actuel avec l'état refait
+        plateau.joueCoup(coup);
+        if(coup.typePlacement!=Coup.SELECTEUR_BATIMENT){
+            if(coup.typePlacement == Coup.HUTTE){
+                for (int hauteur = 0 ; hauteur<plateau.getHauteurTuile(coup.batimentLigne,coup.batimentColonne);hauteur++) {
+                    joueurs[jCourant].incrementeHutte();
+                }
+            }
+            if(coup.typePlacement == Coup.TEMPLE) {
+                joueurs[jCourant].incrementeTemple();
+            }
+            else if(coup.typePlacement == Coup.TOUR) {
+                joueurs[jCourant].incrementeTour();
+            }
+            doit_placer_batiment = false;
+            doit_placer_tuile = true;
+        }
+
+        if (coup.typePlacement != Coup.TUILE) {
+
+            tuile_courante = this.pioche.remove(0);
+            tuileAPoser[0] = tuile_courante.biome0;
+            tuileAPoser[1] = tuile_courante.biome1;
+            tuileAPoser[2] = (byte) tuile_courante.numero0;
+            tuileAPoser[3] = (byte) tuile_courante.numero1;
+            tuileAPoser[4] = (byte) tuile_courante.numero2;
+            changeJoueur();
+            EtatPlateau.poseTile = true;
+            doit_placer_batiment = false;
+        } else {
+            EtatPlateau.poseTile = false;
+            doit_placer_batiment = true;
+        }
+        annule = false;
 
     }
 
