@@ -30,6 +30,8 @@ public class ImageLoader {
     public static BufferedImage lacTile_0, lacTile_1, lacTile_2,lacTile_0_SP, lacTile_1_SP, lacTile_2_SP;
     public static BufferedImage montagneTile_0, montagneTile_1, montagneTile_2,montagneTile_0_SP, montagneTile_1_SP, montagneTile_2_SP;
     public static BufferedImage ombre_0, ombre_1;
+
+    public static BufferedImage tuto0,tuto1,tuto2,tuto3;
     public static BufferedImage timer, joueurCourant, finPartie, cadreBleu, cadreRouge, cadreVert, cadreViolet, selecteur_vert;
     public static BufferedImage plateau_hautGauche, plateau_hautDroite, plateau_Droite, plateau_Gauche, plateau_basDroite, plateau_basGauche;
     public static BufferedImage tuile_hautGauche, tuile_hautDroite, tuile_Droite, tuile_Gauche, tuile_basDroite, tuile_basGauche;
@@ -116,6 +118,7 @@ public class ImageLoader {
         readBatimentsImages();
         readAndFilterContoursImages();
         readSelectionBatimentImage();
+        readTutoImage();
         posX_tiers_selecteur_vert = (choisirBat[0].getWidth()*2)/3-12;
         filterTiles();
         loaded = true;
@@ -129,6 +132,13 @@ public class ImageLoader {
         pioche[7] = lisImageBuf("Pioche/pioche_75");
         pioche[8] = lisImageBuf("Pioche/pioche_100");
 
+    }
+
+    private static void readTutoImage() {
+        tuto0 = lisImageBuf("Tuto/tuto1");
+        tuto1 = lisImageBuf("Tuto/tuto2");
+        tuto2 = lisImageBuf("Tuto/tuto3");
+        tuto3 = lisImageBuf("Tuto/tuto4");
     }
 
     private static void readChronoImages(){
