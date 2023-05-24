@@ -150,6 +150,7 @@ public class PanelMenu extends JPanel {
         bouton_Quitter_select = lisImage("quitter_select");
         bouton_Quitter_clic = lisImage("quitter_clic");
         options_background = lisImage("/Options/Options_background");
+
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
@@ -852,7 +853,6 @@ public class PanelMenu extends JPanel {
             g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
         else
             g.drawImage(fermer, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
-
     }
 
     public void boucle(){
@@ -860,14 +860,14 @@ public class PanelMenu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
-                int decalage = largeur_background/1000;
+                int decalage = Math.min(1,largeur_background/1000);
                 decalage_nuage1 = (decalage_nuage1+decalage);
                 decalage_nuage2 = (decalage_nuage2+decalage);
                 posX_nuage2 = (posX_background+decalage_nuage2)%largeur_background;
                 posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
                 //crédits
                 if(clicCredits){
-                    decalage = largeur_background/1000;
+                    decalage = Math.min(1,largeur_background/1000);
                     posX_credits1 = (posX_credits1+decalage)%largeur_background;
                     posX_credits2 = (posX_credits2-decalage)%largeur_background;
                     posX_credits3 = (posX_credits3+decalage)%largeur_background;

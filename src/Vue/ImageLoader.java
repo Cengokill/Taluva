@@ -14,7 +14,7 @@ import static Modele.Jeu.Plateau.Hexagone.*;
 public class ImageLoader {
     public static boolean loaded = false;
     public static int nb_aiguilles = 60, taille_tuile_piochee = 15;
-    public static BufferedImage constructionMode;
+    public static BufferedImage constructionMode, menu_sauvegarde_chargement;
     public static final BufferedImage[] choisirBat = new BufferedImage[12], temples_rouges = new BufferedImage[5], temples_bleus = new BufferedImage[5], temples_verts = new BufferedImage[5], temples_violets = new BufferedImage[5];
     public static final BufferedImage[] huttes_rouges = new BufferedImage[7], huttes_bleues = new BufferedImage[7], huttes_vertes = new BufferedImage[7], huttes_violettes = new BufferedImage[7];
     public static final BufferedImage[] tours_rouges = new BufferedImage[5], tours_bleues = new BufferedImage[5], tours_vertes = new BufferedImage[5], tours_violettes = new BufferedImage[5];
@@ -104,6 +104,7 @@ public class ImageLoader {
     public static void loadImages() {
         joueurCourant = lisImageBuf("Joueur_Courant");
         background = lisImageBuf("/Plateau/background_plateau_x4_carre");
+        menu_sauvegarde_chargement = lisImageBuf("Menu/menu_chargement");
         readTilesImages();
         readChronoImages();
         readTuilePiochee();

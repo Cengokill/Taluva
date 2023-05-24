@@ -317,8 +317,8 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 FenetreJeu.sauvegarder(3);
                 return true;
             }
-            else if(e.getX()>=posX_optionSaveBouton*2.2  && e.getX()<=posX_optionSaveBouton*2.2+largeur_bouton &&
-                    e.getY()>=posY_optionSaveBouton+decalageY_save*3.2 && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave+largeur_bouton ){
+            else if(e.getX()>=posX_btnAnnulerSave  && e.getX()<=posX_btnAnnulerSave+largeur_bouton &&
+                    e.getY()>=posY_btnAnnulerSave && e.getY()<=posY_btnAnnulerSave+largeur_bouton ){
                 FenetreJeu.afficheSave=false;
                 return true;
             }
@@ -353,9 +353,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                 return true;
 
             }
-            else if(e.getX()>=posX_optionSaveBouton*2.2  && e.getX()<=posX_optionSaveBouton*2.2+largeur_bouton &&
-                    e.getY()>=posY_optionSaveBouton+decalageY_save*3.2 && e.getY()<=posY_optionSaveBouton+decalageY_save*3+hauteur_boutonSave+largeur_bouton ){
-                FenetreJeu.afficheLoad=false;
+            else if(e.getX()>=posX_btnAnnulerSave  && e.getX()<=posX_btnAnnulerSave+largeur_bouton &&
+                    e.getY()>=posY_btnAnnulerSave && e.getY()<=posY_btnAnnulerSave+largeur_bouton ){
+                FenetreJeu.afficheSave=false;
                 return true;
             }
             return false;
