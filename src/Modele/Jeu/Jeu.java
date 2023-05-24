@@ -1,6 +1,7 @@
 package Modele.Jeu;
 
 import Modele.IA.AbstractIA;
+import Modele.Jeu.Plateau.EtatPlateau;
 import Modele.Jeu.Plateau.Plateau;
 import Modele.Jeu.Plateau.Tuile;
 import Patterns.Observable;
@@ -531,27 +532,29 @@ public class Jeu extends Observable implements Serializable{
         getPlateau().nbHuttesDisponiblesJoueur = joueurs[jCourant].getNbHuttes(); // Pour éviter d'aller dans le négatif lors de la propagation
         if(type_jeu==GRAPHIQUE){
             if(tuile_courante!=null) {
-                Timer timer = new Timer(delai_avant_pioche, e -> {
-                    if (getJoueurCourant().type_joueur == Joueur.IA) {
-                        if (peutPiocher) {
-                            pioche();
-                        }
-                        peutPiocher = true;
-                        try {
-                            joueIA();
-                        } catch (CloneNotSupportedException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    } else {
-                        if (peutPiocher) {
-                            pioche();
+                if (!annule) {
+                    Timer timer = new Timer(1, e -> {
+                        if (getJoueurCourant().type_joueur == Joueur.IA) {
+                            if (peutPiocher) {
+                                pioche();
+                            }
+                            peutPiocher = true;
+                            try {
+                                joueIA();
+                            } catch (CloneNotSupportedException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        } else {
+                            if (peutPiocher) {
+                                pioche();
 
+                            }
+                            peutPiocher = true;
                         }
-                        peutPiocher = true;
-                    }
-                });
-                timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
-                timer.start();
+                    });
+                    timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
+                    timer.start();
+                }
             }
         }
     }
@@ -724,8 +727,11 @@ public class Jeu extends Observable implements Serializable{
                 tuileAPoser[2] = (byte) tuile_courante.numero0;
                 tuileAPoser[3] = (byte) tuile_courante.numero1;
                 tuileAPoser[4] = (byte) tuile_courante.numero2;
+                EtatPlateau.poseTile = false;
                 doit_placer_batiment = true;
             } else {
+                changeJoueur();
+                EtatPlateau.poseTile = true;
                 doit_placer_batiment = false;
             }
         }
