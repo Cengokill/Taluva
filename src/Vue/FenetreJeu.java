@@ -227,14 +227,13 @@ public class FenetreJeu extends Container {
                 afficheMenuOptions(g2d);
                 if(afficheOptions){
                     afficheParametre(g2d);
+                }else{
+                    index_musique = jeu.indexMusique;
+                    index_son = jeu.indexSon;
                 }if(afficheSave){
                     afficheSave(g2d);
                 }if(afficheLoad){
                     afficheLoad(g2d);
-
-                }else{
-                    index_musique = jeu.indexMusique;
-                    index_son = jeu.indexSon;
                 }
             }
 
