@@ -27,62 +27,48 @@ public class PanelMenu extends JPanel {
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
     final BufferedImage[] sliders = new BufferedImage[6];
-    BufferedImage background;
+    BufferedImage background, taluvaTitre, credits_background;
     BufferedImage bouton_Jouer, bouton_Jouer_select, bouton_Local_clic;
     BufferedImage bouton_Options, bouton_Options_select, bouton_Options_clic;
     BufferedImage bouton_Credits, bouton_Credits_select, bouton_Credits_clic;
     BufferedImage bouton_Quitter, bouton_Quitter_select, bouton_Quitter_clic;
     BufferedImage options_background;
-    BufferedImage bouton_droit;
-    BufferedImage bouton_gauche;
-    BufferedImage btn_valider;
-    BufferedImage btn_annuler;
-    BufferedImage coche_non;
-    BufferedImage coche_oui;
-    BufferedImage bouton_droit_hover;
-    BufferedImage bouton_gauche_hover;
-    BufferedImage btn_valider_hover;
-    BufferedImage btn_annuler_hover;
-    BufferedImage coche_non_hover;
-    BufferedImage coche_oui_hover;
+    BufferedImage bouton_droit, bouton_gauche;
+    BufferedImage btn_valider, btn_annuler;
+    BufferedImage fermer, fermer_select;
+    BufferedImage coche_non, coche_oui;
+    BufferedImage bouton_droit_hover, bouton_gauche_hover;
+    BufferedImage btn_valider_hover, btn_annuler_hover;
+    BufferedImage coche_non_hover, coche_oui_hover;
     BufferedImage ecriture_Sons;
     BufferedImage ecriture_Musiques;
     BufferedImage ecriture_PleinEcran;
     BufferedImage ecriture_Daltonien;
     BufferedImage ecriture_Extension;
+    BufferedImage nuage1, nuage2;
+    BufferedImage chargement;
     Dimension tailleEcran, tailleFenetre;
-    int screenWidth;
-    int screenHeight;
-    int largeur;
-    int hauteur;
-    int largeur_background;
+    int screenWidth, screenHeight;
+    int largeur, hauteur;
+    int largeur_background, hauteur_background;
     int largeur_bouton;
     int largeur_menu_options;
-    int hauteur_background;
-    int hauteur_bouton;
-    int hauteur_menu_options;
+    int hauteur_bouton, hauteur_menu_options;
+    int posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits;
+    int largeur_nuage1, hauteur_nuage1, posX_nuage1, posY_nuage1, largeur_nuage2, hauteur_nuage2, posX_nuage2, posY_nuage2, decalage_nuage1, decalage_nuage2;
+    int largeur_taluvaTitre, hauteur_taluvaTitre, posX_taluvaTitre, posY_taluvaTitre;
     public static int index_sonPanel;
     public int index_sonPanelAvant;
     public static int index_musiquePanel,index_musiquePanelAvant;
-    public int posX_boutons;
-    public int posY_Options;
+    public int posX_boutons, posY_Options;
     public int posY_Jouer;
-    public int posX_background;
-    public int posY_background;
+    public int posX_background, posY_background;
     public int posY_Credits;
     public int posY_Quitter;
     public int posX_menu_options;
-    public int posX_droit1;
-    public int posX_droit2;
-    public int posX_gauche1;
-    public int posX_gauche2;
-    public int posY_slider2;
-    public int posY_slider1;
+    public int posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2, posY_slider1;
     public int taille_btn;
-    public int posX_coches;
-    public int posY_coche1;
-    public int posY_coche2;
-    public int posY_coche3;
+    public int posX_coches, posY_coche1, posY_coche2, posY_coche3;
     public int posX_btnAnnuler;
     public int posX_btnValider;
     public int posY_btnChoix;
@@ -96,6 +82,7 @@ public class PanelMenu extends JPanel {
     boolean select_credits;
     boolean select_options;
     boolean select_quitter;
+    boolean select_quitter_credits;
     boolean clicOptions, clicCredits;
     boolean select_gauche1;
     boolean select_gauche2;
@@ -110,9 +97,9 @@ public class PanelMenu extends JPanel {
     boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
+    boolean peutAnimerNuage = true;
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
     public static boolean estEnChargement = false, aAfficheChargement = false;
-
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
     JTextField nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4;
@@ -124,13 +111,22 @@ public class PanelMenu extends JPanel {
     JComboBox<String> listeDifficulte3 = new JComboBox<>(choixDifficulte);
     JComboBox<String> listeDifficulte4 = new JComboBox<>(choixDifficulte);
     public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
-    BufferedImage chargement;
 
     int nbJoueurs = 0;
+    double rapport_bouton = 179.0/692.0;
+    double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
+    double rapport_background = 0.5625;
+    double rapport_nuage1 = 400.0/1100.0;
+    double rapport_nuage2 = 400.0/1200.0;
+    double rapport_taluvaTitre = 500.0/900.0;
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
+        nuage1 = lisImage("nuage1");
+        nuage2 = lisImage("nuage2");
+        taluvaTitre = lisImage("taluva_titre");
         background = lisImage("taluva_background");
+        credits_background = lisImage("credits_background");
         bouton_Jouer = lisImage("jouer");
         bouton_Jouer_select = lisImage("jouer_select");
         bouton_Local_clic = lisImage("jouer_clic");
@@ -147,6 +143,8 @@ public class PanelMenu extends JPanel {
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
+        fermer = lisImage("fermer");
+        fermer_select = lisImage("fermer_select");
         bouton_droit = lisImage("/Options/boutons/btn_droit");
         bouton_gauche = lisImage("/Options/boutons/btn_gauche");
         btn_valider = lisImage("/Options/boutons/btn_valider");
@@ -545,7 +543,7 @@ public class PanelMenu extends JPanel {
     }
 
     public void afficheParametre(Graphics g){
-        int taille_x = (int) (Math.min(getWidth(),getHeight())*1.3);
+        int taille_x = (int) (Math.min(largeur,hauteur)*1.3);
         int taille_y = (int) (taille_x/1.25);
         int x = (largeur - taille_x)/2;
         int y=0-(taille_y/45);
@@ -555,13 +553,23 @@ public class PanelMenu extends JPanel {
         afficheChoix(g);
     }
 
+    public void afficheCredits(Graphics g){
+        g.drawImage(credits_background, 0, 0, largeur, hauteur,null);
+        if(select_quitter_credits)
+            g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+        else
+            g.drawImage(fermer, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+    }
+
 
     public void paint(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (estEnChargement) {
-            g2d.drawImage(chargement, 0, 0, getWidth(), getHeight(), null);
+            if (!aAfficheChargement) {
+                g2d.drawImage(chargement, 0, 0, getWidth(), getHeight(), null);
+            }
             this.nomJoueur1.setVisible(false);
             this.nomJoueur2.setVisible(false);
             this.nomJoueur3.setVisible(false);
@@ -578,7 +586,6 @@ public class PanelMenu extends JPanel {
             aAfficheChargement = true;
             return;
         }
-
         calculeRapportsEtPositions();
         afficheBackground(g2d);
         if(clicOptions){
@@ -586,11 +593,15 @@ public class PanelMenu extends JPanel {
         } else if (estConfigPartie) {
             afficherConfigPartie(g2d);
             afficheMessageErreur(g2d);
+        }else if(clicCredits){
+            afficheCredits(g2d);
         } else{
+            afficheNuages(g2d);
             afficheBoutonJouer(g2d);
             afficheBoutonOptions(g2d);
             afficheBoutonCredits(g2d);
             afficheBoutonQuitter(g2d);
+            afficheTaluvaTitre(g2d);
         }
     }
 
@@ -710,9 +721,6 @@ public class PanelMenu extends JPanel {
     private void calculeRapportsEtPositions() {
         largeur = layeredPane.getWidth();
         hauteur = layeredPane.getHeight();
-        double rapport_bouton=179.0/692.0;
-        double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
-        double rapport_background = 0.5625;
         double rapport_actuel = (double) hauteur /(double) largeur;
         if(rapport_actuel>rapport_background) {// si la fenêtre est plus haute que large
             largeur_background= largeur;
@@ -726,6 +734,26 @@ public class PanelMenu extends JPanel {
             posX_background=(largeur -largeur_background)/2;
             posY_background=0;
         }
+        //image titre Taluva
+        largeur_taluvaTitre = (int) (largeur_background*0.2);
+        hauteur_taluvaTitre = (int) (largeur_taluvaTitre *rapport_taluvaTitre);
+        posX_taluvaTitre = (int) (posX_background + largeur_background/2 - largeur_taluvaTitre/2);
+        posY_taluvaTitre = (int) (posY_background + hauteur_background*0.05);
+        //animation
+        if(peutAnimerNuage){
+            decalage_nuage2 = (int) (posX_background + largeur_background*0.5);
+            peutAnimerNuage = false;
+        }
+        largeur_nuage1 = (int) (largeur_background*0.2);
+        hauteur_nuage1 = (int) (largeur_nuage1 *rapport_nuage1);
+        posY_nuage1 = (int) (posY_background + hauteur_background*0.05);
+        largeur_nuage2 = (int) (largeur_background*0.25);
+        hauteur_nuage2 = (int) (largeur_nuage2 *rapport_nuage2);
+        posY_nuage2 = (int) (posY_background + hauteur_background*0.02);
+        //menu crédits
+        largeur_quitter_credits = (int) (largeur_background*0.06);
+        posX_quitter_credits = (int) (posX_background + largeur_background/2 - largeur_quitter_credits/2);
+        posY_quitter_credits = (int) (posY_background + hauteur_background*0.95 - largeur_quitter_credits);
         //boutons menu principal du jeu
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
@@ -751,7 +779,7 @@ public class PanelMenu extends JPanel {
         posY_bouton_plus_joueur = (int) (posY_background + hauteur_background*0.27);
         posX_textJoueur = (int) (posX_background + largeur_background*0.15);
         posY_textJoueur = (int) (posY_bouton_plus_joueur + hauteur_background*0.14);
-        posYChronoList = posY_textJoueur;
+        posYChronoList = (int) (posY_textJoueur + hauteur_background*0.05);
         posXChronoList = (int) (posX_bouton_plus_ia+largeur_background*0.36);
         posXDifficulteList = (int) (posX_textJoueur + largeur_textJoueur*1.75);
         posYDifficulteList = posY_cadre + (int) (hauteur_background*0.26);
@@ -781,12 +809,25 @@ public class PanelMenu extends JPanel {
         }
     }
 
+    private void afficheNuages(Graphics g) {
+        g.drawImage(nuage1, posX_nuage1, posY_nuage1, largeur_nuage1, hauteur_nuage1, null);
+        g.drawImage(nuage2, posX_nuage2, posY_nuage2, largeur_nuage2, hauteur_nuage2, null);
+    }
+
+    private void afficheTaluvaTitre(Graphics g) {
+        g.drawImage(taluvaTitre, posX_taluvaTitre, posY_taluvaTitre, largeur_taluvaTitre, hauteur_taluvaTitre, null);
+    }
 
     public void boucle(){
         Timer timer = new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
+                int decalage = largeur_background/1000;
+                decalage_nuage1 = (decalage_nuage1+decalage);
+                decalage_nuage2 = (decalage_nuage2+decalage);
+                posX_nuage2 = (posX_background+decalage_nuage2)%largeur_background;
+                posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
             }
         });
         timer.start();

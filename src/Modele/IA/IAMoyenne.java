@@ -45,8 +45,9 @@ public class IAMoyenne extends AbstractIA implements Serializable {
     @Override
     public CoupValeur joue() {
         debut = System.currentTimeMillis();
-        long seed = 12345L;
-        r = new Random(seed);
+        //long seed = 12345L;
+        //r = new Random(seed);
+        r = new Random();
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
         //plateauIA.affiche();

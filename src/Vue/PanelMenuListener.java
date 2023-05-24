@@ -33,12 +33,12 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Jouer(MouseEvent e){
-        if (panelMenu.estConfigPartie) {
+        if (panelMenu.estConfigPartie || panelMenu.clicCredits) {
             return false;
         }
         int largeur = panelMenu.posX_boutons + panelMenu.largeur_bouton;
         int hauteur = panelMenu.posY_Jouer + panelMenu.hauteur_bouton;
-        if(e.getX() >= panelMenu.posX_boutons && e.getX() <= largeur && e.getY() >= panelMenu.posY_Jouer && e.getY() <= hauteur && !panelMenu.clicOptions) {
+        if(e.getX() >= panelMenu.posX_boutons && e.getX() <= largeur && e.getY() >= panelMenu.posY_Jouer && e.getY() <= hauteur && !panelMenu.clicOptions &&!panelMenu.select_credits) {
             panelMenu.select_options = false;
             panelMenu.select_quitter = false;
             panelMenu.select_credits = false;
@@ -52,7 +52,7 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Options(MouseEvent e){
-        if (panelMenu.estConfigPartie) {
+        if (panelMenu.estConfigPartie || panelMenu.clicCredits) {
             return false;
         }
         int startx = panelMenu.posX_boutons;
@@ -69,7 +69,7 @@ public class PanelMenuListener implements MouseListener  {
     }
 
     public boolean estCurseurSurBouton_Credits(MouseEvent e){
-        if (panelMenu.estConfigPartie) {
+        if (panelMenu.estConfigPartie || panelMenu.clicCredits) {
             return false;
         }
         int largeur = panelMenu.posX_boutons + panelMenu.largeur_bouton;
@@ -79,19 +79,36 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.select_options = false;
             panelMenu.select_quitter = false;
             panelMenu.select_credits = true;
+            System.out.println("credits");
             return true;
         }
         panelMenu.select_credits = false;
         return false;
     }
 
+    public boolean estCurseurSurBouton_QuitterCredits(MouseEvent e){
+        if (panelMenu.estConfigPartie || panelMenu.clicOptions) {
+            System.out.println("false");
+            return false;
+        }
+        int largeur = panelMenu.posX_quitter_credits + panelMenu.largeur_quitter_credits;
+        int hauteur = panelMenu.posY_quitter_credits + panelMenu.largeur_quitter_credits;
+        if(e.getX() >= panelMenu.posX_quitter_credits && e.getX() <= largeur && e.getY() >= panelMenu.posY_quitter_credits && e.getY() <= hauteur) {
+            panelMenu.select_quitter_credits = true;
+            System.out.println("quitter credits");
+            return true;
+        }
+        panelMenu.select_quitter_credits = false;
+        return false;
+    }
+
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
-        if (panelMenu.estConfigPartie) {
+        if (panelMenu.estConfigPartie || panelMenu.clicCredits) {
             return false;
         }
         int startx = panelMenu.posX_boutons;
         int starty = panelMenu.posY_Quitter;
-        if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions) {
+        if(e.getX() >= startx && e.getX() <= startx+ panelMenu.largeur_bouton && e.getY() >= starty && e.getY() <= starty+ panelMenu.hauteur_bouton && !panelMenu.clicOptions &&!panelMenu.select_credits) {
             panelMenu.select_options = false;
             panelMenu.select_jouer = false;
             panelMenu.select_credits = false;
@@ -328,6 +345,10 @@ public class PanelMenuListener implements MouseListener  {
         if(estCurseurSurBouton_Quitter(e)){
             panelMenu.playSons(0);
             System.exit(0);
+        }
+        if(estCurseurSurBouton_QuitterCredits(e)){
+            panelMenu.clicCredits = !panelMenu.clicCredits;
+            panelMenu.playSons(0);
         }
         // Options cochables
         if(estCurseurSurBoutonPleinEcran(e)){
@@ -614,7 +635,7 @@ public class PanelMenuListener implements MouseListener  {
         @Override
         public void mouseMoved(MouseEvent e) {
             if (estCurseurSurBouton_Jouer(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Credits(e)||estCurseurSurBouton_Quitter(e)||
-                    estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
+                    estCurseurSurBouton_QuitterCredits(e)||estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
                     estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)
                     ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)
                     ||estCurseurSurBoutonMoins1(e) || estCurseurSurBoutonMoins2(e) || estCurseurSurBoutonMoins3(e) || estCurseurSurBoutonMoins4(e) || estCurseurSurBoutonValiderConfig(e)) {
