@@ -148,7 +148,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         public boolean estSurTuto(MouseEvent e) {
             int largeur = posX_tuto + largeur_bouton;
             int hauteur = posY_tuto + hauteur_bouton;
-            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur){
+            if(e.getX() >= posX_tuto && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur){
                 fenetreJeu.panelPlateau.estSurBouton = true;
                 return true;
             }
