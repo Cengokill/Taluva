@@ -37,7 +37,7 @@ public class Jeu extends Observable implements Serializable{
 
     public boolean aPiocher,iaReflechit;
     public Historique historique;
-    public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques\\Back_On_The_Path.wav");
+    public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques/Back_On_The_Path.wav");
     public transient ArrayList<ArrayList<MusicPlayer>> sonPlayer = new ArrayList<>();
     private AudioInputStream audioInputStream;
     private Tuile tuile_courante;

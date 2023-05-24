@@ -314,7 +314,7 @@ public class PanelMenu extends JPanel {
         limiterNombreCaractereNomJoueur();
 
         //musique
-        musicPlayer = new MusicPlayer("Musiques\\Merchants_of_Novigrad.wav");
+        musicPlayer = new MusicPlayer("Musiques/Merchants_of_Novigrad.wav");
         musicPlayer.setVolume(-50.0f);
         musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
