@@ -30,7 +30,7 @@ public class IAIntelligente extends AbstractIA implements Serializable {
 
     public IAIntelligente(byte n, int profondeur) {
         super(IA, n, "IA"+n);
-        this.profondeur = 2;
+        this.profondeur = 0;
         poids_temple = 1000;
         poids_tour = 100;
         poids_hutte = 1;

@@ -53,7 +53,7 @@ public class FenetreJeu extends Container {
     public boolean select_gauche1,select_gauche2,select_droit1,select_droit2,select_PleinEcran,
             select_Daltonien,select_Extension, estPleinEcran,Daltonien,Extension, select_valider,select_annuler2;
     public static BufferedImage fenetre_score_courante,options_background,bouton_droit,bouton_gauche,btn_valider, btn_annuler,coche_non,coche_oui,bouton_droit_hover,bouton_gauche_hover,btn_valider_hover, btn_annuler_hover,coche_non_hover,coche_oui_hover
-            ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension,Image_save;
+            ,ecriture_Sons,ecriture_Musiques,ecriture_PleinEcran,ecriture_Daltonien,ecriture_Extension, image_save;
     public static int indice_chrono, indice_tuilePiochee;
     public static String tempsFixe;
     static BufferedImage hutte_j0 = null;
@@ -217,7 +217,7 @@ public class FenetreJeu extends Container {
                 afficheFenetreScore(g2d);
                 afficheJoueurCourant(g2d);
                 afficheTimer(g2d);
-                afficheBoutonTuto(g);
+                //afficheBoutonTuto(g);
                 afficheMessageErreur(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
@@ -401,32 +401,30 @@ public class FenetreJeu extends Container {
                 posY_temps_partie = (int) (posY_cadre + hauteur_fin_partie*0.710);
 
                 //menu d'options
-
-                largeur_boutonSave=(int)(largeur_joueur_courant*1.7);
-                hauteur_boutonSave=(int)(largeur_joueur_courant*0.4);
+                largeur_boutonSave = (int)(largeur_joueur_courant*1.7);
+                hauteur_boutonSave = (int)(largeur_joueur_courant*0.4);
                 largeur_optionSave = (int)(largeur_joueur_courant*2.5);
                 hauteur_optionSave = (int)(largeur_joueur_courant*2.5);
-                posX_optionSave= (largeur/2 - largeur_optionSave/2);;
-                posY_optionSave= (hauteur/2 - hauteur_optionSave/2);
-                posX_optionSaveBouton=(int)(posX_optionSave*1.4) ;
-                posY_optionSaveBouton=(int)(posY_optionSave*30);
-                decalageY_save= (int) (hauteur_boutonSave);
+                posX_optionSave = (largeur/2 - largeur_optionSave/2);;
+                posY_optionSave = (hauteur/2 - hauteur_optionSave/2);
+                posX_optionSaveBouton = (int) (posX_optionSave + largeur_optionSave/2 - largeur_boutonSave/2);
+                posY_optionSaveBouton = (int)(posY_optionSave + hauteur_optionSave*0.15);
+                decalageY_save = (int) (hauteur_boutonSave*1.1);
 
                 texte_saveXvide=(int)(posX_optionSaveBouton+hauteur_boutonSave*1.85) ;
                 texte_saveX=(int)(posX_optionSaveBouton+hauteur_boutonSave/10);
                 texte_savey=(int)(posY_optionSaveBouton+hauteur_boutonSave/2);
-
 
                 largeur_menu_options = (int) Math.min(Math.max(Math.min(largeur*0.8, hauteur*0.8), 400), 800);
                 hauteur_menu_options = largeur_menu_options;
                 posX_menu_options = (largeur - largeur_menu_options)/2;
                 posY_menu_options = (hauteur - hauteur_menu_options)/2;
 
-                posY_btnAnnulerSave= posX_menu_options *2;
-                posX_btnAnnulerSave= posY_menu_options *2;
+                posX_btnAnnulerSave = posX_optionSave + largeur_optionSave - largeur_bouton*2;
+                posY_btnAnnulerSave = (int) (posY_optionSave + hauteur_optionSave - largeur_bouton*1.2);
 
                 //message d'erreur
-                posX_messageErreur = (int) (largeur * 0.5 - largeur_bouton);
+                posX_messageErreur = (int) (largeur/2 - largeur_bouton/2);
                 posY_messageErreur = (int) (hauteur*0.8);
                 hauteurMessageErreur = (int) (hauteur*0.05);
                 largeurMessageErreur = (int) (largeur*0.21);
@@ -499,7 +497,8 @@ public class FenetreJeu extends Container {
     }
 
     private void afficheMessageErreur(Graphics g) {
-        Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
+        Font font = customFont.deriveFont(Font.BOLD,(int) (hauteurMessageErreur*0.6));
+        //Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
         g.setFont(font);
         g.setColor(Color.WHITE);
         String message=null;
@@ -534,7 +533,8 @@ public class FenetreJeu extends Container {
     public static void afficheTimer(Graphics g) {
         if(jeu.getTimerActif() && jeu.getJoueurCourantClasse().getTypeJoueur()==Joueur.IA) {
             g.drawImage(timer, posX_timer, posY_timer, largeur_timer, hauteur_timer, null);
-            Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            //Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+            Font font = customFont.deriveFont(Font.BOLD,29);
             g.setFont(font);
             g.setColor(Color.WHITE);
             double tempsEcoule = System.currentTimeMillis() - jeu.getJoueurCourant().getTempsTemp();
@@ -646,7 +646,8 @@ public class FenetreJeu extends Container {
         }
         g.drawImage(fenetre_score_courante, posX_fenetre_score, posY_fenetre_score, largeur_fenetre_score, hauteur_fenetre_score, null);
         //prénom des joueurs 0 et 1
-        Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        //Font font = new Font("Bookman Old Style", Font.BOLD, 29);
+        Font font = customFont.deriveFont(Font.BOLD,29);
         g.setFont(font);
 
         String joueur_0 = jeu.getJoueurs()[0].getPrenom();
@@ -662,7 +663,8 @@ public class FenetreJeu extends Container {
         g.drawString(joueur_1, posX_prenom, posY_prenom_j1);
 
         //nombre de huttes, tours, temples des joueurs 0 et 1
-        font = new Font("Bookman Old Style", Font.BOLD, 20);
+        //font = new Font("Bookman Old Style", Font.BOLD, 20);
+        font = customFont.deriveFont(Font.BOLD,20);
         g.setFont(font);
         g.setColor(Color.WHITE);
         g.drawImage(hutte_j0, posX_huttes_score, posY_huttes_score_j0, largeur_hutte_score, largeur_hutte_score, null);
@@ -686,7 +688,8 @@ public class FenetreJeu extends Container {
 
         if(jeu.getNbJoueurs()>=3){
             //prénom du joueur 2
-            font = new Font("Bookman Old Style", Font.BOLD, 29);
+            //font = new Font("Bookman Old Style", Font.BOLD, 29);
+            font = customFont.deriveFont(Font.BOLD,29);
             g.setFont(font);
             String joueur_2 = jeu.getJoueurs()[2].getPrenom();
             Color couleur_2 = jeu.getJoueurs()[2].getCouleur();
@@ -694,7 +697,8 @@ public class FenetreJeu extends Container {
             else g.setColor(couleur_2);
             g.drawString(joueur_2, posX_prenom, posY_prenom_j2);
             //nombre de huttes, tours, temples du joueur 2
-            font = new Font("Bookman Old Style", Font.BOLD, 20);
+            //font = new Font("Bookman Old Style", Font.BOLD, 20);
+            font = customFont.deriveFont(Font.BOLD,20);
             g.setFont(font);
             g.setColor(Color.WHITE);
             g.drawImage(hutte_j2, posX_huttes_score, posY_huttes_score_j2, largeur_hutte_score, largeur_hutte_score, null);
@@ -709,7 +713,8 @@ public class FenetreJeu extends Container {
         }
         if(jeu.getNbJoueurs()==4){
             //prénom du joueur 3
-            font = new Font("Bookman Old Style", Font.BOLD, 29);
+            //font = new Font("Bookman Old Style", Font.BOLD, 29);
+            font = customFont.deriveFont(Font.BOLD,29);
             g.setFont(font);
             String joueur_3 = jeu.getJoueurs()[3].getPrenom();
             Color couleur_3 = jeu.getJoueurs()[3].getCouleur();
@@ -717,7 +722,8 @@ public class FenetreJeu extends Container {
             else g.setColor(couleur_3);
             g.drawString(joueur_3, posX_prenom, posY_prenom_j3);
             //nombre de huttes, tours, temples du joueur 3
-            font = new Font("Bookman Old Style", Font.BOLD, 20);
+            //font = new Font("Bookman Old Style", Font.BOLD, 20);
+            font = customFont.deriveFont(Font.BOLD,20);
             g.setFont(font);
             g.setColor(Color.WHITE);
             g.drawImage(hutte_j3, posX_huttes_score, posY_huttes_score_j3, largeur_hutte_score, largeur_hutte_score, null);
@@ -731,7 +737,8 @@ public class FenetreJeu extends Container {
             g.drawString(temples_j3, posX_temples, posY_scores_j3);
         }
         //pioche
-        font = new Font("Bookman Old Style", Font.BOLD, 28);
+        //font = new Font("Bookman Old Style", Font.BOLD, 28);
+        font = customFont.deriveFont(Font.BOLD,28);
         g.setFont(font);
         g.setColor(Color.BLACK);
         String nb_tuiles_pioche = Integer.toString(jeu.pioche.size());
@@ -783,7 +790,8 @@ public class FenetreJeu extends Container {
                 joueurs_tries.add(joueurs_copie.get(0));
             }
             g.drawImage(finPartie, posX_finPartie, posY_finPartie, largeur_fin_partie, hauteur_fin_partie, null);
-            Font font = new Font("Bookman Old Style", Font.BOLD, taille_texte_finPartie);
+            //Font font = new Font("Bookman Old Style", Font.BOLD, taille_texte_finPartie);
+            Font font = customFont.deriveFont(Font.BOLD,taille_texte_finPartie);
             g.setFont(font);
             g.setColor(Color.BLACK);
             for(int i=0; i<joueurs_tries.size(); i++){
@@ -963,13 +971,17 @@ public class FenetreJeu extends Container {
     public static void charger(int sauvegarde) {
         try {
 
-            FileInputStream fichier = new FileInputStream(DOSSIER + File.separator + sauvegardes[sauvegarde]);
-            ObjectInputStream in = new ObjectInputStream(fichier);
-            Jeu jeu1 = (Jeu) in.readObject();
-            jeu.setJeu(jeu1);
-            in.close();
-            fichier.close();
-
+            if(sauvegarde>=sauvegardes.length){
+                return;
+            }
+            else {
+                FileInputStream fichier = new FileInputStream(DOSSIER + File.separator + sauvegardes[sauvegarde]);
+                ObjectInputStream in = new ObjectInputStream(fichier);
+                Jeu jeu1 = (Jeu) in.readObject();
+                jeu.setJeu(jeu1);
+                in.close();
+                fichier.close();
+            }
         } catch (Exception e) {
             throw new RuntimeException("Impossible de charger cette sauvegarde.\n" + e);
         }
@@ -987,35 +999,29 @@ public class FenetreJeu extends Container {
         afficheChoix(g);
     }
     public void afficheSave(Graphics g){
-        g.drawImage(options_background, posX_optionSave,posY_optionSave , largeur_optionSave,hauteur_optionSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*1,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*2,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*3,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(btn_annuler,(int)(posX_optionSaveBouton*2.2),(int)(posY_optionSaveBouton+decalageY_save*3.2),largeur_bouton,largeur_bouton,null);
-
-
+        g.drawImage(menu_sauvegarde_chargement, posX_optionSave,posY_optionSave , largeur_optionSave,hauteur_optionSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*1,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*2,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*3,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(btn_annuler,posX_btnAnnulerSave,posY_btnAnnulerSave,largeur_bouton,largeur_bouton,null);
+        g.setColor(Color.BLACK);
         for(int i=0 ; i<sauvegardes.length;i++) {
             g.drawString(FenetreJeu.sauvegardes[i],texte_saveX,texte_savey+i*decalageY_save);
         }
         for(int j=sauvegardes.length ;j<4;j++){
             g.drawString("VIDE",texte_saveXvide,texte_savey+j*decalageY_save);
         }
-
-
-
     }
 
     public void afficheLoad(Graphics g){
-
-        g.drawImage(options_background, posX_optionSave,posY_optionSave , largeur_optionSave,hauteur_optionSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*1,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*2,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(Image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*3,largeur_boutonSave,hauteur_boutonSave,null);
-        g.drawImage(btn_annuler,(int)(posX_optionSaveBouton*2.2),(int)(posY_optionSaveBouton+decalageY_save*3.2),largeur_bouton,largeur_bouton,null);
-
-
+        g.drawImage(menu_sauvegarde_chargement, posX_optionSave,posY_optionSave , largeur_optionSave,hauteur_optionSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*1,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*2,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(image_save,posX_optionSaveBouton,posY_optionSaveBouton+decalageY_save*3,largeur_boutonSave,hauteur_boutonSave,null);
+        g.drawImage(btn_annuler,posX_btnAnnulerSave,posY_btnAnnulerSave,largeur_bouton,largeur_bouton,null);
+        g.setColor(Color.BLACK);
         for(int i=0 ; i<sauvegardes.length;i++){
             g.drawString(FenetreJeu.sauvegardes[i],texte_saveX,texte_savey+i*decalageY_save);
         }
@@ -1122,7 +1128,7 @@ public class FenetreJeu extends Container {
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
-        Image_save=lisImageBuf("bouton_image_save");
+        image_save =lisImageBuf("bouton_image_save");
         bouton_droit = lisImage("/Options/boutons/btn_droit");
         bouton_gauche = lisImage("/Options/boutons/btn_gauche");
         btn_valider = lisImage("/Options/boutons/btn_valider");

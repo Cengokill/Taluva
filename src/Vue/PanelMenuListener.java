@@ -79,10 +79,23 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.select_options = false;
             panelMenu.select_quitter = false;
             panelMenu.select_credits = true;
-            System.out.println("credits");
             return true;
         }
         panelMenu.select_credits = false;
+        return false;
+    }
+
+    public boolean estCurseurSurBouton_QuitterCredits(MouseEvent e){
+        if (panelMenu.estConfigPartie || panelMenu.clicOptions) {
+            return false;
+        }
+        int largeur = panelMenu.posX_quitter_credits + panelMenu.largeur_quitter_credits;
+        int hauteur = panelMenu.posY_quitter_credits + panelMenu.largeur_quitter_credits;
+        if(e.getX() >= panelMenu.posX_quitter_credits && e.getX() <= largeur && e.getY() >= panelMenu.posY_quitter_credits && e.getY() <= hauteur) {
+            panelMenu.select_quitter_credits = true;
+            return true;
+        }
+        panelMenu.select_quitter_credits = false;
         return false;
     }
 
@@ -324,11 +337,17 @@ public class PanelMenuListener implements MouseListener  {
         }
         if(estCurseurSurBouton_Credits(e)){
             panelMenu.clicCredits = !panelMenu.clicCredits;
+            panelMenu.peutAnimerCredits = true;
             panelMenu.playSons(0);
         }
         if(estCurseurSurBouton_Quitter(e)){
             panelMenu.playSons(0);
             System.exit(0);
+        }
+        if(estCurseurSurBouton_QuitterCredits(e)){
+            panelMenu.clicCredits = !panelMenu.clicCredits;
+            panelMenu.peutAnimerCredits = false;
+            panelMenu.playSons(0);
         }
         // Options cochables
         if(estCurseurSurBoutonPleinEcran(e)){
@@ -615,7 +634,7 @@ public class PanelMenuListener implements MouseListener  {
         @Override
         public void mouseMoved(MouseEvent e) {
             if (estCurseurSurBouton_Jouer(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Credits(e)||estCurseurSurBouton_Quitter(e)||
-                    estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
+                    estCurseurSurBouton_QuitterCredits(e)||estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
                     estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)
                     ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)
                     ||estCurseurSurBoutonMoins1(e) || estCurseurSurBoutonMoins2(e) || estCurseurSurBoutonMoins3(e) || estCurseurSurBoutonMoins4(e) || estCurseurSurBoutonValiderConfig(e)) {

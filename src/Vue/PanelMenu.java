@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
+import static Vue.FenetreJeu.customFont;
 import static Vue.ImageLoader.*;
 
 public class PanelMenu extends JPanel {
@@ -27,24 +28,19 @@ public class PanelMenu extends JPanel {
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
     final BufferedImage[] sliders = new BufferedImage[6];
-    BufferedImage background, taluvaTitre, credits_background;
+    BufferedImage background, taluvaTitre, credits_background, credits1, credits2, credits3, credits4, credits5, credits6, credits7;
     BufferedImage bouton_Jouer, bouton_Jouer_select, bouton_Local_clic;
     BufferedImage bouton_Options, bouton_Options_select, bouton_Options_clic;
     BufferedImage bouton_Credits, bouton_Credits_select, bouton_Credits_clic;
     BufferedImage bouton_Quitter, bouton_Quitter_select, bouton_Quitter_clic;
     BufferedImage options_background;
-    BufferedImage bouton_droit;
-    BufferedImage bouton_gauche;
-    BufferedImage btn_valider;
-    BufferedImage btn_annuler;
-    BufferedImage coche_non;
-    BufferedImage coche_oui;
-    BufferedImage bouton_droit_hover;
-    BufferedImage bouton_gauche_hover;
-    BufferedImage btn_valider_hover;
-    BufferedImage btn_annuler_hover;
-    BufferedImage coche_non_hover;
-    BufferedImage coche_oui_hover;
+    BufferedImage bouton_droit, bouton_gauche;
+    BufferedImage btn_valider, btn_annuler;
+    BufferedImage fermer, fermer_select;
+    BufferedImage coche_non, coche_oui;
+    BufferedImage bouton_droit_hover, bouton_gauche_hover;
+    BufferedImage btn_valider_hover, btn_annuler_hover;
+    BufferedImage coche_non_hover, coche_oui_hover;
     BufferedImage ecriture_Sons;
     BufferedImage ecriture_Musiques;
     BufferedImage ecriture_PleinEcran;
@@ -58,7 +54,10 @@ public class PanelMenu extends JPanel {
     int largeur_background, hauteur_background;
     int largeur_bouton;
     int largeur_menu_options;
-    int hauteur_bouton, hauteur_menu_options;
+    int hauteur_bouton, hauteur_menu_options, largeur_credits1, hauteur_credits1;
+    int posX_credits1, posY_credits1, posX_credits2, posY_credits2, posX_credits3, posY_credits3, posX_credits4, posY_credits4, posX_credits5, posY_credits5,
+            posX_credits6, posY_credits6, posX_credits7, posY_credits7;
+    int posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits;
     int largeur_nuage1, hauteur_nuage1, posX_nuage1, posY_nuage1, largeur_nuage2, hauteur_nuage2, posX_nuage2, posY_nuage2, decalage_nuage1, decalage_nuage2;
     int largeur_taluvaTitre, hauteur_taluvaTitre, posX_taluvaTitre, posY_taluvaTitre;
     public static int index_sonPanel;
@@ -86,6 +85,7 @@ public class PanelMenu extends JPanel {
     boolean select_credits;
     boolean select_options;
     boolean select_quitter;
+    boolean select_quitter_credits;
     boolean clicOptions, clicCredits;
     boolean select_gauche1;
     boolean select_gauche2;
@@ -100,7 +100,7 @@ public class PanelMenu extends JPanel {
     boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
-    boolean peutAnimerNuage = true;
+    boolean peutAnimerNuage = true, peutAnimerCredits = false;
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
     public static boolean estEnChargement = false, aAfficheChargement = false;
     static boolean estConfigPartie = false;
@@ -122,6 +122,7 @@ public class PanelMenu extends JPanel {
     double rapport_nuage1 = 400.0/1100.0;
     double rapport_nuage2 = 400.0/1200.0;
     double rapport_taluvaTitre = 500.0/900.0;
+    double rapport_credits1 = 196.0/772.0;
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
@@ -129,6 +130,13 @@ public class PanelMenu extends JPanel {
         nuage2 = lisImage("nuage2");
         taluvaTitre = lisImage("taluva_titre");
         background = lisImage("taluva_background");
+        credits1 = lisImage("credits1");
+        credits2 = lisImage("credits2");
+        credits3 = lisImage("credits3");
+        credits4 = lisImage("credits4");
+        credits5 = lisImage("credits5");
+        credits6 = lisImage("credits6");
+        credits7 = lisImage("credits7");
         credits_background = lisImage("credits_background");
         bouton_Jouer = lisImage("jouer");
         bouton_Jouer_select = lisImage("jouer_select");
@@ -143,9 +151,12 @@ public class PanelMenu extends JPanel {
         bouton_Quitter_select = lisImage("quitter_select");
         bouton_Quitter_clic = lisImage("quitter_clic");
         options_background = lisImage("/Options/Options_background");
+
         for(int i=0; i < sliders.length;i++){
             sliders[i] = lisImage("/Options/Sliders/slider_"+i);
         }
+        fermer = lisImage("fermer");
+        fermer_select = lisImage("fermer_select");
         bouton_droit = lisImage("/Options/boutons/btn_droit");
         bouton_gauche = lisImage("/Options/boutons/btn_gauche");
         btn_valider = lisImage("/Options/boutons/btn_valider");
@@ -220,35 +231,41 @@ public class PanelMenu extends JPanel {
 
         listeChrono.setVisible(true);
         listeChrono.setBackground(Color.WHITE);
-        listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        Font font = customFont.deriveFont(Font.BOLD,20);
+        listeChrono.setFont(font);
         layeredPane.add(listeChrono, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte1.setVisible(false);
         listeDifficulte1.setBackground(Color.WHITE);
-        listeDifficulte1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte1.setFont(font);
         layeredPane.add(listeDifficulte1, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte2.setVisible(false);
         listeDifficulte2.setBackground(Color.WHITE);
-        listeDifficulte2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte2.setFont(font);
         layeredPane.add(listeDifficulte2, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte3.setVisible(false);
         listeDifficulte3.setBackground(Color.WHITE);
-        listeDifficulte3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte3.setFont(font);
         layeredPane.add(listeDifficulte3, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         listeDifficulte4.setVisible(false);
         listeDifficulte4.setBackground(Color.WHITE);
-        listeDifficulte4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //listeDifficulte4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        listeDifficulte4.setFont(font);
         layeredPane.add(listeDifficulte4, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
@@ -256,14 +273,16 @@ public class PanelMenu extends JPanel {
         nomJoueur1 = new JTextField(15);
         nomJoueur1.setVisible(true);
         nomJoueur1.setBackground(Color.WHITE);
-        nomJoueur1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur1.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur1.setFont(font);
         layeredPane.add(nomJoueur1, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         nomJoueur2 = new JTextField(15);
         nomJoueur2.setVisible(true);
-        nomJoueur2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur2.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur2.setFont(font);
         nomJoueur2.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur2, JLayeredPane.POPUP_LAYER);
         revalidate();
@@ -271,14 +290,16 @@ public class PanelMenu extends JPanel {
 
         nomJoueur3 = new JTextField(15);
         nomJoueur3.setVisible(true);
-        nomJoueur3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur3.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur3.setFont(font);
         nomJoueur3.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur3, JLayeredPane.POPUP_LAYER);
         revalidate();
         metAJour();
 
         nomJoueur4 = new JTextField(15);
-        nomJoueur4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //nomJoueur4.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        nomJoueur4.setFont(font);
         nomJoueur4.setVisible(true);
         nomJoueur4.setBackground(Color.WHITE);
         layeredPane.add(nomJoueur4, JLayeredPane.POPUP_LAYER);
@@ -554,10 +575,6 @@ public class PanelMenu extends JPanel {
         afficheChoix(g);
     }
 
-    public void afficheCredits(Graphics g){
-        g.drawImage(credits_background, 0, 0, largeur, hauteur,null);
-    }
-
 
     public void paint(Graphics g) {
         super.paintComponent(g);
@@ -747,6 +764,29 @@ public class PanelMenu extends JPanel {
         largeur_nuage2 = (int) (largeur_background*0.25);
         hauteur_nuage2 = (int) (largeur_nuage2 *rapport_nuage2);
         posY_nuage2 = (int) (posY_background + hauteur_background*0.02);
+        //menu crédits
+        largeur_quitter_credits = (int) (largeur_background*0.06);
+        posX_quitter_credits = (int) (posX_background + largeur_background/2 - largeur_quitter_credits/2);
+        posY_quitter_credits = (int) (posY_background + hauteur_background*0.95 - largeur_quitter_credits);
+        largeur_credits1 = (int) (largeur_background*0.35);
+        hauteur_credits1 = (int) (largeur_credits1*rapport_credits1);
+        posY_credits1 = (int) (posY_background);
+        posY_credits2 = (int) (posY_credits1 + hauteur_credits1*0.85);
+        posY_credits3 = (int) (posY_credits2 + hauteur_credits1*0.85);
+        posY_credits4 = (int) (posY_credits3 + hauteur_credits1*0.85);
+        posY_credits5 = (int) (posY_credits4 + hauteur_credits1*0.85);
+        posY_credits6 = (int) (posY_credits5 + hauteur_credits1*0.85);
+        posY_credits7 = (int) (posY_credits6 + hauteur_credits1*0.85);
+        if(peutAnimerCredits && clicCredits){
+            posX_credits1 = (int) (posX_background + largeur_background* 0.02);
+            posX_credits2 = (int) (posX_background + largeur_background - largeur_credits1);
+            posX_credits3 = (int) (posX_background + largeur_background* 0.01);
+            posX_credits4 = (int) (posX_background + largeur_background - largeur_credits1);
+            posX_credits5 = (int) (posX_background + largeur_background* 0.02);
+            posX_credits6 = (int) (posX_background + largeur_background - largeur_credits1);
+            posX_credits7 = (int) (posX_background + largeur_background* 0.01);
+            peutAnimerCredits = false;
+        }
         //boutons menu principal du jeu
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
@@ -786,7 +826,8 @@ public class PanelMenu extends JPanel {
     }
 
     private void afficheMessageErreur(Graphics g) {
-        Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        //Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        Font font = customFont.deriveFont(Font.BOLD,25);
         g.setFont(font);
         g.setColor(Color.WHITE);
         String message = null;
@@ -811,16 +852,43 @@ public class PanelMenu extends JPanel {
         g.drawImage(taluvaTitre, posX_taluvaTitre, posY_taluvaTitre, largeur_taluvaTitre, hauteur_taluvaTitre, null);
     }
 
+    private void afficheCredits(Graphics g) {
+        g.drawImage(credits_background, 0, 0, largeur, hauteur, null);
+        g.drawImage(credits1, posX_credits1, posY_credits1, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits2, posX_credits2, posY_credits2, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits3, posX_credits3, posY_credits3, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits4, posX_credits4, posY_credits4, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits5, posX_credits5, posY_credits5, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits6, posX_credits6, posY_credits6, largeur_credits1, hauteur_credits1, null);
+        g.drawImage(credits7, posX_credits7, posY_credits7, largeur_credits1, hauteur_credits1, null);
+        if(select_quitter_credits)
+            g.drawImage(fermer_select, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+        else
+            g.drawImage(fermer, posX_quitter_credits, posY_quitter_credits, largeur_quitter_credits, largeur_quitter_credits, null);
+    }
+
     public void boucle(){
         Timer timer = new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
-                int decalage = largeur_background/1000;
+                int decalage = Math.min(1,largeur_background/1000);
                 decalage_nuage1 = (decalage_nuage1+decalage);
                 decalage_nuage2 = (decalage_nuage2+decalage);
                 posX_nuage2 = (posX_background+decalage_nuage2)%largeur_background;
                 posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
+                //crédits
+                if(clicCredits){
+                    decalage = Math.min(1,largeur_background/1000);
+                    posX_credits1 = (posX_credits1+decalage)%largeur_background;
+                    posX_credits2 = (posX_credits2-decalage)%largeur_background;
+                    posX_credits3 = (posX_credits3+decalage)%largeur_background;
+                    posX_credits4 = (posX_credits4-decalage)%largeur_background;
+                    posX_credits5 = (posX_credits5+decalage)%largeur_background;
+                    posX_credits6 = (posX_credits6-decalage)%largeur_background;
+                    posX_credits7 = (posX_credits7+decalage)%largeur_background;
+                }
+
             }
         });
         timer.start();
@@ -861,7 +929,7 @@ public class PanelMenu extends JPanel {
                 index_sonPanel =in2.readInt();
                 index_musiquePanel =in2.readInt();
                 estPleinEcran=in2.readBoolean();
-                System.out.println(estPleinEcran);
+                //System.out.println(estPleinEcran);
                 //estPleinEcran=in2.readBoolean();
                 in2.close();
                 file2.close();

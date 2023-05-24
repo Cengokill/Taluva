@@ -75,12 +75,11 @@ public class Jeu extends Observable implements Serializable{
     }
 
     public void initPartie(String nomJoueur0, String nomJoueur1, String nomJoueur2, String nomJoueur3, int nbJoueurs, String tempsChrono, ArrayList<String> difficultes) throws CloneNotSupportedException {
-        //jCourant = (byte) new Random().nextInt(nb_joueurs-1);
         if(nomJoueur0.isBlank()) nomJoueur0 = "Joueur 1";
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
         if(nomJoueur2.isBlank()) nomJoueur2 = "Joueur 3";
         if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
-        jCourant = 1;
+        jCourant = (byte) new Random().nextInt(nb_joueurs-1);
         nb_joueurs = nbJoueurs;
         int nbIA = 0;
 
@@ -658,7 +657,7 @@ public class Jeu extends Observable implements Serializable{
         if(debug) plateau.affiche();
         tuile_courante = pioche.get(0);
         pioche.remove(0);
-        if(AFFICHAGE) //System.out.println("Tuiles dans la pioche : " + pioche.size());
+        if(AFFICHAGE) System.out.println("Tuiles dans la pioche : " + pioche.size());
         if(type_jeu==GRAPHIQUE) {
             estPiochee = false;
             aPiocher = true;
@@ -831,19 +830,21 @@ public class Jeu extends Observable implements Serializable{
         this.nb_joueurs=jeu.nb_joueurs;
         this.delai=jeu.delai;
         this.debug=jeu.debug;
+        this.tuile_courante=jeu.tuile_courante;
+        this.doit_placer_tuile=jeu.doit_placer_tuile;
+        this.doit_placer_batiment=jeu.doit_placer_batiment;
         this.plateau=jeu.plateau;
         //plateau.copiePlateau(jeu.plateau.getCarte());
-        this.tuile_courante=jeu.tuile_courante;
         this.jCourant=jeu.jCourant;
         this.jVainqueur=jeu.jVainqueur;
         this.p=jeu.p;
         this.tuileAPoser=jeu.tuileAPoser;
-        this.doit_placer_tuile=jeu.doit_placer_tuile;
-        this.doit_placer_batiment=jeu.doit_placer_batiment;
+
         this.estPartieFinie= jeu.estFinPartie();
         this.IApeutjouer=jeu.IApeutjouer;
         this.unefoisIA=jeu.unefoisIA;
         this.pioche=jeu.pioche;
         this.doitCalculerEmplacementPossible=true;
+        metAJour();
     }
 }

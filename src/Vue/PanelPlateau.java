@@ -674,37 +674,37 @@ public class PanelPlateau extends JPanel {
             BufferedImage tile3 = null;
 
             if (scrollValue == 1) {
-                g.drawImage(ombre_0, x-tileWidth/2-40, y-verticalOffset/2-50,x/12,y/12, null);
+                g.drawImage(ombre_0, x-tileWidth/2-40, y-verticalOffset/2-50, (int) (tileWidth*2.2),(int) (tileHeight*2.2),null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(),false);
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum(),false);
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum(),false);
             }
             else if (scrollValue == 2){
-                g.drawImage(ombre_1, x-tileWidth/2+175, y-verticalOffset/2-50,x/12,y/12, null);
+                g.drawImage(ombre_1, x-tileWidth/2+175, y-verticalOffset/2-50,(int) (tileWidth*2.2),(int) (tileHeight*2.2), null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(),false);
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i - 1][j2 + 1].getNum(),false);
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j + 1].getNum(),false);
             }
             else if (scrollValue == 3){
-                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+265,x/12,y/12, null);
+                g.drawImage(ombre_0, x-tileWidth/2+185, y-verticalOffset/2+265,(int) (tileWidth*2.2),(int) (tileHeight*2.2), null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j + 1].getNum(), false);
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum(), false);
             }
             else if (scrollValue == 4){
-                g.drawImage(ombre_1, x-tileWidth/2-50, y-verticalOffset/2+300,x/12,y/12, null);
+                g.drawImage(ombre_1, x-tileWidth/2-50, y-verticalOffset/2+300,(int) (tileWidth*2.2),(int) (tileHeight*2.2), null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2 + 1].getNum(), false);
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum(), false);
             }
             else if (scrollValue == 5){
-                g.drawImage(ombre_0, x-tileWidth/2-265, y-verticalOffset/2+260,x/12,y/12, null);
+                g.drawImage(ombre_0, x-tileWidth/2-265, y-verticalOffset/2+260,(int) (tileWidth*2.2),(int) (tileHeight*2.2), null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i + 1][j2].getNum(), false);
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i][j - 1].getNum(), false);
             }
             else if (scrollValue == 6){
-                g.drawImage(ombre_1, x-tileWidth/2-270, y-verticalOffset/2-50,x/12,y/12, null);
+                g.drawImage(ombre_1, x-tileWidth/2-270, y-verticalOffset/2-50,(int) (tileWidth*2.2),(int) (tileHeight*2.2), null);
                 tile1 = getTileImageFromId(tuileAPoser[0][0], jeu.getPlateau().getCarte()[i][j].getNum(), false);
                 tile2 = getTileImageFromId(tuileAPoser[1][0], jeu.getPlateau().getCarte()[i][j - 1].getNum(), false);
                 tile3 = getTileImageFromId(tuileAPoser[2][0], jeu.getPlateau().getCarte()[i - 1][j2].getNum(), false);
