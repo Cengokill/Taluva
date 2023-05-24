@@ -79,7 +79,6 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.select_options = false;
             panelMenu.select_quitter = false;
             panelMenu.select_credits = true;
-            System.out.println("credits");
             return true;
         }
         panelMenu.select_credits = false;
@@ -88,14 +87,12 @@ public class PanelMenuListener implements MouseListener  {
 
     public boolean estCurseurSurBouton_QuitterCredits(MouseEvent e){
         if (panelMenu.estConfigPartie || panelMenu.clicOptions) {
-            System.out.println("false");
             return false;
         }
         int largeur = panelMenu.posX_quitter_credits + panelMenu.largeur_quitter_credits;
         int hauteur = panelMenu.posY_quitter_credits + panelMenu.largeur_quitter_credits;
         if(e.getX() >= panelMenu.posX_quitter_credits && e.getX() <= largeur && e.getY() >= panelMenu.posY_quitter_credits && e.getY() <= hauteur) {
             panelMenu.select_quitter_credits = true;
-            System.out.println("quitter credits");
             return true;
         }
         panelMenu.select_quitter_credits = false;

@@ -217,7 +217,7 @@ public class FenetreJeu extends Container {
                 afficheFenetreScore(g2d);
                 afficheJoueurCourant(g2d);
                 afficheTimer(g2d);
-                afficheBoutonTuto(g);
+                //afficheBoutonTuto(g);
                 afficheMessageErreur(g2d);
                 afficheBoutonAnnuler(g2d);
                 afficheBoutonRefaire(g2d);
