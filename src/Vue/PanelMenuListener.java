@@ -177,7 +177,7 @@ public class PanelMenuListener implements MouseListener  {
         panelMenu.select_PleinEcran = false;
         return false;
     }
-
+    /*
     public boolean estCurseurSurBoutonDaltonien(MouseEvent e){
         int startx = panelMenu.posX_coches;
         int starty = panelMenu.posY_coche2;
@@ -203,7 +203,7 @@ public class PanelMenuListener implements MouseListener  {
         panelMenu.select_Extension = false;
         return false;
     }
-
+*/
     public boolean estCurseurSurBoutonAnnuler(MouseEvent e){
         int startx = panelMenu.posX_btnAnnuler;
         int starty = panelMenu.posY_btnChoix;
@@ -354,11 +354,11 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.playSons(0);
             panelMenu.estPleinEcran = !panelMenu.estPleinEcran;
         }
-        if(estCurseurSurBoutonDaltonien(e)){
+        /*if(estCurseurSurBoutonDaltonien(e)){
             panelMenu.playSons(0);
             panelMenu.Daltonien = !panelMenu.Daltonien;
         }
-        if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;
+        if(estCurseurSurBoutonExtension(e)) panelMenu.Extension = !panelMenu.Extension;*/
         // Options réglables
         if(estCurseurSurBoutonDroit_1(e) && !(panelMenu.index_sonPanel ==5)){
             panelMenu.playSons(0);
@@ -635,8 +635,7 @@ public class PanelMenuListener implements MouseListener  {
         public void mouseMoved(MouseEvent e) {
             if (estCurseurSurBouton_Jouer(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Credits(e)||estCurseurSurBouton_Quitter(e)||
                     estCurseurSurBouton_QuitterCredits(e)||estCurseurSurBoutonGauche_1(e)||estCurseurSurBoutonGauche_2(e)||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)||
-                    estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)||estCurseurSurBoutonAnnuler(e)
-                    ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)
+                    estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonAnnuler(e) ||estCurseurSurBoutonValider(e) || estCurseurSurBoutonFermer(e) || estCurseurSurBoutonAddJoueur(e)||estCurseurSurBoutonAddIA(e)
                     ||estCurseurSurBoutonMoins1(e) || estCurseurSurBoutonMoins2(e) || estCurseurSurBoutonMoins3(e) || estCurseurSurBoutonMoins4(e) || estCurseurSurBoutonValiderConfig(e)) {
                 if (!sonJoue) {
                     panelMenu.playSons(1);

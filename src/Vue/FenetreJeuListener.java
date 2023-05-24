@@ -146,9 +146,14 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
 
 
         public boolean estSurTuto(MouseEvent e) {
-            int largeur = posX_boutons + largeur_bouton;
+            int largeur = posX_tuto + largeur_bouton;
             int hauteur = posY_tuto + hauteur_bouton;
-            return e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur;
+            if(e.getX() >= posX_boutons && e.getX() <= largeur && e.getY() >= posY_tuto && e.getY() <= hauteur){
+                fenetreJeu.panelPlateau.estSurBouton = true;
+                return true;
+            }
+            fenetreJeu.panelPlateau.estSurBouton = false;
+            return false;
         }
 
         public boolean estSurAnnuler(MouseEvent e) {//ok
@@ -370,14 +375,14 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
                     fenetreJeu.playSons(0);
                     fenetreJeu.estPleinEcran = !fenetreJeu.estPleinEcran;
                 }
-                if(estCurseurSurBoutonDaltonien(e)){
+                /*if(estCurseurSurBoutonDaltonien(e)){
                     fenetreJeu.playSons(0);
                     fenetreJeu.Daltonien = !fenetreJeu.Daltonien;
                 }
                 if(estCurseurSurBoutonExtension(e)){
                     fenetreJeu.playSons(0);
                     fenetreJeu.Extension = !fenetreJeu.Extension;
-                }
+                }*/
                 // Options réglables
                 if(estCurseurSurBoutonDroit_1(e) && !(fenetreJeu.index_son==5)){
                     fenetreJeu.playSons(0);
@@ -411,7 +416,14 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }else{
                 if (estSurTuto(e)) {
                     fenetreJeu.playSons(0);
-                    tuto_on = !tuto_on;
+                    String filePath = "ressources/Tuto/regleTaluva.pdf";
+
+                    File file = new File(filePath);
+                    try {
+                        Desktop.getDesktop().open(file);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 if (estSurAnnuler(e)) {
                     fenetreJeu.playSons(0);
@@ -552,14 +564,9 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         @Override
         public void mouseMoved(MouseEvent e) {
             estSurScoreboard(e);
-
-
-
-
             if(estSurAnnuler(e) || estSurRefaire(e) || estSurTuto(e) || estSurRetour(e) || estSurQuitter(e) || estSurBoutonOptionsEchap(e) || estSurSauvegarder(e)
                     || estSurCharger(e) || estSurParametres(e) || estSurRetourFinPartie(e) || estCurseurSurBoutonGauche_1(e)|| estCurseurSurBoutonGauche_2(e)
-                    ||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonDaltonien(e)||estCurseurSurBoutonExtension(e)
-                    ||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
+                    ||estCurseurSurBoutonDroit_1(e)||estCurseurSurBoutonDroit_2(e)|| estCurseurSurBoutonPleinEcran(e)||estCurseurSurBoutonAnnuler(e)||estCurseurSurBoutonValider(e)) {
                 if (!sonJoue) {
                     fenetreJeu.playSons(1);
                     sonJoue = true;
@@ -681,7 +688,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         return false;
     }
 
-    public boolean estCurseurSurBoutonDaltonien(MouseEvent e){
+    /*public boolean estCurseurSurBoutonDaltonien(MouseEvent e){
         int startx = fenetreJeu.posX_coches;
         int starty = fenetreJeu.posY_coche2;
         if(e.getX() >= startx && e.getX() <= startx+ fenetreJeu.taille_btnParametre && e.getY() >= starty && e.getY() <= starty+ fenetreJeu.taille_btnParametre && fenetreJeu.afficheOptions) {
@@ -705,7 +712,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
         }
         fenetreJeu.select_Extension = false;
         return false;
-    }
+    }*/
 
     public boolean estCurseurSurBoutonAnnuler(MouseEvent e){
         int startx = fenetreJeu.posX_btnAnnuler;

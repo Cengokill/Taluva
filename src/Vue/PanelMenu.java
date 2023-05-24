@@ -527,7 +527,7 @@ public class PanelMenu extends JPanel {
             else g.drawImage(coche_non,posX_coches,posY_coche1,taille_btn,taille_btn,null);
         }
 
-        g.drawImage(ecriture_Daltonien,(int) (posX_coches-taille_pleinecran*1.2),posY_coche2,taille_pleinecran,(int)(taille_pleinecran/4.2),null);
+        /*g.drawImage(ecriture_Daltonien,(int) (posX_coches-taille_pleinecran*1.2),posY_coche2,taille_pleinecran,(int)(taille_pleinecran/4.2),null);
         if(Daltonien){
             if(select_Daltonien) g.drawImage(coche_oui_hover,posX_coches,posY_coche2,taille_btn,taille_btn,null);
             else g.drawImage(coche_oui,posX_coches,posY_coche2,taille_btn,taille_btn,null);
@@ -542,7 +542,7 @@ public class PanelMenu extends JPanel {
         }else{
             if(select_Extension) g.drawImage(coche_non_hover,posX_coches,posY_coche3,taille_btn,taille_btn,null);
             else g.drawImage(coche_non,posX_coches,posY_coche3,taille_btn,taille_btn,null);
-        }
+        }*/
     }
 
     private void afficheChoix(Graphics g){
