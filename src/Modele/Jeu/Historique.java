@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 public class Historique implements Serializable {
     LinkedList<Coup> passe;
-    LinkedList<Coup> futur;
+    public LinkedList<Coup> futur;
 
     LinkedList<Tuile> pioche = new LinkedList<>();
 

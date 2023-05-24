@@ -12,6 +12,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static Modele.Jeu.Jeu.annule;
 import static Modele.Jeu.Plateau.Hexagone.*;
 import static Vue.FenetreJeu.jeu;
 
@@ -645,6 +646,9 @@ public class Plateau implements Serializable, Cloneable {
         }
         if (coup.typePlacement != Coup.SELECTEUR_BATIMENT) {
             jeu.historique.getPasse().add(coup);
+        }
+        if (!annule) {
+            jeu.historique.futur.clear();
         }
     }
 

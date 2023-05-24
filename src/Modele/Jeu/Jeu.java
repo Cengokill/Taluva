@@ -80,7 +80,7 @@ public class Jeu extends Observable implements Serializable{
         if(nomJoueur1.isBlank()) nomJoueur1 = "Joueur 2";
         if(nomJoueur2.isBlank()) nomJoueur2 = "Joueur 3";
         if(nomJoueur3.isBlank()) nomJoueur3 = "Joueur 4";
-        jCourant = 1; // FAUT POUVOIR CHOISIR LE JOUEUR
+        jCourant = 0; // FAUT POUVOIR CHOISIR LE JOUEUR
         nb_joueurs = nbJoueurs;
         int nbIA = 0;
 
@@ -695,7 +695,7 @@ public class Jeu extends Observable implements Serializable{
 
 
         annule = true;
-        jCourant = 1;
+        jCourant = 0;
         for (Joueur joueur : joueurs) {
             joueur.reinitialiser();
         }
