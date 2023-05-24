@@ -314,7 +314,7 @@ public class PanelMenu extends JPanel {
         limiterNombreCaractereNomJoueur();
 
         //musique
-        musicPlayer = new MusicPlayer("Musiques\\Merchants_of_Novigrad.wav");
+        musicPlayer = new MusicPlayer("Musiques"+File.separator+"Merchants_of_Novigrad.wav");
         musicPlayer.setVolume(-50.0f);
         musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
@@ -346,11 +346,11 @@ public class PanelMenu extends JPanel {
     }
 
     public void initialiseSons(){
-        MusicPlayer clicBouton =new MusicPlayer("Musiques/clicBouton.wav");
+        MusicPlayer clicBouton =new MusicPlayer("Musiques"+File.separator+"clicBouton.wav");
         sonPlayer.add(clicBouton);
-        MusicPlayer selectionBouton =new MusicPlayer("Musiques/selectionBouton.wav");
+        MusicPlayer selectionBouton =new MusicPlayer("Musiques"+File.separator+"selectionBouton.wav");
         sonPlayer.add(selectionBouton);
-        MusicPlayer confirmerBouton =new MusicPlayer("Musiques/confirmerBouton.wav");
+        MusicPlayer confirmerBouton =new MusicPlayer("Musiques"+File.separator+"confirmerBouton.wav");
         sonPlayer.add(confirmerBouton);
     }
 
