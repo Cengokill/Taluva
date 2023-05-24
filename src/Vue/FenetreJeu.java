@@ -963,13 +963,17 @@ public class FenetreJeu extends Container {
     public static void charger(int sauvegarde) {
         try {
 
-            FileInputStream fichier = new FileInputStream(DOSSIER + File.separator + sauvegardes[sauvegarde]);
-            ObjectInputStream in = new ObjectInputStream(fichier);
-            Jeu jeu1 = (Jeu) in.readObject();
-            jeu.setJeu(jeu1);
-            in.close();
-            fichier.close();
-
+            if(sauvegarde>=sauvegardes.length){
+                return;
+            }
+            else {
+                FileInputStream fichier = new FileInputStream(DOSSIER + File.separator + sauvegardes[sauvegarde]);
+                ObjectInputStream in = new ObjectInputStream(fichier);
+                Jeu jeu1 = (Jeu) in.readObject();
+                jeu.setJeu(jeu1);
+                in.close();
+                fichier.close();
+            }
         } catch (Exception e) {
             throw new RuntimeException("Impossible de charger cette sauvegarde.\n" + e);
         }
