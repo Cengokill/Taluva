@@ -27,7 +27,7 @@ public class PanelMenu extends JPanel {
     ControleurMediateur controleur;
     public MusicPlayer musicPlayer;
     final BufferedImage[] sliders = new BufferedImage[6];
-    BufferedImage background;
+    BufferedImage background, taluvaTitre;
     BufferedImage bouton_Jouer, bouton_Jouer_select, bouton_Local_clic;
     BufferedImage bouton_Options, bouton_Options_select, bouton_Options_clic;
     BufferedImage bouton_Credits, bouton_Credits_select, bouton_Credits_clic;
@@ -50,41 +50,29 @@ public class PanelMenu extends JPanel {
     BufferedImage ecriture_PleinEcran;
     BufferedImage ecriture_Daltonien;
     BufferedImage ecriture_Extension;
-    BufferedImage nuage1;
+    BufferedImage nuage1, nuage2;
+    BufferedImage chargement;
     Dimension tailleEcran, tailleFenetre;
-    int screenWidth;
-    int screenHeight;
-    int largeur;
-    int hauteur;
-    int largeur_background;
+    int screenWidth, screenHeight;
+    int largeur, hauteur;
+    int largeur_background, hauteur_background;
     int largeur_bouton;
     int largeur_menu_options;
-    int hauteur_background;
-    int hauteur_bouton;
-    int hauteur_menu_options;
-    int largeur_nuage, hauteur_nuage, posX_nuage, posY_nuage;
+    int hauteur_bouton, hauteur_menu_options;
+    int largeur_nuage1, hauteur_nuage1, posX_nuage1, posY_nuage1, largeur_nuage2, hauteur_nuage2, posX_nuage2, posY_nuage2;
+    int largeur_taluvaTitre, hauteur_taluvaTitre, posX_taluvaTitre, posY_taluvaTitre;
     public static int index_sonPanel;
     public int index_sonPanelAvant;
     public static int index_musiquePanel,index_musiquePanelAvant;
-    public int posX_boutons;
-    public int posY_Options;
+    public int posX_boutons, posY_Options;
     public int posY_Jouer;
-    public int posX_background;
-    public int posY_background;
+    public int posX_background, posY_background;
     public int posY_Credits;
     public int posY_Quitter;
     public int posX_menu_options;
-    public int posX_droit1;
-    public int posX_droit2;
-    public int posX_gauche1;
-    public int posX_gauche2;
-    public int posY_slider2;
-    public int posY_slider1;
+    public int posX_droit1, posX_droit2,posX_gauche1, posX_gauche2, posY_slider2, posY_slider1;
     public int taille_btn;
-    public int posX_coches;
-    public int posY_coche1;
-    public int posY_coche2;
-    public int posY_coche3;
+    public int posX_coches, posY_coche1, posY_coche2, posY_coche3;
     public int posX_btnAnnuler;
     public int posX_btnValider;
     public int posY_btnChoix;
@@ -112,9 +100,9 @@ public class PanelMenu extends JPanel {
     boolean select_valider, clic_valider, peut_valider;
     boolean select_annuler;
     boolean afficheErreur,peutJouerSon;
+    boolean peutAnimerNuage = true;
     boolean select_addJoueur, select_addIA, peut_addIA = true, peut_addJoueur = true;
     public static boolean estEnChargement = false, aAfficheChargement = false;
-
     static boolean estConfigPartie = false;
     int xConfigPanel, yConfigPanel;
     JTextField nomJoueur1, nomJoueur2, nomJoueur3, nomJoueur4;
@@ -126,13 +114,20 @@ public class PanelMenu extends JPanel {
     JComboBox<String> listeDifficulte3 = new JComboBox<>(choixDifficulte);
     JComboBox<String> listeDifficulte4 = new JComboBox<>(choixDifficulte);
     public ArrayList<MusicPlayer> sonPlayer = new ArrayList<>();
-    BufferedImage chargement;
 
     int nbJoueurs = 0;
+    double rapport_bouton = 179.0/692.0;
+    double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
+    double rapport_background = 0.5625;
+    double rapport_nuage1 = 400.0/1100.0;
+    double rapport_nuage2 = 400.0/1200.0;
+    double rapport_taluvaTitre = 500.0/900.0;
 
     public PanelMenu(JFrame f, JLayeredPane layeredPane, Jeu jeu, ControleurMediateur controleur) throws IOException {
         //Chargement des images
         nuage1 = lisImage("nuage1");
+        nuage2 = lisImage("nuage2");
+        taluvaTitre = lisImage("taluva_titre");
         background = lisImage("taluva_background");
         bouton_Jouer = lisImage("jouer");
         bouton_Jouer_select = lisImage("jouer_select");
@@ -303,6 +298,7 @@ public class PanelMenu extends JPanel {
         //Ajout d'une interaction avec les boutons
         addMouseListener(new PanelMenuListener(this));
         initialiseSons();
+        posX_nuage1 = 0;
         boucle();//Timer
     }
 
@@ -583,7 +579,6 @@ public class PanelMenu extends JPanel {
             aAfficheChargement = true;
             return;
         }
-
         calculeRapportsEtPositions();
         afficheBackground(g2d);
         if(clicOptions){
@@ -592,11 +587,12 @@ public class PanelMenu extends JPanel {
             afficherConfigPartie(g2d);
             afficheMessageErreur(g2d);
         } else{
-            afficheNuage(g2d);
+            afficheNuages(g2d);
             afficheBoutonJouer(g2d);
             afficheBoutonOptions(g2d);
             afficheBoutonCredits(g2d);
             afficheBoutonQuitter(g2d);
+            afficheTaluvaTitre(g2d);
         }
     }
 
@@ -716,11 +712,7 @@ public class PanelMenu extends JPanel {
     private void calculeRapportsEtPositions() {
         largeur = layeredPane.getWidth();
         hauteur = layeredPane.getHeight();
-        double rapport_bouton = 179.0/692.0;
-        double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
-        double rapport_background = 0.5625;
         double rapport_actuel = (double) hauteur /(double) largeur;
-        double rapport_nuage = 400.0/1100.0;
         if(rapport_actuel>rapport_background) {// si la fenêtre est plus haute que large
             largeur_background= largeur;
             hauteur_background=(int)(largeur_background*rapport_background);
@@ -733,10 +725,23 @@ public class PanelMenu extends JPanel {
             posX_background=(largeur -largeur_background)/2;
             posY_background=0;
         }
+        //image titre Taluva
+        largeur_taluvaTitre = (int) (largeur_background*0.2);
+        hauteur_taluvaTitre = (int) (largeur_taluvaTitre *rapport_taluvaTitre);
+        posX_taluvaTitre = (int) (posX_background + largeur_background/2 - largeur_taluvaTitre/2);
+        posY_taluvaTitre = (int) (posY_background + hauteur_background*0.05);
         //animation
-        largeur_nuage = (int) (largeur_background*0.2);
-        hauteur_nuage = (int) (largeur_nuage*rapport_nuage);
-        posY_nuage = (int) (posY_background + hauteur_background*0.05);
+        if(peutAnimerNuage){
+            posX_nuage1 = 0;
+            posX_nuage2 = (int) (posX_background + largeur_background*0.4);
+            peutAnimerNuage = false;
+        }
+        largeur_nuage1 = (int) (largeur_background*0.2);
+        hauteur_nuage1 = (int) (largeur_nuage1 *rapport_nuage1);
+        posY_nuage1 = (int) (posY_background + hauteur_background*0.05);
+        largeur_nuage2 = (int) (largeur_background*0.25);
+        hauteur_nuage2 = (int) (largeur_nuage2 *rapport_nuage2);
+        posY_nuage2 = (int) (posY_background + hauteur_background*0.02);
         //boutons menu principal du jeu
         largeur_bouton=largeur_background/6;
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
@@ -792,8 +797,13 @@ public class PanelMenu extends JPanel {
         }
     }
 
-    private void afficheNuage(Graphics g) {
-        g.drawImage(nuage1, posX_nuage, posY_nuage, largeur_nuage, hauteur_nuage, null);
+    private void afficheNuages(Graphics g) {
+        g.drawImage(nuage1, posX_nuage1, posY_nuage1, largeur_nuage1, hauteur_nuage1, null);
+        g.drawImage(nuage2, posX_nuage2, posY_nuage2, largeur_nuage2, hauteur_nuage2, null);
+    }
+
+    private void afficheTaluvaTitre(Graphics g) {
+        g.drawImage(taluvaTitre, posX_taluvaTitre, posY_taluvaTitre, largeur_taluvaTitre, hauteur_taluvaTitre, null);
     }
 
     public void boucle(){
@@ -801,7 +811,8 @@ public class PanelMenu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 metAJour();
-                posX_nuage = (posX_nuage+1)%largeur;
+                posX_nuage1 = (posX_nuage1 +1)%largeur;
+                posX_nuage2 = (posX_nuage2 +1)%largeur;
             }
         });
         timer.start();
