@@ -355,7 +355,7 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
             }
             else if(e.getX()>=posX_btnAnnulerSave  && e.getX()<=posX_btnAnnulerSave+largeur_bouton &&
                     e.getY()>=posY_btnAnnulerSave && e.getY()<=posY_btnAnnulerSave+largeur_bouton ){
-                FenetreJeu.afficheSave=false;
+                FenetreJeu.afficheLoad=false;
                 return true;
             }
             return false;
