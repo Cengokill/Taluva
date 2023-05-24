@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
-import static Vue.FenetreJeu.customFont;
+
 import static Vue.ImageLoader.*;
 
 public class PanelMenu extends JPanel {
@@ -231,8 +231,9 @@ public class PanelMenu extends JPanel {
 
         listeChrono.setVisible(true);
         listeChrono.setBackground(Color.WHITE);
-        //listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
-        Font font = customFont.deriveFont(Font.BOLD,20);
+        listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        //Font font = customFont.deriveFont(Font.BOLD,20);
+        Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
         listeChrono.setFont(font);
         layeredPane.add(listeChrono, JLayeredPane.POPUP_LAYER);
         revalidate();
@@ -826,8 +827,8 @@ public class PanelMenu extends JPanel {
     }
 
     private void afficheMessageErreur(Graphics g) {
-        //Font font = new Font("Bookman Old Style", Font.BOLD, 25);
-        Font font = customFont.deriveFont(Font.BOLD,25);
+        Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        //Font font = customFont.deriveFont(Font.BOLD,25);
         g.setFont(font);
         g.setColor(Color.WHITE);
         String message = null;
