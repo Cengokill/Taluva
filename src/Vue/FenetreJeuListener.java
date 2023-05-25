@@ -119,10 +119,10 @@ public class FenetreJeuListener extends MouseAdapter implements MouseWheelListen
     public class MouseHandler extends MouseAdapter implements MouseWheelListener {
         Point lastPosition;
 
-        public Timer cameraTimer = new Timer(10, new ActionListener() {
+        Timer cameraTimer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (select_menu_options || select_annuler || select_refaire || select_tuto || clicBoutonPauseEchap || select_fin_partie || fenetreJeu.getJeu().getPlateau().estVide()) {
+                if (fenetreJeu.jeu==null || select_menu_options || select_annuler || select_refaire || select_tuto || clicBoutonPauseEchap || select_fin_partie || fenetreJeu.getJeu().getPlateau().estVide()) {
                     return;
                 }
                 Point mousePos = MouseInfo.getPointerInfo().getLocation();

@@ -710,7 +710,7 @@ public class PanelMenu extends JPanel {
             g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 3*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
 
-        g2d.drawImage(fermer, posX_bouton_fermer, 10, largeur_bouton_fermer, largeur_bouton_fermer, null);
+        g2d.drawImage(fermer, posX_bouton_fermer, posY_bouton_fermer, largeur_bouton_fermer, largeur_bouton_fermer, null);
         if(!clic_valider && peut_valider && select_valider)
             g2d.drawImage(valider_select, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
         else if(peut_valider && !select_valider)
@@ -824,6 +824,8 @@ public class PanelMenu extends JPanel {
         decalageY_couleur = (int) (hauteur_background*0.12);
         posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
         posY_bouton_valider = (int) (posY_background + hauteur_background*0.82);
+        posX_bouton_fermer = (int) (posX_bouton_valider + largeur_bouton_valider);
+        posY_bouton_fermer = (int) (posY_bouton_valider + largeur_bouton_valider*0.1);
     }
 
     private void afficheMessageErreur(Graphics g) {
@@ -876,8 +878,8 @@ public class PanelMenu extends JPanel {
                 int decalage = Math.max(1,largeur_background/1000);
                 decalage_nuage1 = (decalage_nuage1+decalage);
                 decalage_nuage2 = (decalage_nuage2+decalage);
-                posX_nuage2 = (posX_background+decalage_nuage2)%largeur_background;
-                posX_nuage1 = (posX_background+decalage_nuage1)%largeur_background;
+                posX_nuage2 = (posX_background+decalage_nuage2)%(largeur_background+1);
+                posX_nuage1 = (posX_background+decalage_nuage1)%(largeur_background+1);
                 //crédits
                 if(clicCredits){
                     decalage = Math.max(1,largeur_background/1000);
