@@ -12,44 +12,41 @@ public class MusicPlayer {
     private FloatControl volumeControl;
 
     public MusicPlayer(String path) {
-        System.out.println(path);
-        URL url = this.getClass().getClassLoader().getResource(path);
-        System.out.println(url);
-        //t0ry {
-            //url = this.getClass().getClassLoader().getResource(path);
-            //AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            //clip = AudioSystem.getClip();
-            //clip.open(audioIn);
-            //volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        //} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-         //   System.err.println("Impossible d'ouvrir le fichier son " + path);
-          //  e.printStackTrace();
-        //}
+        try {
+            URL url = this.getClass().getClassLoader().getResource(path);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.err.println("Impossible d'ouvrir le fichier son " + path);
+            e.printStackTrace();
+        }
     }
 
     public void drain(){clip.drain();}
 
     public void resetClip(){
-        //clip.setFramePosition(0);
+        clip.setFramePosition(0);
     };
     public void play() {
-        //clip.start();
+        clip.start();
     }
 
     public void stop() {
-        //clip.stop();
+        clip.stop();
     }
 
     public void loop() {
-       // clip.loop(Clip.LOOP_CONTINUOUSLY);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void setVolume(float volume) {
-        //if (volume < volumeControl.getMinimum()) {
-        //    volume = volumeControl.getMinimum();
-        //} else if (volume > volumeControl.getMaximum()) {
-        //    volume = volumeControl.getMaximum();
-        //}
-        //volumeControl.setValue(volume);
+        if (volume < volumeControl.getMinimum()) {
+            volume = volumeControl.getMinimum();
+        } else if (volume > volumeControl.getMaximum()) {
+            volume = volumeControl.getMaximum();
+        }
+        volumeControl.setValue(volume);
     }
 }

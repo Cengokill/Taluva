@@ -402,6 +402,9 @@ public class PanelMenuListener implements MouseListener  {
             panelMenu.nomJoueur4.setVisible(false);
             panelMenu.listeChrono.setVisible(false);
             panelMenu.listeDifficulte1.setVisible(false);
+            panelMenu.listeDifficulte2.setVisible(false);
+            panelMenu.listeDifficulte3.setVisible(false);
+            panelMenu.listeDifficulte4.setVisible(false);
         }
         if(estCurseurSurBoutonAddJoueur(e)){
             panelMenu.playSons(0);

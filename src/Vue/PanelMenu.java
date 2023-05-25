@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
-
+import static Vue.FenetreJeu.customFont;
 import static Vue.ImageLoader.*;
 
 public class PanelMenu extends JPanel {
@@ -231,9 +231,8 @@ public class PanelMenu extends JPanel {
 
         listeChrono.setVisible(true);
         listeChrono.setBackground(Color.WHITE);
-        listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
-        //Font font = customFont.deriveFont(Font.BOLD,20);
-        Font font = new Font("Bookman Old Style", Font.BOLD, (int) (hauteurMessageErreur*0.6));
+        //listeChrono.setFont(new Font("Bookman Old Style", Font.BOLD, 20));
+        Font font = customFont.deriveFont(Font.BOLD,20);
         listeChrono.setFont(font);
         layeredPane.add(listeChrono, JLayeredPane.POPUP_LAYER);
         revalidate();
@@ -315,7 +314,7 @@ public class PanelMenu extends JPanel {
         limiterNombreCaractereNomJoueur();
 
         //musique
-        musicPlayer = new MusicPlayer("Musiques"+File.separator+"Merchants_of_Novigrad.wav");
+        musicPlayer = new MusicPlayer("Musiques/Merchants_of_Novigrad.wav");
         musicPlayer.setVolume(-50.0f);
         musicPlayer.loop();
         //Ajout d'une interaction avec les boutons
@@ -347,11 +346,11 @@ public class PanelMenu extends JPanel {
     }
 
     public void initialiseSons(){
-        MusicPlayer clicBouton =new MusicPlayer("Musiques"+File.separator+"clicBouton.wav");
+        MusicPlayer clicBouton =new MusicPlayer("Musiques/clicBouton.wav");
         sonPlayer.add(clicBouton);
-        MusicPlayer selectionBouton =new MusicPlayer("Musiques"+File.separator+"selectionBouton.wav");
+        MusicPlayer selectionBouton =new MusicPlayer("Musiques/selectionBouton.wav");
         sonPlayer.add(selectionBouton);
-        MusicPlayer confirmerBouton =new MusicPlayer("Musiques"+File.separator+"confirmerBouton.wav");
+        MusicPlayer confirmerBouton =new MusicPlayer("Musiques/confirmerBouton.wav");
         sonPlayer.add(confirmerBouton);
     }
 
@@ -710,7 +709,7 @@ public class PanelMenu extends JPanel {
             g2d.drawImage(moins, posX_bouton_moins, posY_bouton_moins + 3*decalageY_couleur, largeur_bouton_moins, largeur_bouton_moins, null);
         }
 
-        g2d.drawImage(fermer, posX_bouton_fermer, posY_bouton_fermer, largeur_bouton_fermer, largeur_bouton_fermer, null);
+        g2d.drawImage(fermer, posX_bouton_fermer, 10, largeur_bouton_fermer, largeur_bouton_fermer, null);
         if(!clic_valider && peut_valider && select_valider)
             g2d.drawImage(valider_select, posX_bouton_valider, posY_bouton_valider, largeur_bouton_valider, largeur_bouton_valider, null);
         else if(peut_valider && !select_valider)
@@ -824,13 +823,11 @@ public class PanelMenu extends JPanel {
         decalageY_couleur = (int) (hauteur_background*0.12);
         posX_bouton_valider = (int) (posX_background + largeur_background/2 - largeur_bouton_valider/2);
         posY_bouton_valider = (int) (posY_background + hauteur_background*0.82);
-        posX_bouton_fermer = (int) (posX_bouton_valider + largeur_bouton_valider);
-        posY_bouton_fermer = (int) (posY_bouton_valider + largeur_bouton_valider*0.1);
     }
 
     private void afficheMessageErreur(Graphics g) {
-        Font font = new Font("Bookman Old Style", Font.BOLD, 25);
-        //Font font = customFont.deriveFont(Font.BOLD,25);
+        //Font font = new Font("Bookman Old Style", Font.BOLD, 25);
+        Font font = customFont.deriveFont(Font.BOLD,25);
         g.setFont(font);
         g.setColor(Color.WHITE);
         String message = null;

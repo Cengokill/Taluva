@@ -391,6 +391,7 @@ public class PanelPlateau extends JPanel {
             posX_bat_precedent = ligne;
             posY_bat_precedent = colonne;
             //index_bat_precedent = 1;
+            g.drawImage(mouse_scroll, pos_x + choisirBat[7].getWidth()/2 - mouse_scroll.getWidth()/2, pos_y - choisirBat[7].getHeight(),mouse_scroll.getWidth()*2,mouse_scroll.getHeight()*2, null);
             afficheSelecteurBatiment(g, pos_x, pos_y, coups);
             afficheSelecteurVert(g, pos_x+posX_selecteur_vert, pos_y-10, coups);
         }

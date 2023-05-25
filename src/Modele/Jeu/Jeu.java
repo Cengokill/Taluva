@@ -37,7 +37,7 @@ public class Jeu extends Observable implements Serializable{
 
     public boolean aPiocher,iaReflechit;
     public Historique historique;
-    public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques"+File.separator+"Back_On_The_Path.wav");
+    public transient MusicPlayer musicPlayer = new MusicPlayer("Musiques/Back_On_The_Path.wav");
     public transient ArrayList<ArrayList<MusicPlayer>> sonPlayer = new ArrayList<>();
     private AudioInputStream audioInputStream;
     private Tuile tuile_courante;
@@ -195,31 +195,31 @@ public class Jeu extends Observable implements Serializable{
     public void initialiseSons(){
         // Placer tuile
         ArrayList<MusicPlayer> placerTuileTab = new ArrayList<>();
-        MusicPlayer placerTuile =new MusicPlayer("Musiques"+File.separator+"placertuile.wav");
+        MusicPlayer placerTuile =new MusicPlayer("Musiques/placertuile.wav");
         placerTuileTab.add(placerTuile);
         sonPlayer.add(placerTuileTab);
         // Hutte
         ArrayList<MusicPlayer> placerHutteTab = new ArrayList<>();
-        MusicPlayer placerHutte1 = new MusicPlayer("Musiques"+File.separator+"construireHutte.wav");
-        MusicPlayer placerHutte2 = new MusicPlayer("Musiques"+File.separator+"construireHutte1.wav");
-        MusicPlayer placerHutte3 = new MusicPlayer("Musiques"+File.separator+"construireHutte2.wav");
+        MusicPlayer placerHutte1 = new MusicPlayer("Musiques/construireHutte.wav");
+        MusicPlayer placerHutte2 = new MusicPlayer("Musiques/construireHutte1.wav");
+        MusicPlayer placerHutte3 = new MusicPlayer("Musiques/construireHutte2.wav");
         placerHutteTab.add(placerHutte1);
         placerHutteTab.add(placerHutte2);
         placerHutteTab.add(placerHutte3);
         sonPlayer.add(placerHutteTab);
         // Temple
         ArrayList<MusicPlayer> placerTempleTab = new ArrayList<>();
-        MusicPlayer placerTemple = new MusicPlayer("Musiques"+File.separator+"construireTemple.wav");
+        MusicPlayer placerTemple = new MusicPlayer("Musiques/construireTemple.wav");
         placerTempleTab.add(placerTemple);
         sonPlayer.add(placerTempleTab);
         // Tour
         ArrayList<MusicPlayer> placerTourTab = new ArrayList<>();
-        MusicPlayer placerTour = new MusicPlayer("Musiques"+File.separator+"construireTour.wav");
+        MusicPlayer placerTour = new MusicPlayer("Musiques/construireTour.wav");
         placerTourTab.add(placerTour);
         sonPlayer.add(placerTourTab);
         // Pioche
         ArrayList<MusicPlayer> piocherTab = new ArrayList<>();
-        MusicPlayer piocherSon = new MusicPlayer("Musiques"+File.separator+"piocherSon.wav");
+        MusicPlayer piocherSon = new MusicPlayer("Musiques/piocherSon.wav");
         piocherTab.add(piocherSon);
         sonPlayer.add(piocherTab);
     }
@@ -802,10 +802,10 @@ public class Jeu extends Observable implements Serializable{
             doit_placer_batiment = true;
             doit_placer_tuile = false;
         }
-        System.out.println("=========================");
-        System.out.println(coup.typePlacement);
-        System.out.println(EtatPlateau.poseTile);
-        System.out.println(doit_placer_batiment);
+        //System.out.println("=========================");
+        //System.out.println(coup.typePlacement);
+        //System.out.println(EtatPlateau.poseTile);
+        //System.out.println(doit_placer_batiment);
         annule = false;
     }
 

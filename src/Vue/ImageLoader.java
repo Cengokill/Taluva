@@ -20,7 +20,7 @@ public class ImageLoader {
     public static final BufferedImage[] tours_rouges = new BufferedImage[5], tours_bleues = new BufferedImage[5], tours_vertes = new BufferedImage[5], tours_violettes = new BufferedImage[5];
     public static final BufferedImage[] chrono = new BufferedImage[nb_aiguilles]; public static final BufferedImage[] pioche = new BufferedImage[9];
     public static final BufferedImage[] tuile_piochee = new BufferedImage[taille_tuile_piochee];
-    public static BufferedImage waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, chronoBleu, chronoRouge;
+    public static BufferedImage mouse_scroll, waterTile, fenetre_score_2, fenetre_score_3, fenetre_score_4, background, joueur_courant, chronoBleu, chronoRouge;
     public static BufferedImage hoverTile, wrongTile1, wrongTile2, wrongTile3, wrongTile4, wrongTile5, wrongTile6, wrongTile7, beacons, beacon_1, beacon_2, beacon_3, beacon_4, beacon_5, beacon_6;
     public static BufferedImage voidTile, voidTile_transparent, voidTileOld, whiteTile;
     public static BufferedImage grassTile_0, grassTile_1, grassTile_2,grassTile_0_SP, grassTile_1_SP, grassTile_2_SP;
@@ -194,6 +194,7 @@ public class ImageLoader {
     }
 
     private static void readSelectionBatimentImage() {
+        mouse_scroll = lisImageBuf("Mouse_scroll");
         String imageFolder = "Plateau/Batiments/Selecteur/";
         for(int i=0;i<7;i++){
             choisirBat[i] = lisImageBuf(imageFolder + "choisir_bat_" +i);
