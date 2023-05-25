@@ -50,7 +50,7 @@ public class IATest extends AbstractIA implements Serializable {
         r = new Random(seed);
         ArrayList<Tuile> pioche = copiePioche(jeu.getPioche());
         Plateau plateauIA = jeu.getPlateau().copie();
-        System.out.println(jeu.getJoueurCourantClasse().getPrenom());
+        //System.out.println(jeu.getJoueurCourantClasse().getPrenom());
         //plateauIA.affiche();
         //System.exit(0);
         plateauIA.nbHuttesDisponiblesJoueur = jeu.getJoueurCourantClasse().getNbHuttes();

@@ -116,7 +116,7 @@ public class PanelPlateau extends JPanel {
         displayHexagonMap(g);
         //n'affiche pas la tuile sur le curseur si c'est l'IA qui joue
         if (!select_menu_options && jeu.getJoueurs()[jeu.jCourant].getTypeJoueur()!= AbstractIA.IA && !estSurBouton && !clicBoutonPauseEchap && !estSurScoreboard && !jeu.estFinPartie()) {//&& jeu.estPiochee &&jeu.getTuileCourante()!=null
-            System.out.println(poseTile);
+            //System.out.println(poseTile);
             if(poseTile){
                 if(jeu.aPiocher) displayHoverTile(g);
             }
@@ -391,7 +391,7 @@ public class PanelPlateau extends JPanel {
             posX_bat_precedent = ligne;
             posY_bat_precedent = colonne;
             //index_bat_precedent = 1;
-            g.drawImage(mouse_scroll, pos_x + choisirBat[7].getWidth()/2 - mouse_scroll.getWidth()/2, pos_y - choisirBat[7].getHeight(),mouse_scroll.getWidth()*2,mouse_scroll.getHeight()*2, null);
+            //g.drawImage(mouse_scroll, pos_x + choisirBat[7].getWidth()/2 - mouse_scroll.getWidth()/2, pos_y - choisirBat[7].getHeight(),mouse_scroll.getWidth()*2,mouse_scroll.getHeight()*2, null);
             afficheSelecteurBatiment(g, pos_x, pos_y, coups);
             afficheSelecteurVert(g, pos_x+posX_selecteur_vert, pos_y-10, coups);
         }
@@ -450,6 +450,7 @@ public class PanelPlateau extends JPanel {
                 }
             }
         }
+        g.drawImage(mouse_scroll, pos_x + choisirBat[1].getWidth()/2 + mouse_scroll.getWidth()/3, pos_y - choisirBat[1].getHeight()/2 - mouse_scroll.getHeight(), mouse_scroll.getWidth(),mouse_scroll.getHeight(), null);
     }
 
     private int calculHauteurAffichageHexagone(Hexagone[][] map, int ligne, int colonne) {

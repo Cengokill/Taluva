@@ -194,13 +194,13 @@ public class ImageLoader {
     }
 
     private static void readSelectionBatimentImage() {
-        mouse_scroll = lisImageBuf("Mouse_scroll");
         String imageFolder = "Plateau/Batiments/Selecteur/";
         for(int i=0;i<7;i++){
             choisirBat[i] = lisImageBuf(imageFolder + "choisir_bat_" +i);
         }
         selecteur_vert = lisImageBuf(imageFolder + "selecteur_vert");
         constructionMode = lisImageBuf(imageFolder + "construction");
+        mouse_scroll = lisImageBuf(imageFolder + "mouse_scroll");
     }
 
     private static void filterTiles() {
