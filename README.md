@@ -1,6 +1,9 @@
 # Taluva
 Taluva est un jeu de stratégie codé ici de 2 à 4 joueurs en **Java Swing**.
 
+![image](https://github.com/Cengokill/Taluva/assets/79577721/1e0aea68-0e30-4719-91a7-b95d458afe8c)
+
+
 ## Présentation du jeu
 Dans [Taluva](https://boardgamegeek.com/boardgame/24508/taluva), les joueurs cherchent à établir avec succès une île de la mer du Sud qui émerge lentement des eaux de l'océan à mesure que les **volcans** entrent en éruption les uns après les autres.
 
